@@ -1,0 +1,212 @@
+fileFormatVersion: 2
+guid: 605b5aaf831cdd048ad3eed7e980e2ee
+timeCreated: 1484885957
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: Armature
+    100002: ArmCloth.L
+    100004: ArmCloth.R
+    100006: Chest
+    100008: Cloak.L
+    100010: Cloak.R
+    100012: Cloak2.L
+    100014: Cloak2.R
+    100016: CloakBack.L
+    100018: CloakBack.R
+    100020: CloakBack2.L
+    100022: CloakBack2.R
+    100024: Control
+    100026: Elbow.L
+    100028: Elbow.R
+    100030: Fingers1.L
+    100032: Fingers1.R
+    100034: Fingers2.L
+    100036: Fingers2.R
+    100038: Foot.L
+    100040: Foot.R
+    100042: FootIK.L
+    100044: FootIK.R
+    100046: Hand.L
+    100048: Hand.R
+    100050: HandIK.L
+    100052: HandIK.R
+    100054: Head
+    100056: Hips
+    100058: Knee.L
+    100060: Knee.R
+    100062: LowerArm.L
+    100064: LowerArm.R
+    100066: LowerLeg.L
+    100068: LowerLeg.R
+    100070: MageBlue
+    100072: MagePurple
+    100074: MageRed
+    100076: //RootNode
+    100078: MageYellow
+    100080: Spine
+    100082: Staff
+    100084: StaffBlue
+    100086: StaffPurple
+    100088: StaffRed
+    100090: StaffYellow
+    100092: Thumb1.L
+    100094: Thumb1.R
+    100096: Thumb2.L
+    100098: Thumb2.R
+    100100: Toes.L
+    100102: Toes.R
+    100104: UpperArm.L
+    100106: UpperArm.R
+    100108: UpperLeg.L
+    100110: UpperLeg.R
+    400000: Armature
+    400002: ArmCloth.L
+    400004: ArmCloth.R
+    400006: Chest
+    400008: Cloak.L
+    400010: Cloak.R
+    400012: Cloak2.L
+    400014: Cloak2.R
+    400016: CloakBack.L
+    400018: CloakBack.R
+    400020: CloakBack2.L
+    400022: CloakBack2.R
+    400024: Control
+    400026: Elbow.L
+    400028: Elbow.R
+    400030: Fingers1.L
+    400032: Fingers1.R
+    400034: Fingers2.L
+    400036: Fingers2.R
+    400038: Foot.L
+    400040: Foot.R
+    400042: FootIK.L
+    400044: FootIK.R
+    400046: Hand.L
+    400048: Hand.R
+    400050: HandIK.L
+    400052: HandIK.R
+    400054: Head
+    400056: Hips
+    400058: Knee.L
+    400060: Knee.R
+    400062: LowerArm.L
+    400064: LowerArm.R
+    400066: LowerLeg.L
+    400068: LowerLeg.R
+    400070: MageBlue
+    400072: MagePurple
+    400074: MageRed
+    400076: //RootNode
+    400078: MageYellow
+    400080: Spine
+    400082: Staff
+    400084: StaffBlue
+    400086: StaffPurple
+    400088: StaffRed
+    400090: StaffYellow
+    400092: Thumb1.L
+    400094: Thumb1.R
+    400096: Thumb2.L
+    400098: Thumb2.R
+    400100: Toes.L
+    400102: Toes.R
+    400104: UpperArm.L
+    400106: UpperArm.R
+    400108: UpperLeg.L
+    400110: UpperLeg.R
+    2300000: Staff
+    2300002: StaffBlue
+    2300004: StaffPurple
+    2300006: StaffRed
+    2300008: StaffYellow
+    3300000: Staff
+    3300002: StaffBlue
+    3300004: StaffPurple
+    3300006: StaffRed
+    3300008: StaffYellow
+    4300000: StaffYellow
+    4300002: StaffPurple
+    4300004: StaffBlue
+    4300006: StaffRed
+    4300008: Staff
+    4300010: MagePurple
+    4300012: MageYellow
+    4300014: MageBlue
+    4300016: MageRed
+    7400000: Scene
+    9500000: //RootNode
+    13700000: MageBlue
+    13700002: MagePurple
+    13700004: MageRed
+    13700006: MageYellow
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
