@@ -22,6 +22,7 @@ GameObject:
   - component: {fileID: 33353643892642848}
   - component: {fileID: 23987282616933896}
   - component: {fileID: 114166649213941706}
+  - component: {fileID: 135267003500133374}
   m_Layer: 0
   m_Name: PowerUp
   m_TagString: Untagged
@@ -236,6 +237,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rotationSpeed: 65
   reverse: 1
+--- !u!135 &135267003500133374
+SphereCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1231770415326282}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!198 &198827871886117432
 ParticleSystem:
   m_ObjectHideFlags: 1
