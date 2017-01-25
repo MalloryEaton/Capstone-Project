@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: 0e911b778d4b17a44aee1a72d2d8a2cd
+timeCreated: 1485294918
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: DK Toverheks
+  fontNames:
+  - DK Toverheks
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
