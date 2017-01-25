@@ -7,8 +7,8 @@ public class CameraMovement : MonoBehaviour {
     public float rotationSpeed = 2.0f;
     public float inOutSpeed = 10.0f;
 
-    private float yaw = 225.0f;
-    private float pitch = 60.0f;
+    private float yaw = 135.0f;
+    private float pitch = 51.0f;
 
     private bool moveCameraIsActive = false;
     private bool keyCPressed = false;
