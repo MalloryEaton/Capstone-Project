@@ -39,7 +39,6 @@ GameObject:
   - component: {fileID: 33089917518393282}
   - component: {fileID: 23524943521760164}
   - component: {fileID: 64544199411995976}
-  - component: {fileID: 114701674357236436}
   - component: {fileID: 114677002413923428}
   m_Layer: 0
   m_Name: ShrineBlack
@@ -207,20 +206,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37affacbdebcd254aa73226f99ed5f68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shrines: []
---- !u!114 &114701674357236436
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1147077825607718}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 84cc19b7274c2a94fad50e09744713b8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gameController: {fileID: 0}
-  dictionaries: {fileID: 0}
   shrines: []
 --- !u!198 &198366835227379288
 ParticleSystem:

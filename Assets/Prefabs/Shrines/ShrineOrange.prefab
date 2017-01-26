@@ -203,18 +203,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1998838373326138}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e1026b0bcb8353041aa541d3f30cbebd, type: 3}
+  m_Script: {fileID: 11500000, guid: 37affacbdebcd254aa73226f99ed5f68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shrines:
-  - {fileID: 1350905381387122, guid: d4f50c7760082124b916f8023cf76394, type: 2}
-  - {fileID: 1568079665429912, guid: 6cf05945c6ca85544bc84367ae8b48c0, type: 2}
-  - {fileID: 1556597706428062, guid: dd4160b74342d874e908bcd3341028ae, type: 2}
-  - {fileID: 1998838373326138}
-  - {fileID: 1591004745044708, guid: b5c2817b1d360344fbbf12b5dbcaf051, type: 2}
-  - {fileID: 1440019768826240, guid: a24cce04bec81bc43b7ce9d7ca4c5c5d, type: 2}
-  - {fileID: 1088279482298830, guid: 221f00f6acd396f4c9709c73a57d7f94, type: 2}
-  - {fileID: 1098043823917100, guid: db8fd738ebc07364f827c5ccf808eb77, type: 2}
+  shrines: []
 --- !u!198 &198900652750519002
 ParticleSystem:
   m_ObjectHideFlags: 1
