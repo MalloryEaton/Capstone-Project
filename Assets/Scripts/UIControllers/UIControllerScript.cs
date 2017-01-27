@@ -8,11 +8,14 @@ public class UIControllerScript : MonoBehaviour
 
     public GameObject StoryPanel;
     public GameObject DifficultyPanel;
+    public GameObject MultiplayerPanel;
+    public GameObject MainButtonPanel;
 
 
     void Awake()
     {
         StoryPanel.GetComponent<Animator>().SetBool("isDisplayed", false);
+        MainButtonPanel.GetComponent<Animator>().SetBool("isDisplayed", true);
         print("awake");
     }
 
@@ -27,6 +30,15 @@ public class UIControllerScript : MonoBehaviour
         {
             DifficultyPanel.GetComponent<Animator>().SetBool("isDisplayed", true);
         }
+        else if(panel == "multiplayer")
+        {
+            MainButtonPanel.GetComponent<Animator>().SetBool("isDisplayed", false);
+            MultiplayerPanel.GetComponent<Animator>().SetBool("isDisplayed", true);
+        }
+        else if (panel == "main")
+        {
+            MainButtonPanel.GetComponent<Animator>().SetBool("isDisplayed", true);
+        }
 
     }
 
@@ -39,6 +51,15 @@ public class UIControllerScript : MonoBehaviour
         else if (panel == "difficulty")
         {
             DifficultyPanel.GetComponent<Animator>().SetBool("isDisplayed", false);
+        }
+        else if (panel == "multiplayer")
+        {
+            MultiplayerPanel.GetComponent<Animator>().SetBool("isDisplayed", false);
+        }
+        else if (panel == "main")
+        {
+            MultiplayerPanel.GetComponent<Animator>().SetBool("isDisplayed", false);
+            MainButtonPanel.GetComponent<Animator>().SetBool("isDisplayed", true);
         }
 
     }
