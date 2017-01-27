@@ -6,7 +6,32 @@ TagManager:
   tags:
   - Empty
   - Mage
-  - Taken
+  - Rune1
+  - Rune2
+  - Rune3
+  - Rune4
+  - Rune5
+  - Rune6
+  - Rune7
+  - Rune8
+  - Rune9
+  - Rune10
+  - Rune11
+  - Rune12
+  - Rune13
+  - Rune14
+  - Rune15
+  - Rune16
+  - Rune17
+  - Rune18
+  - Rune19
+  - Rune20
+  - Rune21
+  - Rune22
+  - Rune23
+  - Opponent
+  - Rune0
+  - Center
   layers:
   - Default
   - TransparentFX

@@ -28,14 +28,14 @@ public class ShrineController : MonoBehaviour {
     private void ChangeShrine()
     {
         //yield return new WaitForSeconds(1);
-        if(gameController.isPlayersTurn)
+        if(gameController.isPlayerTurn)
         {
-            shrine = (GameObject)Instantiate(dictionaries.shrines[gameController.playerColor], transform.position, transform.rotation);
+            shrine = (GameObject)Instantiate(dictionaries.shrinesDictionary[gameController.playerColor], transform.position, transform.rotation);
             Destroy(gameObject);
         }
         else
         {
-            shrine = (GameObject)Instantiate(dictionaries.shrines[gameController.opponentColor], transform.position, transform.rotation);
+            shrine = (GameObject)Instantiate(dictionaries.shrinesDictionary[gameController.opponentColor], transform.position, transform.rotation);
             Destroy(gameObject);
         }
     }
