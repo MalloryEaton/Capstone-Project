@@ -9664,8 +9664,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   StoryPanel: {fileID: 136038275}
   DifficultyPanel: {fileID: 1366505261}
-  MultiplayerPanel: {fileID: 0}
-  MainButtonPanel: {fileID: 0}
+  MultiplayerPanel: {fileID: 2090926192}
+  MainButtonPanel: {fileID: 781432156}
 --- !u!4 &815280500 stripped
 Transform:
   m_PrefabParentObject: {fileID: 414856, guid: d1bead792a627254fad5b05a1a2137ac, type: 2}
