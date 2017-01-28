@@ -17,6 +17,15 @@ public class RuneController : MonoBehaviour
     private Material highlightMaterial;
     private Material originalMaterial;
 
+    // Use this for initialization
+    void Start()
+    {
+        gameController = FindObjectOfType(typeof(GameController)) as GameController;
+        dictionaries = FindObjectOfType(typeof(Dictionaries)) as Dictionaries;
+        runeRenderer = GetComponent<Renderer>();
+        setRandomRotation();
+        setRandomMaterial();
+    }
 
     void setRandomRotation()
     {
@@ -29,23 +38,7 @@ public class RuneController : MonoBehaviour
         highlightMaterial = dictionaries.runeHighlightsDictionary[num];
         runeRenderer.material = originalMaterial = dictionaries.runeOriginalsDictionary[num];
     }
-
-    // Use this for initialization
-    void Start()
-    {
-        gameController = FindObjectOfType(typeof(GameController)) as GameController;
-        dictionaries = FindObjectOfType(typeof(Dictionaries)) as Dictionaries;
-        runeRenderer = GetComponent<Renderer>();
-        setRandomRotation();
-        setRandomMaterial();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
+    
     private void OnMouseEnter()
     {
         if(gameController.gamePhase == "placement" && tag == "Empty")
@@ -68,31 +61,18 @@ public class RuneController : MonoBehaviour
         switch (gameController.gamePhase)
         {
             case "placement":
-                PlacementPhase();
-                RemoveRuneHighlight();
+                gameController.PlacementPhase(runeNumber);
                 break;
             case "movementPickup":
-                gameController.RemoveAllHighlights();
-                MovementPhase_Pickup();
+                gameController.HandlePieceSelect(runeNumber);
                 break;
             case "movementPlace":
-                MovementPhase_Place();
-                gameController.RemoveAllHighlights();
+                gameController.MovementPhase_Place(runeNumber);
                 break;
-            //case "removalPhase":
-            //    RemovalPhase();
-            //    break;
+                //case "removalPhase":
+                //    RemovalPhase();
+                //    break;
         }
-        
-        //hasBeenClicked = !hasBeenClicked;
-        //if (hasBeenClicked)
-        //{
-        //    runeRenderer.material = highlightMaterial;
-        //}
-        //else
-        //{
-        //    runeRenderer.material = originalMaterial;
-        //}
     }
 
     public void AddRuneHighlight()
@@ -103,51 +83,5 @@ public class RuneController : MonoBehaviour
     public void RemoveRuneHighlight()
     {
         runeRenderer.material = originalMaterial;
-    }
-
-    private void PlacementPhase()
-    {
-        if (tag == "Empty")
-        {
-            if (gameController.isPlayerTurn)
-            {
-                GameObject playerOrb = (GameObject)Instantiate(dictionaries.orbsDictionary[gameController.playerColor], dictionaries.orbPositionsDictionary[runeNumber], Quaternion.identity);
-                playerOrb.name = "PlayerOrb" + gameController.playerOrbCount;
-                playerOrb.tag = "Rune" + runeNumber;
-                tag = "Player";
-                gameController.playerOrbCount++;
-            }
-            else //opponent's turn
-            {
-                GameObject opponentOrb = (GameObject)Instantiate(dictionaries.orbsDictionary[gameController.opponentColor], dictionaries.orbPositionsDictionary[runeNumber], Quaternion.identity);
-                opponentOrb.name = "OpponentOrb" + gameController.opponentOrbCount;
-                opponentOrb.tag = "Rune" + runeNumber;
-                tag = "Opponent";
-                gameController.opponentOrbCount++;
-                gameController.turnCount++;
-            }
-            gameController.ChangeSide();
-        }
-    }
-
-    private void MovementPhase_Pickup()
-    {
-        if (tag == "Player")
-        {
-            gameController.CheckForAvailableMoves(runeNumber);
-        }
-    }
-
-    private void MovementPhase_Place()
-    {
-        if (tag == "Empty")
-        {
-            gameController.CheckIfLegalMove(runeNumber);
-        }
-        else
-        {
-            // Revert to phase 2
-            gameController.RevertGamePhase();
-        }
     }
 }
