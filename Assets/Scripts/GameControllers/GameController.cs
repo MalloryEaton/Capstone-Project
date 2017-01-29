@@ -307,10 +307,12 @@ public class GameController : MonoBehaviour {
 
     public void HandleOrbSelect(short selectedRuneNumber)
     {
-        if ((isPlayerTurn && runeList[selectedRuneNumber].tag == "Player" && runesThatCanBeMoved.Contains(selectedRuneNumber)) || 
-            (!isPlayerTurn && runeList[selectedRuneNumber].tag == "Opponent"))
+        if (((isPlayerTurn && runeList[selectedRuneNumber].tag == "Player") || 
+            (!isPlayerTurn && runeList[selectedRuneNumber].tag == "Opponent")) && runesThatCanBeMoved.Contains(selectedRuneNumber))
         {
             fromLocation = selectedRuneNumber;
+
+            RemoveAllRuneHighlights();
             
             RemoveAllOrbHighlightsExceptSelected(fromLocation);
 
@@ -343,17 +345,11 @@ public class GameController : MonoBehaviour {
         }
         else if((isPlayerTurn && runeList[toLocation].tag == "Player") || (!isPlayerTurn && runeList[toLocation].tag == "Opponent")) //switch to highlighted piece
         {
-            RemoveAllRuneHighlights();
             HandleOrbSelect(toLocation);
         }
-        else
-        {
 
-        }
         //check mills
         //  removal phase
-
-        
     }
     #endregion
 }
