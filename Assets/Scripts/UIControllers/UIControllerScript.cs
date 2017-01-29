@@ -9,11 +9,14 @@ public class UIControllerScript : MonoBehaviour
     public GameObject DifficultyPanel;
     public GameObject MultiplayerPanel;
     public GameObject MainButtonPanel;
+    public GameObject CharacterSelectPanel;
+    public GameObject MainTitlePanel;
 
 
     void Awake()
     {
         MainButtonPanel.GetComponent<Animator>().SetBool("isDisplayed", true);
+        MainTitlePanel.GetComponent<Animator>().SetBool("isDisplayed", true);
         print("awake");
     }
 
@@ -26,6 +29,7 @@ public class UIControllerScript : MonoBehaviour
         else if (panel == "difficulty")
         {
             MainButtonPanel.GetComponent<Animator>().SetBool("isDisplayed", false);
+            //MultiplayerPanel.GetComponent<Animator>().SetBool("isDisplayed", false);
             DifficultyPanel.GetComponent<Animator>().SetBool("isDisplayed", true);
         }
         else if(panel == "multiplayer")
@@ -37,7 +41,18 @@ public class UIControllerScript : MonoBehaviour
         {
             DifficultyPanel.GetComponent<Animator>().SetBool("isDisplayed", false);
             MultiplayerPanel.GetComponent<Animator>().SetBool("isDisplayed", false);
+            CharacterSelectPanel.GetComponent<Animator>().SetBool("isDisplayed", false);
+            MainTitlePanel.GetComponent<Animator>().SetBool("isDisplayed", true);
             MainButtonPanel.GetComponent<Animator>().SetBool("isDisplayed", true);
+        }
+        else if (panel == "character")
+        {
+            //DifficultyPanel.GetComponent<Animator>().SetBool("isDisplayed", false);
+            //MultiplayerPanel.GetComponent<Animator>().SetBool("isDisplayed", false);
+            MainTitlePanel.GetComponent<Animator>().SetBool("isDisplayed", false);
+            MainButtonPanel.GetComponent<Animator>().SetBool("isDisplayed", false);
+            DifficultyPanel.GetComponent<Animator>().SetBool("isDisplayed", false);
+            CharacterSelectPanel.GetComponent<Animator>().SetBool("isDisplayed", true);
         }
 
     }
@@ -64,4 +79,5 @@ public class UIControllerScript : MonoBehaviour
         }
 
     }
+
 }
