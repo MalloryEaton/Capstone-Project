@@ -21,7 +21,7 @@ public class GameController : MonoBehaviour {
 
     private Dictionaries dictionaries;
 
-    public bool moveOrb = false;
+    private List<short> runesThatCanBeMoved;
 
     // Use this for initialization
     void Start ()
@@ -30,35 +30,155 @@ public class GameController : MonoBehaviour {
         gamePhase = "placement";
         isPlayerTurn = true;
         Instantiate(dictionaries.shrinesDictionary[playerColor], new Vector3(12,0,12), Quaternion.identity);
+        runesThatCanBeMoved = new List<short>();
     }
 
-    //public void RevertGamePhase()
-    //{
-    //    gamePhase = tempGamePhase;
-    //}
+    private void CheckPhaseChange()
+    {
+        // After each player has placed all of their runes,
+        // switch to the movement phase (phase 2).
+        switch (gamePhase)
+        {
+            case "placement":
+                if (turnCount > 3)
+                //if (turnCount > 9)
+                {
+                    gamePhase = "movementPickup";
+                    MovementPhase_Pickup();
+                }
+                break;
+            case "movementPlace":
+                //check win condition
+                gamePhase = "movementPickup";
+                MovementPhase_Pickup();
+                break;
+        }
 
-    public void RemoveAllHighlights()
+        //if (gamePhase == "movementSelectPhase")
+        //{
+        //    if (firstRuneCount == 3 && firstCanFly == false)
+        //    {
+        //        firstCanFly = true;
+        //    }
+        //    else if (secondRuneCount == 3 && secondCanFly == false)
+        //    {
+        //        secondCanFly = true;
+        //    }
+        //}
+    }
+
+    private void ChangeSide()
+    {
+        isPlayerTurn = !isPlayerTurn;
+
+        CheckPhaseChange();
+    }
+
+    #region Orbs
+    private void HighlightMoveableOrbs(List<short> runes)
+    {
+        foreach (short rune in runes)
+        {
+            MakeOrbHover(rune);
+        }
+    }
+
+    private void RemoveAllOrbHighlightsExceptSelected(short runeNumber)
+    {
+        List<short> runes = MakeListOfRunes();
+
+        foreach (short rune in runes)
+        {
+            if (rune != runeNumber)
+            {
+                RemoveOrbHighlight(rune);
+            }
+        }
+
+        GameObject selectedOrb = GameObject.Find("OrbAtLocation_" + runeNumber);
+        if (!selectedOrb.GetComponent<OrbController>())
+        {
+            selectedOrb.AddComponent<OrbController>();
+        }
+    }
+    
+    private void RemoveOrbHighlight(short runeNumber)
+    {
+        GameObject orb = GameObject.Find("OrbAtLocation_" + runeNumber);
+        Destroy(orb.GetComponent<OrbController>());
+        orb.transform.position = dictionaries.orbPositionsDictionary[runeNumber];
+    }
+
+    private void MakeOrbHover(short rune)
+    {
+        GameObject orb = GameObject.Find("OrbAtLocation_" + rune);
+        orb.AddComponent<OrbController>();
+    }
+
+    private void MoveOrb(short toLocation)
+    {
+        GameObject orbToMove = GameObject.Find("OrbAtLocation_" + fromLocation);
+
+        StartCoroutine(MoveOrbAnimation(orbToMove, dictionaries.orbPositionsDictionary[toLocation]));
+
+        orbToMove.name = "OrbAtLocation_" + toLocation;
+        RemoveAllRuneHighlights();
+    }
+
+    private IEnumerator MoveOrbAnimation(GameObject orb, Vector3 newPosition)
+    {
+        float timeSinceStarted = 0f;
+        while (true)
+        {
+            timeSinceStarted += Time.deltaTime;
+            orb.transform.position = Vector3.Lerp(orb.transform.position, newPosition, timeSinceStarted);
+
+            // If the object has arrived, stop the coroutine
+            if (orb.transform.position == newPosition)
+            {
+                yield break;
+            }
+
+            // Otherwise, continue next frame
+            yield return null;
+        }
+    }
+    #endregion
+
+    #region Runes
+    private List<short> MakeListOfRunes()
+    {
+        List<short> runeNumbers = new List<short>();
+
+        if (isPlayerTurn)
+        {
+            foreach (RuneController rune in runeList)
+                if (rune.tag == "Player")
+                    runeNumbers.Add(rune.runeNumber);
+        }
+        else
+        {
+            foreach (RuneController rune in runeList)
+                if (rune.tag == "Opponent")
+                    runeNumbers.Add(rune.runeNumber);
+
+        }
+        return runeNumbers;
+    }
+
+    private void RemoveAllRuneHighlights()
     {
         for (int i = 0; i < runeList.Length; i++)
         {
             runeList[i].GetComponent<RuneController>().RemoveRuneHighlight();
         }
     }
+    #endregion
 
-    public void RemoveAllOrbHighlightsExceptSelected(short runeNumber)
+    #region Moves
+    private bool CheckAllAvailableMoves(List<short> runes)
     {
-        for (int i = 0; i < runeList.Length; i++)
-        {
-            if(i != runeNumber)
-            {
-                runeList[i].GetComponent<RuneController>().RemoveRuneHighlight();
-            }
-        }
-    }
-
-    public List<short> CheckAllAvailableMoves(List<short> runes)
-    {
-        List<short> runesThatCanBeMoved = new List<short>();
+        List<short> moveableRunes = new List<short>();
         bool canMakeAMove = false;
 
         if(runes.Count() > 2) //cannot fly
@@ -70,25 +190,19 @@ public class GameController : MonoBehaviour {
                 {
                     if (runeList[availableMove].tag == "Empty")
                     {
-                        if(!runesThatCanBeMoved.Contains(rune))
+                        if(!moveableRunes.Contains(rune))
                         {
-                            runesThatCanBeMoved.Add(rune);
+                            moveableRunes.Add(rune);
                         }
                         canMakeAMove = true;
                     }
                 }
             }
-            if(canMakeAMove)
-            {
-                return runesThatCanBeMoved;
-            }
-            else //blocked
-            {
-                //lose message
-            }
+            runesThatCanBeMoved.Clear();
+            runesThatCanBeMoved.AddRange(moveableRunes);
+            return canMakeAMove;
         }
-        return new List<short>();
-
+        return false;
         #region Fly
         //if (CheckForFly())
         //{
@@ -125,16 +239,7 @@ public class GameController : MonoBehaviour {
         }
     }
 
-    private void HighlightMoveablePieces(List<short> runes)
-    {
-        foreach (short rune in runes)
-        {
-            //add highlight to moveable runes
-            runeList[rune].GetComponent<RuneController>().AddRuneHighlight();
-        }
-    }
-
-    public bool IsLegalMove(short toLocation)
+    private bool IsLegalMove(short toLocation)
     {
         // Check if the suggested move is a legal move from the selected rune
         if (dictionaries.adjacencyDictionary[fromLocation].Contains(toLocation))
@@ -152,43 +257,9 @@ public class GameController : MonoBehaviour {
         }
         return false;
     }
-
-    private IEnumerator MoveFunction(GameObject orb, Vector3 newPosition)
-    {
-        float timeSinceStarted = 0f;
-        while (true)
-        {
-            timeSinceStarted += Time.deltaTime;
-            orb.transform.position = Vector3.Lerp(orb.transform.position, newPosition, timeSinceStarted);
-
-            // If the object has arrived, stop the coroutine
-            if (orb.transform.position == newPosition)
-            {
-                yield break;
-            }
-
-            // Otherwise, continue next frame
-            yield return null;
-        }
-    }
-
-    public void MoveOrb(short toLocation)
-    {
-        GameObject orbToMove = GameObject.Find("OrbAtLocation_" + fromLocation);
-
-        StartCoroutine(MoveFunction(orbToMove, dictionaries.orbPositionsDictionary[toLocation]));
-
-        orbToMove.name = "OrbAtLocation_" + toLocation;
-        RemoveAllHighlights();
-    }
-
-    public void ChangeSide()
-    {
-        isPlayerTurn = !isPlayerTurn;
-
-        CheckPhaseChange();
-    }
-
+    #endregion
+    
+    #region Placement Phase
     public void PlacementPhase(short runeNumber)
     {
         if (runeList[runeNumber].tag == "Empty")
@@ -208,37 +279,23 @@ public class GameController : MonoBehaviour {
                 opponentOrbCount++;
                 turnCount++;
             }
-            RemoveAllHighlights();
+            RemoveAllRuneHighlights();
             ChangeSide();
         }
     }
+    #endregion
 
+    #region Movement Phase
     public void MovementPhase_Pickup()
     {
-        List<short> runeNumbers = new List<short>();
-
-
-        //make list of all pieces
-        if (isPlayerTurn)
-        {
-            foreach(RuneController rune in runeList)
-                if(rune.tag == "Player")
-                    runeNumbers.Add(rune.runeNumber);
-        }
-        else
-        {
-            foreach (RuneController rune in runeList)
-                if (rune.tag == "Opponent")
-                    runeNumbers.Add(rune.runeNumber);
-            
-        }
+        List<short> runes = MakeListOfRunes();
 
         //check all available moves
-        List<short> availableMoves = CheckAllAvailableMoves(runeNumbers); //returns a list of all moveable pieces
-        if(availableMoves.Count > 0)
+        bool canMove = CheckAllAvailableMoves(runes); //returns a list of all moveable pieces
+        if (canMove)
         {
             //highlight moveable pieces
-            HighlightMoveablePieces(availableMoves); //make orbs hover?
+            HighlightMoveableOrbs(runesThatCanBeMoved); //make orbs hover?
 
             //wait for click
         }
@@ -248,13 +305,13 @@ public class GameController : MonoBehaviour {
         }
     }
 
-    public void HandlePieceSelect(short selectedRuneNumber)
+    public void HandleOrbSelect(short selectedRuneNumber)
     {
-        if ((isPlayerTurn && runeList[selectedRuneNumber].tag == "Player") || (!isPlayerTurn && runeList[selectedRuneNumber].tag == "Opponent"))
+        if ((isPlayerTurn && runeList[selectedRuneNumber].tag == "Player" && runesThatCanBeMoved.Contains(selectedRuneNumber)) || 
+            (!isPlayerTurn && runeList[selectedRuneNumber].tag == "Opponent"))
         {
             fromLocation = selectedRuneNumber;
-
-            //remove moveable pieces highlights except for one that is being moved
+            
             RemoveAllOrbHighlightsExceptSelected(fromLocation);
 
             HighlightAvailableMoves(fromLocation);
@@ -271,6 +328,9 @@ public class GameController : MonoBehaviour {
         {
             if (IsLegalMove(toLocation))
             {
+                GameObject orb = GameObject.Find("OrbAtLocation_" + fromLocation);
+                Destroy(orb.GetComponent<OrbController>());
+
                 MoveOrb(toLocation);
                 runeList[toLocation].tag = (isPlayerTurn) ? "Player" : "Opponent";
                 runeList[fromLocation].tag = "Empty";
@@ -283,8 +343,8 @@ public class GameController : MonoBehaviour {
         }
         else if((isPlayerTurn && runeList[toLocation].tag == "Player") || (!isPlayerTurn && runeList[toLocation].tag == "Opponent")) //switch to highlighted piece
         {
-            RemoveAllHighlights();
-            HandlePieceSelect(toLocation);
+            RemoveAllRuneHighlights();
+            HandleOrbSelect(toLocation);
         }
         else
         {
@@ -295,38 +355,5 @@ public class GameController : MonoBehaviour {
 
         
     }
-
-    private void CheckPhaseChange()
-    {
-        // After each player has placed all of their runes,
-        // switch to the movement phase (phase 2).
-        switch (gamePhase)
-        {
-            case "placement":
-                if (turnCount > 3)
-                //if (turnCount > 9)
-                {
-                    gamePhase = "movementPickup";
-                    MovementPhase_Pickup();
-                }
-                break;
-            case "movementPlace":
-                //check win condition
-                gamePhase = "movementPickup";
-                MovementPhase_Pickup();
-                break;
-        }
-
-        //if (gamePhase == "movementSelectPhase")
-        //{
-        //    if (firstRuneCount == 3 && firstCanFly == false)
-        //    {
-        //        firstCanFly = true;
-        //    }
-        //    else if (secondRuneCount == 3 && secondCanFly == false)
-        //    {
-        //        secondCanFly = true;
-        //    }
-        //}
-    }
+    #endregion
 }

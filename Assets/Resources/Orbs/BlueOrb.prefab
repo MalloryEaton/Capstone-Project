@@ -37,7 +37,6 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4745022679947298}
-  - component: {fileID: 114656692531430376}
   m_Layer: 0
   m_Name: BlueOrb
   m_TagString: Untagged
@@ -238,17 +237,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rotationSpeed: 65
   reverse: 0
---- !u!114 &114656692531430376
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1127925106092126}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d886f4b741084b74a9512d3aa1df1f8b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!135 &135678911476158582
 SphereCollider:
   m_ObjectHideFlags: 1
