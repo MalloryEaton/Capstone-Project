@@ -4,12 +4,9 @@ using System.Linq;
 using UnityEngine;
 
 public class GameController : MonoBehaviour {
-
-    private RuneController runeController;
     public RuneController[] runeList;
 
     public string gamePhase; //placement, movementPickup, movementPlace, fly
-    private string tempGamePhase;
 
     public bool isPlayerTurn;
 
@@ -24,26 +21,21 @@ public class GameController : MonoBehaviour {
 
     private Dictionaries dictionaries;
 
+    public bool moveOrb = false;
+
     // Use this for initialization
     void Start ()
     {
-        runeController = FindObjectOfType(typeof(RuneController)) as RuneController;
         dictionaries = FindObjectOfType(typeof(Dictionaries)) as Dictionaries;
         gamePhase = "placement";
         isPlayerTurn = true;
         Instantiate(dictionaries.shrinesDictionary[playerColor], new Vector3(12,0,12), Quaternion.identity);
     }
-	
-	// Update is called once per frame
-	void Update ()
-    {
-		
-	}
 
-    public void RevertGamePhase()
-    {
-        gamePhase = tempGamePhase;
-    }
+    //public void RevertGamePhase()
+    //{
+    //    gamePhase = tempGamePhase;
+    //}
 
     public void RemoveAllHighlights()
     {
@@ -53,49 +45,16 @@ public class GameController : MonoBehaviour {
         }
     }
 
-    //public void CheckForAvailableMoves(short runeNumber)
-    //{
-    //    bool canMove = false;
-
-    //    #region Fly
-    //    //if (CheckForFly())
-    //    //{
-    //    //    for (int i = 0; i < runeList.Length; i++)
-    //    //    {
-    //    //        if (HighlightAvailableMoves(i))
-    //    //        {
-    //    //            canMove = true;
-    //    //        }
-    //    //    }
-    //    //}
-    //    //else
-    //    //{
-    //    // The dictionary will produce the possible moves from
-    //    // "runeLocation"
-    //    // Highlight available movement options
-    //    //foreach (short availableMove in dictionaries.adjacencyDictionary[runeNumber])
-    //    //{
-    //    //    canMove = HighlightAvailableMoves(availableMove) ? true : false;
-    //    //}
-    //    //}
-    //    #endregion
-        
-    //    foreach (short availableMove in dictionaries.adjacencyDictionary[runeNumber])
-    //    {
-    //        canMove = HighlightAvailableMoves(availableMove) ? true : false;
-    //    }
-
-    //    if (canMove)
-    //    {
-    //        moveFromLocation = runeNumber;
-    //        tempGamePhase = gamePhase;
-    //        gamePhase = "movementPlace";
-    //    }
-    //    else
-    //    {
-    //        // Alert the user that this piece cannot be moved
-    //    }
-    //}
+    public void RemoveAllOrbHighlightsExceptSelected(short runeNumber)
+    {
+        for (int i = 0; i < runeList.Length; i++)
+        {
+            if(i != runeNumber)
+            {
+                runeList[i].GetComponent<RuneController>().RemoveRuneHighlight();
+            }
+        }
+    }
 
     public List<short> CheckAllAvailableMoves(List<short> runes)
     {
@@ -168,14 +127,14 @@ public class GameController : MonoBehaviour {
 
     private void HighlightMoveablePieces(List<short> runes)
     {
-        foreach(short rune in runes)
+        foreach (short rune in runes)
         {
             //add highlight to moveable runes
-            //runeList[rune].GetComponent<RuneController>().AddRuneHighlight();
+            runeList[rune].GetComponent<RuneController>().AddRuneHighlight();
         }
     }
 
-    public void CheckIfLegalMove(short toLocation)
+    public bool IsLegalMove(short toLocation)
     {
         // Check if the suggested move is a legal move from the selected rune
         if (dictionaries.adjacencyDictionary[fromLocation].Contains(toLocation))
@@ -188,28 +147,38 @@ public class GameController : MonoBehaviour {
             //{
             //    ResetMills();
             //}
-
-            MoveOrb(toLocation);
-
-            runeList[toLocation].tag = (isPlayerTurn) ? "Player" : "Opponent";
-
-            runeList[fromLocation].tag = "Empty";
-
             //CheckForNewMills(moveToLocation);
+            return true;
         }
-        else
+        return false;
+    }
+
+    private IEnumerator MoveFunction(GameObject orb, Vector3 newPosition)
+    {
+        float timeSinceStarted = 0f;
+        while (true)
         {
-            RevertGamePhase();
+            timeSinceStarted += Time.deltaTime;
+            orb.transform.position = Vector3.Lerp(orb.transform.position, newPosition, timeSinceStarted);
+
+            // If the object has arrived, stop the coroutine
+            if (orb.transform.position == newPosition)
+            {
+                yield break;
+            }
+
+            // Otherwise, continue next frame
+            yield return null;
         }
     }
 
     public void MoveOrb(short toLocation)
     {
-        Vector3 pos = dictionaries.orbPositionsDictionary[fromLocation];
-        GameObject orbToMove = GameObject.Find("OrbAtPosition_" + pos.x + "_" + pos.y + "_" + pos.z);
-        orbToMove.transform.position = dictionaries.orbPositionsDictionary[toLocation];
-        pos = dictionaries.orbPositionsDictionary[toLocation];
-        orbToMove.name = "OrbAtPosition_" + pos.x + "_" + pos.y + "_" + pos.z;
+        GameObject orbToMove = GameObject.Find("OrbAtLocation_" + fromLocation);
+
+        StartCoroutine(MoveFunction(orbToMove, dictionaries.orbPositionsDictionary[toLocation]));
+
+        orbToMove.name = "OrbAtLocation_" + toLocation;
         RemoveAllHighlights();
     }
 
@@ -222,35 +191,30 @@ public class GameController : MonoBehaviour {
 
     public void PlacementPhase(short runeNumber)
     {
-        print("PlacementPhase");
         if (runeList[runeNumber].tag == "Empty")
         {
             if (isPlayerTurn)
             {
-                print("here");
                 GameObject playerOrb = (GameObject)Instantiate(dictionaries.orbsDictionary[playerColor], dictionaries.orbPositionsDictionary[runeNumber], Quaternion.identity);
-                Vector3 pos = dictionaries.orbPositionsDictionary[runeNumber];
-                playerOrb.name = "OrbAtPosition_" + pos.x + "_" + pos.y + "_" + pos.z;
+                playerOrb.name = "OrbAtLocation_" + runeNumber;
                 runeList[runeNumber].tag = "Player";
                 playerOrbCount++;
             }
             else //opponent's turn
             {
                 GameObject opponentOrb = (GameObject)Instantiate(dictionaries.orbsDictionary[opponentColor], dictionaries.orbPositionsDictionary[runeNumber], Quaternion.identity);
-                Vector3 pos = dictionaries.orbPositionsDictionary[runeNumber];
-                opponentOrb.name = "OrbAtPosition_" + pos.x + "_" + pos.y + "_" + pos.z;
+                opponentOrb.name = "OrbAtLocation_" + runeNumber;
                 runeList[runeNumber].tag = "Opponent";
                 opponentOrbCount++;
                 turnCount++;
             }
-            ChangeSide();
             RemoveAllHighlights();
+            ChangeSide();
         }
     }
 
     public void MovementPhase_Pickup()
     {
-        print("MovementPhase_Pickup");
         List<short> runeNumbers = new List<short>();
 
 
@@ -286,11 +250,13 @@ public class GameController : MonoBehaviour {
 
     public void HandlePieceSelect(short selectedRuneNumber)
     {
-        print("HandlePieceSelect");
-        if (runeList[selectedRuneNumber].tag == "Player")
+        if ((isPlayerTurn && runeList[selectedRuneNumber].tag == "Player") || (!isPlayerTurn && runeList[selectedRuneNumber].tag == "Opponent"))
         {
             fromLocation = selectedRuneNumber;
+
             //remove moveable pieces highlights except for one that is being moved
+            RemoveAllOrbHighlightsExceptSelected(fromLocation);
+
             HighlightAvailableMoves(fromLocation);
 
             gamePhase = "movementPlace";
@@ -301,34 +267,54 @@ public class GameController : MonoBehaviour {
 
     public void MovementPhase_Place(short toLocation)
     {
-        print("MovementPhase_Place");
         if (runeList[toLocation].tag == "Empty")
         {
-            CheckIfLegalMove(toLocation);
+            if (IsLegalMove(toLocation))
+            {
+                MoveOrb(toLocation);
+                runeList[toLocation].tag = (isPlayerTurn) ? "Player" : "Opponent";
+                runeList[fromLocation].tag = "Empty";
+
+                //switch to other player
+                isPlayerTurn = !isPlayerTurn;
+                gamePhase = "movementPickup";
+                MovementPhase_Pickup();
+            }
         }
-        else if(runeList[toLocation].tag == "Player") //switch to highlighted piece
+        else if((isPlayerTurn && runeList[toLocation].tag == "Player") || (!isPlayerTurn && runeList[toLocation].tag == "Opponent")) //switch to highlighted piece
         {
             RemoveAllHighlights();
             HandlePieceSelect(toLocation);
         }
-        //check if placement legal
-        //if empty
-        //if player (reset placement phase)
-        //else do nothing
-        //move piece
+        else
+        {
+
+        }
         //check mills
-        //removal phase
-        //switch to Opponent
+        //  removal phase
+
+        
     }
 
     private void CheckPhaseChange()
     {
         // After each player has placed all of their runes,
         // switch to the movement phase (phase 2).
-        if (gamePhase == "placement" && turnCount > 9)
+        switch (gamePhase)
         {
-            gamePhase = "movementPickup";
-            MovementPhase_Pickup();
+            case "placement":
+                if (turnCount > 3)
+                //if (turnCount > 9)
+                {
+                    gamePhase = "movementPickup";
+                    MovementPhase_Pickup();
+                }
+                break;
+            case "movementPlace":
+                //check win condition
+                gamePhase = "movementPickup";
+                MovementPhase_Pickup();
+                break;
         }
 
         //if (gamePhase == "movementSelectPhase")

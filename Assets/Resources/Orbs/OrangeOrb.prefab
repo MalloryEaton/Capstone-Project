@@ -56,6 +56,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4419991217726106}
+  - component: {fileID: 114672839051312722}
   m_Layer: 0
   m_Name: OrangeOrb
   m_TagString: Untagged
@@ -237,6 +238,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rotationSpeed: 65
   reverse: 1
+--- !u!114 &114672839051312722
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1245819116907432}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d886f4b741084b74a9512d3aa1df1f8b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!135 &135688476588448792
 SphereCollider:
   m_ObjectHideFlags: 1
