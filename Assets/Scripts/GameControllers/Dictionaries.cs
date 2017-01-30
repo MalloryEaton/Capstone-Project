@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,6 +11,8 @@ public class Dictionaries : MonoBehaviour {
     public Dictionary<short, Material> runeOriginalsDictionary;
     public Dictionary<string, GameObject> shrinesDictionary;
 
+    public List<Mill> verticalMillsList;
+
     // Use this for initialization
     void Start ()
     {
@@ -20,17 +22,30 @@ public class Dictionaries : MonoBehaviour {
         runeOriginalsDictionary = new Dictionary<short, Material>();
         orbsDictionary = new Dictionary<string, GameObject>();
         shrinesDictionary = new Dictionary<string, GameObject>();
+        verticalMillsList = new List<Mill>();
 
-        initializeAdjacencyDictionary();
-        initializeRuneHighlightsDictionary();
-        initializeRuneOriginalsDictionary();
-        initializeLocationDictionary();
-        initializeOrbDictionary();
-        initializeShrineDictionary();
-
+        InitializeAdjacencyDictionary();
+        InitializeRuneHighlightsDictionary();
+        InitializeRuneOriginalsDictionary();
+        InitializeLocationDictionary();
+        InitializeOrbDictionary();
+        InitializeShrineDictionary();
+        InitializeVerticalMillsList();
     }
 
-    private void initializeAdjacencyDictionary()
+    private void InitializeVerticalMillsList()
+    {
+        verticalMillsList.Add(new Mill(0, 9, 21));
+        verticalMillsList.Add(new Mill(1, 4, 7));
+        verticalMillsList.Add(new Mill(2, 14, 23));
+        verticalMillsList.Add(new Mill(3, 10, 18));
+        verticalMillsList.Add(new Mill(5, 13, 20));
+        verticalMillsList.Add(new Mill(6, 11, 15));
+        verticalMillsList.Add(new Mill(8, 12, 17));
+        verticalMillsList.Add(new Mill(16, 19, 22));
+    }
+
+    private void InitializeAdjacencyDictionary()
     {
         adjacencyDictionary.Add(0, new short[] { 1, 9 });
         adjacencyDictionary.Add(1, new short[] { 0, 4, 2 });
@@ -65,7 +80,7 @@ public class Dictionaries : MonoBehaviour {
         adjacencyDictionary.Add(23, new short[] { 14, 22 });
     }
 
-    private void initializeOrbDictionary()
+    private void InitializeOrbDictionary()
     {
         orbsDictionary.Add("black", Resources.Load(@"Orbs\BlackOrb", typeof(GameObject)) as GameObject);
         orbsDictionary.Add("blue", Resources.Load(@"Orbs\BlueOrb", typeof(GameObject)) as GameObject);
@@ -78,7 +93,7 @@ public class Dictionaries : MonoBehaviour {
     }
 
     #region Orb Locations
-    private void initializeLocationDictionary()
+    private void InitializeLocationDictionary()
     {
         orbPositionsDictionary.Add(0, new Vector3(24f, 0.7f, 0f));
         orbPositionsDictionary.Add(1, new Vector3(12f, 0.7f, 0f));
@@ -114,7 +129,7 @@ public class Dictionaries : MonoBehaviour {
     #endregion
 
     #region Rune Material Dictionaries
-    void initializeRuneHighlightsDictionary()
+    void InitializeRuneHighlightsDictionary()
     {
         runeHighlightsDictionary.Add(0, Resources.Load(@"Runes\Stones1", typeof(Material)) as Material);
         runeHighlightsDictionary.Add(1, Resources.Load(@"Runes\Stones2", typeof(Material)) as Material);
@@ -128,7 +143,7 @@ public class Dictionaries : MonoBehaviour {
         runeHighlightsDictionary.Add(9, Resources.Load(@"Runes\Stones10", typeof(Material)) as Material);
     }
 
-    void initializeRuneOriginalsDictionary()
+    void InitializeRuneOriginalsDictionary()
     {
         runeOriginalsDictionary.Add(0, Resources.Load(@"Runes\Stones1Dark", typeof(Material)) as Material);
         runeOriginalsDictionary.Add(1, Resources.Load(@"Runes\Stones2Dark", typeof(Material)) as Material);
@@ -143,7 +158,7 @@ public class Dictionaries : MonoBehaviour {
     }
     #endregion
 
-    private void initializeShrineDictionary()
+    private void InitializeShrineDictionary()
     {
         shrinesDictionary.Add("black", Resources.Load(@"Shrines\ShrineBlack", typeof(GameObject)) as GameObject);
         shrinesDictionary.Add("blue", Resources.Load(@"Shrines\ShrineBlue", typeof(GameObject)) as GameObject);

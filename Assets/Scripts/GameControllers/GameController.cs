@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -258,7 +259,71 @@ public class GameController : MonoBehaviour {
         return false;
     }
     #endregion
-    
+
+    #region Mills
+    private bool CheckIfRuneIsInMill(short runeNumber)
+    {
+        if(CheckMillsHorizontally(runeNumber) || CheckMillsVertically(runeNumber))
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    private bool CheckMillsHorizontally(short runeNumber)
+    {
+        for (int i = 0; i <= 21; i += 3)
+        {
+            if (runeList[i].tag == runeList[i + 1].tag &&
+                runeList[i].tag == runeList[i + 2].tag &&
+                runeList[i].tag != "Empty")
+            {
+                runeList[i].isInMill = true;
+                runeList[i + 1].isInMill = true;
+                runeList[i + 2].isInMill = true;
+
+                if (((runeNumber == i || runeNumber == (i + 1) || runeNumber == (i + 2)) && isPlayerTurn && runeList[runeNumber].tag == "Player") || 
+                    ((runeNumber == i || runeNumber == (i + 1) || runeNumber == (i + 2)) && !isPlayerTurn && runeList[runeNumber].tag == "Opponent"))
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private bool CheckMillsVertically(short runeNumber)
+    {
+        foreach(Mill mill in dictionaries.verticalMillsList)
+        {
+            if (runeList[mill.position1].tag == runeList[mill.position2].tag &&
+            runeList[mill.position2].tag == runeList[mill.position3].tag &&
+            runeList[mill.position1].tag != "Empty")
+            {
+                runeList[mill.position1].isInMill = true;
+                runeList[mill.position2].isInMill = true;
+                runeList[mill.position3].isInMill = true;
+
+                if (((runeNumber == mill.position1 || runeNumber == mill.position2 || runeNumber == mill.position3) && isPlayerTurn && runeList[runeNumber].tag == "Player") ||
+                    ((runeNumber == mill.position1 || runeNumber == mill.position2 || runeNumber == mill.position3) && !isPlayerTurn && runeList[runeNumber].tag == "Opponent"))
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private void ResetAllMills()
+    {
+        for (int i = 0; i < runeList.Length; i++)
+        {
+            runeList[i].isInMill = false;
+        }
+    }
+    #endregion
+
     #region Placement Phase
     public void PlacementPhase(short runeNumber)
     {
@@ -279,6 +344,13 @@ public class GameController : MonoBehaviour {
                 opponentOrbCount++;
                 turnCount++;
             }
+
+            if (CheckIfRuneIsInMill(runeNumber))
+            {
+                print("YOU GOT A MILL!");
+                //removal phase
+            }
+
             RemoveAllRuneHighlights();
             ChangeSide();
         }
@@ -336,6 +408,14 @@ public class GameController : MonoBehaviour {
                 MoveOrb(toLocation);
                 runeList[toLocation].tag = (isPlayerTurn) ? "Player" : "Opponent";
                 runeList[fromLocation].tag = "Empty";
+                runeList[fromLocation].isInMill = false;
+
+                //check for a mill
+                if(CheckIfRuneIsInMill(toLocation))
+                {
+                    print("YOU GOT A MILL!");
+                    //removal phase
+                }
 
                 //switch to other player
                 isPlayerTurn = !isPlayerTurn;
@@ -348,8 +428,6 @@ public class GameController : MonoBehaviour {
             HandleOrbSelect(toLocation);
         }
 
-        //check mills
-        //  removal phase
     }
     #endregion
 }

@@ -7,7 +7,7 @@ public class RuneController : MonoBehaviour
     private GameController gameController;
     private Dictionaries dictionaries;
 
-    private bool isInMill;
+    public bool isInMill;
 
     public short runeNumber;
     private Renderer runeRenderer;
