@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class ShrineController : MonoBehaviour {
-    private GameController gameController;
+    private GameLogicController gameController;
     private Dictionaries dictionaries;
 
     private GameObject shrine; //used for instantiation
@@ -13,7 +13,7 @@ public class ShrineController : MonoBehaviour {
 	// Use this for initialization
 	void Start ()
     {
-        gameController = FindObjectOfType(typeof(GameController)) as GameController;
+        gameController = FindObjectOfType(typeof(GameLogicController)) as GameLogicController;
         dictionaries = FindObjectOfType(typeof(Dictionaries)) as Dictionaries;
     }
 	

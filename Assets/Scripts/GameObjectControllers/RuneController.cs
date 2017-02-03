@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class RuneController : MonoBehaviour
 {
-    private GameController gameController;
+    private GameLogicController gameController;
     private Dictionaries dictionaries;
 
     public bool isInMill;
@@ -20,7 +20,7 @@ public class RuneController : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        gameController = FindObjectOfType(typeof(GameController)) as GameController;
+        gameController = FindObjectOfType(typeof(GameLogicController)) as GameLogicController;
         dictionaries = FindObjectOfType(typeof(Dictionaries)) as Dictionaries;
         runeRenderer = GetComponent<Renderer>();
         setRandomRotation();
@@ -69,9 +69,9 @@ public class RuneController : MonoBehaviour
             case "movementPlace":
                 gameController.MovementPhase_Place(runeNumber);
                 break;
-                //case "removalPhase":
-                //    RemovalPhase();
-                //    break;
+            case "removal":
+                gameController.RemovalPhase(runeNumber);
+                break;
         }
     }
 
