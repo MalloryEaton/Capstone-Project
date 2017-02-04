@@ -33,8 +33,9 @@ public class GameLogicController : MonoBehaviour
     {
         dictionaries = FindObjectOfType(typeof(Dictionaries)) as Dictionaries;
         gamePhase = "placement";
+        previousGamePhase = "placement";
         isPlayerTurn = true;
-        startingNumberOfOrbs = 9;
+        startingNumberOfOrbs = 4;
         playerOrbCount = 0;
         opponentOrbCount = 0;
         placementPhase_RoundCount = 1;
@@ -55,21 +56,21 @@ public class GameLogicController : MonoBehaviour
         {
             if (isPlayerTurn)
             {
-                GameObject playerOrb = Instantiate(dictionaries.orbsDictionary[playerColor], dictionaries.orbPositionsDictionary[rune], Quaternion.identity);
-                playerOrb.name = "OrbAtLocation_" + rune;
+                MoveOrb(rune);
                 runeList[rune].tag = "Player";
                 playerOrbCount++;
             }
             else //opponent's turn
             {
-                GameObject opponentOrb = Instantiate(dictionaries.orbsDictionary[opponentColor], dictionaries.orbPositionsDictionary[rune], Quaternion.identity);
-                opponentOrb.name = "OrbAtLocation_" + rune;
+                MoveOrb(rune);
                 runeList[rune].tag = "Opponent";
                 opponentOrbCount++;
                 placementPhase_RoundCount++;
             }
 
             RemoveAllRuneHighlights();
+
+            previousGamePhase = "placement";
 
             if (RuneIsInMill(rune))
             {
@@ -92,6 +93,7 @@ public class GameLogicController : MonoBehaviour
         else
         {
             print("NO AVAILABLE MOVES! YOU LOSE!");
+            isPlayerTurn = !isPlayerTurn;
             GameOver();
         }
     }
@@ -175,20 +177,12 @@ public class GameLogicController : MonoBehaviour
                 playerOrbCount--;
             }
 
-            //RemoveAllOrbHighlights(-1);
+            RemoveAllOrbHighlights(-1);
 
-            //if(previousGamePhase == "placement")
-            //{
-            //    gamePhase = previousGamePhase;
-            //    ChangeSide();
-            //}
-            //else
-            //{
-                if (playerOrbCount == 2 || opponentOrbCount == 2) //check for win
-                    GameOver();
-                else //continue game
-                    ChangeSide();
-            //}
+            if (previousGamePhase != "placement" && (playerOrbCount == 2 || opponentOrbCount == 2)) //check for win
+                GameOver();
+            else //continue game
+                ChangeSide();
         }
     }
 
@@ -219,18 +213,23 @@ public class GameLogicController : MonoBehaviour
     private void ChangeSide()
     {
         isPlayerTurn = !isPlayerTurn;
-        previousGamePhase = gamePhase;
 
-        if(gamePhase == "placement")
+        if(previousGamePhase == "placement")
         {
+            previousGamePhase = gamePhase;
             if (placementPhase_RoundCount > startingNumberOfOrbs)
             {
                 gamePhase = "movementPickup";
                 PrepareForMovementPhase();
             }
+            else
+            {
+                gamePhase = "placement";
+            }
         }
         else
         {
+            previousGamePhase = gamePhase;
             gamePhase = "movementPickup";
             RemoveAllOrbHighlights(-1);
             PrepareForMovementPhase();
@@ -319,21 +318,7 @@ public class GameLogicController : MonoBehaviour
         List<short> moveableRunes = new List<short>();
         bool canMakeAMove = false;
 
-        if (CanFly())
-        {
-            foreach(short rune in runes)
-            {
-                if (runeList[rune].tag == "Empty")
-                {
-                    if (!moveableRunes.Contains(rune))
-                    {
-                        moveableRunes.Add(rune);
-                    }
-                    canMakeAMove = true;
-                }
-            }
-        }
-        else //cannot fly
+        if (runes.Count() > 2) //cannot fly
         {
             foreach (short rune in runes)
             {
@@ -352,7 +337,20 @@ public class GameLogicController : MonoBehaviour
             runesThatCanBeMoved.Clear();
             runesThatCanBeMoved.AddRange(moveableRunes);
         }
-        
+        else
+        {
+            foreach (short rune in runes)
+            {
+                if (runeList[rune].tag == "Empty")
+                {
+                    if (!moveableRunes.Contains(rune))
+                    {
+                        moveableRunes.Add(rune);
+                    }
+                    canMakeAMove = true;
+                }
+            }
+        }
         return canMakeAMove;
     }
 
@@ -496,7 +494,15 @@ public class GameLogicController : MonoBehaviour
 
     private void MoveOrb(short toLocation)
     {
-        GameObject orbToMove = GameObject.Find("OrbAtLocation_" + runeFromLocation);
+        GameObject orbToMove;
+        if(gamePhase == "placement")
+        {
+            orbToMove = isPlayerTurn ? GameObject.Find(playerColor + "_Orb_" + placementPhase_RoundCount) : GameObject.Find(opponentColor + "_Orb_" + placementPhase_RoundCount);
+        }
+        else
+        {
+            orbToMove = GameObject.Find("OrbAtLocation_" + runeFromLocation);
+        }
 
         StartCoroutine(MoveOrbAnimation(orbToMove, dictionaries.orbPositionsDictionary[toLocation]));
 

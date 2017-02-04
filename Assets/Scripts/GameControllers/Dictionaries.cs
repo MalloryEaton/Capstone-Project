@@ -82,14 +82,14 @@ public class Dictionaries : MonoBehaviour {
 
     private void InitializeOrbDictionary()
     {
-        orbsDictionary.Add("black", Resources.Load(@"Orbs\BlackOrb", typeof(GameObject)) as GameObject);
-        orbsDictionary.Add("blue", Resources.Load(@"Orbs\BlueOrb", typeof(GameObject)) as GameObject);
-        orbsDictionary.Add("green", Resources.Load(@"Orbs\GreenOrb", typeof(GameObject)) as GameObject);
-        orbsDictionary.Add("orange", Resources.Load(@"Orbs\OrangeOrb", typeof(GameObject)) as GameObject);
-        orbsDictionary.Add("purple", Resources.Load(@"Orbs\PurpleOrb", typeof(GameObject)) as GameObject);
-        orbsDictionary.Add("red", Resources.Load(@"Orbs\RedOrb", typeof(GameObject)) as GameObject);
-        orbsDictionary.Add("white", Resources.Load(@"Orbs\WhiteOrb", typeof(GameObject)) as GameObject);
-        orbsDictionary.Add("yellow", Resources.Load(@"Orbs\YellowOrb", typeof(GameObject)) as GameObject);
+        orbsDictionary.Add("Black", Resources.Load(@"Orbs\BlackOrb", typeof(GameObject)) as GameObject);
+        orbsDictionary.Add("Blue", Resources.Load(@"Orbs\BlueOrb", typeof(GameObject)) as GameObject);
+        orbsDictionary.Add("Green", Resources.Load(@"Orbs\GreenOrb", typeof(GameObject)) as GameObject);
+        orbsDictionary.Add("Orange", Resources.Load(@"Orbs\OrangeOrb", typeof(GameObject)) as GameObject);
+        orbsDictionary.Add("Purple", Resources.Load(@"Orbs\PurpleOrb", typeof(GameObject)) as GameObject);
+        orbsDictionary.Add("Red", Resources.Load(@"Orbs\RedOrb", typeof(GameObject)) as GameObject);
+        orbsDictionary.Add("White", Resources.Load(@"Orbs\WhiteOrb", typeof(GameObject)) as GameObject);
+        orbsDictionary.Add("Yellow", Resources.Load(@"Orbs\YellowOrb", typeof(GameObject)) as GameObject);
     }
 
     #region Orb Locations
