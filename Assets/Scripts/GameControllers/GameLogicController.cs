@@ -9,6 +9,7 @@ public class GameLogicController : MonoBehaviour
     public RuneController[] runeList;
 
     public string gamePhase; //placement, movementPickup, movementPlace, fly
+    private string previousGamePhase;
 
     public bool isPlayerTurn;
 
@@ -21,6 +22,9 @@ public class GameLogicController : MonoBehaviour
     public string playerColor = "green";
     public string opponentColor = "purple";
 
+    private List<Mill> playerMills;
+    private List<Mill> opponentMills;
+
     private Dictionaries dictionaries;
 
     private List<short> movementPhase_RunesThatCanBeMoved;
@@ -32,8 +36,13 @@ public class GameLogicController : MonoBehaviour
         isPlayerTurn = true;
         Instantiate(dictionaries.shrinesDictionary[playerColor], new Vector3(12, 0, 12), Quaternion.identity);
         movementPhase_RunesThatCanBeMoved = new List<short>();
+        playerMills = new List<Mill>();
+        opponentMills = new List<Mill>();
     }
 
+    /*---------------------------------------------------------------------
+    || GAME PHASE FUNCTIONS
+    -----------------------------------------------------------------------*/
     public void PlacementPhase(short rune)
     {
         if (runeList[rune].tag == "Empty")
@@ -54,11 +63,12 @@ public class GameLogicController : MonoBehaviour
                 placementPhase_RoundCount++;
             }
 
-            if (CheckIfRuneIsInMill(rune))
+            if (RuneIsInMill(rune))
             {
                 print("YOU GOT A MILL!");
+                previousGamePhase = "placement";
                 gamePhase = "removal";
-                HighlightMoveableOrbs(MakeListOfRunesForOneSide());
+                HighlightMoveableOrbs(MakeListOfRunesForRemoval());
                 //wait for click
             }
             else
@@ -74,7 +84,7 @@ public class GameLogicController : MonoBehaviour
     {
         List<short> runes = MakeListOfRunesForOneSide();
 
-        if (CheckForAvailableMoves(runes))
+        if (AvailableMovesExist(runes))
         {
             HighlightMoveableOrbs(movementPhase_RunesThatCanBeMoved);
 
@@ -97,6 +107,7 @@ public class GameLogicController : MonoBehaviour
             RemoveAllOrbHighlights(movementPhase_FromLocation);
             HighlightAvailableMoves(movementPhase_FromLocation);
 
+            previousGamePhase = "movementPickup";
             gamePhase = "movementPlace";
 
             //wait for click
@@ -113,16 +124,22 @@ public class GameLogicController : MonoBehaviour
                 Destroy(orb.GetComponent<OrbController>());
 
                 MoveOrb(toLocation);
+
                 runeList[toLocation].tag = (isPlayerTurn) ? "Player" : "Opponent";
                 runeList[movementPhase_FromLocation].tag = "Empty";
-                runeList[movementPhase_FromLocation].isInMill = false;
 
-                //check for a mill
-                if (CheckIfRuneIsInMill(toLocation))
+                if(runeList[movementPhase_FromLocation].isInMill)
+                {
+                    RemoveRunesFromMill();
+                }
+                
+                if (RuneIsInMill(toLocation))
                 {
                     print("YOU GOT A MILL!");
+                    previousGamePhase = "movementPlace";
                     gamePhase = "removal";
-                    HighlightMoveableOrbs(MakeListOfRunesForOneSide());
+                    RemoveAllOrbHighlights(-1);
+                    HighlightMoveableOrbs(MakeListOfRunesForRemoval());
                     //wait for click
                 }
                 else
@@ -133,141 +150,128 @@ public class GameLogicController : MonoBehaviour
         }
         else if ((isPlayerTurn && runeList[toLocation].tag == "Player") || (!isPlayerTurn && runeList[toLocation].tag == "Opponent")) //switch to highlighted piece
         {
+            previousGamePhase = "movementPlace";
             HandleOrbSelect(toLocation);
         }
-
     }
 
     public void RemovalPhase(short rune)
     {
-        Destroy(GameObject.Find("OrbAtLocation_" + rune));
+        if((isPlayerTurn && runeList[rune].tag == "Opponent") || (!isPlayerTurn && runeList[rune].tag == "Player"))
+        {
+            if (runeList[rune].isInMill)
+                RemoveRunesFromMill();
 
-        runeList[rune].tag = "Empty";
+            Destroy(GameObject.Find("OrbAtLocation_" + rune));
+            runeList[rune].tag = "Empty";
+            if(isPlayerTurn)
+            {
+                opponentOrbCount--;
+            }
+            else
+            {
+                playerOrbCount--;
+            }
+
+            RemoveAllOrbHighlights(rune);
+
+            if(previousGamePhase == "placement")
+            {
+                gamePhase = previousGamePhase;
+                ChangeSide();
+            }
+            else
+            {
+                if (playerOrbCount == 2 || opponentOrbCount == 2)
+                    GameOver();
+                else
+                    ChangeSide();
+            }
+        }
+    }
+
+    private void GameOver()
+    {
+        RemoveAllOrbHighlights(-1);
+        RemoveAllRuneHighlights();
         if(isPlayerTurn)
-        {
-            opponentOrbCount--;
-        }
-        else
-        {
-            playerOrbCount--;
-        }
-
-        RemoveAllOrbHighlights(rune);
-
-        //check for win
-        if (isPlayerTurn && opponentOrbCount == 2)
-        {
             print("Game Over. " + playerColor + " wins!");
-            gamePhase = "over";
-        }
-        else if (!isPlayerTurn && playerOrbCount == 2)
-        {
-            print("Game Over. " + opponentColor + " wins!");
-            gamePhase = "over";
-        }
         else
-        {
-            if(placementPhase_RoundCount <= 4)
-            {
-                gamePhase = "placement";
-            }
-            ChangeSide();
-        }
+            print("Game Over. " + opponentColor + " wins!");
     }
 
-    private bool CheckIfRuneIsInMill(short rune)
-    {
-        if (CheckMillsHorizontally(rune) || CheckMillsVertically(rune))
-        {
-            return true;
-        }
 
-        return false;
-    }
-
-    private bool CheckMillsHorizontally(short rune)
-    {
-        for (int i = 0; i <= 21; i += 3)
-        {
-            if (runeList[i].tag == runeList[i + 1].tag &&
-                runeList[i].tag == runeList[i + 2].tag &&
-                runeList[i].tag != "Empty")
-            {
-                runeList[i].isInMill = true;
-                runeList[i + 1].isInMill = true;
-                runeList[i + 2].isInMill = true;
-
-                if (((rune == i || rune == (i + 1) || rune == (i + 2)) && isPlayerTurn && runeList[rune].tag == "Player") ||
-                    ((rune == i || rune == (i + 1) || rune == (i + 2)) && !isPlayerTurn && runeList[rune].tag == "Opponent"))
-                {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    private bool CheckMillsVertically(short rune)
-    {
-        foreach (Mill mill in dictionaries.verticalMillsList)
-        {
-            if (runeList[mill.position1].tag == runeList[mill.position2].tag &&
-            runeList[mill.position2].tag == runeList[mill.position3].tag &&
-            runeList[mill.position1].tag != "Empty")
-            {
-                runeList[mill.position1].isInMill = true;
-                runeList[mill.position2].isInMill = true;
-                runeList[mill.position3].isInMill = true;
-
-                if (((rune == mill.position1 || rune == mill.position2 || rune == mill.position3) && isPlayerTurn && runeList[rune].tag == "Player") ||
-                    ((rune == mill.position1 || rune == mill.position2 || rune == mill.position3) && !isPlayerTurn && runeList[rune].tag == "Opponent"))
-                {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
+    /*---------------------------------------------------------------------
+    || GAME PHASE LOGIC
+    -----------------------------------------------------------------------*/
     private bool IsLegalMove(short toLocation)
     {
-        if (dictionaries.adjacencyDictionary[movementPhase_FromLocation].Contains(toLocation))
-        //|| CheckForFly())
+        if((isPlayerTurn && playerOrbCount == 3) || (!isPlayerTurn && opponentOrbCount == 3)) //can fly
         {
-            // If the previous location was part of a mill, it isn't anymore
-            // (and neither are the other pieces). Reset the state of all mills,
-            // the next call to CheckForNewMills() will find them again
-            //if (runeList[moveFromLocation].GetComponent<Rune>().isInMill == true)
-            //{
-            //    ResetMills();
-            //}
-            //CheckForNewMills(moveToLocation);
+            if (runeList[toLocation])
+                return true;
+        }
+        else if(dictionaries.adjacencyDictionary[movementPhase_FromLocation].Contains(toLocation))
+        {
             return true;
         }
+
         return false;
+    }
+
+    private void ChangeSide()
+    {
+        isPlayerTurn = !isPlayerTurn;
+
+        if(gamePhase == "placement")
+        {
+            if (placementPhase_RoundCount > 5)
+            //if (turnCount > 9)
+            {
+                gamePhase = "movementPickup";
+                MovementPhase_Pickup();
+            }
+        }
+        else
+        {
+            gamePhase = "movementPickup";
+            RemoveAllOrbHighlights(-1);
+            MovementPhase_Pickup();
+        }
+    }
+
+    private List<short> MakeListOfRunesForRemoval()
+    {
+        List<short> runes = new List<short>();
+
+        if (AllRunesAreInMills())
+        {
+            foreach (RuneController rune in runeList)
+                if ((isPlayerTurn && rune.tag == "Opponent") || (!isPlayerTurn && rune.tag == "Player"))
+                    runes.Add(rune.runeNumber);
+        }
+        else //only add runes that are not in mills
+        {
+            foreach (RuneController rune in runeList)
+                if (((isPlayerTurn && rune.tag == "Opponent") || (!isPlayerTurn && rune.tag == "Player")) && !runeList[rune.runeNumber].isInMill)
+                    runes.Add(rune.runeNumber); 
+        }
+
+        return runes;
     }
 
     private List<short> MakeListOfRunesForOneSide()
     {
         List<short> runes = new List<short>();
 
-        if (gamePhase == "removal")
-        {
-            foreach (RuneController rune in runeList)
-                if (((isPlayerTurn && rune.tag == "Opponent") || (!isPlayerTurn && rune.tag == "Player")) && !rune.isInMill)
-                    runes.Add(rune.runeNumber);
-        }
-        else
-        {
-            foreach (RuneController rune in runeList)
-                if ((isPlayerTurn && rune.tag == "Player") || (!isPlayerTurn && rune.tag == "Opponent"))
-                    runes.Add(rune.runeNumber);
-        }
+        foreach (RuneController rune in runeList)
+            if ((isPlayerTurn && rune.tag == "Player") || (!isPlayerTurn && rune.tag == "Opponent"))
+                runes.Add(rune.runeNumber);
 
         return runes;
     }
 
-    private bool CheckForAvailableMoves(List<short> runes)
+    private bool AvailableMovesExist(List<short> runes)
     {
         List<short> moveableRunes = new List<short>();
         bool canMakeAMove = false;
@@ -291,59 +295,144 @@ public class GameLogicController : MonoBehaviour
             }
             movementPhase_RunesThatCanBeMoved.Clear();
             movementPhase_RunesThatCanBeMoved.AddRange(moveableRunes);
-            return canMakeAMove;
+        }
+        else
+        {
+            foreach(short rune in runes)
+            {
+                if (runeList[rune].tag == "Empty")
+                {
+                    if (!moveableRunes.Contains(rune))
+                    {
+                        moveableRunes.Add(rune);
+                    }
+                    canMakeAMove = true;
+                }
+            }
+        }
+        return canMakeAMove;
+    }
+
+
+    /*---------------------------------------------------------------------
+    || MILL FUNCTIONS
+    -----------------------------------------------------------------------*/
+    private bool RuneIsInMill(short rune)
+    {
+        if (IsInHorizontalMill(rune) || IsInVerticalMill(rune))
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    private bool AllRunesAreInMills()
+    {
+        List<short> runes = MakeListOfRunesForOneSide();
+
+        foreach(short rune in runes)
+        {
+            if (!runeList[rune].isInMill)
+                return false;
+        }
+
+        return true;
+    }
+
+    private void RemoveRunesFromMill()
+    {
+        if (isPlayerTurn)
+        {
+            Mill mill;
+            for (short i = 0; i < playerMills.Count; i++)
+            {
+                mill = playerMills[i];
+                if (mill.position1 == movementPhase_FromLocation || mill.position2 == movementPhase_FromLocation || mill.position3 == movementPhase_FromLocation)
+                {
+                    runeList[mill.position1].isInMill = false;
+                    runeList[mill.position2].isInMill = false;
+                    runeList[mill.position3].isInMill = false;
+                    playerMills.Remove(playerMills[i]);
+                }
+            }
+        }
+        else
+        { 
+            Mill mill;
+            for (short i = 0; i < playerMills.Count; i++)
+            {
+                    mill = opponentMills[i];
+                if (mill.position1 == movementPhase_FromLocation || mill.position2 == movementPhase_FromLocation || mill.position3 == movementPhase_FromLocation)
+                {
+                    runeList[mill.position1].isInMill = false;
+                    runeList[mill.position2].isInMill = false;
+                    runeList[mill.position3].isInMill = false;
+                    opponentMills.Remove(mill);
+                }
+            }
+        }
+    }
+
+    private bool IsInHorizontalMill(short rune)
+    {
+        for (short i = 0; i <= 21; i += 3)
+        {
+            if (runeList[i].tag == runeList[i + 1].tag &&
+                runeList[i].tag == runeList[i + 2].tag &&
+                runeList[i].tag != "Empty")
+            {
+                if (((rune == i || rune == (i + 1) || rune == (i + 2)) && isPlayerTurn && runeList[rune].tag == "Player") ||
+                    ((rune == i || rune == (i + 1) || rune == (i + 2)) && !isPlayerTurn && runeList[rune].tag == "Opponent"))
+                {
+                    runeList[i].isInMill = true;
+                    runeList[i + 1].isInMill = true;
+                    runeList[i + 2].isInMill = true;
+
+                    if (isPlayerTurn)
+                        playerMills.Add(new Mill(i, (short)(i + 1), (short)(i + 2)));
+                    else
+                        opponentMills.Add(new Mill(i, (short)(i + 1), (short)(i + 2)));
+
+                    return true;
+                }
+            }
         }
         return false;
-        #region Fly
-        //if (CheckForFly())
-        //{
-        //    for (int i = 0; i < runeList.Length; i++)
-        //    {
-        //        if (HighlightAvailableMoves(i))
-        //        {
-        //            canMove = true;
-        //        }
-        //    }
-        //}
-        //else
-        //{
-        // The dictionary will produce the possible moves from
-        // "runeLocation"
-        // Highlight available movement options
-        //foreach (short availableMove in dictionaries.adjacencyDictionary[runeNumber])
-        //{
-        //    canMove = HighlightAvailableMoves(availableMove) ? true : false;
-        //}
-        //}
-        #endregion
-
     }
 
-    private void ChangeSide()
+    private bool IsInVerticalMill(short rune)
     {
-        isPlayerTurn = !isPlayerTurn;
-
-        switch(gamePhase)
+        foreach (Mill mill in dictionaries.verticalMillsList)
         {
-            case "placement":
-                if (placementPhase_RoundCount > 4)
-                //if (turnCount > 9)
+            if (runeList[mill.position1].tag == runeList[mill.position2].tag &&
+            runeList[mill.position2].tag == runeList[mill.position3].tag &&
+            runeList[mill.position1].tag != "Empty")
+            {
+                if (((rune == mill.position1 || rune == mill.position2 || rune == mill.position3) && isPlayerTurn && runeList[rune].tag == "Player") ||
+                    ((rune == mill.position1 || rune == mill.position2 || rune == mill.position3) && !isPlayerTurn && runeList[rune].tag == "Opponent"))
                 {
-                    gamePhase = "movementPickup";
-                    MovementPhase_Pickup();
+                    runeList[mill.position1].isInMill = true;
+                    runeList[mill.position2].isInMill = true;
+                    runeList[mill.position3].isInMill = true;
+
+                    if (isPlayerTurn)
+                        playerMills.Add(new Mill(mill.position1, mill.position2, mill.position3));
+                    else
+                        opponentMills.Add(new Mill(mill.position1, mill.position2, mill.position3));
+
+                    return true;
                 }
-                break;
-            case "movementPlace":
-                gamePhase = "movementPickup";
-                MovementPhase_Pickup();
-                break;
-            case "removal":
-                gamePhase = "movementPickup";
-                MovementPhase_Pickup();
-                break;
+            }
         }
+        return false;
     }
 
+
+    /*---------------------------------------------------------------------
+    || VISUALS FUNCTIONS
+    -----------------------------------------------------------------------*/
+    // Runes //
     private void RemoveAllRuneHighlights()
     {
         for (int i = 0; i < runeList.Length; i++)
@@ -352,6 +441,31 @@ public class GameLogicController : MonoBehaviour
         }
     }
 
+    private void HighlightAvailableMoves(short rune)
+    {
+        if ((isPlayerTurn && playerOrbCount == 3) || (!isPlayerTurn && opponentOrbCount == 3)) //can fly
+        {
+            foreach (RuneController r in runeList)
+            {
+                if (r.tag == "Empty")
+                {
+                    r.GetComponent<RuneController>().AddRuneHighlight();
+                }
+            }
+        }
+        else
+        {
+            foreach (short availableMove in dictionaries.adjacencyDictionary[rune])
+            {
+                if (runeList[availableMove].tag == "Empty")
+                {
+                    runeList[availableMove].GetComponent<RuneController>().AddRuneHighlight();
+                }
+            }
+        }
+    }
+
+    // Orbs //
     private void HighlightMoveableOrbs(List<short> runes)
     {
         foreach (short rune in runes)
@@ -368,45 +482,42 @@ public class GameLogicController : MonoBehaviour
 
     private void RemoveAllOrbHighlights(short runeNumber)
     {
-        print("Blah");
-        List<short> runes = MakeListOfRunesForOneSide();
-
-        foreach(short rune in runes)
+        if(runeNumber == -1) // remove all
         {
-            if (rune != runeNumber)
+            foreach (RuneController rune in runeList)
             {
-                RemoveOrbHighlight(rune);
+                RemoveOrbHighlight(rune.runeNumber);
             }
         }
-
-        if (gamePhase != "removal")
+        else
         {
-            //if selected orb was not previously hovering, make it hover
-            GameObject selectedOrb = GameObject.Find("OrbAtLocation_" + runeNumber);
-            if (!selectedOrb.GetComponent<OrbController>())
+            List<short> runes = MakeListOfRunesForOneSide();
+
+            foreach (short rune in runes)
             {
-                selectedOrb.AddComponent<OrbController>();
+                if (rune != runeNumber)
+                {
+                    RemoveOrbHighlight(rune);
+                }
+            }
+
+            if (gamePhase != "removal")
+            {
+                //if selected orb was not previously hovering, make it hover
+                GameObject selectedOrb = GameObject.Find("OrbAtLocation_" + runeNumber);
+                if (!selectedOrb.GetComponent<OrbController>())
+                {
+                    selectedOrb.AddComponent<OrbController>();
+                }
             }
         }
     }
 
     private void RemoveOrbHighlight(short rune)
     {
-        print("Remove orb " + rune);
         GameObject orb = GameObject.Find("OrbAtLocation_" + rune);
         Destroy(orb.GetComponent<OrbController>());
         orb.transform.position = dictionaries.orbPositionsDictionary[rune];
-    }
-
-    private void HighlightAvailableMoves(short rune)
-    {
-        foreach (short availableMove in dictionaries.adjacencyDictionary[rune])
-        {
-            if (runeList[availableMove].tag == "Empty")
-            {
-                runeList[availableMove].GetComponent<RuneController>().AddRuneHighlight();
-            }
-        }
     }
 
     private void MoveOrb(short toLocation)
@@ -436,20 +547,5 @@ public class GameLogicController : MonoBehaviour
             // Otherwise, continue next frame
             yield return null;
         }
-    }
-
-    private bool CheckIfAllRunesAreInMills()
-    {
-        return false;
-    }
-
-    private void RemoveAllMills()
-    {
-
-    }
-
-    private void LocateAllMills()
-    {
-
     }
 }
