@@ -64,7 +64,7 @@ public class RuneController : MonoBehaviour
                 gameController.PlacementPhase(runeNumber);
                 break;
             case "movementPickup":
-                gameController.HandleOrbSelect(runeNumber);
+                gameController.MovementPhase_Pickup(runeNumber);
                 break;
             case "movementPlace":
                 gameController.MovementPhase_Place(runeNumber);

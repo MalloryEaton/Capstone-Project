@@ -160,13 +160,13 @@ public class Dictionaries : MonoBehaviour {
 
     private void InitializeShrineDictionary()
     {
-        shrinesDictionary.Add("black", Resources.Load(@"Shrines\ShrineBlack", typeof(GameObject)) as GameObject);
-        shrinesDictionary.Add("blue", Resources.Load(@"Shrines\ShrineBlue", typeof(GameObject)) as GameObject);
-        shrinesDictionary.Add("green", Resources.Load(@"Shrines\ShrineGreen", typeof(GameObject)) as GameObject);
-        shrinesDictionary.Add("orange", Resources.Load(@"Shrines\ShrineOrange", typeof(GameObject)) as GameObject);
-        shrinesDictionary.Add("purple", Resources.Load(@"Shrines\ShrinePurple", typeof(GameObject)) as GameObject);
-        shrinesDictionary.Add("red", Resources.Load(@"Shrines\ShrineRed", typeof(GameObject)) as GameObject);
-        shrinesDictionary.Add("white", Resources.Load(@"Shrines\ShrineWhite", typeof(GameObject)) as GameObject);
-        shrinesDictionary.Add("yellow", Resources.Load(@"Shrines\ShrineYellow", typeof(GameObject)) as GameObject);
+        shrinesDictionary.Add("Black", Resources.Load(@"Shrines\ShrineBlack", typeof(GameObject)) as GameObject);
+        shrinesDictionary.Add("Blue", Resources.Load(@"Shrines\ShrineBlue", typeof(GameObject)) as GameObject);
+        shrinesDictionary.Add("Green", Resources.Load(@"Shrines\ShrineGreen", typeof(GameObject)) as GameObject);
+        shrinesDictionary.Add("Orange", Resources.Load(@"Shrines\ShrineOrange", typeof(GameObject)) as GameObject);
+        shrinesDictionary.Add("Purple", Resources.Load(@"Shrines\ShrinePurple", typeof(GameObject)) as GameObject);
+        shrinesDictionary.Add("Red", Resources.Load(@"Shrines\ShrineRed", typeof(GameObject)) as GameObject);
+        shrinesDictionary.Add("White", Resources.Load(@"Shrines\ShrineWhite", typeof(GameObject)) as GameObject);
+        shrinesDictionary.Add("Yellow", Resources.Load(@"Shrines\ShrineYellow", typeof(GameObject)) as GameObject);
     }
 }
