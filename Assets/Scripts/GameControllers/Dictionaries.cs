@@ -95,36 +95,36 @@ public class Dictionaries : MonoBehaviour {
     #region Orb Locations
     private void InitializeLocationDictionary()
     {
-        orbPositionsDictionary.Add(0, new Vector3(24f, 0.7f, 0f));
-        orbPositionsDictionary.Add(1, new Vector3(12f, 0.7f, 0f));
-        orbPositionsDictionary.Add(2, new Vector3(0f, 0.7f, 0f));
+        orbPositionsDictionary.Add(0, new Vector3(24f, 1.5f, 0f));
+        orbPositionsDictionary.Add(1, new Vector3(12f, 1.5f, 0f));
+        orbPositionsDictionary.Add(2, new Vector3(0f, 1.5f, 0f));
 
-        orbPositionsDictionary.Add(3, new Vector3(20f, 0.7f, 4f));
-        orbPositionsDictionary.Add(4, new Vector3(12f, 0.7f, 4f));
-        orbPositionsDictionary.Add(5, new Vector3(4f, 0.7f, 4f));
+        orbPositionsDictionary.Add(3, new Vector3(20f, 1.5f, 4f));
+        orbPositionsDictionary.Add(4, new Vector3(12f, 1.5f, 4f));
+        orbPositionsDictionary.Add(5, new Vector3(4f, 1.5f, 4f));
 
-        orbPositionsDictionary.Add(6, new Vector3(16f, 0.7f, 8f));
-        orbPositionsDictionary.Add(7, new Vector3(12f, 0.7f, 8f));
-        orbPositionsDictionary.Add(8, new Vector3(8f, 0.7f, 8f));
+        orbPositionsDictionary.Add(6, new Vector3(16f, 1.5f, 8f));
+        orbPositionsDictionary.Add(7, new Vector3(12f, 1.5f, 8f));
+        orbPositionsDictionary.Add(8, new Vector3(8f, 1.5f, 8f));
 
-        orbPositionsDictionary.Add(9, new Vector3(24f, 0.7f, 12f));
-        orbPositionsDictionary.Add(10, new Vector3(20f, 0.7f, 12f));
-        orbPositionsDictionary.Add(11, new Vector3(16f, 0.7f, 12f));
-        orbPositionsDictionary.Add(12, new Vector3(8f, 0.7f, 12f));
-        orbPositionsDictionary.Add(13, new Vector3(4f, 0.7f, 12f));
-        orbPositionsDictionary.Add(14, new Vector3(0f, 0.7f, 12f));
+        orbPositionsDictionary.Add(9, new Vector3(24f, 1.5f, 12f));
+        orbPositionsDictionary.Add(10, new Vector3(20f, 1.5f, 12f));
+        orbPositionsDictionary.Add(11, new Vector3(16f, 1.5f, 12f));
+        orbPositionsDictionary.Add(12, new Vector3(8f, 1.5f, 12f));
+        orbPositionsDictionary.Add(13, new Vector3(4f, 1.5f, 12f));
+        orbPositionsDictionary.Add(14, new Vector3(0f, 1.5f, 12f));
 
-        orbPositionsDictionary.Add(15, new Vector3(16f, 0.7f, 16f));
-        orbPositionsDictionary.Add(16, new Vector3(12f, 0.7f, 16f));
-        orbPositionsDictionary.Add(17, new Vector3(8f, 0.7f, 16f));
+        orbPositionsDictionary.Add(15, new Vector3(16f, 1.5f, 16f));
+        orbPositionsDictionary.Add(16, new Vector3(12f, 1.5f, 16f));
+        orbPositionsDictionary.Add(17, new Vector3(8f, 1.5f, 16f));
 
-        orbPositionsDictionary.Add(18, new Vector3(20f, 0.7f, 20f));
-        orbPositionsDictionary.Add(19, new Vector3(12f, 0.7f, 20f));
-        orbPositionsDictionary.Add(20, new Vector3(4f, 0.7f, 20f));
+        orbPositionsDictionary.Add(18, new Vector3(20f, 1.5f, 20f));
+        orbPositionsDictionary.Add(19, new Vector3(12f, 1.5f, 20f));
+        orbPositionsDictionary.Add(20, new Vector3(4f, 1.5f, 20f));
 
-        orbPositionsDictionary.Add(21, new Vector3(24f, 0.7f, 24f));
-        orbPositionsDictionary.Add(22, new Vector3(12f, 0.7f, 24f));
-        orbPositionsDictionary.Add(23, new Vector3(0f, 0.7f, 24f));
+        orbPositionsDictionary.Add(21, new Vector3(24f, 1.5f, 24f));
+        orbPositionsDictionary.Add(22, new Vector3(12f, 1.5f, 24f));
+        orbPositionsDictionary.Add(23, new Vector3(0f, 1.5f, 24f));
     }
     #endregion
 

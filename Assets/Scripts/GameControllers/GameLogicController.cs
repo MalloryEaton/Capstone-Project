@@ -28,6 +28,7 @@ public class GameLogicController : MonoBehaviour
     private Dictionaries dictionaries;
 
     private List<short> movementPhase_RunesThatCanBeMoved;
+    private List<short> removalPhase_RunesThatCanBeRemoved;
 
     void Start()
     {
@@ -36,6 +37,7 @@ public class GameLogicController : MonoBehaviour
         isPlayerTurn = true;
         Instantiate(dictionaries.shrinesDictionary[playerColor], new Vector3(12, 0, 12), Quaternion.identity);
         movementPhase_RunesThatCanBeMoved = new List<short>();
+        removalPhase_RunesThatCanBeRemoved = new List<short>();
         playerMills = new List<Mill>();
         opponentMills = new List<Mill>();
     }
@@ -157,7 +159,7 @@ public class GameLogicController : MonoBehaviour
 
     public void RemovalPhase(short rune)
     {
-        if((isPlayerTurn && runeList[rune].tag == "Opponent") || (!isPlayerTurn && runeList[rune].tag == "Player"))
+        if(((isPlayerTurn && runeList[rune].tag == "Opponent") || (!isPlayerTurn && runeList[rune].tag == "Player")) && removalPhase_RunesThatCanBeRemoved.Contains(rune))
         {
             if (runeList[rune].isInMill)
                 RemoveRunesFromMill();
@@ -173,7 +175,7 @@ public class GameLogicController : MonoBehaviour
                 playerOrbCount--;
             }
 
-            RemoveAllOrbHighlights(rune);
+            RemoveAllOrbHighlights(-1);
 
             if(previousGamePhase == "placement")
             {
@@ -253,9 +255,12 @@ public class GameLogicController : MonoBehaviour
         else //only add runes that are not in mills
         {
             foreach (RuneController rune in runeList)
-                if (((isPlayerTurn && rune.tag == "Opponent") || (!isPlayerTurn && rune.tag == "Player")) && !runeList[rune.runeNumber].isInMill)
+                if (((isPlayerTurn && rune.tag == "Opponent") || (!isPlayerTurn && rune.tag == "Player")) && !rune.isInMill)
                     runes.Add(rune.runeNumber); 
         }
+
+        removalPhase_RunesThatCanBeRemoved.Clear();
+        removalPhase_RunesThatCanBeRemoved.AddRange(runes);
 
         return runes;
     }
@@ -329,9 +334,13 @@ public class GameLogicController : MonoBehaviour
 
     private bool AllRunesAreInMills()
     {
-        List<short> runes = MakeListOfRunesForOneSide();
+        List<short> runes = new List<short>();
 
-        foreach(short rune in runes)
+        foreach (RuneController rune in runeList)
+            if ((isPlayerTurn && rune.tag == "Opponent") || (!isPlayerTurn && rune.tag == "Player"))
+                runes.Add(rune.runeNumber);
+
+        foreach (short rune in runes)
         {
             if (!runeList[rune].isInMill)
                 return false;
@@ -360,7 +369,7 @@ public class GameLogicController : MonoBehaviour
         else
         { 
             Mill mill;
-            for (short i = 0; i < playerMills.Count; i++)
+            for (short i = 0; i < opponentMills.Count; i++)
             {
                     mill = opponentMills[i];
                 if (mill.position1 == movementPhase_FromLocation || mill.position2 == movementPhase_FromLocation || mill.position3 == movementPhase_FromLocation)
@@ -486,7 +495,8 @@ public class GameLogicController : MonoBehaviour
         {
             foreach (RuneController rune in runeList)
             {
-                RemoveOrbHighlight(rune.runeNumber);
+                if(rune.tag != "Empty")
+                    RemoveOrbHighlight(rune.runeNumber);
             }
         }
         else
