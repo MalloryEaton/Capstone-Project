@@ -12,7 +12,7 @@ public class GameLogicController : MonoBehaviour
     public string playerColor = "Green";
     public string opponentColor = "Purple";
 
-    public string gamePhase; //placement, movementPickup, movementPlace
+    public string gamePhase; //placement, movementPickup, movementPlace, removal
     private string previousGamePhase;
 
     public bool isPlayerTurn;
@@ -35,7 +35,7 @@ public class GameLogicController : MonoBehaviour
         gamePhase = "placement";
         previousGamePhase = "placement";
         isPlayerTurn = true;
-        startingNumberOfOrbs = 4;
+        startingNumberOfOrbs = 9;
         playerOrbCount = 0;
         opponentOrbCount = 0;
         placementPhase_RoundCount = 1;
@@ -119,8 +119,7 @@ public class GameLogicController : MonoBehaviour
         {
             if (IsLegalMove(toLocation))
             {
-                GameObject orb = GameObject.Find("OrbAtLocation_" + runeFromLocation);
-                Destroy(orb.GetComponent<OrbController>());
+                RemoveOrbHighlight(runeFromLocation);
 
                 MoveOrb(toLocation);
 
