@@ -7,7 +7,8 @@ public class CameraMovement : MonoBehaviour {
 
     private GameObject target;
     
-    void Start () {
+    void Start ()
+    {
         target = GameObject.FindGameObjectWithTag("Center");
     }
     

@@ -295,6 +295,18 @@ GameObject:
   m_PrefabParentObject: {fileID: 1741143740909450, guid: a21fb5a1c412fbf44abbfd35acd26fea,
     type: 2}
   m_PrefabInternal: {fileID: 1744755789}
+--- !u!114 &129210714
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 129210712}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4acbc82076985d498678e214283e129, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 0}
 --- !u!64 &129210715
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -3436,6 +3448,23 @@ Transform:
   m_Father: {fileID: 83745559}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1336365409 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1306722060648132, guid: be4caf924f8ece44ca8c8ac8ad0bd4dd,
+    type: 2}
+  m_PrefabInternal: {fileID: 1417236976}
+--- !u!114 &1336365412
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1336365409}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4acbc82076985d498678e214283e129, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 0}
 --- !u!1 &1343965802
 GameObject:
   m_ObjectHideFlags: 0
@@ -3560,6 +3589,16 @@ Prefab:
     - target: {fileID: 1306722060648132, guid: be4caf924f8ece44ca8c8ac8ad0bd4dd, type: 2}
       propertyPath: m_TagString
       value: Mage
+      objectReference: {fileID: 0}
+    - target: {fileID: 137926527834769144, guid: be4caf924f8ece44ca8c8ac8ad0bd4dd,
+        type: 2}
+      propertyPath: m_CastShadows
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 137926527834769144, guid: be4caf924f8ece44ca8c8ac8ad0bd4dd,
+        type: 2}
+      propertyPath: m_ReceiveShadows
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: be4caf924f8ece44ca8c8ac8ad0bd4dd, type: 2}
@@ -4446,6 +4485,11 @@ Prefab:
     - target: {fileID: 1741143740909450, guid: a21fb5a1c412fbf44abbfd35acd26fea, type: 2}
       propertyPath: m_TagString
       value: Mage
+      objectReference: {fileID: 0}
+    - target: {fileID: 137425589929786390, guid: a21fb5a1c412fbf44abbfd35acd26fea,
+        type: 2}
+      propertyPath: m_CastShadows
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: a21fb5a1c412fbf44abbfd35acd26fea, type: 2}

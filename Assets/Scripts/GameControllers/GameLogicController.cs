@@ -9,6 +9,9 @@ public class GameLogicController : MonoBehaviour
     public RuneController[] runeList;
     private Dictionaries dictionaries;
 
+    private GameObject playerMage;
+    private GameObject opponentMage;
+
     public string playerColor = "Green";
     public string opponentColor = "Purple";
 
@@ -32,6 +35,8 @@ public class GameLogicController : MonoBehaviour
     void Start()
     {
         dictionaries = FindObjectOfType(typeof(Dictionaries)) as Dictionaries;
+        playerMage = GameObject.Find("GreenMage");
+        opponentMage = GameObject.Find("PurpleMage");
         gamePhase = "placement";
         previousGamePhase = "placement";
         isPlayerTurn = true;
@@ -503,6 +508,11 @@ public class GameLogicController : MonoBehaviour
             orbToMove = GameObject.Find("OrbAtLocation_" + runeFromLocation);
         }
 
+        if(isPlayerTurn)
+            playerMage.GetComponent<MageController>().PlayAttack1Animation(runeList[toLocation]);
+        else
+            opponentMage.GetComponent<MageController>().PlayAttack1Animation(runeList[toLocation]);
+
         StartCoroutine(MoveOrbAnimation(orbToMove, dictionaries.orbPositionsDictionary[toLocation]));
 
         orbToMove.name = "OrbAtLocation_" + toLocation;
@@ -511,7 +521,7 @@ public class GameLogicController : MonoBehaviour
 
     private IEnumerator MoveOrbAnimation(GameObject orb, Vector3 newPosition)
     {
-        float timeSinceStarted = 0f;
+        float timeSinceStarted = -0.3f;
         while (true)
         {
             timeSinceStarted += Time.deltaTime;
