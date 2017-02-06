@@ -40,7 +40,7 @@ public class GameLogicController : MonoBehaviour
         gamePhase = "placement";
         previousGamePhase = "placement";
         isPlayerTurn = true;
-        startingNumberOfOrbs = 9;
+        startingNumberOfOrbs = 4;
         playerOrbCount = 0;
         opponentOrbCount = 0;
         placementPhase_RoundCount = 1;
@@ -182,6 +182,7 @@ public class GameLogicController : MonoBehaviour
             }
 
             RemoveAllOrbHighlights(-1);
+            DestroyMagicRings();
 
             if (previousGamePhase != "placement" && (playerOrbCount == 2 || opponentOrbCount == 2)) //check for win
                 GameOver();
@@ -391,9 +392,9 @@ public class GameLogicController : MonoBehaviour
 
     private void RemoveRunesFromMill()
     {
+        Mill mill;
         if (isPlayerTurn)
         {
-            Mill mill;
             for (short i = 0; i < playerMills.Count; i++)
             {
                 mill = playerMills[i];
@@ -407,11 +408,10 @@ public class GameLogicController : MonoBehaviour
             }
         }
         else
-        { 
-            Mill mill;
+        {
             for (short i = 0; i < opponentMills.Count; i++)
             {
-                    mill = opponentMills[i];
+                mill = opponentMills[i];
                 if (mill.position1 == runeFromLocation || mill.position2 == runeFromLocation || mill.position3 == runeFromLocation)
                 {
                     runeList[mill.position1].isInMill = false;
@@ -420,6 +420,34 @@ public class GameLogicController : MonoBehaviour
                     opponentMills.Remove(mill);
                 }
             }
+        }
+    }
+
+    private void InstantiateMagicRing(Mill mill)
+    {
+        string color = isPlayerTurn ? playerColor : opponentColor;
+
+        Transform ringTransform = dictionaries.magicRingDictionary[color].transform;
+
+        Transform t1 = runeList[mill.position1].transform;
+        Transform t2 = runeList[mill.position2].transform;
+        Transform t3 = runeList[mill.position3].transform;
+
+        GameObject ring;
+        ring = Instantiate(dictionaries.magicRingDictionary[color], new Vector3(t1.position.x, 0.2f, t1.position.z), ringTransform.rotation);
+        ring.name = "RingAt_" + mill.position1;
+        ring = Instantiate(dictionaries.magicRingDictionary[color], new Vector3(t2.position.x, 0.2f, t2.position.z), ringTransform.rotation);
+        ring.name = "RingAt_" + mill.position2;
+        ring = Instantiate(dictionaries.magicRingDictionary[color], new Vector3(t3.position.x, 0.2f, t3.position.z), ringTransform.rotation);
+        ring.name = "RingAt_" + mill.position3;
+    }
+
+    private void DestroyMagicRings()
+    {
+        GameObject[] rings = GameObject.FindGameObjectsWithTag("MagicRing");
+        foreach(GameObject ring in rings)
+        {
+            Destroy(ring);
         }
     }
 
@@ -438,10 +466,14 @@ public class GameLogicController : MonoBehaviour
                     runeList[i + 1].isInMill = true;
                     runeList[i + 2].isInMill = true;
 
+                    Mill mill = new Mill(i, (short)(i + 1), (short)(i + 2));
+
+                    InstantiateMagicRing(mill);
+
                     if (isPlayerTurn)
-                        playerMills.Add(new Mill(i, (short)(i + 1), (short)(i + 2)));
+                        playerMills.Add(mill);
                     else
-                        opponentMills.Add(new Mill(i, (short)(i + 1), (short)(i + 2)));
+                        opponentMills.Add(mill);
 
                     return true;
                 }
@@ -508,7 +540,7 @@ public class GameLogicController : MonoBehaviour
             orbToMove = GameObject.Find("OrbAtLocation_" + runeFromLocation);
         }
 
-        if(isPlayerTurn)
+        if (isPlayerTurn)
             playerMage.GetComponent<MageController>().PlayAttack1Animation(runeList[toLocation]);
         else
             opponentMage.GetComponent<MageController>().PlayAttack1Animation(runeList[toLocation]);
@@ -521,15 +553,17 @@ public class GameLogicController : MonoBehaviour
 
     private IEnumerator MoveOrbAnimation(GameObject orb, Vector3 newPosition)
     {
-        float timeSinceStarted = -0.3f;
+        float timeSinceStarted = -0.3f; //-0.3f
         while (true)
         {
+            print(timeSinceStarted);
             timeSinceStarted += Time.deltaTime;
             orb.transform.position = Vector3.Lerp(orb.transform.position, newPosition, timeSinceStarted);
 
             // If the object has arrived, stop the coroutine
             if (orb.transform.position == newPosition)
             {
+                print("arrived");
                 yield break;
             }
 

@@ -10,6 +10,7 @@ public class Dictionaries : MonoBehaviour {
     public Dictionary<short, Material> runeHighlightsDictionary;
     public Dictionary<short, Material> runeOriginalsDictionary;
     public Dictionary<string, GameObject> shrinesDictionary;
+    public Dictionary<string, GameObject> magicRingDictionary;
 
     public List<Mill> verticalMillsList;
 
@@ -22,6 +23,7 @@ public class Dictionaries : MonoBehaviour {
         runeOriginalsDictionary = new Dictionary<short, Material>();
         orbsDictionary = new Dictionary<string, GameObject>();
         shrinesDictionary = new Dictionary<string, GameObject>();
+        magicRingDictionary = new Dictionary<string, GameObject>();
         verticalMillsList = new List<Mill>();
 
         InitializeAdjacencyDictionary();
@@ -31,6 +33,7 @@ public class Dictionaries : MonoBehaviour {
         InitializeOrbDictionary();
         InitializeShrineDictionary();
         InitializeVerticalMillsList();
+        InitializeMagicRingDictionary();
     }
 
     private void InitializeVerticalMillsList()
@@ -91,8 +94,7 @@ public class Dictionaries : MonoBehaviour {
         orbsDictionary.Add("White", Resources.Load(@"Orbs\WhiteOrb", typeof(GameObject)) as GameObject);
         orbsDictionary.Add("Yellow", Resources.Load(@"Orbs\YellowOrb", typeof(GameObject)) as GameObject);
     }
-
-    #region Orb Locations
+    
     private void InitializeLocationDictionary()
     {
         orbPositionsDictionary.Add(0, new Vector3(24f, 1.5f, 0f));
@@ -126,7 +128,6 @@ public class Dictionaries : MonoBehaviour {
         orbPositionsDictionary.Add(22, new Vector3(12f, 1.5f, 24f));
         orbPositionsDictionary.Add(23, new Vector3(0f, 1.5f, 24f));
     }
-    #endregion
 
     #region Rune Material Dictionaries
     void InitializeRuneHighlightsDictionary()
@@ -168,5 +169,17 @@ public class Dictionaries : MonoBehaviour {
         shrinesDictionary.Add("Red", Resources.Load(@"Shrines\ShrineRed", typeof(GameObject)) as GameObject);
         shrinesDictionary.Add("White", Resources.Load(@"Shrines\ShrineWhite", typeof(GameObject)) as GameObject);
         shrinesDictionary.Add("Yellow", Resources.Load(@"Shrines\ShrineYellow", typeof(GameObject)) as GameObject);
+    }
+
+    private void InitializeMagicRingDictionary()
+    {
+        magicRingDictionary.Add("Black", Resources.Load(@"MagicRings\BlackRing", typeof(GameObject)) as GameObject);
+        magicRingDictionary.Add("Blue", Resources.Load(@"MagicRings\BlueRing", typeof(GameObject)) as GameObject);
+        magicRingDictionary.Add("Green", Resources.Load(@"MagicRings\GreenRing", typeof(GameObject)) as GameObject);
+        magicRingDictionary.Add("Orange", Resources.Load(@"MagicRings\OrangeRing", typeof(GameObject)) as GameObject);
+        magicRingDictionary.Add("Purple", Resources.Load(@"MagicRings\PurpleRing", typeof(GameObject)) as GameObject);
+        magicRingDictionary.Add("Red", Resources.Load(@"MagicRings\RedRing", typeof(GameObject)) as GameObject);
+        magicRingDictionary.Add("White", Resources.Load(@"MagicRings\WhiteRing", typeof(GameObject)) as GameObject);
+        magicRingDictionary.Add("Yellow", Resources.Load(@"MagicRings\YellowRing", typeof(GameObject)) as GameObject);
     }
 }

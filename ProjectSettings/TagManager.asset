@@ -8,6 +8,7 @@ TagManager:
   - Mage
   - Opponent
   - Center
+  - MagicRing
   layers:
   - Default
   - TransparentFX
