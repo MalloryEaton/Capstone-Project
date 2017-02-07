@@ -29,6 +29,7 @@ public class UIControllerScript : MonoBehaviour
         else if (panel == "difficulty")
         {
             MainButtonPanel.GetComponent<Animator>().SetBool("isDisplayed", false);
+            CharacterSelectPanel.GetComponent<Animator>().SetBool("isDisplayed", false);
             //MultiplayerPanel.GetComponent<Animator>().SetBool("isDisplayed", false);
             DifficultyPanel.GetComponent<Animator>().SetBool("isDisplayed", true);
         }
@@ -66,7 +67,6 @@ public class UIControllerScript : MonoBehaviour
         else if (panel == "difficulty")
         {
             DifficultyPanel.GetComponent<Animator>().SetBool("isDisplayed", false);
-            MainButtonPanel.GetComponent<Animator>().SetBool("isDisplayed", true);
         }
         else if (panel == "multiplayer")
         {
