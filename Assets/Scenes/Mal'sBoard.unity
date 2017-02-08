@@ -306,7 +306,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4acbc82076985d498678e214283e129, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 0}
 --- !u!64 &129210715
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -2052,6 +2051,7 @@ MonoBehaviour:
   opponentColor: Purple
   gamePhase: 
   isPlayerTurn: 0
+  preventClick: 0
 --- !u!114 &796952838
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3008,6 +3008,70 @@ Prefab:
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1019019265126982, guid: e440454c9e50d284086f2aff1a8aa917, type: 2}
+      propertyPath: m_Name
+      value: Line_0-1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1594239729863242, guid: e440454c9e50d284086f2aff1a8aa917, type: 2}
+      propertyPath: m_Name
+      value: Line_1-2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1901275098639270, guid: e440454c9e50d284086f2aff1a8aa917, type: 2}
+      propertyPath: m_Name
+      value: Line_14-23
+      objectReference: {fileID: 0}
+    - target: {fileID: 1545186245469276, guid: e440454c9e50d284086f2aff1a8aa917, type: 2}
+      propertyPath: m_Name
+      value: Line_22-23
+      objectReference: {fileID: 0}
+    - target: {fileID: 1789381362336996, guid: e440454c9e50d284086f2aff1a8aa917, type: 2}
+      propertyPath: m_Name
+      value: Line_21-22
+      objectReference: {fileID: 0}
+    - target: {fileID: 1058515763301790, guid: e440454c9e50d284086f2aff1a8aa917, type: 2}
+      propertyPath: m_Name
+      value: Line_9-21
+      objectReference: {fileID: 0}
+    - target: {fileID: 1365427763656516, guid: e440454c9e50d284086f2aff1a8aa917, type: 2}
+      propertyPath: m_Name
+      value: Line_2-14
+      objectReference: {fileID: 0}
+    - target: {fileID: 1210332182123846, guid: e440454c9e50d284086f2aff1a8aa917, type: 2}
+      propertyPath: m_Name
+      value: Line_0-9
+      objectReference: {fileID: 0}
+    - target: {fileID: 1445639761701798, guid: e440454c9e50d284086f2aff1a8aa917, type: 2}
+      propertyPath: m_Name
+      value: Line_13-20
+      objectReference: {fileID: 0}
+    - target: {fileID: 1549082778744306, guid: e440454c9e50d284086f2aff1a8aa917, type: 2}
+      propertyPath: m_Name
+      value: Line_19-20
+      objectReference: {fileID: 0}
+    - target: {fileID: 1255455748669356, guid: e440454c9e50d284086f2aff1a8aa917, type: 2}
+      propertyPath: m_Name
+      value: Line_18-19
+      objectReference: {fileID: 0}
+    - target: {fileID: 1851268311493374, guid: e440454c9e50d284086f2aff1a8aa917, type: 2}
+      propertyPath: m_Name
+      value: Line_10-18
+      objectReference: {fileID: 0}
+    - target: {fileID: 1763340975088656, guid: e440454c9e50d284086f2aff1a8aa917, type: 2}
+      propertyPath: m_Name
+      value: Line_3-10
+      objectReference: {fileID: 0}
+    - target: {fileID: 1801943964365698, guid: e440454c9e50d284086f2aff1a8aa917, type: 2}
+      propertyPath: m_Name
+      value: Line_5-13
+      objectReference: {fileID: 0}
+    - target: {fileID: 1072681276020404, guid: e440454c9e50d284086f2aff1a8aa917, type: 2}
+      propertyPath: m_Name
+      value: Line_3-4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1323433672070914, guid: e440454c9e50d284086f2aff1a8aa917, type: 2}
+      propertyPath: m_Name
+      value: Line_4-5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e440454c9e50d284086f2aff1a8aa917, type: 2}
   m_IsPrefabParent: 0
@@ -3464,7 +3528,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4acbc82076985d498678e214283e129, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 0}
 --- !u!1 &1343965802
 GameObject:
   m_ObjectHideFlags: 0

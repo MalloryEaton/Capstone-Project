@@ -5,24 +5,24 @@ using UnityEngine;
 public class MageController : MonoBehaviour {
     
     private Animator anim;
-    public RuneController target;
-    Quaternion originalTransform;
+    private GameLogicController gameController;
 
     void Start ()
     {
         anim = GetComponent<Animator>();
-	}
-	
-	void Update ()
-    {
-        
+        gameController = FindObjectOfType(typeof(GameLogicController)) as GameLogicController;
     }
 
-    public void PlayAttack1Animation(RuneController rune)
+    public void PlayAttack1Animation(GameObject rune)
     {
-        originalTransform = transform.rotation;
+        float direction = gameController.isPlayerTurn ? 180f : 0f;
+
         transform.LookAt(rune.transform);
         anim.Play("Attack1");
-        //transform.rotation = originalTransform;
+
+        LeanTween.delayedCall(0.7f, () =>
+        {
+            LeanTween.rotateY(gameObject, direction, 0.1f);
+        });
     }
 }

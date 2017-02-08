@@ -230,7 +230,7 @@ public class GameLogicController : MonoBehaviour
         {
             previousGamePhase = gamePhase;
             gamePhase = "movementPickup";
-            //RemoveAllOrbHighlights(-1);
+            RemoveAllOrbHighlights(-1);
             PrepareForMovementPhase();
         }
     }
@@ -534,9 +534,9 @@ public class GameLogicController : MonoBehaviour
         }
 
         if (isPlayerTurn)
-            playerMage.GetComponent<MageController>().PlayAttack1Animation(runeList[toLocation]);
+            playerMage.GetComponent<MageController>().PlayAttack1Animation(GameObject.Find("Rune" + toLocation));
         else
-            opponentMage.GetComponent<MageController>().PlayAttack1Animation(runeList[toLocation]);
+            opponentMage.GetComponent<MageController>().PlayAttack1Animation(GameObject.Find("Rune" + toLocation));
 
         orbToMove.name = "OrbAtLocation_" + toLocation;
         RemoveAllRuneHighlights();
