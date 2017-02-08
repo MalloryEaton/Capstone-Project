@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class UIControllerScript : MonoBehaviour
@@ -78,6 +79,16 @@ public class UIControllerScript : MonoBehaviour
             MainButtonPanel.GetComponent<Animator>().SetBool("isDisplayed", true);
         }
 
+    }
+
+    public void goToNetworkLobby()
+    {
+        SceneManager.LoadScene("LobbyMenu");
+    }
+
+    public void quitGame()
+    {
+        Application.Quit();
     }
 
 }
