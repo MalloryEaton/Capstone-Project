@@ -19,6 +19,7 @@ public class GameLogicController : MonoBehaviour
     private string previousGamePhase;
 
     public bool isPlayerTurn;
+    public bool preventClick;
 
     private short startingNumberOfOrbs;
     private short playerOrbCount;
@@ -40,6 +41,7 @@ public class GameLogicController : MonoBehaviour
         gamePhase = "placement";
         previousGamePhase = "placement";
         isPlayerTurn = true;
+        preventClick = false;
         startingNumberOfOrbs = 4;
         playerOrbCount = 0;
         opponentOrbCount = 0;
@@ -76,15 +78,6 @@ public class GameLogicController : MonoBehaviour
             RemoveAllRuneHighlights();
 
             previousGamePhase = "placement";
-
-            if (RuneIsInMill(rune))
-            {
-                PrepareForRemovalPhase();
-            }
-            else
-            {
-                ChangeSide();
-            }
         }
     }
 
@@ -115,6 +108,11 @@ public class GameLogicController : MonoBehaviour
 
             previousGamePhase = gamePhase;
             gamePhase = "movementPlace";
+            preventClick = false;
+        }
+        else
+        {
+            preventClick = false;
         }
     }
 
@@ -131,18 +129,9 @@ public class GameLogicController : MonoBehaviour
                 runeList[toLocation].tag = (isPlayerTurn) ? "Player" : "Opponent";
                 runeList[runeFromLocation].tag = "Empty";
 
-                if(runeList[runeFromLocation].isInMill)
+                if (runeList[runeFromLocation].isInMill)
                 {
                     RemoveRunesFromMill();
-                }
-                
-                if (RuneIsInMill(toLocation))
-                {
-                    PrepareForRemovalPhase();
-                }
-                else
-                {
-                    ChangeSide();
                 }
             }
         }
@@ -150,6 +139,10 @@ public class GameLogicController : MonoBehaviour
         {
             previousGamePhase = "movementPlace";
             MovementPhase_Pickup(toLocation);
+        }
+        else
+        {
+            preventClick = false;
         }
     }
 
@@ -183,6 +176,7 @@ public class GameLogicController : MonoBehaviour
 
             RemoveAllOrbHighlights(-1);
             DestroyMagicRings();
+            preventClick = false;
 
             if (previousGamePhase != "placement" && (playerOrbCount == 2 || opponentOrbCount == 2)) //check for win
                 GameOver();
@@ -236,7 +230,7 @@ public class GameLogicController : MonoBehaviour
         {
             previousGamePhase = gamePhase;
             gamePhase = "movementPickup";
-            RemoveAllOrbHighlights(-1);
+            //RemoveAllOrbHighlights(-1);
             PrepareForMovementPhase();
         }
     }
@@ -323,7 +317,7 @@ public class GameLogicController : MonoBehaviour
         List<short> moveableRunes = new List<short>();
         bool canMakeAMove = false;
 
-        if (runes.Count() > 2) //cannot fly
+        if (runes.Count() > 3) //cannot fly
         {
             foreach (short rune in runes)
             {
@@ -339,23 +333,20 @@ public class GameLogicController : MonoBehaviour
                     }
                 }
             }
-            runesThatCanBeMoved.Clear();
-            runesThatCanBeMoved.AddRange(moveableRunes);
         }
         else
         {
             foreach (short rune in runes)
             {
-                if (runeList[rune].tag == "Empty")
-                {
                     if (!moveableRunes.Contains(rune))
                     {
                         moveableRunes.Add(rune);
                     }
                     canMakeAMove = true;
-                }
             }
         }
+        runesThatCanBeMoved.Clear();
+        runesThatCanBeMoved.AddRange(moveableRunes);
         return canMakeAMove;
     }
 
@@ -423,7 +414,7 @@ public class GameLogicController : MonoBehaviour
         }
     }
 
-    private void InstantiateMagicRing(Mill mill)
+    private void InstantiateMagicRings(Mill mill)
     {
         string color = isPlayerTurn ? playerColor : opponentColor;
 
@@ -468,7 +459,7 @@ public class GameLogicController : MonoBehaviour
 
                     Mill mill = new Mill(i, (short)(i + 1), (short)(i + 2));
 
-                    InstantiateMagicRing(mill);
+                    InstantiateMagicRings(mill);
 
                     if (isPlayerTurn)
                         playerMills.Add(mill);
@@ -496,6 +487,8 @@ public class GameLogicController : MonoBehaviour
                     runeList[mill.position1].isInMill = true;
                     runeList[mill.position2].isInMill = true;
                     runeList[mill.position3].isInMill = true;
+
+                    InstantiateMagicRings(mill);
 
                     if (isPlayerTurn)
                         playerMills.Add(new Mill(mill.position1, mill.position2, mill.position3));
@@ -545,31 +538,26 @@ public class GameLogicController : MonoBehaviour
         else
             opponentMage.GetComponent<MageController>().PlayAttack1Animation(runeList[toLocation]);
 
-        StartCoroutine(MoveOrbAnimation(orbToMove, dictionaries.orbPositionsDictionary[toLocation]));
-
         orbToMove.name = "OrbAtLocation_" + toLocation;
         RemoveAllRuneHighlights();
-    }
 
-    private IEnumerator MoveOrbAnimation(GameObject orb, Vector3 newPosition)
-    {
-        float timeSinceStarted = -0.3f; //-0.3f
-        while (true)
+        LeanTween.delayedCall(orbToMove, 0.3f, () =>
         {
-            print(timeSinceStarted);
-            timeSinceStarted += Time.deltaTime;
-            orb.transform.position = Vector3.Lerp(orb.transform.position, newPosition, timeSinceStarted);
-
-            // If the object has arrived, stop the coroutine
-            if (orb.transform.position == newPosition)
+            LeanTween.move(orbToMove, dictionaries.orbPositionsDictionary[toLocation], 0.5f).setOnComplete(() => 
             {
-                print("arrived");
-                yield break;
-            }
-
-            // Otherwise, continue next frame
-            yield return null;
-        }
+                //this is the callback
+                if (RuneIsInMill(toLocation))
+                {
+                    PrepareForRemovalPhase();
+                }
+                else
+                {
+                    ChangeSide();
+                }
+                
+                preventClick = false;
+            });
+        });
     }
 
     private void RemoveAllOrbHighlights(short runeNumber)

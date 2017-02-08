@@ -58,20 +58,27 @@ public class RuneController : MonoBehaviour
     //detect click
     private void OnMouseDown()
     {
-        switch (gameController.gamePhase)
+        if (!gameController.preventClick)
         {
-            case "placement":
-                gameController.PlacementPhase(runeNumber);
-                break;
-            case "movementPickup":
-                gameController.MovementPhase_Pickup(runeNumber);
-                break;
-            case "movementPlace":
-                gameController.MovementPhase_Place(runeNumber);
-                break;
-            case "removal":
-                gameController.RemovalPhase(runeNumber);
-                break;
+            switch (gameController.gamePhase)
+            {
+                case "placement":
+                    gameController.preventClick = true;
+                    gameController.PlacementPhase(runeNumber);
+                    break;
+                case "movementPickup":
+                    gameController.preventClick = true;
+                    gameController.MovementPhase_Pickup(runeNumber);
+                    break;
+                case "movementPlace":
+                    gameController.preventClick = true;
+                    gameController.MovementPhase_Place(runeNumber);
+                    break;
+                case "removal":
+                    gameController.preventClick = true;
+                    gameController.RemovalPhase(runeNumber);
+                    break;
+            }
         }
     }
 
