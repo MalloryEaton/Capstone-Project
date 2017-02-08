@@ -12,9 +12,10 @@ public class CharacterSelectScript : MonoBehaviour {
     public GameObject RedMage;
     public GameObject WhiteMage;
     public GameObject PurpleMage;
-    public GameObject BioMenu;
 
-    private bool isCharacterSelected;
+    static public bool isCharacterSelected;
+
+    static public CharacterSelectScript characterSelectScript;
 
     private void Start()
     {
@@ -26,14 +27,25 @@ public class CharacterSelectScript : MonoBehaviour {
         RedMage.SetActive(false);
         WhiteMage.SetActive(false);
         PurpleMage.SetActive(false);
-        BioMenu.SetActive(false);
         isCharacterSelected = false;
+        characterSelectScript = this;
+    }
+
+    public void ResetMages(bool active)
+    {
+        BlackMage.SetActive(active);
+        BlueMage.SetActive(active);
+        OrangeMage.SetActive(active);
+        GreenMage.SetActive(active);
+        YellowMage.SetActive(active);
+        RedMage.SetActive(active);
+        WhiteMage.SetActive(active);
+        PurpleMage.SetActive(active);
     }
 
     public void CharacterSelected (string selection)
     {
         isCharacterSelected = true;
-        BioMenu.SetActive(true);
 
         if (selection == "black")
         {

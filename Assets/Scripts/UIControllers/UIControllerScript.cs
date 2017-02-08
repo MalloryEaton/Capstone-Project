@@ -6,13 +6,15 @@ using UnityEngine.UI;
 
 public class UIControllerScript : MonoBehaviour
 {
+    public Camera mainCamera;
 
     public GameObject DifficultyPanel;
     public GameObject MultiplayerPanel;
     public GameObject MainButtonPanel;
     public GameObject CharacterSelectPanel;
     public GameObject MainTitlePanel;
-
+    public GameObject MainPanel;
+    public GameObject LevelSelectPanel;
 
     void Awake()
     {
@@ -30,13 +32,14 @@ public class UIControllerScript : MonoBehaviour
         else if (panel == "difficulty")
         {
             MainButtonPanel.GetComponent<Animator>().SetBool("isDisplayed", false);
-            CharacterSelectPanel.GetComponent<Animator>().SetBool("isDisplayed", false);
+            hide("character");
             //MultiplayerPanel.GetComponent<Animator>().SetBool("isDisplayed", false);
             DifficultyPanel.GetComponent<Animator>().SetBool("isDisplayed", true);
         }
         else if(panel == "multiplayer")
         {
-            MainButtonPanel.GetComponent<Animator>().SetBool("isDisplayed", false);
+            //MainButtonPanel.GetComponent<Animator>().SetBool("isDisplayed", false);
+            hide("main");
             MultiplayerPanel.GetComponent<Animator>().SetBool("isDisplayed", true);
         }
         else if (panel == "main")
@@ -55,6 +58,12 @@ public class UIControllerScript : MonoBehaviour
             MainButtonPanel.GetComponent<Animator>().SetBool("isDisplayed", false);
             DifficultyPanel.GetComponent<Animator>().SetBool("isDisplayed", false);
             CharacterSelectPanel.GetComponent<Animator>().SetBool("isDisplayed", true);
+        }
+        else if (panel == "level")
+        {
+            hide("character");
+            hide("canvas");
+            LevelSelectPanel.SetActive(true);
         }
 
     }
@@ -75,10 +84,19 @@ public class UIControllerScript : MonoBehaviour
         }
         else if (panel == "main")
         {
-            MultiplayerPanel.GetComponent<Animator>().SetBool("isDisplayed", false);
-            MainButtonPanel.GetComponent<Animator>().SetBool("isDisplayed", true);
+            //MultiplayerPanel.GetComponent<Animator>().SetBool("isDisplayed", false);
+            MainButtonPanel.GetComponent<Animator>().SetBool("isDisplayed", false);
         }
-
+        else if (panel == "character")
+        {
+            CharacterSelectScript.isCharacterSelected = false;
+            CharacterSelectScript.characterSelectScript.ResetMages(false);
+            CharacterSelectPanel.GetComponent<Animator>().SetBool("isDisplayed", false);
+        }
+        else if (panel == "canvas")
+        {
+            MainPanel.SetActive(false);
+        }
     }
 
     public void goToNetworkLobby()
