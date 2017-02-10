@@ -541,7 +541,7 @@ public class GameLogicController : MonoBehaviour
         orbToMove.name = "OrbAtLocation_" + toLocation;
         RemoveAllRuneHighlights();
 
-        LeanTween.delayedCall(orbToMove, 0.3f, () =>
+        LeanTween.delayedCall(orbToMove, 0.4f, () =>
         {
             LeanTween.move(orbToMove, dictionaries.orbPositionsDictionary[toLocation], 0.5f).setOnComplete(() => 
             {
