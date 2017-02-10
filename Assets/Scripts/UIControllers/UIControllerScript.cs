@@ -15,11 +15,13 @@ public class UIControllerScript : MonoBehaviour
     public GameObject MainTitlePanel;
     public GameObject MainPanel;
     public GameObject LevelSelectPanel;
+    public GameObject BioPanel;
 
     void Awake()
     {
         MainButtonPanel.GetComponent<Animator>().SetBool("isDisplayed", true);
         MainTitlePanel.GetComponent<Animator>().SetBool("isDisplayed", true);
+        //BioPanel.SetActive(false);
         print("awake");
     }
 
@@ -54,10 +56,13 @@ public class UIControllerScript : MonoBehaviour
         {
             //DifficultyPanel.GetComponent<Animator>().SetBool("isDisplayed", false);
             //MultiplayerPanel.GetComponent<Animator>().SetBool("isDisplayed", false);
+            MainPanel.SetActive(true);
+            LevelSelectPanel.SetActive(false);
             MainTitlePanel.GetComponent<Animator>().SetBool("isDisplayed", false);
             MainButtonPanel.GetComponent<Animator>().SetBool("isDisplayed", false);
             DifficultyPanel.GetComponent<Animator>().SetBool("isDisplayed", false);
             CharacterSelectPanel.GetComponent<Animator>().SetBool("isDisplayed", true);
+            //BioPanel.SetActive(true);
         }
         else if (panel == "level")
         {
@@ -65,6 +70,10 @@ public class UIControllerScript : MonoBehaviour
             hide("canvas");
             LevelSelectPanel.SetActive(true);
         }
+        //else if (panel == "bio")
+        //{
+        //    BioPanel.SetActive(true);
+        //}
 
     }
 
@@ -92,11 +101,18 @@ public class UIControllerScript : MonoBehaviour
             CharacterSelectScript.isCharacterSelected = false;
             CharacterSelectScript.characterSelectScript.ResetMages(false);
             CharacterSelectPanel.GetComponent<Animator>().SetBool("isDisplayed", false);
+            BioPanel.SetActive(false);
         }
         else if (panel == "canvas")
         {
             MainPanel.SetActive(false);
         }
+        //else if(panel == "bio")
+        //{
+        //    CharacterSelectScript.isCharacterSelected = false;
+        //    CharacterSelectScript.characterSelectScript.ResetMages(false);
+        //    BioPanel.SetActive(false);
+        //}
     }
 
     public void goToNetworkLobby()
