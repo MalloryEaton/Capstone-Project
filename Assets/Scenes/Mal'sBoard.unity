@@ -1989,6 +1989,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 796952836}
+  - component: {fileID: 796952839}
   - component: {fileID: 796952838}
   - component: {fileID: 796952837}
   m_Layer: 0
@@ -2022,6 +2023,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b08cb85219de0eb44a1dbd07ad912fbe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  chatInputField: {fileID: 0}
   runeList:
   - {fileID: 737601196}
   - {fileID: 1318599176}
@@ -2063,6 +2065,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52dd8c9b3d0e1c8429c5e5cc601bec45, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &796952839
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 796952835}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ownerId: 0
+  group: 0
+  OwnerShipWasTransfered: 0
+  prefixBackup: -1
+  synchronization: 0
+  onSerializeTransformOption: 3
+  onSerializeRigidBodyOption: 2
+  ownershipTransfer: 0
+  ObservedComponents:
+  - {fileID: 0}
+  ObservedComponentsFoldoutOpen: 1
+  viewIdField: 1
+  instantiationId: 1
+  currentMasterID: -1
+  isRuntimeInstantiated: 0
 --- !u!1 &833196466
 GameObject:
   m_ObjectHideFlags: 0

@@ -3,9 +3,28 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
-public class GameLogicController : MonoBehaviour
+[RequireComponent(typeof(PhotonView))]
+public class GameLogicController : Photon.PunBehaviour
 {
+    /*---------------------------------------------------------------------
+    || NETWORKING VARIABLES
+    -----------------------------------------------------------------------*/
+    public InputField chatInputField;
+
+    private bool isMasterClient;
+
+    private string opponentName;
+
+    private short network_moveTo;
+    private short network_moveFrom;
+    private short network_removeFrom;
+
+    /*---------------------------------------------------------------------
+    || GAME VARIABLES
+    -----------------------------------------------------------------------*/
     public RuneController[] runeList;
     private Dictionaries dictionaries;
 
@@ -40,8 +59,7 @@ public class GameLogicController : MonoBehaviour
         opponentMage = GameObject.Find("PurpleMage");
         gamePhase = "placement";
         previousGamePhase = "placement";
-        isPlayerTurn = true;
-        preventClick = false;
+        DetermineIfMasterClient();
         startingNumberOfOrbs = 4;
         playerOrbCount = 0;
         opponentOrbCount = 0;
@@ -54,6 +72,123 @@ public class GameLogicController : MonoBehaviour
     }
 
     /*---------------------------------------------------------------------
+    || NETWORKING FUNCTIONS
+    -----------------------------------------------------------------------*/
+    /// <summary>
+    /// Called when the local player left the room. We need to load the launcher scene.
+    /// </summary>
+    public override void OnLeftRoom()
+    {
+        // Scene 1 is the network lobby
+        SceneManager.LoadScene(1);
+    }
+
+    public override void OnPhotonPlayerConnected(PhotonPlayer other)
+    {
+        Debug.Log("OnPhotonPlayerConnected() " + other.NickName); // Not seen if you're the player connecting
+
+        if (PhotonNetwork.isMasterClient)
+        {
+            Debug.Log("OnPhotonPlayerConnected isMasterClient " + PhotonNetwork.isMasterClient); // Called before OnPhotonPlayerDisconnected
+
+            LoadArena();
+        }
+    }
+
+    public override void OnPhotonPlayerDisconnected(PhotonPlayer other)
+    {
+        // If one player disconnects, we disconnect the other player and alert them
+        Debug.Log("OnPhotonPlayerDisconnected() " + other.NickName); // Seen when other disconnects
+
+        LeaveRoom();
+    }
+
+    public void DetermineIfMasterClient()
+    {
+        // The master client moves first
+        isPlayerTurn = PhotonNetwork.isMasterClient;
+        preventClick = !isPlayerTurn;
+    }
+
+    public void LeaveRoom()
+    {
+        PhotonNetwork.LeaveRoom();
+    }
+
+    public void SendName()
+    {
+        //playerNameText.text = PhotonNetwork.playerName;
+        photonView.RPC("ReceieveName", PhotonTargets.Others, PhotonNetwork.playerName);
+    }
+
+    public void SendMove()
+    {
+        photonView.RPC("ReceiveMove", PhotonTargets.Others, network_moveTo, network_moveFrom, network_removeFrom);
+    }
+
+    public void SendChat()
+    {
+        string sentMessage;
+        sentMessage = chatInputField.text;
+        sentMessage = sentMessage.Trim();
+        if (sentMessage != "")
+        {
+            photonView.RPC("ReceiveChat", PhotonTargets.Others, sentMessage);
+        }
+    }
+
+    private void LoadArena()
+    {
+        if (!PhotonNetwork.isMasterClient)
+        {
+            Debug.LogError("PhotonNetwork : Trying to load a level but we are not the master Client");
+        }
+
+        Debug.Log("PhotonNetwork : Loading Mal'sBoard");
+        PhotonNetwork.LoadLevel("Mal'sBoard");
+    }
+
+    [PunRPC]
+    public void ReceiveName(string opponentName)
+    {
+        this.opponentName = opponentName;
+        //opponentNameText.text = opponentName;
+    }
+
+    [PunRPC]
+    public void ReceiveMove(short moveTo, short moveFrom, short removeFrom)
+    {
+        Debug.Log("Move to: " + moveTo);
+        Debug.Log("Move from: " + moveFrom);
+        Debug.Log("Remove from: " + removeFrom);
+
+        if (moveTo != -1)
+        {
+            // Place opponent rune
+            MoveOrb(moveTo);
+        }
+        if (moveFrom != -1)
+        {
+            runeFromLocation = moveFrom;
+            MoveOrb(moveTo);
+        }
+        if (removeFrom != -1)
+        {
+            RemoveOrb(removeFrom);
+        }
+
+        // Give control back to this user
+        preventClick = false;
+    }
+
+    [PunRPC]
+    public void ReceiveChat(string receivedMessage)
+    {
+        Debug.Log("Opponent: " + receivedMessage);
+        chatInputField.text = opponentName + ": " + receivedMessage;
+    }
+
+    /*---------------------------------------------------------------------
     || GAME PHASE FUNCTIONS
     -----------------------------------------------------------------------*/
     // Placement //
@@ -63,6 +198,7 @@ public class GameLogicController : MonoBehaviour
         {
             if (isPlayerTurn)
             {
+                network_moveTo = rune;
                 MoveOrb(rune);
                 runeList[rune].tag = "Player";
                 playerOrbCount++;
@@ -100,6 +236,8 @@ public class GameLogicController : MonoBehaviour
     {
         if(RuneCanBeMoved(selectedRune))
         {
+            network_moveFrom = selectedRune;
+
             runeFromLocation = selectedRune;
 
             RemoveAllRuneHighlights();
@@ -122,6 +260,8 @@ public class GameLogicController : MonoBehaviour
         {
             if (IsLegalMove(toLocation))
             {
+                network_moveTo = toLocation;
+
                 RemoveOrbHighlight(runeFromLocation);
 
                 MoveOrb(toLocation);
@@ -159,24 +299,12 @@ public class GameLogicController : MonoBehaviour
     {
         if(RuneCanBeRemoved(runeToRemove))
         {
+            network_removeFrom = runeToRemove;
+
             if (runeList[runeToRemove].isInMill)
                 RemoveRunesFromMill();
 
-            Destroy(GameObject.Find("OrbAtLocation_" + runeToRemove));
-            runeList[runeToRemove].tag = "Empty";
-
-            if(isPlayerTurn)
-            {
-                opponentOrbCount--;
-            }
-            else
-            {
-                playerOrbCount--;
-            }
-
-            RemoveAllOrbHighlights(-1);
-            DestroyMagicRings();
-            preventClick = false;
+            RemoveOrb(runeToRemove);
 
             if (previousGamePhase != "placement" && (playerOrbCount == 2 || opponentOrbCount == 2)) //check for win
                 GameOver();
@@ -211,6 +339,12 @@ public class GameLogicController : MonoBehaviour
 
     private void ChangeSide()
     {
+        // Send move to opponent if in a network game
+        // If in network game
+        SendMove();
+
+        preventClick = true;
+        // Else
         isPlayerTurn = !isPlayerTurn;
 
         if(previousGamePhase == "placement")
@@ -558,6 +692,25 @@ public class GameLogicController : MonoBehaviour
                 preventClick = false;
             });
         });
+    }
+
+    private void RemoveOrb(short runeNumber)
+    {
+        Destroy(GameObject.Find("OrbAtLocation_" + runeNumber));
+        runeList[runeNumber].tag = "Empty";
+
+        if (isPlayerTurn)
+        {
+            opponentOrbCount--;
+        }
+        else
+        {
+            playerOrbCount--;
+        }
+
+        RemoveAllOrbHighlights(-1);
+        DestroyMagicRings();
+        preventClick = false;
     }
 
     private void RemoveAllOrbHighlights(short runeNumber)
