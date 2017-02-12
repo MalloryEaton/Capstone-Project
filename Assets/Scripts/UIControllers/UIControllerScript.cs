@@ -15,7 +15,7 @@ public class UIControllerScript : MonoBehaviour
     public GameObject MainTitlePanel;
     public GameObject MainPanel;
     public GameObject LevelSelectPanel;
-    public GameObject BioPanel;
+   // public GameObject BioPanel;
 
     void Awake()
     {
@@ -70,10 +70,10 @@ public class UIControllerScript : MonoBehaviour
             hide("canvas");
             LevelSelectPanel.SetActive(true);
         }
-        //else if (panel == "bio")
-        //{
-        //    BioPanel.SetActive(true);
-        //}
+        else if (panel == "bio")
+        {
+           // BioPanel.GetComponent<Animator>().SetBool("isDisplayed", true);
+        }
 
     }
 
@@ -101,18 +101,18 @@ public class UIControllerScript : MonoBehaviour
             CharacterSelectScript.isCharacterSelected = false;
             CharacterSelectScript.characterSelectScript.ResetMages(false);
             CharacterSelectPanel.GetComponent<Animator>().SetBool("isDisplayed", false);
-            BioPanel.SetActive(false);
+          //  BioPanel.SetActive(false);
         }
         else if (panel == "canvas")
         {
             MainPanel.SetActive(false);
         }
-        //else if(panel == "bio")
-        //{
-        //    CharacterSelectScript.isCharacterSelected = false;
-        //    CharacterSelectScript.characterSelectScript.ResetMages(false);
-        //    BioPanel.SetActive(false);
-        //}
+        else if (panel == "bio")
+        {
+            CharacterSelectScript.isCharacterSelected = false;
+            CharacterSelectScript.characterSelectScript.ResetMages(false);
+           // BioPanel.GetComponent<Animator>().SetBool("isDisplayed", false);
+        }
     }
 
     public void goToNetworkLobby()

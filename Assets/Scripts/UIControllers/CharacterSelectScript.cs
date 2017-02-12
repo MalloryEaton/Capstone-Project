@@ -34,7 +34,7 @@ public class CharacterSelectScript : MonoBehaviour {
         PurpleMage.SetActive(false);
         isCharacterSelected = false;
         characterSelectScript = this;
-        BioMenu.SetActive(false);
+        BioMenu.GetComponent<Animator>().SetBool("isDisplayed", false);
     }
 
     public void ResetMages(bool active)
@@ -51,8 +51,10 @@ public class CharacterSelectScript : MonoBehaviour {
 
     public void CharacterSelected (string selection)
     {
+        
         isCharacterSelected = true;
-        BioMenu.SetActive(true);
+        BioMenu.GetComponent<Animator>().SetBool("isDisplayed", true);
+        print("character selected");
 
         if (selection == "black")
         {
@@ -165,7 +167,7 @@ public class CharacterSelectScript : MonoBehaviour {
     {
         isCharacterSelected = false;
         ResetMages(false);
-        BioMenu.SetActive(false);
+        BioMenu.GetComponent<Animator>().SetBool("isDisplayed", false);
     }
 
     public void CharacterHover(string selection)
