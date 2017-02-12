@@ -2019,8 +2019,8 @@ MonoBehaviour:
   - {fileID: 683221713}
   - {fileID: 999431570}
   - {fileID: 991301208}
-  playerColor: Green
-  opponentColor: Purple
+  playerColor: 
+  opponentColor: 
   gamePhase: 
   isPlayerTurn: 0
   preventClick: 0

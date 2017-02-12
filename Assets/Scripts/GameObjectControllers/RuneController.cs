@@ -41,7 +41,7 @@ public class RuneController : MonoBehaviour
     
     private void OnMouseEnter()
     {
-        if(gameController.gamePhase == "placement" && tag == "Empty")
+        if(!gameController.preventClick && gameController.gamePhase == "placement" && tag == "Empty")
         {
             AddRuneHighlight();
         }
@@ -49,7 +49,7 @@ public class RuneController : MonoBehaviour
 
     private void OnMouseExit()
     {
-        if (gameController.gamePhase == "placement" && tag == "Empty")
+        if (!gameController.preventClick && gameController.gamePhase == "placement" && tag == "Empty")
         {
             RemoveRuneHighlight();
         }

@@ -31,8 +31,8 @@ public class GameLogicController : Photon.PunBehaviour
     private GameObject playerMage;
     private GameObject opponentMage;
 
-    public string playerColor = "Green";
-    public string opponentColor = "Purple";
+    public string playerColor;
+    public string opponentColor;
 
     public string gamePhase; //placement, movementPickup, movementPlace, removal
     private string previousGamePhase;
@@ -55,16 +55,22 @@ public class GameLogicController : Photon.PunBehaviour
 
     void Start()
     {
-        preventClick = true; //while initialization is happening
+        //preventClick = true; //while initialization is happening
         dictionaries = FindObjectOfType(typeof(Dictionaries)) as Dictionaries;
-        //playerMage = GameObject.Find(playerColor + "Mage");
-        //opponentMage = GameObject.Find(opponentColor + "Mage");
         gamePhase = "placement";
         previousGamePhase = "placement";
+
+        playerColor = "Green";
+        opponentColor = "Purple";
+        //playerColor = "Purple";
+        //opponentColor = "Green";
+
         isNetworkGame = false;
         isPlayerTurn = true;
         if(isNetworkGame)
             DetermineIfMasterClient();
+        ResetNetworkVariables();
+
         startingNumberOfOrbs = 4;
         playerOrbCount = 0;
         opponentOrbCount = 0;
@@ -85,7 +91,7 @@ public class GameLogicController : Photon.PunBehaviour
         InstantiateShrine();
         InstantiateOrbContainers();
 
-        preventClick = false;
+        //preventClick = false;
     } 
 
     private void InstantiateMages()
@@ -122,11 +128,11 @@ public class GameLogicController : Photon.PunBehaviour
 
     public override void OnPhotonPlayerConnected(PhotonPlayer other)
     {
-        Debug.Log("OnPhotonPlayerConnected() " + other.NickName); // Not seen if you're the player connecting
+        print("OnPhotonPlayerConnected() " + other.NickName); // Not seen if you're the player connecting
 
         if (PhotonNetwork.isMasterClient)
         {
-            Debug.Log("OnPhotonPlayerConnected isMasterClient " + PhotonNetwork.isMasterClient); // Called before OnPhotonPlayerDisconnected
+            print("OnPhotonPlayerConnected isMasterClient " + PhotonNetwork.isMasterClient); // Called before OnPhotonPlayerDisconnected
 
             LoadArena();
         }
@@ -135,13 +141,14 @@ public class GameLogicController : Photon.PunBehaviour
     public override void OnPhotonPlayerDisconnected(PhotonPlayer other)
     {
         // If one player disconnects, we disconnect the other player and alert them
-        Debug.Log("OnPhotonPlayerDisconnected() " + other.NickName); // Seen when other disconnects
+        print("OnPhotonPlayerDisconnected() " + other.NickName); // Seen when other disconnects
 
         LeaveRoom();
     }
 
     public void DetermineIfMasterClient()
     {
+        print("determinemasterclient");
         // The master client moves first
         isPlayerTurn = PhotonNetwork.isMasterClient;
         preventClick = !isPlayerTurn;
@@ -181,7 +188,7 @@ public class GameLogicController : Photon.PunBehaviour
             Debug.LogError("PhotonNetwork : Trying to load a level but we are not the master Client");
         }
 
-        Debug.Log("PhotonNetwork : Loading Mal'sBoard");
+        print("PhotonNetwork : Loading Mal'sBoard");
         PhotonNetwork.LoadLevel("Mal'sBoard");
     }
 
@@ -195,9 +202,9 @@ public class GameLogicController : Photon.PunBehaviour
     [PunRPC]
     public void ReceiveMove(short moveTo, short moveFrom, short removeFrom)
     {
-        Debug.Log("Move to: " + moveTo);
-        Debug.Log("Move from: " + moveFrom);
-        Debug.Log("Remove from: " + removeFrom);
+        print("Move to: " + moveTo);
+        print("Move from: " + moveFrom);
+        print("Remove from: " + removeFrom);
 
         if (moveTo != -1)
         {
@@ -221,8 +228,15 @@ public class GameLogicController : Photon.PunBehaviour
     [PunRPC]
     public void ReceiveChat(string receivedMessage)
     {
-        Debug.Log("Opponent: " + receivedMessage);
+        print("Opponent: " + receivedMessage);
         chatInputField.text = opponentName + ": " + receivedMessage;
+    }
+
+    private void ResetNetworkVariables()
+    {
+        network_moveFrom = -1;
+        network_moveTo = -1;
+        network_removeFrom = -1;
     }
 
     /*---------------------------------------------------------------------
@@ -334,7 +348,7 @@ public class GameLogicController : Photon.PunBehaviour
 
     public void RemovalPhase(short runeToRemove)
     {
-        if(RuneCanBeRemoved(runeToRemove))
+        if (RuneCanBeRemoved(runeToRemove))
         {
             network_removeFrom = runeToRemove;
 
@@ -378,12 +392,12 @@ public class GameLogicController : Photon.PunBehaviour
     {
         // Send move to opponent if in a network game
         if (isNetworkGame)
+        {
             SendMove();
-
-        preventClick = true;
-        // Else
+            preventClick = !preventClick;
+        }
         isPlayerTurn = !isPlayerTurn;
-
+        
         if(previousGamePhase == "placement")
         {
             previousGamePhase = gamePhase;
@@ -404,6 +418,7 @@ public class GameLogicController : Photon.PunBehaviour
             RemoveAllOrbHighlights(-1);
             PrepareForMovementPhase();
         }
+        ResetNetworkVariables();
     }
 
     public bool ClickedOnDifferentPiece(short selectedRune)
