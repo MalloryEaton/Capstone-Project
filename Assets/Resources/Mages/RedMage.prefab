@@ -95,6 +95,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4119536018613440}
   - component: {fileID: 95008499606475568}
+  - component: {fileID: 114681423221942440}
   m_Layer: 0
   m_Name: RedMage
   m_TagString: Mage
@@ -1490,6 +1491,17 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!114 &114681423221942440
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1159451625415298}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4acbc82076985d498678e214283e129, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!137 &137810922065767466
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1

@@ -39,6 +39,7 @@ public class GameLogicController : Photon.PunBehaviour
 
     public bool isPlayerTurn;
     public bool preventClick;
+    private bool isNetworkGame;
 
     private short startingNumberOfOrbs;
     private short playerOrbCount;
@@ -54,12 +55,16 @@ public class GameLogicController : Photon.PunBehaviour
 
     void Start()
     {
+        preventClick = true; //while initialization is happening
         dictionaries = FindObjectOfType(typeof(Dictionaries)) as Dictionaries;
-        playerMage = GameObject.Find("GreenMage");
-        opponentMage = GameObject.Find("PurpleMage");
+        //playerMage = GameObject.Find(playerColor + "Mage");
+        //opponentMage = GameObject.Find(opponentColor + "Mage");
         gamePhase = "placement";
         previousGamePhase = "placement";
-        DetermineIfMasterClient();
+        isNetworkGame = false;
+        isPlayerTurn = true;
+        if(isNetworkGame)
+            DetermineIfMasterClient();
         startingNumberOfOrbs = 4;
         playerOrbCount = 0;
         opponentOrbCount = 0;
@@ -68,7 +73,39 @@ public class GameLogicController : Photon.PunBehaviour
         opponentMills = new List<Mill>();
         runesThatCanBeMoved = new List<short>();
         runesThatCanBeRemoved = new List<short>();
+        InitializeGameBoard();
+    }
+
+    /*---------------------------------------------------------------------
+    || INITIALIZATION
+    -----------------------------------------------------------------------*/
+    private void InitializeGameBoard()
+    { 
+        InstantiateMages();
+        InstantiateShrine();
+        InstantiateOrbContainers();
+
+        preventClick = false;
+    } 
+
+    private void InstantiateMages()
+    {
+        playerMage = Instantiate(dictionaries.magesDictionary[playerColor], new Vector3(20, 1, 28), new Quaternion(0,180,0,0));
+        playerMage.tag = "Mage";
+
+        opponentMage = Instantiate(dictionaries.magesDictionary[opponentColor], new Vector3(4, 1, -4), new Quaternion(0, 0, 0, 0));
+        opponentMage.tag = "Mage";
+    }
+
+    private void InstantiateShrine()
+    {
         Instantiate(dictionaries.shrinesDictionary[playerColor], new Vector3(12, 0, 12), Quaternion.identity);
+    }
+
+    private void InstantiateOrbContainers()
+    {
+        Instantiate(dictionaries.orbContainersDictionary[playerColor], new Vector3(0, 0, 28), Quaternion.identity);
+        Instantiate(dictionaries.orbContainersDictionary[opponentColor], new Vector3(8, 0, -4), Quaternion.identity);
     }
 
     /*---------------------------------------------------------------------
@@ -165,13 +202,13 @@ public class GameLogicController : Photon.PunBehaviour
         if (moveTo != -1)
         {
             // Place opponent rune
-            MoveOrb(moveTo);
-        }
-        if (moveFrom != -1)
-        {
             runeFromLocation = moveFrom;
             MoveOrb(moveTo);
         }
+        //if (moveFrom != -1)
+        //{
+        //    MoveOrb(moveTo);
+        //}
         if (removeFrom != -1)
         {
             RemoveOrb(removeFrom);
@@ -340,8 +377,8 @@ public class GameLogicController : Photon.PunBehaviour
     private void ChangeSide()
     {
         // Send move to opponent if in a network game
-        // If in network game
-        SendMove();
+        if (isNetworkGame)
+            SendMove();
 
         preventClick = true;
         // Else
