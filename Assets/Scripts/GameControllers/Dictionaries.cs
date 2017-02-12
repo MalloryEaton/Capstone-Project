@@ -11,6 +11,8 @@ public class Dictionaries : MonoBehaviour {
     public Dictionary<short, Material> runeOriginalsDictionary;
     public Dictionary<string, GameObject> shrinesDictionary;
     public Dictionary<string, GameObject> magicRingDictionary;
+    public Dictionary<string, GameObject> magesDictionary;
+    public Dictionary<string, GameObject> orbContainersDictionary;
 
     public List<Mill> verticalMillsList;
 
@@ -24,6 +26,8 @@ public class Dictionaries : MonoBehaviour {
         orbsDictionary = new Dictionary<string, GameObject>();
         shrinesDictionary = new Dictionary<string, GameObject>();
         magicRingDictionary = new Dictionary<string, GameObject>();
+        magesDictionary = new Dictionary<string, GameObject>();
+        orbContainersDictionary = new Dictionary<string, GameObject>();
         verticalMillsList = new List<Mill>();
 
         InitializeAdjacencyDictionary();
@@ -34,6 +38,32 @@ public class Dictionaries : MonoBehaviour {
         InitializeShrineDictionary();
         InitializeVerticalMillsList();
         InitializeMagicRingDictionary();
+        InitializeMagesDictionary();
+        InitializeOrbContainersDictionary();
+    }
+
+    private void InitializeMagesDictionary()
+    {
+        magesDictionary.Add("Black", Resources.Load(@"MagesForBoard\BlackMage", typeof(GameObject)) as GameObject);
+        magesDictionary.Add("Blue", Resources.Load(@"MagesForBoard\BlueMage", typeof(GameObject)) as GameObject);
+        magesDictionary.Add("Green", Resources.Load(@"MagesForBoard\GreenMage", typeof(GameObject)) as GameObject);
+        magesDictionary.Add("Orange", Resources.Load(@"MagesForBoard\OrangeMage", typeof(GameObject)) as GameObject);
+        magesDictionary.Add("Purple", Resources.Load(@"MagesForBoard\PurpleMage", typeof(GameObject)) as GameObject);
+        magesDictionary.Add("Red", Resources.Load(@"MagesForBoard\RedMage", typeof(GameObject)) as GameObject);
+        magesDictionary.Add("White", Resources.Load(@"MagesForBoard\WhiteMage", typeof(GameObject)) as GameObject);
+        magesDictionary.Add("Yellow", Resources.Load(@"MagesForBoard\YellowMage", typeof(GameObject)) as GameObject);
+    }
+
+    private void InitializeOrbContainersDictionary()
+    {
+        orbContainersDictionary.Add("Black", Resources.Load(@"Orbs\OrbContainers\BlackOrbContainer", typeof(GameObject)) as GameObject);
+        orbContainersDictionary.Add("Blue", Resources.Load(@"Orbs\OrbContainers\BlueOrbContainer", typeof(GameObject)) as GameObject);
+        orbContainersDictionary.Add("Green", Resources.Load(@"Orbs\OrbContainers\GreenOrbContainer", typeof(GameObject)) as GameObject);
+        orbContainersDictionary.Add("Orange", Resources.Load(@"Orbs\OrbContainers\OrangeOrbContainer", typeof(GameObject)) as GameObject);
+        orbContainersDictionary.Add("Purple", Resources.Load(@"Orbs\OrbContainers\PurpleOrbContainer", typeof(GameObject)) as GameObject);
+        orbContainersDictionary.Add("Red", Resources.Load(@"Orbs\OrbContainers\RedOrbContainer", typeof(GameObject)) as GameObject);
+        orbContainersDictionary.Add("White", Resources.Load(@"Orbs\OrbContainers\WhiteOrbContainer", typeof(GameObject)) as GameObject);
+        orbContainersDictionary.Add("Yellow", Resources.Load(@"Orbs\OrbContainers\YellowOrbContainer", typeof(GameObject)) as GameObject);
     }
 
     private void InitializeVerticalMillsList()
