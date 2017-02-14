@@ -6,237 +6,108 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(PhotonView))]
-public class GameLogicController : Photon.PunBehaviour
+
+public class GameLogicController : MonoBehaviour
 {
-    /*---------------------------------------------------------------------
-    || NETWORKING VARIABLES
-    -----------------------------------------------------------------------*/
-    public InputField chatInputField;
-
-    private bool isMasterClient;
-
-    private string opponentName;
-
-    private short network_moveTo;
-    private short network_moveFrom;
-    private short network_removeFrom;
-
     /*---------------------------------------------------------------------
     || GAME VARIABLES
     -----------------------------------------------------------------------*/
     public RuneController[] runeList;
     private Dictionaries dictionaries;
+    private NetworkingController networking;
 
-    private GameObject playerMage;
-    private GameObject opponentMage;
+    private GameObject player1Mage;
+    private GameObject player2Mage;
 
-    public string playerColor;
-    public string opponentColor;
+    public string player1Color;
+    public string player2Color;
 
     public string gamePhase; //placement, movementPickup, movementPlace, removal
     private string previousGamePhase;
 
-    public bool isPlayerTurn;
-    public bool preventClick;
     private bool isNetworkGame;
+    private bool isPlayer1;
+
+    public bool isPlayer1Turn;
+    public bool preventClick;
 
     private short startingNumberOfOrbs;
-    private short playerOrbCount;
-    private short opponentOrbCount;
+    private short player1OrbCount;
+    private short player2OrbCount;
     private short placementPhase_RoundCount;
-    
-    private List<Mill> playerMills;
-    private List<Mill> opponentMills;
 
-    private short runeFromLocation;
+    private List<Mill> player1Mills;
+    private List<Mill> player2Mills;
+
+    public short runeFromLocation;
     private List<short> runesThatCanBeMoved;
     private List<short> runesThatCanBeRemoved;
 
     void Start()
     {
-        //preventClick = true; //while initialization is happening
         dictionaries = FindObjectOfType(typeof(Dictionaries)) as Dictionaries;
+        networking = FindObjectOfType(typeof(NetworkingController)) as NetworkingController;
+        player1Mage = GameObject.Find("GreenMage");
+        player2Mage = GameObject.Find("PurpleMage");
         gamePhase = "placement";
         previousGamePhase = "placement";
 
-        playerColor = "Green";
-        opponentColor = "Purple";
-        //playerColor = "Purple";
-        //opponentColor = "Green";
+        isPlayer1Turn = true;
+        isNetworkGame = true;
+        if (isNetworkGame)
+        {
+            // The master client moves first
+            isPlayer1 = networking.DetermineIfMasterClient();
+            preventClick = !isPlayer1;
 
-        isNetworkGame = false;
-        isPlayerTurn = true;
-        if(isNetworkGame)
-            DetermineIfMasterClient();
-        ResetNetworkVariables();
+            player1Color = "Green";
+            player2Color = "Purple";
+        }
+
+        Debug.Log(preventClick);
 
         startingNumberOfOrbs = 4;
-        playerOrbCount = 0;
-        opponentOrbCount = 0;
+        player1OrbCount = 0;
+        player2OrbCount = 0;
         placementPhase_RoundCount = 1;
-        playerMills = new List<Mill>();
-        opponentMills = new List<Mill>();
+        player1Mills = new List<Mill>();
+        player2Mills = new List<Mill>();
         runesThatCanBeMoved = new List<short>();
         runesThatCanBeRemoved = new List<short>();
         InitializeGameBoard();
+        networking.ResetNetworkValues();
     }
 
     /*---------------------------------------------------------------------
     || INITIALIZATION
     -----------------------------------------------------------------------*/
     private void InitializeGameBoard()
-    { 
+    {
         InstantiateMages();
         InstantiateShrine();
         InstantiateOrbContainers();
 
-        //preventClick = false;
-    } 
+        // preventClick = false;
+    }
 
     private void InstantiateMages()
     {
-        playerMage = Instantiate(dictionaries.magesDictionary[playerColor], new Vector3(20, 1, 28), new Quaternion(0,180,0,0));
-        playerMage.tag = "Mage";
+        player1Mage = Instantiate(dictionaries.magesDictionary[player1Color], new Vector3(20, 1, 28), new Quaternion(0, 180, 0, 0));
+        player1Mage.tag = "Mage";
 
-        opponentMage = Instantiate(dictionaries.magesDictionary[opponentColor], new Vector3(4, 1, -4), new Quaternion(0, 0, 0, 0));
-        opponentMage.tag = "Mage";
+        player2Mage = Instantiate(dictionaries.magesDictionary[player2Color], new Vector3(4, 1, -4), new Quaternion(0, 0, 0, 0));
+        player2Mage.tag = "Mage";
     }
 
     private void InstantiateShrine()
     {
-        Instantiate(dictionaries.shrinesDictionary[playerColor], new Vector3(12, 0, 12), Quaternion.identity);
+        Instantiate(dictionaries.shrinesDictionary[player1Color], new Vector3(12, 0, 12), Quaternion.identity);
     }
 
     private void InstantiateOrbContainers()
     {
-        Instantiate(dictionaries.orbContainersDictionary[playerColor], new Vector3(0, 0, 28), Quaternion.identity);
-        Instantiate(dictionaries.orbContainersDictionary[opponentColor], new Vector3(8, 0, -4), Quaternion.identity);
-    }
-
-    /*---------------------------------------------------------------------
-    || NETWORKING FUNCTIONS
-    -----------------------------------------------------------------------*/
-    /// <summary>
-    /// Called when the local player left the room. We need to load the launcher scene.
-    /// </summary>
-    public override void OnLeftRoom()
-    {
-        // Scene 1 is the network lobby
-        SceneManager.LoadScene(1);
-    }
-
-    public override void OnPhotonPlayerConnected(PhotonPlayer other)
-    {
-        print("OnPhotonPlayerConnected() " + other.NickName); // Not seen if you're the player connecting
-
-        if (PhotonNetwork.isMasterClient)
-        {
-            print("OnPhotonPlayerConnected isMasterClient " + PhotonNetwork.isMasterClient); // Called before OnPhotonPlayerDisconnected
-
-            LoadArena();
-        }
-    }
-
-    public override void OnPhotonPlayerDisconnected(PhotonPlayer other)
-    {
-        // If one player disconnects, we disconnect the other player and alert them
-        print("OnPhotonPlayerDisconnected() " + other.NickName); // Seen when other disconnects
-
-        LeaveRoom();
-    }
-
-    public void DetermineIfMasterClient()
-    {
-        print("determinemasterclient");
-        // The master client moves first
-        isPlayerTurn = PhotonNetwork.isMasterClient;
-        preventClick = !isPlayerTurn;
-    }
-
-    public void LeaveRoom()
-    {
-        PhotonNetwork.LeaveRoom();
-    }
-
-    public void SendName()
-    {
-        //playerNameText.text = PhotonNetwork.playerName;
-        photonView.RPC("ReceieveName", PhotonTargets.Others, PhotonNetwork.playerName);
-    }
-
-    public void SendMove()
-    {
-        photonView.RPC("ReceiveMove", PhotonTargets.Others, network_moveTo, network_moveFrom, network_removeFrom);
-    }
-
-    public void SendChat()
-    {
-        string sentMessage;
-        sentMessage = chatInputField.text;
-        sentMessage = sentMessage.Trim();
-        if (sentMessage != "")
-        {
-            photonView.RPC("ReceiveChat", PhotonTargets.Others, sentMessage);
-        }
-    }
-
-    private void LoadArena()
-    {
-        if (!PhotonNetwork.isMasterClient)
-        {
-            Debug.LogError("PhotonNetwork : Trying to load a level but we are not the master Client");
-        }
-
-        print("PhotonNetwork : Loading Mal'sBoard");
-        PhotonNetwork.LoadLevel("Mal'sBoard");
-    }
-
-    [PunRPC]
-    public void ReceiveName(string opponentName)
-    {
-        this.opponentName = opponentName;
-        //opponentNameText.text = opponentName;
-    }
-
-    [PunRPC]
-    public void ReceiveMove(short moveTo, short moveFrom, short removeFrom)
-    {
-        print("Move to: " + moveTo);
-        print("Move from: " + moveFrom);
-        print("Remove from: " + removeFrom);
-
-        if (moveTo != -1)
-        {
-            // Place opponent rune
-            runeFromLocation = moveFrom;
-            MoveOrb(moveTo);
-        }
-        //if (moveFrom != -1)
-        //{
-        //    MoveOrb(moveTo);
-        //}
-        if (removeFrom != -1)
-        {
-            RemoveOrb(removeFrom);
-        }
-
-        // Give control back to this user
-        preventClick = false;
-    }
-
-    [PunRPC]
-    public void ReceiveChat(string receivedMessage)
-    {
-        print("Opponent: " + receivedMessage);
-        chatInputField.text = opponentName + ": " + receivedMessage;
-    }
-
-    private void ResetNetworkVariables()
-    {
-        network_moveFrom = -1;
-        network_moveTo = -1;
-        network_removeFrom = -1;
+        Instantiate(dictionaries.orbContainersDictionary[player1Color], new Vector3(0, 0, 28), Quaternion.identity);
+        Instantiate(dictionaries.orbContainersDictionary[player2Color], new Vector3(8, 0, -4), Quaternion.identity);
     }
 
     /*---------------------------------------------------------------------
@@ -247,18 +118,19 @@ public class GameLogicController : Photon.PunBehaviour
     {
         if (runeList[rune].tag == "Empty")
         {
-            if (isPlayerTurn)
+            networking.moveTo = rune;
+            MoveOrb(rune);
+            // NEED TO CHANGE TAGS TO PLAYER1 AND PLAYER2
+            if (isPlayer1Turn)
             {
-                network_moveTo = rune;
-                MoveOrb(rune);
                 runeList[rune].tag = "Player";
-                playerOrbCount++;
+                player1OrbCount++;
             }
-            else //opponent's turn
+            else
             {
-                MoveOrb(rune);
                 runeList[rune].tag = "Opponent";
-                opponentOrbCount++;
+                player2OrbCount++;
+                // Round count will always increment after second player's turn
                 placementPhase_RoundCount++;
             }
 
@@ -278,16 +150,16 @@ public class GameLogicController : Photon.PunBehaviour
         else
         {
             print("NO AVAILABLE MOVES! YOU LOSE!");
-            isPlayerTurn = !isPlayerTurn;
+            isPlayer1Turn = !isPlayer1Turn;
             GameOver();
         }
     }
 
     public void MovementPhase_Pickup(short selectedRune)
     {
-        if(RuneCanBeMoved(selectedRune))
+        if (RuneCanBeMoved(selectedRune))
         {
-            network_moveFrom = selectedRune;
+            networking.moveFrom = selectedRune;
 
             runeFromLocation = selectedRune;
 
@@ -311,13 +183,13 @@ public class GameLogicController : Photon.PunBehaviour
         {
             if (IsLegalMove(toLocation))
             {
-                network_moveTo = toLocation;
+                networking.moveTo = toLocation;
 
                 RemoveOrbHighlight(runeFromLocation);
 
                 MoveOrb(toLocation);
 
-                runeList[toLocation].tag = (isPlayerTurn) ? "Player" : "Opponent";
+                runeList[toLocation].tag = (isPlayer1Turn) ? "Player" : "Opponent";
                 runeList[runeFromLocation].tag = "Empty";
 
                 if (runeList[runeFromLocation].isInMill)
@@ -341,6 +213,7 @@ public class GameLogicController : Photon.PunBehaviour
     private void PrepareForRemovalPhase()
     {
         print("YOU GOT A MILL!");
+        preventClick = false;
         previousGamePhase = gamePhase;
         gamePhase = "removal";
         HighlightMoveableOrbs(MakeListOfRunesThatCanBeRemoved());
@@ -350,14 +223,14 @@ public class GameLogicController : Photon.PunBehaviour
     {
         if (RuneCanBeRemoved(runeToRemove))
         {
-            network_removeFrom = runeToRemove;
+            networking.removeFrom = runeToRemove;
 
             if (runeList[runeToRemove].isInMill)
                 RemoveRunesFromMill();
 
             RemoveOrb(runeToRemove);
 
-            if (previousGamePhase != "placement" && (playerOrbCount == 2 || opponentOrbCount == 2)) //check for win
+            if (previousGamePhase != "placement" && (player1OrbCount == 2 || player2OrbCount == 2)) //check for win
                 GameOver();
             else //continue game
                 ChangeSide();
@@ -370,10 +243,10 @@ public class GameLogicController : Photon.PunBehaviour
         RemoveAllOrbHighlights(-1);
         RemoveAllRuneHighlights();
 
-        if(isPlayerTurn)
-            print("Game Over. " + playerColor + " wins!");
+        if (isPlayer1Turn)
+            print("Game Over. " + player1Color + " wins!");
         else
-            print("Game Over. " + opponentColor + " wins!");
+            print("Game Over. " + player2Color + " wins!");
     }
 
 
@@ -382,7 +255,7 @@ public class GameLogicController : Photon.PunBehaviour
     -----------------------------------------------------------------------*/
     private bool CanFly()
     {
-        if ((isPlayerTurn && playerOrbCount == 3) || (!isPlayerTurn && opponentOrbCount == 3))
+        if ((isPlayer1Turn && player1OrbCount == 3) || (!isPlayer1Turn && player2OrbCount == 3))
             return true;
 
         return false;
@@ -391,14 +264,20 @@ public class GameLogicController : Photon.PunBehaviour
     private void ChangeSide()
     {
         // Send move to opponent if in a network game
-        if (isNetworkGame)
+        if (isNetworkGame && (isPlayer1Turn && isPlayer1 || !isPlayer1Turn && !isPlayer1))
         {
-            SendMove();
-            preventClick = !preventClick;
+            networking.SendMove();
+            preventClick = true;
         }
-        isPlayerTurn = !isPlayerTurn;
-        
-        if(previousGamePhase == "placement")
+        else if (isNetworkGame && (isPlayer1Turn && !isPlayer1 || !isPlayer1Turn && isPlayer1))
+        {
+            preventClick = false;
+        }
+
+        isPlayer1Turn = !isPlayer1Turn;
+        networking.ResetNetworkValues();
+
+        if (previousGamePhase == "placement")
         {
             previousGamePhase = gamePhase;
             if (placementPhase_RoundCount > startingNumberOfOrbs)
@@ -418,24 +297,23 @@ public class GameLogicController : Photon.PunBehaviour
             RemoveAllOrbHighlights(-1);
             PrepareForMovementPhase();
         }
-        ResetNetworkVariables();
     }
 
     public bool ClickedOnDifferentPiece(short selectedRune)
     {
-        if ((isPlayerTurn && runeList[selectedRune].tag == "Player") || (!isPlayerTurn && runeList[selectedRune].tag == "Opponent"))
+        if ((isPlayer1Turn && runeList[selectedRune].tag == "Player") || (!isPlayer1Turn && runeList[selectedRune].tag == "Opponent"))
             return true;
         return false;
     }
 
     private bool IsLegalMove(short toLocation)
     {
-        if((isPlayerTurn && playerOrbCount == 3) || (!isPlayerTurn && opponentOrbCount == 3)) //can fly
+        if ((isPlayer1Turn && player1OrbCount == 3) || (!isPlayer1Turn && player2OrbCount == 3)) //can fly
         {
             if (runeList[toLocation])
                 return true;
         }
-        else if(dictionaries.adjacencyDictionary[runeFromLocation].Contains(toLocation))
+        else if (dictionaries.adjacencyDictionary[runeFromLocation].Contains(toLocation))
         {
             return true;
         }
@@ -448,7 +326,7 @@ public class GameLogicController : Photon.PunBehaviour
         List<short> runes = new List<short>();
 
         foreach (RuneController rune in runeList)
-            if ((isPlayerTurn && rune.tag == "Player") || (!isPlayerTurn && rune.tag == "Opponent"))
+            if ((isPlayer1Turn && rune.tag == "Player") || (!isPlayer1Turn && rune.tag == "Opponent"))
                 runes.Add(rune.runeNumber);
 
         return runes;
@@ -461,14 +339,14 @@ public class GameLogicController : Photon.PunBehaviour
         if (AllRunesAreInMills())
         {
             foreach (RuneController rune in runeList)
-                if ((isPlayerTurn && rune.tag == "Opponent") || (!isPlayerTurn && rune.tag == "Player"))
+                if ((isPlayer1Turn && rune.tag == "Opponent") || (!isPlayer1Turn && rune.tag == "Player"))
                     runes.Add(rune.runeNumber);
         }
         else //only add runes that are not in mills
         {
             foreach (RuneController rune in runeList)
-                if (((isPlayerTurn && rune.tag == "Opponent") || (!isPlayerTurn && rune.tag == "Player")) && !rune.isInMill)
-                    runes.Add(rune.runeNumber); 
+                if (((isPlayer1Turn && rune.tag == "Opponent") || (!isPlayer1Turn && rune.tag == "Player")) && !rune.isInMill)
+                    runes.Add(rune.runeNumber);
         }
 
         runesThatCanBeRemoved.Clear();
@@ -479,8 +357,8 @@ public class GameLogicController : Photon.PunBehaviour
 
     private bool RuneCanBeMoved(short selectedRune)
     {
-        if (((isPlayerTurn && runeList[selectedRune].tag == "Player") ||
-            (!isPlayerTurn && runeList[selectedRune].tag == "Opponent")) && runesThatCanBeMoved.Contains(selectedRune))
+        if (((isPlayer1Turn && runeList[selectedRune].tag == "Player") ||
+            (!isPlayer1Turn && runeList[selectedRune].tag == "Opponent")) && runesThatCanBeMoved.Contains(selectedRune))
         {
             return true;
         }
@@ -489,13 +367,15 @@ public class GameLogicController : Photon.PunBehaviour
 
     public bool RuneCanBeRemoved(short runeToRemove)
     {
-        if (((isPlayerTurn && runeList[runeToRemove].tag == "Opponent") 
-            || (!isPlayerTurn && runeList[runeToRemove].tag == "Player")) 
+        // RUNES THAT CAN BE REMOVED IS RETURNING FALSE FOR THE RECEIVING PLAYER
+        Debug.Log("runesthat" + runesThatCanBeRemoved.Contains(runeToRemove));
+        if (((isPlayer1Turn && runeList[runeToRemove].tag == "Opponent")
+            || (!isPlayer1Turn && runeList[runeToRemove].tag == "Player"))
             && runesThatCanBeRemoved.Contains(runeToRemove))
         {
             return true;
         }
-            return false;
+        return false;
     }
 
     private bool ThereIsAnAvailableMove(List<short> runes)
@@ -524,11 +404,11 @@ public class GameLogicController : Photon.PunBehaviour
         {
             foreach (short rune in runes)
             {
-                    if (!moveableRunes.Contains(rune))
-                    {
-                        moveableRunes.Add(rune);
-                    }
-                    canMakeAMove = true;
+                if (!moveableRunes.Contains(rune))
+                {
+                    moveableRunes.Add(rune);
+                }
+                canMakeAMove = true;
             }
         }
         runesThatCanBeMoved.Clear();
@@ -555,7 +435,7 @@ public class GameLogicController : Photon.PunBehaviour
         List<short> runes = new List<short>();
 
         foreach (RuneController rune in runeList)
-            if ((isPlayerTurn && rune.tag == "Opponent") || (!isPlayerTurn && rune.tag == "Player"))
+            if ((isPlayer1Turn && rune.tag == "Opponent") || (!isPlayer1Turn && rune.tag == "Player"))
                 runes.Add(rune.runeNumber);
 
         foreach (short rune in runes)
@@ -570,31 +450,31 @@ public class GameLogicController : Photon.PunBehaviour
     private void RemoveRunesFromMill()
     {
         Mill mill;
-        if (isPlayerTurn)
+        if (isPlayer1Turn)
         {
-            for (short i = 0; i < playerMills.Count; i++)
+            for (short i = 0; i < player1Mills.Count; i++)
             {
-                mill = playerMills[i];
+                mill = player1Mills[i];
                 if (mill.position1 == runeFromLocation || mill.position2 == runeFromLocation || mill.position3 == runeFromLocation)
                 {
                     runeList[mill.position1].isInMill = false;
                     runeList[mill.position2].isInMill = false;
                     runeList[mill.position3].isInMill = false;
-                    playerMills.Remove(playerMills[i]);
+                    player1Mills.Remove(player1Mills[i]);
                 }
             }
         }
         else
         {
-            for (short i = 0; i < opponentMills.Count; i++)
+            for (short i = 0; i < player2Mills.Count; i++)
             {
-                mill = opponentMills[i];
+                mill = player2Mills[i];
                 if (mill.position1 == runeFromLocation || mill.position2 == runeFromLocation || mill.position3 == runeFromLocation)
                 {
                     runeList[mill.position1].isInMill = false;
                     runeList[mill.position2].isInMill = false;
                     runeList[mill.position3].isInMill = false;
-                    opponentMills.Remove(mill);
+                    player2Mills.Remove(mill);
                 }
             }
         }
@@ -602,7 +482,7 @@ public class GameLogicController : Photon.PunBehaviour
 
     private void InstantiateMagicRings(Mill mill)
     {
-        string color = isPlayerTurn ? playerColor : opponentColor;
+        string color = isPlayer1Turn ? player1Color : player2Color;
 
         Transform ringTransform = dictionaries.magicRingDictionary[color].transform;
 
@@ -622,7 +502,7 @@ public class GameLogicController : Photon.PunBehaviour
     private void DestroyMagicRings()
     {
         GameObject[] rings = GameObject.FindGameObjectsWithTag("MagicRing");
-        foreach(GameObject ring in rings)
+        foreach (GameObject ring in rings)
         {
             Destroy(ring);
         }
@@ -636,8 +516,8 @@ public class GameLogicController : Photon.PunBehaviour
                 runeList[i].tag == runeList[i + 2].tag &&
                 runeList[i].tag != "Empty")
             {
-                if (((rune == i || rune == (i + 1) || rune == (i + 2)) && isPlayerTurn && runeList[rune].tag == "Player") ||
-                    ((rune == i || rune == (i + 1) || rune == (i + 2)) && !isPlayerTurn && runeList[rune].tag == "Opponent"))
+                if (((rune == i || rune == (i + 1) || rune == (i + 2)) && isPlayer1Turn && runeList[rune].tag == "Player") ||
+                    ((rune == i || rune == (i + 1) || rune == (i + 2)) && !isPlayer1Turn && runeList[rune].tag == "Opponent"))
                 {
                     runeList[i].isInMill = true;
                     runeList[i + 1].isInMill = true;
@@ -647,10 +527,10 @@ public class GameLogicController : Photon.PunBehaviour
 
                     InstantiateMagicRings(mill);
 
-                    if (isPlayerTurn)
-                        playerMills.Add(mill);
+                    if (isPlayer1Turn)
+                        player1Mills.Add(mill);
                     else
-                        opponentMills.Add(mill);
+                        player2Mills.Add(mill);
 
                     return true;
                 }
@@ -667,8 +547,8 @@ public class GameLogicController : Photon.PunBehaviour
             runeList[mill.position2].tag == runeList[mill.position3].tag &&
             runeList[mill.position1].tag != "Empty")
             {
-                if (((rune == mill.position1 || rune == mill.position2 || rune == mill.position3) && isPlayerTurn && runeList[rune].tag == "Player") ||
-                    ((rune == mill.position1 || rune == mill.position2 || rune == mill.position3) && !isPlayerTurn && runeList[rune].tag == "Opponent"))
+                if (((rune == mill.position1 || rune == mill.position2 || rune == mill.position3) && isPlayer1Turn && runeList[rune].tag == "Player") ||
+                    ((rune == mill.position1 || rune == mill.position2 || rune == mill.position3) && !isPlayer1Turn && runeList[rune].tag == "Opponent"))
                 {
                     runeList[mill.position1].isInMill = true;
                     runeList[mill.position2].isInMill = true;
@@ -676,10 +556,10 @@ public class GameLogicController : Photon.PunBehaviour
 
                     InstantiateMagicRings(mill);
 
-                    if (isPlayerTurn)
-                        playerMills.Add(new Mill(mill.position1, mill.position2, mill.position3));
+                    if (isPlayer1Turn)
+                        player1Mills.Add(new Mill(mill.position1, mill.position2, mill.position3));
                     else
-                        opponentMills.Add(new Mill(mill.position1, mill.position2, mill.position3));
+                        player2Mills.Add(new Mill(mill.position1, mill.position2, mill.position3));
 
                     return true;
                 }
@@ -707,71 +587,92 @@ public class GameLogicController : Photon.PunBehaviour
         orb.AddComponent<OrbController>();
     }
 
-    private void MoveOrb(short toLocation)
+    public void MoveOrb(short toLocation)
     {
         GameObject orbToMove;
-        if(gamePhase == "placement")
+        if (gamePhase == "placement")
         {
-            orbToMove = isPlayerTurn ? GameObject.Find(playerColor + "_Orb_" + placementPhase_RoundCount) : GameObject.Find(opponentColor + "_Orb_" + placementPhase_RoundCount);
+            orbToMove = isPlayer1Turn ? GameObject.Find(player1Color + "_Orb_" + placementPhase_RoundCount) : GameObject.Find(player2Color + "_Orb_" + placementPhase_RoundCount);
         }
         else
         {
             orbToMove = GameObject.Find("OrbAtLocation_" + runeFromLocation);
         }
 
-        if (isPlayerTurn)
-            playerMage.GetComponent<MageController>().PlayAttack1Animation(GameObject.Find("Rune" + toLocation));
+        if (isPlayer1Turn)
+            player1Mage.GetComponent<MageController>().PlayAttack1Animation(GameObject.Find("Rune" + toLocation));
         else
-            opponentMage.GetComponent<MageController>().PlayAttack1Animation(GameObject.Find("Rune" + toLocation));
+            player2Mage.GetComponent<MageController>().PlayAttack1Animation(GameObject.Find("Rune" + toLocation));
 
         orbToMove.name = "OrbAtLocation_" + toLocation;
         RemoveAllRuneHighlights();
 
-        LeanTween.delayedCall(orbToMove, 0.4f, () =>
+        LeanTween.delayedCall(orbToMove, 0.3f, () =>
         {
-            LeanTween.move(orbToMove, dictionaries.orbPositionsDictionary[toLocation], 0.5f).setOnComplete(() => 
+            LeanTween.move(orbToMove, dictionaries.orbPositionsDictionary[toLocation], 0.5f).setOnComplete(() =>
             {
-                //this is the callback
-                if (RuneIsInMill(toLocation))
+                if (isNetworkGame)
                 {
-                    PrepareForRemovalPhase();
+                    // Receiving player should immediately go to ChangeSide()
+                    if (((isPlayer1Turn && isPlayer1) || (!isPlayer1Turn && !isPlayer1)) && RuneIsInMill(toLocation))
+                    {
+                        PrepareForRemovalPhase();
+                    }
+                    else
+                    {
+                        // If there is an orb to remove on the receiving side, however,
+                        // we don't want to call ChangeSide() quite yet.
+                        if (((isPlayer1Turn && !isPlayer1) || (!isPlayer1Turn && isPlayer1)) && (networking.removeFrom != -1))
+                        {
+                            Debug.Log("Still need to do the removal phase.");
+                        }
+                        else
+                        {
+                            ChangeSide();
+                        }
+                    }
                 }
                 else
                 {
-                    ChangeSide();
+                    //this is the callback
+                    if (RuneIsInMill(toLocation))
+                    {
+                        PrepareForRemovalPhase();
+                    }
+                    else
+                    {
+                        ChangeSide();
+                    }
                 }
-                
-                preventClick = false;
             });
         });
     }
 
-    private void RemoveOrb(short runeNumber)
+    public void RemoveOrb(short runeNumber)
     {
         Destroy(GameObject.Find("OrbAtLocation_" + runeNumber));
         runeList[runeNumber].tag = "Empty";
 
-        if (isPlayerTurn)
+        if (isPlayer1Turn)
         {
-            opponentOrbCount--;
+            player2OrbCount--;
         }
         else
         {
-            playerOrbCount--;
+            player1OrbCount--;
         }
 
         RemoveAllOrbHighlights(-1);
         DestroyMagicRings();
-        preventClick = false;
     }
 
     private void RemoveAllOrbHighlights(short runeNumber)
     {
-        if(runeNumber == -1) // remove all
+        if (runeNumber == -1) // remove all
         {
             foreach (RuneController rune in runeList)
             {
-                if(rune.tag != "Empty")
+                if (rune.tag != "Empty")
                     RemoveOrbHighlight(rune.runeNumber);
             }
         }

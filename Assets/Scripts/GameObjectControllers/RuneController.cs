@@ -58,6 +58,9 @@ public class RuneController : MonoBehaviour
     //detect click
     private void OnMouseDown()
     {
+        Debug.Log("preventClick " + gameController.preventClick);
+        Debug.Log("preventClick " + gameController.gamePhase);
+
         if (!gameController.preventClick)
         {
             switch (gameController.gamePhase)

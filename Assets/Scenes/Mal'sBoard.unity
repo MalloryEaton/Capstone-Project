@@ -1962,6 +1962,7 @@ GameObject:
   - component: {fileID: 796952839}
   - component: {fileID: 796952838}
   - component: {fileID: 796952837}
+  - component: {fileID: 796952840}
   m_Layer: 0
   m_Name: GameController
   m_TagString: Untagged
@@ -2022,7 +2023,7 @@ MonoBehaviour:
   playerColor: 
   opponentColor: 
   gamePhase: 
-  isPlayerTurn: 0
+  isPlayer1Turn: 0
   preventClick: 0
 --- !u!114 &796952838
 MonoBehaviour:
@@ -2061,6 +2062,17 @@ MonoBehaviour:
   instantiationId: 1
   currentMasterID: -1
   isRuntimeInstantiated: 0
+--- !u!114 &796952840
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 796952835}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f10f93efa03d464f987b2944410357f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &833196466
 GameObject:
   m_ObjectHideFlags: 0
