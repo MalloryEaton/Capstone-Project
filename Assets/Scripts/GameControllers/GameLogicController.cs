@@ -9,6 +9,14 @@ using UnityEngine.UI;
 
 public class GameLogicController : MonoBehaviour
 {
+    /*
+     player colors
+     scene selected (slected by master client)
+     game type (network, one player and AI, two players, story mode?)
+     difficulty
+     https://docs.unity3d.com/ScriptReference/PlayerPrefs.SetString.html
+    */
+
     /*---------------------------------------------------------------------
     || GAME VARIABLES
     -----------------------------------------------------------------------*/
@@ -30,6 +38,8 @@ public class GameLogicController : MonoBehaviour
 
     public bool isPlayer1Turn;
     public bool preventClick;
+    public bool waitingOnOtherPlayer;
+    public bool waitingOnAnimation;
 
     private short startingNumberOfOrbs;
     private short player1OrbCount;
@@ -47,22 +57,24 @@ public class GameLogicController : MonoBehaviour
     {
         dictionaries = FindObjectOfType(typeof(Dictionaries)) as Dictionaries;
         networking = FindObjectOfType(typeof(NetworkingController)) as NetworkingController;
-        player1Mage = GameObject.Find("GreenMage");
-        player2Mage = GameObject.Find("PurpleMage");
         gamePhase = "placement";
         previousGamePhase = "placement";
 
         isPlayer1Turn = true;
-        isNetworkGame = true;
+        isNetworkGame = false;
         if (isNetworkGame)
         {
             // The master client moves first
             isPlayer1 = networking.DetermineIfMasterClient();
-            preventClick = !isPlayer1;
+            waitingOnOtherPlayer = !isPlayer1;
 
             player1Color = "Green";
             player2Color = "Purple";
+            networking.ResetNetworkValues();
         }
+
+        player1Color = PlayerPrefs.GetString("PlayerColor");
+        player2Color = "Purple";
 
         Debug.Log(preventClick);
 
@@ -75,7 +87,6 @@ public class GameLogicController : MonoBehaviour
         runesThatCanBeMoved = new List<short>();
         runesThatCanBeRemoved = new List<short>();
         InitializeGameBoard();
-        networking.ResetNetworkValues();
     }
 
     /*---------------------------------------------------------------------
@@ -169,11 +180,11 @@ public class GameLogicController : MonoBehaviour
 
             previousGamePhase = gamePhase;
             gamePhase = "movementPlace";
-            preventClick = false;
+            waitingOnAnimation = false;
         }
         else
         {
-            preventClick = false;
+            waitingOnAnimation = false;
         }
     }
 
@@ -205,7 +216,7 @@ public class GameLogicController : MonoBehaviour
         }
         else
         {
-            preventClick = false;
+            waitingOnAnimation = false;
         }
     }
 
@@ -221,7 +232,7 @@ public class GameLogicController : MonoBehaviour
 
     public void RemovalPhase(short runeToRemove)
     {
-        if (RuneCanBeRemoved(runeToRemove))
+        if (RuneCanBeRemoved(runeToRemove) || ((isPlayer1Turn && !isPlayer1) || (!isPlayer1Turn && isPlayer1)))
         {
             networking.removeFrom = runeToRemove;
 
@@ -267,11 +278,11 @@ public class GameLogicController : MonoBehaviour
         if (isNetworkGame && (isPlayer1Turn && isPlayer1 || !isPlayer1Turn && !isPlayer1))
         {
             networking.SendMove();
-            preventClick = true;
+            waitingOnOtherPlayer = true;
         }
         else if (isNetworkGame && (isPlayer1Turn && !isPlayer1 || !isPlayer1Turn && isPlayer1))
         {
-            preventClick = false;
+            waitingOnOtherPlayer = false;
         }
 
         isPlayer1Turn = !isPlayer1Turn;
@@ -367,8 +378,6 @@ public class GameLogicController : MonoBehaviour
 
     public bool RuneCanBeRemoved(short runeToRemove)
     {
-        // RUNES THAT CAN BE REMOVED IS RETURNING FALSE FOR THE RECEIVING PLAYER
-        Debug.Log("runesthat" + runesThatCanBeRemoved.Contains(runeToRemove));
         if (((isPlayer1Turn && runeList[runeToRemove].tag == "Opponent")
             || (!isPlayer1Turn && runeList[runeToRemove].tag == "Player"))
             && runesThatCanBeRemoved.Contains(runeToRemove))
@@ -589,6 +598,7 @@ public class GameLogicController : MonoBehaviour
 
     public void MoveOrb(short toLocation)
     {
+        waitingOnAnimation = true;
         GameObject orbToMove;
         if (gamePhase == "placement")
         {
@@ -644,6 +654,7 @@ public class GameLogicController : MonoBehaviour
                         ChangeSide();
                     }
                 }
+                waitingOnAnimation = false;
             });
         });
     }

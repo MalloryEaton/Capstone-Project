@@ -51,12 +51,13 @@ public class CharacterSelectScript : MonoBehaviour {
 
     public void CharacterSelected (string selection)
     {
-        
         isCharacterSelected = true;
         BioMenu.GetComponent<Animator>().SetBool("isDisplayed", true);
         print("character selected");
 
-        if (selection == "black")
+        PlayerPrefs.SetString("PlayerColor", selection);
+
+        if (selection == "Black")
         {
             BlackMage.SetActive(true);
             BlueMage.SetActive(false);
@@ -70,7 +71,7 @@ public class CharacterSelectScript : MonoBehaviour {
             CharacterBio.text = "Iver is something of a mystery. Legend has it that he was born in the Mangleroot swamps. Whatever the case may be, he is thirsty for power and will stop at nothing to get it.";
 
         }
-        else if (selection == "blue")
+        else if (selection == "Blue")
         {
             BlackMage.SetActive(false);
             BlueMage.SetActive(true);
@@ -83,7 +84,7 @@ public class CharacterSelectScript : MonoBehaviour {
             CharacterName.text = "Fariday Fink";
             CharacterBio.text = "Fariday Fink is infamous for his cunning. Able to think fast on his feet, he is almost always one step ahead. Almost.";
         }
-        else if (selection == "orange")
+        else if (selection == "Orange")
         {
             BlackMage.SetActive(false);
             BlueMage.SetActive(false);
@@ -96,7 +97,7 @@ public class CharacterSelectScript : MonoBehaviour {
             CharacterName.text = "Theodore Darden";
             CharacterBio.text = "If there ever was a bookworm, Theodore Darden would be it. Ever since he was a child, he had his nose stuck in one piece of literature or another. His skill as a sorcerer is a reflection of his inquisitive mind. If only the same could be said of his social skill...";
         }
-        else if (selection == "green")
+        else if (selection == "Green")
         {
             BlackMage.SetActive(false);
             BlueMage.SetActive(false);
@@ -109,7 +110,7 @@ public class CharacterSelectScript : MonoBehaviour {
             CharacterName.text = "Sebastian Meriweather";
             CharacterBio.text = "Hailing from the eastern druidic colonies, Sebastian has a knack for alchemy. His deep alchemical knowledge gave way to the development of many popular potions and concoctions used by many sorcerers today.";
         }
-        else if (selection == "yellow")
+        else if (selection == "Yellow")
         {
             BlackMage.SetActive(false);
             BlueMage.SetActive(false);
@@ -122,7 +123,7 @@ public class CharacterSelectScript : MonoBehaviour {
             CharacterName.text = "Merwin Etherfrost";
             CharacterBio.text = "Merwin Etherfrost spent his youth in training to become a cleric in the Order of the Sun. However, after a fallout with his mentor, he left his humble life to pursue the sorcerous arts.";
         }
-        else if (selection == "red")
+        else if (selection == "Red")
         {
             BlackMage.SetActive(false);
             BlueMage.SetActive(false);
@@ -135,7 +136,7 @@ public class CharacterSelectScript : MonoBehaviour {
             CharacterName.text = "Quin Zoltan";
             CharacterBio.text = "Quin Zoltan was born in a small village at the base of the great volcano Mount Goragundi. Naturally, he learned to harness fire from a young age. So young, in fact, that travelers would come from lands far away just to witness the spectacle themselves.";
         }
-        else if (selection == "white")
+        else if (selection == "White")
         {
             BlackMage.SetActive(false);
             BlueMage.SetActive(false);
@@ -148,7 +149,7 @@ public class CharacterSelectScript : MonoBehaviour {
             CharacterName.text = "Targus Zweilander";
             CharacterBio.text = "Targus Zweilander was destined to face a great trial in his lifetime. This burden drove him to greatness, and he is renowned for his mastery of ancient Virillian sorcery. He is the only known living sorcerer to have uncovered its secrets.";
         }
-        else if (selection == "purple")
+        else if (selection == "Purple")
         {
             BlackMage.SetActive(false);
             BlueMage.SetActive(false);
@@ -165,6 +166,8 @@ public class CharacterSelectScript : MonoBehaviour {
 
     public void DeselectCharacter()
     {
+        PlayerPrefs.SetString("Player1Color", "");
+
         isCharacterSelected = false;
         ResetMages(false);
         BioMenu.GetComponent<Animator>().SetBool("isDisplayed", false);
@@ -174,9 +177,7 @@ public class CharacterSelectScript : MonoBehaviour {
     {
         if (!isCharacterSelected)
         {
-
-
-            if (selection == "black")
+            if (selection == "Black")
             {
                 BlackMage.SetActive(true);
                 //BlueMage.SetActive(false);
@@ -187,7 +188,7 @@ public class CharacterSelectScript : MonoBehaviour {
                 //WhiteMage.SetActive(false);
                 //PurpleMage.SetActive(false);
             }
-            else if (selection == "blue")
+            else if (selection == "Blue")
             {
                 //BlackMage.SetActive(false);
                 BlueMage.SetActive(true);
@@ -198,7 +199,7 @@ public class CharacterSelectScript : MonoBehaviour {
                 //WhiteMage.SetActive(false);
                 //PurpleMage.SetActive(false);
             }
-            else if (selection == "orange")
+            else if (selection == "Orange")
             {
                 //BlackMage.SetActive(false);
                 //BlueMage.SetActive(false);
@@ -209,7 +210,7 @@ public class CharacterSelectScript : MonoBehaviour {
                 //WhiteMage.SetActive(false);
                 //PurpleMage.SetActive(false);
             }
-            else if (selection == "green")
+            else if (selection == "Green")
             {
                 //BlackMage.SetActive(false);
                 //BlueMage.SetActive(false);
@@ -220,7 +221,7 @@ public class CharacterSelectScript : MonoBehaviour {
                 //WhiteMage.SetActive(false);
                 //PurpleMage.SetActive(false);
             }
-            else if (selection == "yellow")
+            else if (selection == "Yellow")
             {
                 //BlackMage.SetActive(false);
                 //BlueMage.SetActive(false);
@@ -231,7 +232,7 @@ public class CharacterSelectScript : MonoBehaviour {
                 //WhiteMage.SetActive(false);
                 //PurpleMage.SetActive(false);
             }
-            else if (selection == "red")
+            else if (selection == "Red")
             {
                 //BlackMage.SetActive(false);
                 //BlueMage.SetActive(false);
@@ -242,7 +243,7 @@ public class CharacterSelectScript : MonoBehaviour {
                 //WhiteMage.SetActive(false);
                 //PurpleMage.SetActive(false);
             }
-            else if (selection == "white")
+            else if (selection == "White")
             {
                 //BlackMage.SetActive(false);
                 //BlueMage.SetActive(false);
@@ -253,7 +254,7 @@ public class CharacterSelectScript : MonoBehaviour {
                 WhiteMage.SetActive(true);
                 //PurpleMage.SetActive(false);
             }
-            else if (selection == "purple")
+            else if (selection == "Purple")
             {
                 //BlackMage.SetActive(false);
                 //BlueMage.SetActive(false);
@@ -271,35 +272,35 @@ public class CharacterSelectScript : MonoBehaviour {
     {
         if (!isCharacterSelected)
         {
-            if (selection == "black")
+            if (selection == "Black")
             {
                 BlackMage.SetActive(false);
             }
-            else if (selection == "blue")
+            else if (selection == "Blue")
             {
                 BlueMage.SetActive(false);
             }
-            else if (selection == "orange")
+            else if (selection == "Orange")
             {
                 OrangeMage.SetActive(false);
             }
-            else if (selection == "green")
+            else if (selection == "Green")
             {
                 GreenMage.SetActive(false);
             }
-            else if (selection == "yellow")
+            else if (selection == "Yellow")
             {
                 YellowMage.SetActive(false);
             }
-            else if (selection == "red")
+            else if (selection == "Red")
             {
                 RedMage.SetActive(false);
             }
-            else if (selection == "white")
+            else if (selection == "White")
             {
                 WhiteMage.SetActive(false);
             }
-            else if (selection == "purple")
+            else if (selection == "Purple")
             {
                 PurpleMage.SetActive(false);
             }

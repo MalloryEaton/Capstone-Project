@@ -30,19 +30,24 @@ public class UIControllerScript : MonoBehaviour
         if (panel == "story")
         {
             print(panel);
+            PlayerPrefs.SetString("GameType", "Story");
         }
-        else if (panel == "difficulty")
+        else if (panel == "difficulty") //quickplay
         {
             MainButtonPanel.GetComponent<Animator>().SetBool("isDisplayed", false);
             hide("character");
             //MultiplayerPanel.GetComponent<Animator>().SetBool("isDisplayed", false);
             DifficultyPanel.GetComponent<Animator>().SetBool("isDisplayed", true);
+
+            //PlayerPrefs.SetString("Difficulty", );IMPORTANT!!!!!!!!!!!
         }
         else if(panel == "multiplayer")
         {
             //MainButtonPanel.GetComponent<Animator>().SetBool("isDisplayed", false);
             hide("main");
             MultiplayerPanel.GetComponent<Animator>().SetBool("isDisplayed", true);
+
+            PlayerPrefs.SetString("GameType", "TwoPlayers");
         }
         else if (panel == "main")
         {
@@ -73,6 +78,10 @@ public class UIControllerScript : MonoBehaviour
         else if (panel == "bio")
         {
            // BioPanel.GetComponent<Animator>().SetBool("isDisplayed", true);
+        }
+        else if (panel == "play") // Start game
+        {
+            SceneManager.LoadScene("Mal'sBoard");
         }
 
     }
