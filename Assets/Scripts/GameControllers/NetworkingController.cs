@@ -132,7 +132,7 @@ public class NetworkingController : Photon.PunBehaviour
             else
             {
                 gameLogicController.runeFromLocation = moveFrom;
-                // Movement phase
+                gameLogicController.MovementPhase_Place(moveTo);
             }            
         }
         if (removeFrom != -1)

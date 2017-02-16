@@ -41,7 +41,7 @@ public class RuneController : MonoBehaviour
     
     private void OnMouseEnter()
     {
-        if(!gameController.preventClick && gameController.gamePhase == "placement" && tag == "Empty")
+        if(gameController.gamePhase == "placement" && tag == "Empty" && !gameController.waitingOnOtherPlayer && !gameController.waitingOnAnimation)
         {
             AddRuneHighlight();
         }
@@ -49,7 +49,7 @@ public class RuneController : MonoBehaviour
 
     private void OnMouseExit()
     {
-        if (!gameController.preventClick && gameController.gamePhase == "placement" && tag == "Empty")
+        if (gameController.gamePhase == "placement" && tag == "Empty" && !gameController.waitingOnOtherPlayer && !gameController.waitingOnAnimation)
         {
             RemoveRuneHighlight();
         }
@@ -57,27 +57,24 @@ public class RuneController : MonoBehaviour
     
     private void OnMouseDown()
     {
-        //Debug.Log("preventClick " + gameController.preventClick);
-        //Debug.Log("preventClick " + gameController.gamePhase);
-
-        if (!gameController.waitingOnAnimation)
+        if (!gameController.waitingOnAnimation && !gameController.waitingOnOtherPlayer)
         {
             switch (gameController.gamePhase)
             {
                 case "placement":
-                    gameController.waitingOnAnimation = true;
+                    //gameController.waitingOnAnimation = true;
                     gameController.PlacementPhase(runeNumber);
                     break;
                 case "movementPickup":
-                    gameController.waitingOnAnimation = true;
+                    //gameController.waitingOnAnimation = true;
                     gameController.MovementPhase_Pickup(runeNumber);
                     break;
                 case "movementPlace":
-                    gameController.waitingOnAnimation = true;
+                    //gameController.waitingOnAnimation = true;
                     gameController.MovementPhase_Place(runeNumber);
                     break;
                 case "removal":
-                    gameController.waitingOnAnimation = true;
+                    //gameController.waitingOnAnimation = true;
                     gameController.RemovalPhase(runeNumber);
                     break;
             }

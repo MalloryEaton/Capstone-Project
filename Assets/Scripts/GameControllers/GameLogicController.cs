@@ -59,9 +59,13 @@ public class GameLogicController : MonoBehaviour
         networking = FindObjectOfType(typeof(NetworkingController)) as NetworkingController;
         gamePhase = "placement";
         previousGamePhase = "placement";
+        waitingOnAnimation = false;
+        waitingOnOtherPlayer= false;
 
         isPlayer1Turn = true;
-        isNetworkGame = false;
+        //isNetworkGame = true;
+        isNetworkGame = PlayerPrefs.GetString("GameType") == "Network" ? true : false;
+        print("Game Type: " + PlayerPrefs.GetString("GameType"));
         if (isNetworkGame)
         {
             // The master client moves first
@@ -72,11 +76,12 @@ public class GameLogicController : MonoBehaviour
             player2Color = "Purple";
             networking.ResetNetworkValues();
         }
-
-        player1Color = PlayerPrefs.GetString("PlayerColor");
-        player2Color = "Purple";
-
-        Debug.Log(preventClick);
+        else
+        {
+            //player1Color = PlayerPrefs.GetString("PlayerColor");
+            player1Color = "Green";
+            player2Color = "Purple";
+        }
 
         startingNumberOfOrbs = 4;
         player1OrbCount = 0;
@@ -103,11 +108,22 @@ public class GameLogicController : MonoBehaviour
 
     private void InstantiateMages()
     {
-        player1Mage = Instantiate(dictionaries.magesDictionary[player1Color], new Vector3(20, 1, 28), new Quaternion(0, 180, 0, 0));
-        player1Mage.tag = "Mage";
+        if(!isNetworkGame || (isNetworkGame && isPlayer1))
+        {
+            player1Mage = Instantiate(dictionaries.magesDictionary[player1Color], new Vector3(20, 1, 28), new Quaternion(0, 180, 0, 0));
+            player1Mage.tag = "Mage";
 
-        player2Mage = Instantiate(dictionaries.magesDictionary[player2Color], new Vector3(4, 1, -4), new Quaternion(0, 0, 0, 0));
-        player2Mage.tag = "Mage";
+            player2Mage = Instantiate(dictionaries.magesDictionary[player2Color], new Vector3(4, 1, -4), new Quaternion(0, 0, 0, 0));
+            player2Mage.tag = "Mage";
+        }
+        else if(isNetworkGame && !isPlayer1)
+        {
+            player1Mage = Instantiate(dictionaries.magesDictionary[player1Color], new Vector3(4, 1, -4), new Quaternion(0, 0, 0, 0));
+            player1Mage.tag = "Mage";
+
+            player2Mage = Instantiate(dictionaries.magesDictionary[player2Color], new Vector3(20, 1, 28), new Quaternion(0, 180, 0, 0));
+            player2Mage.tag = "Mage";
+        }
     }
 
     private void InstantiateShrine()
@@ -117,8 +133,16 @@ public class GameLogicController : MonoBehaviour
 
     private void InstantiateOrbContainers()
     {
-        Instantiate(dictionaries.orbContainersDictionary[player1Color], new Vector3(0, 0, 28), Quaternion.identity);
-        Instantiate(dictionaries.orbContainersDictionary[player2Color], new Vector3(8, 0, -4), Quaternion.identity);
+        if (!isNetworkGame || (isNetworkGame && isPlayer1))
+        {
+            Instantiate(dictionaries.orbContainersDictionary[player1Color], new Vector3(0, 0, 28), Quaternion.identity);
+            Instantiate(dictionaries.orbContainersDictionary[player2Color], new Vector3(8, 0, -4), Quaternion.identity);
+        }
+        else if(isNetworkGame && !isPlayer1)
+        {
+            Instantiate(dictionaries.orbContainersDictionary[player1Color], new Vector3(8, 0, -4), Quaternion.identity);
+            Instantiate(dictionaries.orbContainersDictionary[player2Color], new Vector3(0, 0, 28), Quaternion.identity);
+        }  
     }
 
     /*---------------------------------------------------------------------
@@ -154,15 +178,19 @@ public class GameLogicController : MonoBehaviour
     // Movement //
     private void PrepareForMovementPhase()
     {
-        if (ThereIsAnAvailableMove(MakeListOfRunesForCurrentPlayer()))
+        //only do this if it is your move
+        if(!isNetworkGame || (isNetworkGame && ((isPlayer1 && isPlayer1Turn) || (!isPlayer1 && !isPlayer1Turn))))
         {
-            HighlightMoveableOrbs(runesThatCanBeMoved);
-        }
-        else
-        {
-            print("NO AVAILABLE MOVES! YOU LOSE!");
-            isPlayer1Turn = !isPlayer1Turn;
-            GameOver();
+            if (ThereIsAnAvailableMove(MakeListOfRunesForCurrentPlayer()))
+            {
+                HighlightMoveableOrbs(runesThatCanBeMoved);
+            }
+            else
+            {
+                print("NO AVAILABLE MOVES! YOU LOSE!");
+                isPlayer1Turn = !isPlayer1Turn;
+                GameOver();
+            }
         }
     }
 
@@ -171,7 +199,6 @@ public class GameLogicController : MonoBehaviour
         if (RuneCanBeMoved(selectedRune))
         {
             networking.moveFrom = selectedRune;
-
             runeFromLocation = selectedRune;
 
             RemoveAllRuneHighlights();
@@ -180,11 +207,6 @@ public class GameLogicController : MonoBehaviour
 
             previousGamePhase = gamePhase;
             gamePhase = "movementPlace";
-            waitingOnAnimation = false;
-        }
-        else
-        {
-            waitingOnAnimation = false;
         }
     }
 
@@ -213,10 +235,6 @@ public class GameLogicController : MonoBehaviour
         {
             previousGamePhase = "movementPlace";
             MovementPhase_Pickup(toLocation);
-        }
-        else
-        {
-            waitingOnAnimation = false;
         }
     }
 
@@ -275,12 +293,12 @@ public class GameLogicController : MonoBehaviour
     private void ChangeSide()
     {
         // Send move to opponent if in a network game
-        if (isNetworkGame && (isPlayer1Turn && isPlayer1 || !isPlayer1Turn && !isPlayer1))
+        if (isNetworkGame && ((isPlayer1Turn && isPlayer1) || (!isPlayer1Turn && !isPlayer1)))
         {
             networking.SendMove();
             waitingOnOtherPlayer = true;
         }
-        else if (isNetworkGame && (isPlayer1Turn && !isPlayer1 || !isPlayer1Turn && isPlayer1))
+        else if (isNetworkGame && ((isPlayer1Turn && !isPlayer1) || (!isPlayer1Turn && isPlayer1)))
         {
             waitingOnOtherPlayer = false;
         }
@@ -644,7 +662,6 @@ public class GameLogicController : MonoBehaviour
                 }
                 else
                 {
-                    //this is the callback
                     if (RuneIsInMill(toLocation))
                     {
                         PrepareForRemovalPhase();
