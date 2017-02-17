@@ -1482,6 +1482,10 @@ MonoBehaviour:
   MainPanel: {fileID: 0}
   LevelSelectPanel: {fileID: 0}
   BioPanel: {fileID: 0}
+  networkGame: 0
+  localGame: 0
+  quickGame: 0
+  story: 0
 --- !u!95 &53536840
 Animator:
   serializedVersion: 3
@@ -15052,6 +15056,10 @@ MonoBehaviour:
   MainPanel: {fileID: 0}
   LevelSelectPanel: {fileID: 0}
   BioPanel: {fileID: 0}
+  networkGame: 0
+  localGame: 0
+  quickGame: 0
+  story: 0
 --- !u!1 &680051555
 GameObject:
   m_ObjectHideFlags: 0
@@ -15572,7 +15580,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1851965927}
-        m_MethodName: goToNetworkLobby
+        m_MethodName: networkGameSelected
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -18631,6 +18639,10 @@ MonoBehaviour:
   MainPanel: {fileID: 0}
   LevelSelectPanel: {fileID: 0}
   BioPanel: {fileID: 0}
+  networkGame: 0
+  localGame: 0
+  quickGame: 0
+  story: 0
 --- !u!95 &813952950
 Animator:
   serializedVersion: 3
@@ -19194,8 +19206,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1851965927}
-        m_MethodName: display
-        m_Mode: 5
+        m_MethodName: continueFromCharacter
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -20254,14 +20266,14 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1851965927}
-        m_MethodName: display
+        m_MethodName: backButtonSelected
         m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: difficulty
+          m_StringArgument: character
           m_BoolArgument: 0
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
@@ -27535,6 +27547,10 @@ MonoBehaviour:
   MainPanel: {fileID: 0}
   LevelSelectPanel: {fileID: 0}
   BioPanel: {fileID: 0}
+  networkGame: 0
+  localGame: 0
+  quickGame: 0
+  story: 0
 --- !u!95 &1154962430
 Animator:
   serializedVersion: 3
@@ -27907,6 +27923,10 @@ MonoBehaviour:
   MainPanel: {fileID: 0}
   LevelSelectPanel: {fileID: 0}
   BioPanel: {fileID: 0}
+  networkGame: 0
+  localGame: 0
+  quickGame: 0
+  story: 0
 --- !u!95 &1163862027
 Animator:
   serializedVersion: 3
@@ -36504,6 +36524,10 @@ MonoBehaviour:
   MainPanel: {fileID: 813952945}
   LevelSelectPanel: {fileID: 0}
   BioPanel: {fileID: 0}
+  networkGame: 0
+  localGame: 0
+  quickGame: 0
+  story: 0
 --- !u!222 &1552221615
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -40731,8 +40755,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1851965927}
-        m_MethodName: hide
-        m_Mode: 5
+        m_MethodName: localGameSelected
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -43565,6 +43589,10 @@ MonoBehaviour:
   MainPanel: {fileID: 813952945}
   LevelSelectPanel: {fileID: 1321349876}
   BioPanel: {fileID: 799911067}
+  networkGame: 0
+  localGame: 0
+  quickGame: 0
+  story: 0
 --- !u!4 &1851965928
 Transform:
   m_ObjectHideFlags: 0

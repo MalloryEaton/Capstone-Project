@@ -19,6 +19,7 @@ public class CharacterSelectScript : MonoBehaviour {
     public Text CharacterBio;
 
     static public bool isCharacterSelected;
+    static public string currentPlayerColor = "Player1Color";
 
     static public CharacterSelectScript characterSelectScript;
 
@@ -55,7 +56,9 @@ public class CharacterSelectScript : MonoBehaviour {
         BioMenu.GetComponent<Animator>().SetBool("isDisplayed", true);
         print("character selected");
 
-        PlayerPrefs.SetString("PlayerColor", selection);
+        PlayerPrefs.SetString(currentPlayerColor, selection);
+
+        print(currentPlayerColor);
 
         if (selection == "Black")
         {
@@ -180,89 +183,33 @@ public class CharacterSelectScript : MonoBehaviour {
             if (selection == "Black")
             {
                 BlackMage.SetActive(true);
-                //BlueMage.SetActive(false);
-                //OrangeMage.SetActive(false);
-                //GreenMage.SetActive(false);
-                //YellowMage.SetActive(false);
-                //RedMage.SetActive(false);
-                //WhiteMage.SetActive(false);
-                //PurpleMage.SetActive(false);
             }
             else if (selection == "Blue")
             {
-                //BlackMage.SetActive(false);
                 BlueMage.SetActive(true);
-                //OrangeMage.SetActive(false);
-                //GreenMage.SetActive(false);
-                //YellowMage.SetActive(false);
-                //RedMage.SetActive(false);
-                //WhiteMage.SetActive(false);
-                //PurpleMage.SetActive(false);
             }
             else if (selection == "Orange")
             {
-                //BlackMage.SetActive(false);
-                //BlueMage.SetActive(false);
                 OrangeMage.SetActive(true);
-                //GreenMage.SetActive(false);
-                //YellowMage.SetActive(false);
-                //RedMage.SetActive(false);
-                //WhiteMage.SetActive(false);
-                //PurpleMage.SetActive(false);
             }
             else if (selection == "Green")
             {
-                //BlackMage.SetActive(false);
-                //BlueMage.SetActive(false);
-                //OrangeMage.SetActive(false);
                 GreenMage.SetActive(true);
-                //YellowMage.SetActive(false);
-                //RedMage.SetActive(false);
-                //WhiteMage.SetActive(false);
-                //PurpleMage.SetActive(false);
             }
             else if (selection == "Yellow")
             {
-                //BlackMage.SetActive(false);
-                //BlueMage.SetActive(false);
-                //OrangeMage.SetActive(false);
-                //GreenMage.SetActive(false);
                 YellowMage.SetActive(true);
-                //RedMage.SetActive(false);
-                //WhiteMage.SetActive(false);
-                //PurpleMage.SetActive(false);
             }
             else if (selection == "Red")
             {
-                //BlackMage.SetActive(false);
-                //BlueMage.SetActive(false);
-                //OrangeMage.SetActive(false);
-                //GreenMage.SetActive(false);
-                //YellowMage.SetActive(false);
                 RedMage.SetActive(true);
-                //WhiteMage.SetActive(false);
-                //PurpleMage.SetActive(false);
             }
             else if (selection == "White")
             {
-                //BlackMage.SetActive(false);
-                //BlueMage.SetActive(false);
-                //OrangeMage.SetActive(false);
-                //GreenMage.SetActive(false);
-                //YellowMage.SetActive(false);
-                //RedMage.SetActive(false);
                 WhiteMage.SetActive(true);
-                //PurpleMage.SetActive(false);
             }
             else if (selection == "Purple")
             {
-                //BlackMage.SetActive(false);
-                //BlueMage.SetActive(false);
-                //OrangeMage.SetActive(false);
-                //GreenMage.SetActive(false);
-                //YellowMage.SetActive(false);
-                //RedMage.SetActive(false);
-                //WhiteMage.SetActive(false);
                 PurpleMage.SetActive(true);
             }
         }

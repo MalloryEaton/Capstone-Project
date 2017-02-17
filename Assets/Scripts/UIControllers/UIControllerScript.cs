@@ -17,6 +17,11 @@ public class UIControllerScript : MonoBehaviour
     public GameObject LevelSelectPanel;
     public GameObject BioPanel;
 
+    public bool networkGame = false;
+    public bool localGame = false;
+    public bool quickGame = false;
+    public bool story = false;
+
     void Awake()
     {
         MainButtonPanel.GetComponent<Animator>().SetBool("isDisplayed", true);
@@ -45,6 +50,7 @@ public class UIControllerScript : MonoBehaviour
         else if (panel == "multiplayer")
         {
             hide("main");
+            hide("character");
             MultiplayerPanel.GetComponent<Animator>().SetBool("isDisplayed", true);
 
             PlayerPrefs.SetString("GameType", "TwoPlayers");
@@ -55,6 +61,11 @@ public class UIControllerScript : MonoBehaviour
             hide("multiplayer");
             hide("character");
             display("title");
+            resetPrefs("GameType", "");
+            networkGame = false;
+            localGame = false;
+            quickGame = false;
+            story = false;
             MainButtonPanel.GetComponent<Animator>().SetBool("isDisplayed", true);
         }
         else if (panel == "title")
@@ -68,6 +79,7 @@ public class UIControllerScript : MonoBehaviour
             hide("title");
             hide("main");
             hide("difficulty");
+            hide("multiplayer");
             CharacterSelectPanel.GetComponent<Animator>().SetBool("isDisplayed", true);
         }
         else if (panel == "level")
@@ -138,9 +150,91 @@ public class UIControllerScript : MonoBehaviour
         }
     }
 
+    public void backButtonSelected(string currentPanel)
+    {
+        if (currentPanel == "character")
+        {
+            if(CharacterSelectScript.currentPlayerColor == "Player1Color")
+            {
+                if(networkGame == true || localGame == true)
+                {
+                    display("multiplayer");
+                }
+                else if(quickGame == true)
+                {
+                    display("difficulty");
+                }
+            }
+            else
+            {
+                CharacterSelectScript.currentPlayerColor = "Player1Color";
+                hide("bio");
+            }
+        }
+    }
+
+    public void setDifficulty(string difficulty)
+    {
+        PlayerPrefs.SetString("Difficulty", difficulty);
+        display("character");
+    }
+
     public void goToNetworkLobby()
     {
         SceneManager.LoadScene("LobbyMenu");
+    }
+
+    public void networkGameSelected()
+    {
+        networkGame = true;
+        PlayerPrefs.SetString("GameType", "Network");
+        display("character");
+    }
+
+    public void localGameSelected()
+    {
+        localGame = true;
+        PlayerPrefs.SetString("GameType", "Local");
+        display("character");
+    }
+
+    public void quickGameSelected()
+    {
+        quickGame = true;
+        PlayerPrefs.SetString("GameType", "AI");
+        display("character");
+    }
+
+    public void storySelected()
+    {
+        story = true;
+        PlayerPrefs.SetString("GameType", "Story");
+        display("story");
+    }
+
+    public void resetPrefs(string prefType, string prefSetting)
+    {
+        PlayerPrefs.SetString(prefType, prefSetting);
+    }
+
+    public void continueFromCharacter()
+    {
+        if(networkGame == true)
+        {
+            goToNetworkLobby();
+        }
+        else if(localGame == true)
+        {
+            if(CharacterSelectScript.currentPlayerColor == "Player1Color")
+            {
+                CharacterSelectScript.currentPlayerColor = "Player2Color";
+                hide("bio");
+            }
+            else if(CharacterSelectScript.currentPlayerColor == "Player2Color")
+            {
+                display("level");
+            }
+        }
     }
 
     public void quitGame()
