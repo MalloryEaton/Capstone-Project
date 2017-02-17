@@ -41,7 +41,7 @@ public class RuneController : MonoBehaviour
     
     private void OnMouseEnter()
     {
-        if(!gameController.preventClick && gameController.gamePhase == "placement" && tag == "Empty")
+        if(gameController.gamePhase == "placement" && tag == "Empty" && !gameController.waitingOnOtherPlayer && !gameController.waitingOnAnimation)
         {
             AddRuneHighlight();
         }
@@ -49,33 +49,32 @@ public class RuneController : MonoBehaviour
 
     private void OnMouseExit()
     {
-        if (!gameController.preventClick && gameController.gamePhase == "placement" && tag == "Empty")
+        if (gameController.gamePhase == "placement" && tag == "Empty" && !gameController.waitingOnOtherPlayer && !gameController.waitingOnAnimation)
         {
             RemoveRuneHighlight();
         }
     }
-
-    //detect click
+    
     private void OnMouseDown()
     {
-        if (!gameController.preventClick)
+        if (!gameController.waitingOnAnimation && !gameController.waitingOnOtherPlayer)
         {
             switch (gameController.gamePhase)
             {
                 case "placement":
-                    gameController.preventClick = true;
+                    //gameController.waitingOnAnimation = true;
                     gameController.PlacementPhase(runeNumber);
                     break;
                 case "movementPickup":
-                    gameController.preventClick = true;
+                    //gameController.waitingOnAnimation = true;
                     gameController.MovementPhase_Pickup(runeNumber);
                     break;
                 case "movementPlace":
-                    gameController.preventClick = true;
+                    //gameController.waitingOnAnimation = true;
                     gameController.MovementPhase_Place(runeNumber);
                     break;
                 case "removal":
-                    gameController.preventClick = true;
+                    //gameController.waitingOnAnimation = true;
                     gameController.RemovalPhase(runeNumber);
                     break;
             }
