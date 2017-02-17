@@ -40,4 +40,5 @@ MonoBehaviour:
   - ReceiveName
   - RequestForPickupItems
   - RequestForPickupTimes
+  - ReceiveColor
   DisableAutoOpenWizard: 1

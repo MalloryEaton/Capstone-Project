@@ -17,6 +17,11 @@ public class GameLogicController : MonoBehaviour
      https://docs.unity3d.com/ScriptReference/PlayerPrefs.SetString.html
     */
 
+    /*
+        Notes:
+            When mill is made and removable runes are highlighted, should not highlight runes in mills
+    */
+
     /*---------------------------------------------------------------------
     || GAME VARIABLES
     -----------------------------------------------------------------------*/
@@ -33,8 +38,8 @@ public class GameLogicController : MonoBehaviour
     public string gamePhase; //placement, movementPickup, movementPlace, removal
     private string previousGamePhase;
 
-    private bool isNetworkGame;
-    private bool isPlayer1;
+    public bool isNetworkGame;
+    public bool isPlayer1;
 
     public bool isPlayer1Turn;
     public bool preventClick;
@@ -60,28 +65,8 @@ public class GameLogicController : MonoBehaviour
         gamePhase = "placement";
         previousGamePhase = "placement";
         waitingOnAnimation = false;
-        waitingOnOtherPlayer= false;
-
+        waitingOnOtherPlayer = false;
         isPlayer1Turn = true;
-        //isNetworkGame = true;
-        isNetworkGame = PlayerPrefs.GetString("GameType") == "Network" ? true : false;
-        print("Game Type: " + PlayerPrefs.GetString("GameType"));
-        if (isNetworkGame)
-        {
-            // The master client moves first
-            isPlayer1 = networking.DetermineIfMasterClient();
-            waitingOnOtherPlayer = !isPlayer1;
-
-            player1Color = "Green";
-            player2Color = "Purple";
-            networking.ResetNetworkValues();
-        }
-        else
-        {
-            //player1Color = PlayerPrefs.GetString("PlayerColor");
-            player1Color = "Green";
-            player2Color = "Purple";
-        }
 
         startingNumberOfOrbs = 4;
         player1OrbCount = 0;
@@ -91,7 +76,37 @@ public class GameLogicController : MonoBehaviour
         player2Mills = new List<Mill>();
         runesThatCanBeMoved = new List<short>();
         runesThatCanBeRemoved = new List<short>();
-        InitializeGameBoard();
+
+        //PlayerPrefs.DeleteAll(); //remove when not testing
+        isNetworkGame = PlayerPrefs.GetString("GameType") == "Network" ? true : false;
+
+        if (isNetworkGame)
+        {
+            networking.SendColor();
+            LeanTween.delayedCall(gameObject, 1f, () => {
+                isPlayer1 = networking.DetermineIfMasterClient();
+                waitingOnOtherPlayer = !isPlayer1; //prevent player 2 from clicking
+                
+                if (isPlayer1)
+                {
+                    player1Color = PlayerPrefs.GetString("PlayerColor");
+                    player2Color = networking.otherPlayerColor;
+                }
+                else
+                {
+                    player1Color = networking.otherPlayerColor;
+                    player2Color = PlayerPrefs.GetString("PlayerColor");
+                }
+                networking.ResetNetworkValues();
+                InitializeGameBoard();
+            });
+        }
+        else
+        {
+            player1Color = "Green";
+            player2Color = "Purple";
+            InitializeGameBoard();
+        }
     }
 
     /*---------------------------------------------------------------------

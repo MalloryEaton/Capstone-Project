@@ -23,6 +23,8 @@ public class NetworkingController : Photon.PunBehaviour
     public short moveFrom;
     public short removeFrom;
 
+    public string otherPlayerColor;
+
     /*---------------------------------------------------------------------
     || NETWORKING FUNCTIONS
     -----------------------------------------------------------------------*/
@@ -76,6 +78,11 @@ public class NetworkingController : Photon.PunBehaviour
         photonView.RPC("ReceieveName", PhotonTargets.Others, PhotonNetwork.playerName);
     }
 
+    public void SendColor()
+    {
+        photonView.RPC("ReceiveColor", PhotonTargets.Others, PlayerPrefs.GetString("PlayerColor"));
+    }
+
     public void SendMove()
     {
         photonView.RPC("ReceiveMove", PhotonTargets.Others, moveTo, moveFrom, removeFrom);
@@ -113,6 +120,12 @@ public class NetworkingController : Photon.PunBehaviour
     {
         this.opponentName = opponentName;
         //opponentNameText.text = opponentName;
+    }
+
+    [PunRPC]
+    public void ReceiveColor(string color)
+    {
+        otherPlayerColor = color;
     }
 
     [PunRPC]

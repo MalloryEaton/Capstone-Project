@@ -48,6 +48,7 @@ namespace Com.EnsorcelledStudios.Runic
         /// </summary>
         void Awake()
         {
+            PlayerPrefs.SetString("PlayerColor", "Purple");
             // #NotImportant
             // Force LogLevel
             PhotonNetwork.logLevel = Loglevel;

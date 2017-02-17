@@ -15,7 +15,16 @@ public class MageController : MonoBehaviour {
 
     public void PlayAttack1Animation(GameObject rune)
     {
-        float direction = gameController.isPlayer1Turn ? 180f : 0f;
+        float direction = 0;
+        if(gameController.isNetworkGame)
+        {
+            if (gameController.isPlayer1 && gameController.isPlayer1Turn)
+                direction = 180f;
+            else if(!gameController.isPlayer1 && !gameController.isPlayer1Turn)
+                direction = 0f;
+        }
+        else
+            direction = gameController.isPlayer1 ? 180f : 0f;
 
         transform.LookAt(rune.transform);
         anim.Play("Attack1");
