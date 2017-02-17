@@ -162,6 +162,7 @@ public class UIControllerScript : MonoBehaviour
                 }
                 else if(quickGame == true)
                 {
+                    print("test");
                     display("difficulty");
                 }
             }
@@ -202,7 +203,7 @@ public class UIControllerScript : MonoBehaviour
     {
         quickGame = true;
         PlayerPrefs.SetString("GameType", "AI");
-        display("character");
+        display("difficulty");
     }
 
     public void storySelected()
@@ -234,6 +235,10 @@ public class UIControllerScript : MonoBehaviour
             {
                 display("level");
             }
+        }
+        else if(quickGame == true)
+        {
+            display("level");
         }
     }
 
