@@ -269,6 +269,11 @@ public class GameLogicController : MonoBehaviour
     // Game Over //
     private void GameOver()
     {
+        if (isNetworkGame && ((isPlayer1Turn && isPlayer1) || (!isPlayer1Turn && !isPlayer1)))
+        {
+            networking.SendMove();
+        }
+
         RemoveAllOrbHighlights(-1);
         RemoveAllRuneHighlights();
 
@@ -295,6 +300,7 @@ public class GameLogicController : MonoBehaviour
         // Send move to opponent if in a network game
         if (isNetworkGame && ((isPlayer1Turn && isPlayer1) || (!isPlayer1Turn && !isPlayer1)))
         {
+            Debug.Log("We're sending a move.");
             networking.SendMove();
             waitingOnOtherPlayer = true;
         }
@@ -652,7 +658,7 @@ public class GameLogicController : MonoBehaviour
                         // we don't want to call ChangeSide() quite yet.
                         if (((isPlayer1Turn && !isPlayer1) || (!isPlayer1Turn && isPlayer1)) && (networking.removeFrom != -1))
                         {
-                            Debug.Log("Still need to do the removal phase.");
+                            RemovalPhase(networking.removeFrom);
                         }
                         else
                         {

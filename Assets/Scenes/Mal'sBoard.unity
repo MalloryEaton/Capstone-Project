@@ -37,7 +37,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.7692756, g: 0.845545, b: 0.7876534, a: 1}
+  m_IndirectSpecularColor: {r: 0.3587092, g: 0.73536915, b: 0.75041527, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -71,7 +71,7 @@ LightmapSettings:
     m_FinalGatherFiltering: 1
     m_FinalGatherRayCount: 1024
     m_ReflectionCompression: 2
-  m_LightingDataAsset: {fileID: 112000001, guid: daee1cb116f736741badf3014853804c,
+  m_LightingDataAsset: {fileID: 112000001, guid: d4f0ddc0c45f1a642aaf831c333fc2e8,
     type: 2}
   m_RuntimeCPUUsage: 25
 --- !u!196 &4
@@ -1994,7 +1994,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b08cb85219de0eb44a1dbd07ad912fbe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  chatInputField: {fileID: 0}
   runeList:
   - {fileID: 737601196}
   - {fileID: 1318599176}
@@ -2020,11 +2019,14 @@ MonoBehaviour:
   - {fileID: 683221713}
   - {fileID: 999431570}
   - {fileID: 991301208}
-  playerColor: 
-  opponentColor: 
+  player1Color: 
+  player2Color: 
   gamePhase: 
   isPlayer1Turn: 0
   preventClick: 0
+  waitingOnOtherPlayer: 0
+  waitingOnAnimation: 0
+  runeFromLocation: 0
 --- !u!114 &796952838
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2073,6 +2075,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f10f93efa03d464f987b2944410357f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  chatInputField: {fileID: 0}
+  isMasterClient: 0
+  opponentName: 
+  moveTo: 0
+  moveFrom: 0
+  removeFrom: 0
 --- !u!1 &833196466
 GameObject:
   m_ObjectHideFlags: 0

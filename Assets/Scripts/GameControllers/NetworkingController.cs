@@ -118,9 +118,9 @@ public class NetworkingController : Photon.PunBehaviour
     [PunRPC]
     public void ReceiveMove(short moveTo, short moveFrom, short removeFrom)
     {
-        Debug.Log("Move to: " + moveTo);
-        Debug.Log("Move from: " + moveFrom);
-        Debug.Log("Remove from: " + removeFrom);
+        this.moveTo = moveTo;
+        this.moveFrom = moveFrom;
+        this.removeFrom = removeFrom;
 
         if (moveTo != -1)
         {
@@ -134,10 +134,6 @@ public class NetworkingController : Photon.PunBehaviour
                 gameLogicController.runeFromLocation = moveFrom;
                 gameLogicController.MovementPhase_Place(moveTo);
             }            
-        }
-        if (removeFrom != -1)
-        {
-            gameLogicController.RemovalPhase(removeFrom);
         }
     }
 
