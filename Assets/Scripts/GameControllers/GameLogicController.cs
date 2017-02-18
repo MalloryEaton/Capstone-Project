@@ -89,13 +89,13 @@ public class GameLogicController : MonoBehaviour
                 
                 if (isPlayer1)
                 {
-                    player1Color = PlayerPrefs.GetString("PlayerColor");
+                    player1Color = PlayerPrefs.GetString("Player1Color");
                     player2Color = networking.otherPlayerColor;
                 }
                 else
                 {
                     player1Color = networking.otherPlayerColor;
-                    player2Color = PlayerPrefs.GetString("PlayerColor");
+                    player2Color = PlayerPrefs.GetString("Player1Color");
                 }
                 networking.ResetNetworkValues();
                 InitializeGameBoard();
@@ -103,8 +103,10 @@ public class GameLogicController : MonoBehaviour
         }
         else
         {
-            player1Color = "Green";
-            player2Color = "Purple";
+            //player1Color = "Green";
+            //player2Color = "Purple";
+            player1Color = PlayerPrefs.GetString("Player1Color");
+            player2Color = PlayerPrefs.GetString("Player2Color");
             InitializeGameBoard();
         }
     }
