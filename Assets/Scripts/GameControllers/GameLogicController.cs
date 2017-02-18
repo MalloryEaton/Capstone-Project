@@ -78,7 +78,7 @@ public class GameLogicController : MonoBehaviour
         runesThatCanBeRemoved = new List<short>();
         
         isNetworkGame = PlayerPrefs.GetString("GameType") == "Network" ? true : false;
-        isNetworkGame = true;
+        isNetworkGame = false;
 
         if (isNetworkGame)
         {

@@ -19,10 +19,6 @@ public class MageController : MonoBehaviour {
         if(gameController.isNetworkGame && gameController.isPlayer1)
         {
             direction = gameController.isPlayer1Turn ? 180f : 0f;
-            //if (gameController.isPlayer1Turn)
-            //    direction = 180f;
-            //else if (!gameController.isPlayer1Turn)
-            //    direction = 0f;
         }
         else if(gameController.isNetworkGame && !gameController.isPlayer1)
         {

@@ -111,8 +111,8 @@ public class NetworkingController : Photon.PunBehaviour
             Debug.LogError("PhotonNetwork : Trying to load a level but we are not the master Client");
         }
 
-        Debug.Log("PhotonNetwork : Loading Mal'sBoard");
-        PhotonNetwork.LoadLevel("Mal'sBoard");
+        Debug.Log("PhotonNetwork : Loading GameBoard");
+        PhotonNetwork.LoadLevel("GameBoard");
     }
 
     [PunRPC]

@@ -126,7 +126,7 @@ namespace Com.EnsorcelledStudios.Runic
 
                 // #Critical Load the Game
                 // TODO: This will almost certainly be named something different
-                PhotonNetwork.LoadLevel("Mal'sBoard");
+                PhotonNetwork.LoadLevel("GameBoard");
             }
         }
 

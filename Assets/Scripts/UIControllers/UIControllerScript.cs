@@ -99,7 +99,7 @@ public class UIControllerScript : MonoBehaviour
         }
         else if (panel == "play") // Start game
         {
-            SceneManager.LoadScene("Mal'sBoard");
+            SceneManager.LoadScene("GameBoard");
         }
     }
 
@@ -244,7 +244,7 @@ public class UIControllerScript : MonoBehaviour
 
     public void startGame()
     {
-        SceneManager.LoadScene("Mal'sBoard");
+        SceneManager.LoadScene("GameBoard");
     }
 
     public void quitGame()
