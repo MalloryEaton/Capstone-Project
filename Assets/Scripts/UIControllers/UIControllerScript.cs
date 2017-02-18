@@ -87,7 +87,7 @@ public class UIControllerScript : MonoBehaviour
             hide("character");
             hide("canvas");
             hide("bio");
-            LevelSelectPanel.SetActive(true);
+            LevelSelectPanel.GetComponent<Animator>().SetBool("isDisplayed", true);
         }
         else if (panel == "bio")
         {
@@ -146,7 +146,7 @@ public class UIControllerScript : MonoBehaviour
         }
         else if(panel == "level")
         {
-            LevelSelectPanel.SetActive(false);
+            LevelSelectPanel.GetComponent<Animator>().SetBool("isDisplayed", false);
         }
     }
 
@@ -240,6 +240,11 @@ public class UIControllerScript : MonoBehaviour
         {
             display("level");
         }
+    }
+
+    public void startGame()
+    {
+        SceneManager.LoadScene("Mal'sBoard");
     }
 
     public void quitGame()
