@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class OrbController : MonoBehaviour {
+public class OrbHoverController : MonoBehaviour {
     private float startY = 1.5f;
     private float amplitude = 0.5f;
     private float speed = 5;

@@ -2022,6 +2022,8 @@ MonoBehaviour:
   player1Color: 
   player2Color: 
   gamePhase: 
+  isNetworkGame: 0
+  isPlayer1: 0
   isPlayer1Turn: 0
   preventClick: 0
   waitingOnOtherPlayer: 0
@@ -2081,6 +2083,7 @@ MonoBehaviour:
   moveTo: 0
   moveFrom: 0
   removeFrom: 0
+  otherPlayerColor: 
 --- !u!1 &833196466
 GameObject:
   m_ObjectHideFlags: 0

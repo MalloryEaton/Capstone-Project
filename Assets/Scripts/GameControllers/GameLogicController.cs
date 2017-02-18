@@ -76,27 +76,20 @@ public class GameLogicController : MonoBehaviour
         player2Mills = new List<Mill>();
         runesThatCanBeMoved = new List<short>();
         runesThatCanBeRemoved = new List<short>();
-
-        //PlayerPrefs.DeleteAll(); //remove when not testing
+        
         isNetworkGame = PlayerPrefs.GetString("GameType") == "Network" ? true : false;
+        isNetworkGame = true;
 
         if (isNetworkGame)
         {
             networking.SendColor();
-            LeanTween.delayedCall(gameObject, 1f, () => {
+            LeanTween.delayedCall(gameObject, 2f, () => {
                 isPlayer1 = networking.DetermineIfMasterClient();
                 waitingOnOtherPlayer = !isPlayer1; //prevent player 2 from clicking
                 
-                if (isPlayer1)
-                {
-                    player1Color = PlayerPrefs.GetString("Player1Color");
-                    player2Color = networking.otherPlayerColor;
-                }
-                else
-                {
-                    player1Color = networking.otherPlayerColor;
-                    player2Color = PlayerPrefs.GetString("Player1Color");
-                }
+                player1Color = PlayerPrefs.GetString("Player1Color");
+                player2Color = networking.otherPlayerColor;
+                
                 networking.ResetNetworkValues();
                 InitializeGameBoard();
             });
@@ -275,11 +268,6 @@ public class GameLogicController : MonoBehaviour
                 RemoveRunesFromMill();
 
             RemoveOrb(runeToRemove);
-
-            if (previousGamePhase != "placement" && (player1OrbCount == 2 || player2OrbCount == 2)) //check for win
-                GameOver();
-            else //continue game
-                ChangeSide();
         }
     }
 
@@ -290,6 +278,8 @@ public class GameLogicController : MonoBehaviour
         {
             networking.SendMove();
         }
+
+        waitingOnAnimation = true; //prevent clicking
 
         RemoveAllOrbHighlights(-1);
         RemoveAllRuneHighlights();
@@ -542,11 +532,8 @@ public class GameLogicController : MonoBehaviour
 
         GameObject ring;
         ring = Instantiate(dictionaries.magicRingDictionary[color], new Vector3(t1.position.x, 0.2f, t1.position.z), ringTransform.rotation);
-        ring.name = "RingAt_" + mill.position1;
         ring = Instantiate(dictionaries.magicRingDictionary[color], new Vector3(t2.position.x, 0.2f, t2.position.z), ringTransform.rotation);
-        ring.name = "RingAt_" + mill.position2;
         ring = Instantiate(dictionaries.magicRingDictionary[color], new Vector3(t3.position.x, 0.2f, t3.position.z), ringTransform.rotation);
-        ring.name = "RingAt_" + mill.position3;
     }
 
     private void DestroyMagicRings()
@@ -634,7 +621,7 @@ public class GameLogicController : MonoBehaviour
     private void MakeOrbHover(short rune)
     {
         GameObject orb = GameObject.Find("OrbAtLocation_" + rune);
-        orb.AddComponent<OrbController>();
+        orb.AddComponent<OrbHoverController>();
     }
 
     public void MoveOrb(short toLocation)
@@ -701,20 +688,55 @@ public class GameLogicController : MonoBehaviour
 
     public void RemoveOrb(short runeNumber)
     {
-        Destroy(GameObject.Find("OrbAtLocation_" + runeNumber));
-        runeList[runeNumber].tag = "Empty";
-
         if (isPlayer1Turn)
-        {
-            player2OrbCount--;
-        }
+            player1Mage.GetComponent<MageController>().PlayAttack1Animation(GameObject.Find("Rune" + runeNumber));
         else
-        {
-            player1OrbCount--;
-        }
+            player2Mage.GetComponent<MageController>().PlayAttack1Animation(GameObject.Find("Rune" + runeNumber));
 
-        RemoveAllOrbHighlights(-1);
-        DestroyMagicRings();
+        LeanTween.delayedCall(gameObject, 0.6f, () =>
+        {
+            GameObject orbToDestroy = GameObject.Find("OrbAtLocation_" + runeNumber);
+
+            GameObject hit;
+            if (isPlayer1Turn)
+            {
+                hit = Instantiate(dictionaries.magicHitDictionary[player1Color],
+                    new Vector3(orbToDestroy.transform.position.x, 0.2f, orbToDestroy.transform.position.z), Quaternion.identity);
+            }
+            else
+            {
+                hit = Instantiate(dictionaries.magicHitDictionary[player2Color],
+                    new Vector3(orbToDestroy.transform.position.x, 0.2f, orbToDestroy.transform.position.z), Quaternion.identity);
+            }
+
+            LeanTween.delayedCall(gameObject, 0.1f, () => {
+                Destroy(orbToDestroy);
+            });
+
+            LeanTween.delayedCall(gameObject, 1f, () => {
+                Destroy(hit);
+            });
+
+            runeList[runeNumber].tag = "Empty";
+
+            if (isPlayer1Turn)
+            {
+                player2OrbCount--;
+            }
+            else
+            {
+                player1OrbCount--;
+            }
+
+            RemoveAllOrbHighlights(-1);
+            DestroyMagicRings();
+
+            if (previousGamePhase != "placement" && (player1OrbCount == 2 || player2OrbCount == 2)) //check for win
+                GameOver();
+            else //continue game
+                ChangeSide();
+        });
+            
     }
 
     private void RemoveAllOrbHighlights(short runeNumber)
@@ -743,9 +765,9 @@ public class GameLogicController : MonoBehaviour
             {
                 //if selected orb was not previously hovering, make it hover
                 GameObject selectedOrb = GameObject.Find("OrbAtLocation_" + runeNumber);
-                if (!selectedOrb.GetComponent<OrbController>())
+                if (!selectedOrb.GetComponent<OrbHoverController>())
                 {
-                    selectedOrb.AddComponent<OrbController>();
+                    selectedOrb.AddComponent<OrbHoverController>();
                 }
             }
         }
@@ -754,7 +776,7 @@ public class GameLogicController : MonoBehaviour
     private void RemoveOrbHighlight(short rune)
     {
         GameObject orb = GameObject.Find("OrbAtLocation_" + rune);
-        Destroy(orb.GetComponent<OrbController>());
+        Destroy(orb.GetComponent<OrbHoverController>());
         orb.transform.position = dictionaries.orbPositionsDictionary[rune];
     }
 

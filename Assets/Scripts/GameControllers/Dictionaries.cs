@@ -12,6 +12,7 @@ public class Dictionaries : MonoBehaviour {
     public Dictionary<string, GameObject> shrinesDictionary;
     public Dictionary<string, GameObject> magicRingDictionary;
     public Dictionary<string, GameObject> magesDictionary;
+    public Dictionary<string, GameObject> magicHitDictionary;
     public Dictionary<string, GameObject> orbContainersDictionary;
 
     public List<Mill> verticalMillsList;
@@ -28,6 +29,7 @@ public class Dictionaries : MonoBehaviour {
         magicRingDictionary = new Dictionary<string, GameObject>();
         magesDictionary = new Dictionary<string, GameObject>();
         orbContainersDictionary = new Dictionary<string, GameObject>();
+        magicHitDictionary = new Dictionary<string, GameObject>();
         verticalMillsList = new List<Mill>();
 
         InitializeAdjacencyDictionary();
@@ -40,6 +42,7 @@ public class Dictionaries : MonoBehaviour {
         InitializeMagicRingDictionary();
         InitializeMagesDictionary();
         InitializeOrbContainersDictionary();
+        InitializeMagicHitDictionary();
     }
 
     private void InitializeMagesDictionary()
@@ -52,6 +55,18 @@ public class Dictionaries : MonoBehaviour {
         magesDictionary.Add("Red", Resources.Load(@"MagesForBoard\RedMage", typeof(GameObject)) as GameObject);
         magesDictionary.Add("White", Resources.Load(@"MagesForBoard\WhiteMage", typeof(GameObject)) as GameObject);
         magesDictionary.Add("Yellow", Resources.Load(@"MagesForBoard\YellowMage", typeof(GameObject)) as GameObject);
+    }
+
+    private void InitializeMagicHitDictionary()
+    {
+        magicHitDictionary.Add("Black", Resources.Load(@"Hits\BlackHit", typeof(GameObject)) as GameObject);
+        magicHitDictionary.Add("Blue", Resources.Load(@"Hits\BlueHit", typeof(GameObject)) as GameObject);
+        magicHitDictionary.Add("Green", Resources.Load(@"Hits\GreenHit", typeof(GameObject)) as GameObject);
+        magicHitDictionary.Add("Orange", Resources.Load(@"Hits\OrangeHit", typeof(GameObject)) as GameObject);
+        magicHitDictionary.Add("Purple", Resources.Load(@"Hits\PurpleHit", typeof(GameObject)) as GameObject);
+        magicHitDictionary.Add("Red", Resources.Load(@"Hits\RedHit", typeof(GameObject)) as GameObject);
+        magicHitDictionary.Add("White", Resources.Load(@"Hits\WhiteHit", typeof(GameObject)) as GameObject);
+        magicHitDictionary.Add("Yellow", Resources.Load(@"Hits\YellowHit", typeof(GameObject)) as GameObject);
     }
 
     private void InitializeOrbContainersDictionary()
