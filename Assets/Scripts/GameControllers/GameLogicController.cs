@@ -98,10 +98,19 @@ public class GameLogicController : MonoBehaviour
         {
             //player1Color = "Green";
             //player2Color = "Purple";
-            player1Color = PlayerPrefs.GetString("Player1Color");
-            player2Color = PlayerPrefs.GetString("Player2Color");
+            //player1Color = PlayerPrefs.GetString("Player1Color");
+            //player2Color = PlayerPrefs.GetString("Player2Color");
+            player1Color = "Green";
+            player2Color = "Purple";
             InitializeGameBoard();
         }
+    }
+    
+    public void ShowAvailableMoves()
+    {
+        RemoveAllRuneHighlights();
+        RemoveAllOrbHighlights(-1);
+        HighlightMoveableOrbs(runesThatCanBeMoved);
     }
 
     /*---------------------------------------------------------------------
@@ -245,6 +254,10 @@ public class GameLogicController : MonoBehaviour
         {
             previousGamePhase = "movementPlace";
             MovementPhase_Pickup(toLocation);
+        }
+        else
+        {
+            ShowAvailableMoves();
         }
     }
 
