@@ -14,6 +14,7 @@ namespace Com.EnsorcelledStudios.Runic
 
         public GameObject controlPanel;
         public GameObject progressLabel;
+        public GameObject LoadingScreen;
         public InputField inputField;
 
         #endregion
@@ -73,7 +74,7 @@ namespace Com.EnsorcelledStudios.Runic
         /// </summary>
         void Start()
         {
-            progressLabel.SetActive(false);
+            LoadingScreen.GetComponent<Animator>().SetBool("isDisplayed", false);
             controlPanel.SetActive(true);
         }
 
@@ -98,7 +99,7 @@ namespace Com.EnsorcelledStudios.Runic
 
         public override void OnDisconnectedFromPhoton()
         {
-            progressLabel.SetActive(false);
+            LoadingScreen.GetComponent<Animator>().SetBool("isDisplayed", false);
             controlPanel.SetActive(true);
 
             // TODO: Need a better disconnect message
@@ -117,7 +118,7 @@ namespace Com.EnsorcelledStudios.Runic
         public override void OnJoinedRoom()
         {
             Debug.Log("DemoAnimator/Launcher: OnJoinedRoom() called by PUN. Now this client is in a room.");
-
+            LoadingScreen.GetComponent<Animator>().SetBool("isDisplayed", false);
             // #Critical: We only load if we are the first player, else we rely on 
             // PhotonNetwork.automaticallySyncScene to sync our instance scene.
             if (PhotonNetwork.room.PlayerCount == 1)
@@ -158,7 +159,7 @@ namespace Com.EnsorcelledStudios.Runic
                 // we will get a callback that we are connected, so we need to know what to do then
                 isConnecting = true;
 
-                progressLabel.SetActive(true);
+                LoadingScreen.GetComponent<Animator>().SetBool("isDisplayed", true);
                 controlPanel.SetActive(false);
 
                 // We check if we are connected or not, we join if we are, else we initiate the 

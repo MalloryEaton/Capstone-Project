@@ -188,6 +188,8 @@ public class UIControllerScript : MonoBehaviour
     public void networkGameSelected()
     {
         networkGame = true;
+        localGame = false;
+        quickGame = false;
         PlayerPrefs.SetString("GameType", "Network");
         display("character");
     }
@@ -195,6 +197,8 @@ public class UIControllerScript : MonoBehaviour
     public void localGameSelected()
     {
         localGame = true;
+        networkGame = false;
+        quickGame = false;
         PlayerPrefs.SetString("GameType", "Local");
         display("character");
     }
@@ -202,6 +206,8 @@ public class UIControllerScript : MonoBehaviour
     public void quickGameSelected()
     {
         quickGame = true;
+        networkGame = false;
+        localGame = false;
         PlayerPrefs.SetString("GameType", "AI");
         display("difficulty");
     }
@@ -209,6 +215,9 @@ public class UIControllerScript : MonoBehaviour
     public void storySelected()
     {
         story = true;
+        networkGame = false;
+        localGame = false;
+        quickGame = false;
         PlayerPrefs.SetString("GameType", "Story");
         display("story");
     }

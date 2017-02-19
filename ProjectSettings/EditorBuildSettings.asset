@@ -10,4 +10,4 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/LobbyMenu.unity
   - enabled: 1
-    path: Assets/Scenes/Mal'sBoard.unity
+    path: Assets/Scenes/GameBoard.unity
