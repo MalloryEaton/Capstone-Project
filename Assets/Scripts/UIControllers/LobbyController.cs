@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class LobbyController : MonoBehaviour {
 
-    public GameObject LoadingScreen
+    public GameObject LoadingScreen;
 
     private void Start()
     {
