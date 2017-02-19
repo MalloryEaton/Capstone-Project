@@ -3145,6 +3145,38 @@ Prefab:
       propertyPath: m_Name
       value: Line_16-17
       objectReference: {fileID: 0}
+    - target: {fileID: 1870418194693094, guid: e440454c9e50d284086f2aff1a8aa917, type: 2}
+      propertyPath: m_Name
+      value: Line_4-7
+      objectReference: {fileID: 0}
+    - target: {fileID: 1192934599977982, guid: e440454c9e50d284086f2aff1a8aa917, type: 2}
+      propertyPath: m_Name
+      value: Line_1-4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1143777817683064, guid: e440454c9e50d284086f2aff1a8aa917, type: 2}
+      propertyPath: m_Name
+      value: Line_16-19
+      objectReference: {fileID: 0}
+    - target: {fileID: 1144314824750752, guid: e440454c9e50d284086f2aff1a8aa917, type: 2}
+      propertyPath: m_Name
+      value: Line_19-21
+      objectReference: {fileID: 0}
+    - target: {fileID: 1599782168293368, guid: e440454c9e50d284086f2aff1a8aa917, type: 2}
+      propertyPath: m_Name
+      value: Line_12-13
+      objectReference: {fileID: 0}
+    - target: {fileID: 1283487774097914, guid: e440454c9e50d284086f2aff1a8aa917, type: 2}
+      propertyPath: m_Name
+      value: Line_13-14
+      objectReference: {fileID: 0}
+    - target: {fileID: 1732215032964210, guid: e440454c9e50d284086f2aff1a8aa917, type: 2}
+      propertyPath: m_Name
+      value: Line_10-11
+      objectReference: {fileID: 0}
+    - target: {fileID: 1894785657218316, guid: e440454c9e50d284086f2aff1a8aa917, type: 2}
+      propertyPath: m_Name
+      value: Line_9-10
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e440454c9e50d284086f2aff1a8aa917, type: 2}
   m_IsPrefabParent: 0
