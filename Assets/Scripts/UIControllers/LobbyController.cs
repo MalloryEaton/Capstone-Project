@@ -5,6 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class LobbyController : MonoBehaviour {
 
+    public GameObject LoadingScreen
+
     private void Start()
     {
         print("Load Lobby");
