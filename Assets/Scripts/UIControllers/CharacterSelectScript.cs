@@ -17,6 +17,7 @@ public class CharacterSelectScript : MonoBehaviour {
     public GameObject BioMenu;
     public Text CharacterName;
     public Text CharacterBio;
+    public Text PageHeader;
 
     static public bool isCharacterSelected;
     static public string currentPlayerColor = "Player1Color";

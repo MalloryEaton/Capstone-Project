@@ -16,11 +16,15 @@ public class UIControllerScript : MonoBehaviour
     public GameObject MainPanel;
     public GameObject LevelSelectPanel;
     public GameObject BioPanel;
+    public GameObject TutorialPanel;
+    public List<GameObject> TutorialSlides;
 
     public bool networkGame = false;
     public bool localGame = false;
     public bool quickGame = false;
     public bool story = false;
+
+    public int slideIndex;
 
     void Awake()
     {
@@ -29,6 +33,7 @@ public class UIControllerScript : MonoBehaviour
         display("canvas");
         //BioPanel.SetActive(false);
         print("awake");
+        slideIndex = 0;
     }
 
     public void display(string panel)
@@ -57,6 +62,7 @@ public class UIControllerScript : MonoBehaviour
         }
         else if (panel == "main")
         {
+            hide("tutorial");
             hide("difficulty");
             hide("multiplayer");
             hide("character");
@@ -70,6 +76,7 @@ public class UIControllerScript : MonoBehaviour
         }
         else if (panel == "title")
         {
+
             MainTitlePanel.GetComponent<Animator>().SetBool("isDisplayed", true);
         }
         else if (panel == "character")
@@ -80,6 +87,14 @@ public class UIControllerScript : MonoBehaviour
             hide("main");
             hide("difficulty");
             hide("multiplayer");
+            if(localGame)
+            {
+                CharacterSelectScript.characterSelectScript.PageHeader.text = "Player 1 Character Select";
+            }
+            else
+            {
+                CharacterSelectScript.characterSelectScript.PageHeader.text = "Character Select";
+            }
             CharacterSelectPanel.GetComponent<Animator>().SetBool("isDisplayed", true);
         }
         else if (panel == "level")
@@ -100,6 +115,21 @@ public class UIControllerScript : MonoBehaviour
         else if (panel == "play") // Start game
         {
             SceneManager.LoadScene("GameBoard");
+        }
+        else if (panel == "tutorial")
+        {
+            hide("level");
+            hide("title");
+            hide("main");
+            hide("difficulty");
+            hide("multiplayer");
+            slideIndex = 0;
+            TutorialPanel.GetComponent<Animator>().SetBool("isDisplayed", true);
+            TutorialSlides[0].SetActive(true);
+            for (int i = 1; i < TutorialSlides.Count; i++)
+            {
+                TutorialSlides[i].SetActive(false);
+            }
         }
     }
 
@@ -148,6 +178,10 @@ public class UIControllerScript : MonoBehaviour
         {
             LevelSelectPanel.GetComponent<Animator>().SetBool("isDisplayed", false);
         }
+        else if(panel == "tutorial")
+        {
+            TutorialPanel.GetComponent<Animator>().SetBool("isDisplayed", false);
+        }
     }
 
     public void backButtonSelected(string currentPanel)
@@ -169,9 +203,44 @@ public class UIControllerScript : MonoBehaviour
             else
             {
                 CharacterSelectScript.currentPlayerColor = "Player1Color";
+                CharacterSelectScript.characterSelectScript.PageHeader.text = "Player 1 Character Select";
                 hide("bio");
             }
         }
+    }
+
+    public void backSlide()
+    {
+        if(slideIndex > 0)
+        {
+            TutorialSlides[slideIndex].SetActive(false);
+            TutorialSlides[slideIndex - 1].SetActive(true);
+            slideIndex--;
+        }
+        else
+        {
+            display("main");
+            display("title");
+        }
+        print("previous slide " + slideIndex);
+    }
+
+    public void nextSlide()
+    {
+        if (slideIndex < TutorialSlides.Count-1)
+        {
+            TutorialSlides[slideIndex].SetActive(false);
+            TutorialSlides[slideIndex + 1].SetActive(true);
+            slideIndex++;
+        }
+        else
+        {
+            TutorialSlides[slideIndex].SetActive(false);
+            display("main");
+            display("title");
+        }
+
+        print("next slide " + slideIndex);
     }
 
     public void setDifficulty(string difficulty)
@@ -238,11 +307,13 @@ public class UIControllerScript : MonoBehaviour
             if(CharacterSelectScript.currentPlayerColor == "Player1Color")
             {
                 CharacterSelectScript.currentPlayerColor = "Player2Color";
+                CharacterSelectScript.characterSelectScript.PageHeader.text = "Player 2 Character Select";
                 hide("bio");
             }
             else if(CharacterSelectScript.currentPlayerColor == "Player2Color")
             {
                 display("level");
+
             }
         }
         else if(quickGame == true)
