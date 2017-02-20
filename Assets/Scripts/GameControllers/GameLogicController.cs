@@ -75,7 +75,7 @@ public class GameLogicController : MonoBehaviour
         waitingOnOtherPlayer = false;
         isPlayer1Turn = true;
 
-        startingNumberOfOrbs = 4;
+        startingNumberOfOrbs = 9;
         player1OrbCount = 0;
         player2OrbCount = 0;
         placementPhase_RoundCount = 1;
