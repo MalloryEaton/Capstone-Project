@@ -98,10 +98,8 @@ public class GameLogicController : MonoBehaviour
         {
             //player1Color = "Green";
             //player2Color = "Purple";
-            //player1Color = PlayerPrefs.GetString("Player1Color");
-            //player2Color = PlayerPrefs.GetString("Player2Color");
-            player1Color = "Green";
-            player2Color = "Purple";
+            player1Color = PlayerPrefs.GetString("Player1Color");
+            player2Color = PlayerPrefs.GetString("Player2Color");
             InitializeGameBoard();
         }
     }
