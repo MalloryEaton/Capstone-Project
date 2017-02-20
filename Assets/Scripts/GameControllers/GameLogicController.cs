@@ -90,14 +90,26 @@ public class GameLogicController : MonoBehaviour
         if (isNetworkGame)
         {
             networking.SendColor();
-            LeanTween.delayedCall(gameObject, 2f, () => {
+
+            LeanTween.delayedCall(gameObject, 5f, () => {
                 isPlayer1 = networking.DetermineIfMasterClient();
                 waitingOnOtherPlayer = !isPlayer1; //prevent player 2 from clicking
                 
-                player1Color = PlayerPrefs.GetString("Player1Color");
-                player2Color = networking.otherPlayerColor;
+                if(isPlayer1)
+                {
+                    player1Color = PlayerPrefs.GetString("PlayerColor");
+                    player2Color = networking.otherPlayerColor;
+                }
+                else
+                {
+                    player1Color = networking.otherPlayerColor;
+                    player2Color = PlayerPrefs.GetString("PlayerColor");
+                }
                 
                 networking.ResetNetworkValues();
+
+                print(player1Color + "  " + player2Color);
+
                 InitializeGameBoard();
             });
         }
@@ -548,10 +560,9 @@ public class GameLogicController : MonoBehaviour
         Transform t2 = runeList[mill.position2].transform;
         Transform t3 = runeList[mill.position3].transform;
 
-        GameObject ring;
-        ring = Instantiate(dictionaries.magicRingDictionary[color], new Vector3(t1.position.x, 0.2f, t1.position.z), ringTransform.rotation);
-        ring = Instantiate(dictionaries.magicRingDictionary[color], new Vector3(t2.position.x, 0.2f, t2.position.z), ringTransform.rotation);
-        ring = Instantiate(dictionaries.magicRingDictionary[color], new Vector3(t3.position.x, 0.2f, t3.position.z), ringTransform.rotation);
+        Instantiate(dictionaries.magicRingDictionary[color], new Vector3(t1.position.x, 0.2f, t1.position.z), ringTransform.rotation);
+        Instantiate(dictionaries.magicRingDictionary[color], new Vector3(t2.position.x, 0.2f, t2.position.z), ringTransform.rotation);
+        Instantiate(dictionaries.magicRingDictionary[color], new Vector3(t3.position.x, 0.2f, t3.position.z), ringTransform.rotation);
     }
 
     private void DestroyMagicRings()

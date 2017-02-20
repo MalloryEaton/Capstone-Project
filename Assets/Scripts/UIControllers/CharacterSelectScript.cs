@@ -20,7 +20,7 @@ public class CharacterSelectScript : MonoBehaviour {
     public Text PageHeader;
 
     static public bool isCharacterSelected;
-    static public string currentPlayerColor = "Player1Color";
+    static public string currentPlayerColor;
 
     static public CharacterSelectScript characterSelectScript;
 
@@ -58,6 +58,8 @@ public class CharacterSelectScript : MonoBehaviour {
         print("character selected");
 
         PlayerPrefs.SetString(currentPlayerColor, selection);
+        
+        //PlayerPrefs.SetString("PlayerColor", selection);
 
         print(currentPlayerColor);
 
@@ -170,7 +172,9 @@ public class CharacterSelectScript : MonoBehaviour {
 
     public void DeselectCharacter()
     {
+        PlayerPrefs.SetString("PlayerColor", "");
         PlayerPrefs.SetString("Player1Color", "");
+        PlayerPrefs.SetString("Player2Color", "");
 
         isCharacterSelected = false;
         ResetMages(false);

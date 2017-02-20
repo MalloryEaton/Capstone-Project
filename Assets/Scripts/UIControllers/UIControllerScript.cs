@@ -95,6 +95,14 @@ public class UIControllerScript : MonoBehaviour
             {
                 CharacterSelectScript.characterSelectScript.PageHeader.text = "Character Select";
             }
+            if (networkGame == true)
+            {
+                CharacterSelectScript.currentPlayerColor = "PlayerColor";
+            }
+            else if (localGame == true)
+            {
+                CharacterSelectScript.currentPlayerColor = "Player1Color";
+            }
             CharacterSelectPanel.GetComponent<Animator>().SetBool("isDisplayed", true);
         }
         else if (panel == "level")
@@ -161,6 +169,8 @@ public class UIControllerScript : MonoBehaviour
         {
             CharacterSelectScript.isCharacterSelected = false;
             CharacterSelectScript.characterSelectScript.ResetMages(false);
+           
+
             CharacterSelectPanel.GetComponent<Animator>().SetBool("isDisplayed", false);
           //  BioPanel.SetActive(false);
         }
@@ -314,7 +324,6 @@ public class UIControllerScript : MonoBehaviour
             else if(CharacterSelectScript.currentPlayerColor == "Player2Color")
             {
                 display("level");
-
             }
         }
         else if(quickGame == true)
