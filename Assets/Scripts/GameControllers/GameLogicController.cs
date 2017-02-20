@@ -58,8 +58,15 @@ public class GameLogicController : MonoBehaviour
     private List<short> runesThatCanBeMoved;
     private List<short> runesThatCanBeRemoved;
 
+    private AudioSource moveSound;
+    private AudioSource removeSound;
+
     void Start()
     {
+        AudioSource[] audio = GetComponents<AudioSource>();
+        moveSound = audio[0];
+        removeSound = audio[1];
+
         dictionaries = FindObjectOfType(typeof(Dictionaries)) as Dictionaries;
         networking = FindObjectOfType(typeof(NetworkingController)) as NetworkingController;
         gamePhase = "placement";
@@ -656,6 +663,8 @@ public class GameLogicController : MonoBehaviour
         orbToMove.name = "OrbAtLocation_" + toLocation;
         RemoveAllRuneHighlights();
 
+        moveSound.Play();
+
         LeanTween.delayedCall(orbToMove, 0.3f, () =>
         {
             LeanTween.move(orbToMove, dictionaries.orbPositionsDictionary[toLocation], 0.5f).setOnComplete(() =>
@@ -703,11 +712,11 @@ public class GameLogicController : MonoBehaviour
             player1Mage.GetComponent<MageController>().PlayAttack1Animation(GameObject.Find("Rune" + runeNumber));
         else
             player2Mage.GetComponent<MageController>().PlayAttack1Animation(GameObject.Find("Rune" + runeNumber));
-
+        
         LeanTween.delayedCall(gameObject, 0.6f, () =>
         {
+            removeSound.Play();
             GameObject orbToDestroy = GameObject.Find("OrbAtLocation_" + runeNumber);
-
             GameObject hit;
             if (isPlayer1Turn)
             {
