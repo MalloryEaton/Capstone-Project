@@ -7,6 +7,7 @@ public class GameBoardUIController : MonoBehaviour {
 
     public GameObject exitButton;
     NetworkingController networking;
+   
 
     void Start()
     {
