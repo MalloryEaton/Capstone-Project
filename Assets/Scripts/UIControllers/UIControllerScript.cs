@@ -227,6 +227,7 @@ public class UIControllerScript : MonoBehaviour
 
     public void nextSlide()
     {
+        print("next slide " + slideIndex);
         if (slideIndex < TutorialSlides.Count-1)
         {
             TutorialSlides[slideIndex].SetActive(false);
