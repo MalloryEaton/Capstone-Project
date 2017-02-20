@@ -61,6 +61,13 @@ public class GameLogicController : MonoBehaviour
     private AudioSource moveSound;
     private AudioSource removeSound;
 
+    public GameObject LoadingScreen;
+
+    void Awake()
+    {
+        LoadingScreen.GetComponent<Animator>().SetBool("isDisplayed", true);
+    }
+
     void Start()
     {
         AudioSource[] audio = GetComponents<AudioSource>();
@@ -109,6 +116,8 @@ public class GameLogicController : MonoBehaviour
                 networking.ResetNetworkValues();
 
                 print(player1Color + "  " + player2Color);
+
+                LoadingScreen.GetComponent<Animator>().SetBool("isDisplayed", false);
 
                 InitializeGameBoard();
             });
