@@ -92,7 +92,7 @@ public class GameLogicController : MonoBehaviour
         runesThatCanBeRemoved = new List<short>();
         
         isNetworkGame = PlayerPrefs.GetString("GameType") == "Network" ? true : false;
-        //isNetworkGame = false;
+        isNetworkGame = false;
 
         if (isNetworkGame)
         {
@@ -118,6 +118,7 @@ public class GameLogicController : MonoBehaviour
                 print(player1Color + "  " + player2Color);
 
                 LoadingScreen.GetComponent<Animator>().SetBool("isDisplayed", false);
+                Destroy(GameObject.FindGameObjectWithTag("BlackPanel"));
 
                 InitializeGameBoard();
             });
@@ -129,10 +130,33 @@ public class GameLogicController : MonoBehaviour
             player1Color = PlayerPrefs.GetString("Player1Color");
             player2Color = PlayerPrefs.GetString("Player2Color");
             InitializeGameBoard();
+            LoadingScreen.GetComponent<Animator>().SetBool("isDisplayed", false);
+            Destroy(GameObject.FindGameObjectWithTag("BlackPanel"));
+
+            PlayMageIntroAnimations();
         }
     }
+
+    private void PlayMageIntroAnimations()
+    {
+        waitingOnAnimation = true;
+        //GameObject redMage = GameObject.FindGameObjectWithTag("Mage");
+        //redMage.GetComponent<MageController>().PlayLevitateAnimation();
+        player1Mage.GetComponent<MageController>().PlayLevitateAnimation();
+        player2Mage.GetComponent<MageController>().PlayLevitateAnimation();
+
+        //do orb animation here
+        LeanTween.delayedCall(3f, () => {
+            //redMage.GetComponent<MageController>().PlayLandingAnimation();
+            player1Mage.GetComponent<MageController>().PlayLandingAnimation();
+            player2Mage.GetComponent<MageController>().PlayLandingAnimation();
+
+            waitingOnAnimation = false;
+        });
+        
+    }
     
-    public void ShowAvailableMoves()
+    public void ShowAvailableMoves() //make it so that if click off a selected rune, shows the available moves again
     {
         RemoveAllRuneHighlights();
         RemoveAllOrbHighlights(-1);
@@ -147,8 +171,6 @@ public class GameLogicController : MonoBehaviour
         InstantiateMages();
         InstantiateShrine();
         InstantiateOrbContainers();
-
-        // preventClick = false;
     }
 
     private void InstantiateMages()

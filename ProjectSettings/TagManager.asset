@@ -9,6 +9,7 @@ TagManager:
   - Opponent
   - Center
   - MagicRing
+  - BlackPanel
   layers:
   - Default
   - TransparentFX
