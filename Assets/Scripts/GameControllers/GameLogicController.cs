@@ -63,6 +63,8 @@ public class GameLogicController : MonoBehaviour
 
     public GameObject LoadingScreen;
 
+    private float speed = 0.3f;
+
     void Awake()
     {
         LoadingScreen.GetComponent<Animator>().SetBool("isDisplayed", true);
@@ -125,10 +127,10 @@ public class GameLogicController : MonoBehaviour
         }
         else
         {
-            //player1Color = "Green";
-            //player2Color = "Purple";
-            player1Color = PlayerPrefs.GetString("Player1Color");
-            player2Color = PlayerPrefs.GetString("Player2Color");
+            player1Color = "Green";
+            player2Color = "Purple";
+            //player1Color = PlayerPrefs.GetString("Player1Color");
+            //player2Color = PlayerPrefs.GetString("Player2Color");
             InitializeGameBoard();
             LoadingScreen.GetComponent<Animator>().SetBool("isDisplayed", false);
             Destroy(GameObject.FindGameObjectWithTag("BlackPanel"));
@@ -137,17 +139,162 @@ public class GameLogicController : MonoBehaviour
         }
     }
 
+    private void InstantiateSide1Orbs(string color)
+    {
+        GameObject orb;
+        orb = Instantiate(dictionaries.orbsDictionary[color], new Vector3(22.75f, 10f, 27.25f), Quaternion.identity);
+        orb.AddComponent<OrbIntro>();
+        orb.name = color + "_Orb_" + 1;
+        orb.GetComponent<OrbIntro>().FloatUp(1, color);
+        LeanTween.delayedCall(speed, () =>
+        {
+            orb = Instantiate(dictionaries.orbsDictionary[color], new Vector3(22.75f, 10f, 27.25f), Quaternion.identity);
+            orb.AddComponent<OrbIntro>();
+            orb.name = color + "_Orb_" + 2;
+            orb.GetComponent<OrbIntro>().FloatUp(2, color);
+
+            LeanTween.delayedCall(speed, () =>
+            {
+                orb = Instantiate(dictionaries.orbsDictionary[color], new Vector3(22.75f, 10f, 27.25f), Quaternion.identity);
+                orb.AddComponent<OrbIntro>();
+                orb.name = color + "_Orb_" + 3;
+                orb.GetComponent<OrbIntro>().FloatUp(3, color);
+
+                LeanTween.delayedCall(speed, () =>
+                {
+                    orb = Instantiate(dictionaries.orbsDictionary[color], new Vector3(22.75f, 10f, 27.25f), Quaternion.identity);
+                    orb.AddComponent<OrbIntro>();
+                    orb.name = color + "_Orb_" + 4;
+                    orb.GetComponent<OrbIntro>().FloatUp(4, color);
+
+                    LeanTween.delayedCall(speed, () =>
+                    {
+                        orb = Instantiate(dictionaries.orbsDictionary[color], new Vector3(22.75f, 10f, 27.25f), Quaternion.identity);
+                        orb.AddComponent<OrbIntro>();
+                        orb.name = color + "_Orb_" + 5;
+                        orb.GetComponent<OrbIntro>().FloatUp(5, color);
+
+                        LeanTween.delayedCall(speed, () =>
+                        {
+                            orb = Instantiate(dictionaries.orbsDictionary[color], new Vector3(22.75f, 10f, 27.25f), Quaternion.identity);
+                            orb.AddComponent<OrbIntro>();
+                            orb.name = color + "_Orb_" + 6;
+                            orb.GetComponent<OrbIntro>().FloatUp(6, color);
+
+                            LeanTween.delayedCall(speed, () =>
+                            {
+                                orb = Instantiate(dictionaries.orbsDictionary[color], new Vector3(22.75f, 10f, 27.25f), Quaternion.identity);
+                                orb.AddComponent<OrbIntro>();
+                                orb.name = color + "_Orb_" + 7;
+                                orb.GetComponent<OrbIntro>().FloatUp(7, color);
+
+                                LeanTween.delayedCall(speed, () =>
+                                {
+                                    orb = Instantiate(dictionaries.orbsDictionary[color], new Vector3(22.75f, 10f, 27.25f), Quaternion.identity);
+                                    orb.AddComponent<OrbIntro>();
+                                    orb.name = color + "_Orb_" + 8;
+                                    orb.GetComponent<OrbIntro>().FloatUp(8, color);
+
+                                    LeanTween.delayedCall(speed, () =>
+                                    {
+                                        orb = Instantiate(dictionaries.orbsDictionary[color], new Vector3(22.75f, 10f, 27.25f), Quaternion.identity);
+                                        orb.AddComponent<OrbIntro>();
+                                        orb.name = color + "_Orb_" + 9;
+                                        orb.GetComponent<OrbIntro>().FloatUp(9, color);
+                                    });
+                                });
+                            });
+                        });
+                    });
+                });
+            });
+        });
+    }
+
+    private void InstantiateSide2Orbs(string color)
+    {
+        GameObject orb;
+        orb = Instantiate(dictionaries.orbsDictionary[color], new Vector3(1.25f, 10f, -3.25f), Quaternion.identity);
+        orb.AddComponent<OrbIntro>();
+        orb.name = color + "_Orb_" + 1;
+        orb.GetComponent<OrbIntro>().FloatUp(1, color);
+        LeanTween.delayedCall(speed, () =>
+        {
+            orb = Instantiate(dictionaries.orbsDictionary[color], new Vector3(1.25f, 10f, -3.25f), Quaternion.identity);
+            orb.AddComponent<OrbIntro>();
+            orb.name = color + "_Orb_" + 2;
+            orb.GetComponent<OrbIntro>().FloatUp(2, color);
+
+            LeanTween.delayedCall(speed, () =>
+            {
+                orb = Instantiate(dictionaries.orbsDictionary[color], new Vector3(1.25f, 10f, -3.25f), Quaternion.identity);
+                orb.AddComponent<OrbIntro>();
+                orb.name = color + "_Orb_" + 3;
+                orb.GetComponent<OrbIntro>().FloatUp(3, color);
+
+                LeanTween.delayedCall(speed, () =>
+                {
+                    orb = Instantiate(dictionaries.orbsDictionary[color], new Vector3(1.25f, 10f, -3.25f), Quaternion.identity);
+                    orb.AddComponent<OrbIntro>();
+                    orb.name = color + "_Orb_" + 4;
+                    orb.GetComponent<OrbIntro>().FloatUp(4, color);
+
+                    LeanTween.delayedCall(speed, () =>
+                    {
+                        orb = Instantiate(dictionaries.orbsDictionary[color], new Vector3(1.25f, 10f, -3.25f), Quaternion.identity);
+                        orb.AddComponent<OrbIntro>();
+                        orb.name = color + "_Orb_" + 5;
+                        orb.GetComponent<OrbIntro>().FloatUp(5, color);
+
+                        LeanTween.delayedCall(speed, () =>
+                        {
+                            orb = Instantiate(dictionaries.orbsDictionary[color], new Vector3(1.25f, 10f, -3.25f), Quaternion.identity);
+                            orb.AddComponent<OrbIntro>();
+                            orb.name = color + "_Orb_" + 6;
+                            orb.GetComponent<OrbIntro>().FloatUp(6, color);
+
+                            LeanTween.delayedCall(speed, () =>
+                            {
+                                orb = Instantiate(dictionaries.orbsDictionary[color], new Vector3(1.25f, 10f, -3.25f), Quaternion.identity);
+                                orb.AddComponent<OrbIntro>();
+                                orb.name = color + "_Orb_" + 7;
+                                orb.GetComponent<OrbIntro>().FloatUp(7, color);
+
+                                LeanTween.delayedCall(speed, () =>
+                                {
+                                    orb = Instantiate(dictionaries.orbsDictionary[color], new Vector3(1.25f, 10f, -3.25f), Quaternion.identity);
+                                    orb.AddComponent<OrbIntro>();
+                                    orb.name = color + "_Orb_" + 8;
+                                    orb.GetComponent<OrbIntro>().FloatUp(8, color);
+
+                                    LeanTween.delayedCall(speed, () =>
+                                    {
+                                        orb = Instantiate(dictionaries.orbsDictionary[color], new Vector3(1.25f, 10f, -3.25f), Quaternion.identity);
+                                        orb.AddComponent<OrbIntro>();
+                                        orb.name = color + "_Orb_" + 9;
+                                        orb.GetComponent<OrbIntro>().FloatUp(9, color);
+                                    });
+                                });
+                            });
+                        });
+                    });
+                });
+            });
+        });
+    }
+
     private void PlayMageIntroAnimations()
     {
         waitingOnAnimation = true;
-        //GameObject redMage = GameObject.FindGameObjectWithTag("Mage");
-        //redMage.GetComponent<MageController>().PlayLevitateAnimation();
         player1Mage.GetComponent<MageController>().PlayLevitateAnimation();
         player2Mage.GetComponent<MageController>().PlayLevitateAnimation();
+        
+        LeanTween.delayedCall(0.7f, () => {
+            InstantiateSide1Orbs(player1Color);
+            InstantiateSide2Orbs(player2Color);
+        });
 
-        //do orb animation here
-        LeanTween.delayedCall(3f, () => {
-            //redMage.GetComponent<MageController>().PlayLandingAnimation();
+        LeanTween.delayedCall(4f, () => {
             player1Mage.GetComponent<MageController>().PlayLandingAnimation();
             player2Mage.GetComponent<MageController>().PlayLandingAnimation();
 
@@ -170,7 +317,7 @@ public class GameLogicController : MonoBehaviour
     {
         InstantiateMages();
         InstantiateShrine();
-        InstantiateOrbContainers();
+        //InstantiateOrbContainers();
     }
 
     private void InstantiateMages()
@@ -202,14 +349,14 @@ public class GameLogicController : MonoBehaviour
     {
         if (!isNetworkGame || (isNetworkGame && isPlayer1))
         {
-            Instantiate(dictionaries.orbContainersDictionary[player1Color], new Vector3(0, 0, 28), Quaternion.identity);
-            Instantiate(dictionaries.orbContainersDictionary[player2Color], new Vector3(8, 0, -4), Quaternion.identity);
+            Instantiate(dictionaries.orbContainersDictionary[player1Color], new Vector3(0, 3, 28), Quaternion.identity);
+            Instantiate(dictionaries.orbContainersDictionary[player2Color], new Vector3(8, 3, -4), Quaternion.identity);
         }
         else if(isNetworkGame && !isPlayer1)
         {
-            Instantiate(dictionaries.orbContainersDictionary[player1Color], new Vector3(8, 0, -4), Quaternion.identity);
-            Instantiate(dictionaries.orbContainersDictionary[player2Color], new Vector3(0, 0, 28), Quaternion.identity);
-        }  
+            Instantiate(dictionaries.orbContainersDictionary[player1Color], new Vector3(8, 3, -4), Quaternion.identity);
+            Instantiate(dictionaries.orbContainersDictionary[player2Color], new Vector3(0, 3, 28), Quaternion.identity);
+        }
     }
 
     /*---------------------------------------------------------------------

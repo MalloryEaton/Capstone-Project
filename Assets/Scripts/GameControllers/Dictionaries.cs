@@ -6,6 +6,8 @@ public class Dictionaries : MonoBehaviour {
 
     public Dictionary<short, short[]> adjacencyDictionary; 
     public Dictionary<short, Vector3> orbPositionsDictionary;
+    public Dictionary<short, Vector3> orbSide1Dictionary;
+    public Dictionary<short, Vector3> orbSide2Dictionary;
     public Dictionary<string, GameObject> orbsDictionary;
     public Dictionary<short, Material> runeHighlightsDictionary;
     public Dictionary<short, Material> runeOriginalsDictionary;
@@ -22,13 +24,14 @@ public class Dictionaries : MonoBehaviour {
     {
         adjacencyDictionary = new Dictionary<short, short[]>();
         orbPositionsDictionary = new Dictionary<short, Vector3>();
+        orbSide1Dictionary = new Dictionary<short, Vector3>();
+        orbSide2Dictionary = new Dictionary<short, Vector3>();
         runeHighlightsDictionary = new Dictionary<short, Material>();
         runeOriginalsDictionary = new Dictionary<short, Material>();
         orbsDictionary = new Dictionary<string, GameObject>();
         shrinesDictionary = new Dictionary<string, GameObject>();
         magicRingDictionary = new Dictionary<string, GameObject>();
         magesDictionary = new Dictionary<string, GameObject>();
-        orbContainersDictionary = new Dictionary<string, GameObject>();
         magicHitDictionary = new Dictionary<string, GameObject>();
         verticalMillsList = new List<Mill>();
 
@@ -36,12 +39,12 @@ public class Dictionaries : MonoBehaviour {
         InitializeRuneHighlightsDictionary();
         InitializeRuneOriginalsDictionary();
         InitializeLocationDictionary();
+        InitializeStartingLocationsDictionary();
         InitializeOrbDictionary();
         InitializeShrineDictionary();
         InitializeVerticalMillsList();
         InitializeMagicRingDictionary();
         InitializeMagesDictionary();
-        InitializeOrbContainersDictionary();
         InitializeMagicHitDictionary();
     }
 
@@ -67,18 +70,6 @@ public class Dictionaries : MonoBehaviour {
         magicHitDictionary.Add("Red", Resources.Load(@"Hits\RedHit", typeof(GameObject)) as GameObject);
         magicHitDictionary.Add("White", Resources.Load(@"Hits\WhiteHit", typeof(GameObject)) as GameObject);
         magicHitDictionary.Add("Yellow", Resources.Load(@"Hits\YellowHit", typeof(GameObject)) as GameObject);
-    }
-
-    private void InitializeOrbContainersDictionary()
-    {
-        orbContainersDictionary.Add("Black", Resources.Load(@"Orbs\OrbContainers\BlackOrbContainer", typeof(GameObject)) as GameObject);
-        orbContainersDictionary.Add("Blue", Resources.Load(@"Orbs\OrbContainers\BlueOrbContainer", typeof(GameObject)) as GameObject);
-        orbContainersDictionary.Add("Green", Resources.Load(@"Orbs\OrbContainers\GreenOrbContainer", typeof(GameObject)) as GameObject);
-        orbContainersDictionary.Add("Orange", Resources.Load(@"Orbs\OrbContainers\OrangeOrbContainer", typeof(GameObject)) as GameObject);
-        orbContainersDictionary.Add("Purple", Resources.Load(@"Orbs\OrbContainers\PurpleOrbContainer", typeof(GameObject)) as GameObject);
-        orbContainersDictionary.Add("Red", Resources.Load(@"Orbs\OrbContainers\RedOrbContainer", typeof(GameObject)) as GameObject);
-        orbContainersDictionary.Add("White", Resources.Load(@"Orbs\OrbContainers\WhiteOrbContainer", typeof(GameObject)) as GameObject);
-        orbContainersDictionary.Add("Yellow", Resources.Load(@"Orbs\OrbContainers\YellowOrbContainer", typeof(GameObject)) as GameObject);
     }
 
     private void InitializeVerticalMillsList()
@@ -172,6 +163,29 @@ public class Dictionaries : MonoBehaviour {
         orbPositionsDictionary.Add(21, new Vector3(24f, 1.5f, 24f));
         orbPositionsDictionary.Add(22, new Vector3(12f, 1.5f, 24f));
         orbPositionsDictionary.Add(23, new Vector3(0f, 1.5f, 24f));
+    }
+
+    private void InitializeStartingLocationsDictionary()
+    {
+        orbSide1Dictionary.Add(1, new Vector3(16f, 0f, 28f));
+        orbSide1Dictionary.Add(2, new Vector3(14f, 0f, 28f));
+        orbSide1Dictionary.Add(3, new Vector3(12f, 0f, 28f));
+        orbSide1Dictionary.Add(4, new Vector3(10f, 0f, 28f));
+        orbSide1Dictionary.Add(5, new Vector3(8f, 0f, 28f));
+        orbSide1Dictionary.Add(6, new Vector3(6f, 0f, 28f));
+        orbSide1Dictionary.Add(7, new Vector3(4f, 0f, 28f));
+        orbSide1Dictionary.Add(8, new Vector3(2f, 0f, 28f));
+        orbSide1Dictionary.Add(9, new Vector3(0f, 0f, 28f));
+
+        orbSide2Dictionary.Add(1, new Vector3(8f, 0f, -4f));
+        orbSide2Dictionary.Add(2, new Vector3(10f, 0f, -4f));
+        orbSide2Dictionary.Add(3, new Vector3(12f, 0f, -4f));
+        orbSide2Dictionary.Add(4, new Vector3(14f, 0f, -4f));
+        orbSide2Dictionary.Add(5, new Vector3(16f, 0f, -4f));
+        orbSide2Dictionary.Add(6, new Vector3(18f, 0f, -4f));
+        orbSide2Dictionary.Add(7, new Vector3(20f, 0f, -4f));
+        orbSide2Dictionary.Add(8, new Vector3(22f, 0f, -4f));
+        orbSide2Dictionary.Add(9, new Vector3(24f, 0f, -4f));
     }
 
     #region Rune Material Dictionaries
