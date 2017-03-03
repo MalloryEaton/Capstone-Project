@@ -17,11 +17,6 @@ public class GameLogicController : MonoBehaviour
      https://docs.unity3d.com/ScriptReference/PlayerPrefs.SetString.html
     */
 
-    /*
-        Notes:
-            When mill is made and removable runes are highlighted, should not highlight runes in mills
-    */
-
     /*---------------------------------------------------------------------
     || GAME VARIABLES
     -----------------------------------------------------------------------*/
@@ -127,8 +122,8 @@ public class GameLogicController : MonoBehaviour
         }
         else
         {
-            player1Color = "Green";
-            player2Color = "Purple";
+            player1Color = "Blue";
+            player2Color = "Black";
             //player1Color = PlayerPrefs.GetString("Player1Color");
             //player2Color = PlayerPrefs.GetString("Player2Color");
             InitializeGameBoard();
@@ -468,7 +463,7 @@ public class GameLogicController : MonoBehaviour
 
     public void RemovalPhase(short runeToRemove)
     {
-        if (RuneCanBeRemoved(runeToRemove) || ((isPlayer1Turn && !isPlayer1) || (!isPlayer1Turn && isPlayer1)))
+        if (RuneCanBeRemoved(runeToRemove) || (isNetworkGame && ((isPlayer1Turn && !isPlayer1) || (!isPlayer1Turn && isPlayer1))))
         {
             networking.removeFrom = runeToRemove;
 

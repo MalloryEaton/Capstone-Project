@@ -167,25 +167,25 @@ public class Dictionaries : MonoBehaviour {
 
     private void InitializeStartingLocationsDictionary()
     {
-        orbSide1Dictionary.Add(1, new Vector3(16f, 0f, 28f));
-        orbSide1Dictionary.Add(2, new Vector3(14f, 0f, 28f));
-        orbSide1Dictionary.Add(3, new Vector3(12f, 0f, 28f));
-        orbSide1Dictionary.Add(4, new Vector3(10f, 0f, 28f));
-        orbSide1Dictionary.Add(5, new Vector3(8f, 0f, 28f));
-        orbSide1Dictionary.Add(6, new Vector3(6f, 0f, 28f));
-        orbSide1Dictionary.Add(7, new Vector3(4f, 0f, 28f));
-        orbSide1Dictionary.Add(8, new Vector3(2f, 0f, 28f));
-        orbSide1Dictionary.Add(9, new Vector3(0f, 0f, 28f));
+        orbSide1Dictionary.Add(1, new Vector3(16f, 2f, 28f));
+        orbSide1Dictionary.Add(2, new Vector3(14f, 2f, 28f));
+        orbSide1Dictionary.Add(3, new Vector3(12f, 2f, 28f));
+        orbSide1Dictionary.Add(4, new Vector3(10f, 2f, 28f));
+        orbSide1Dictionary.Add(5, new Vector3(8f, 2f, 28f));
+        orbSide1Dictionary.Add(6, new Vector3(6f, 2f, 28f));
+        orbSide1Dictionary.Add(7, new Vector3(4f, 2f, 28f));
+        orbSide1Dictionary.Add(8, new Vector3(2f, 2f, 28f));
+        orbSide1Dictionary.Add(9, new Vector3(0f, 2f, 28f));
 
-        orbSide2Dictionary.Add(1, new Vector3(8f, 0f, -4f));
-        orbSide2Dictionary.Add(2, new Vector3(10f, 0f, -4f));
-        orbSide2Dictionary.Add(3, new Vector3(12f, 0f, -4f));
-        orbSide2Dictionary.Add(4, new Vector3(14f, 0f, -4f));
-        orbSide2Dictionary.Add(5, new Vector3(16f, 0f, -4f));
-        orbSide2Dictionary.Add(6, new Vector3(18f, 0f, -4f));
-        orbSide2Dictionary.Add(7, new Vector3(20f, 0f, -4f));
-        orbSide2Dictionary.Add(8, new Vector3(22f, 0f, -4f));
-        orbSide2Dictionary.Add(9, new Vector3(24f, 0f, -4f));
+        orbSide2Dictionary.Add(1, new Vector3(8f, 2f, -4f));
+        orbSide2Dictionary.Add(2, new Vector3(10f, 2f, -4f));
+        orbSide2Dictionary.Add(3, new Vector3(12f, 2f, -4f));
+        orbSide2Dictionary.Add(4, new Vector3(14f, 2f, -4f));
+        orbSide2Dictionary.Add(5, new Vector3(16f, 2f, -4f));
+        orbSide2Dictionary.Add(6, new Vector3(18f, 2f, -4f));
+        orbSide2Dictionary.Add(7, new Vector3(20f, 2f, -4f));
+        orbSide2Dictionary.Add(8, new Vector3(22f, 2f, -4f));
+        orbSide2Dictionary.Add(9, new Vector3(24f, 2f, -4f));
     }
 
     #region Rune Material Dictionaries
