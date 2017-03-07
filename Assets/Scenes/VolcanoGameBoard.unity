@@ -1177,6 +1177,10 @@ Prefab:
       propertyPath: m_CastShadows
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2323180, guid: 0f879c65578eae04581a2fb40ece3ba4, type: 2}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 4c88ae6ab16b4ff44ab38b10185b0888, type: 2}
     m_RemovedComponents:
     - {fileID: 6425616, guid: 0f879c65578eae04581a2fb40ece3ba4, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 0f879c65578eae04581a2fb40ece3ba4, type: 2}

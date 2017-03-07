@@ -208,7 +208,7 @@ Material:
       second: {r: 0, g: 0.41318446, b: 0.61764705, a: 1}
     - first:
         name: _CausticColor
-      second: {r: 1, g: 0.18620689, b: 0, a: 1}
+      second: {r: 0.16089964, g: 0.21961877, b: 0.22794116, a: 1}
     - first:
         name: _Color
       second: {r: 0, g: 0.33189642, b: 0.5661765, a: 1}
@@ -226,7 +226,7 @@ Material:
       second: {r: 0.5, g: 0.5, b: 0.5, a: 1}
     - first:
         name: _WaterColor
-      second: {r: 0.29411763, g: 0.054766733, b: 0, a: 1}
+      second: {r: 0.08326125, g: 0.20692638, b: 0.25735295, a: 1}
     - first:
         name: _Waters
       second: {r: 0, g: 0.4117647, b: 0.6156863, a: 1}
