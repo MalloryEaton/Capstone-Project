@@ -6,9 +6,31 @@ public class CameraMovementController : MonoBehaviour {
 
     public Camera MainCam;
     public List<Vector3> positionList;
+    public List<Quaternion> rotationList;
     private int index;
+    private int numberOfStages;
     public GameObject Level1;
     public GameObject Level2;
+
+    private void Awake()
+    {
+        InitializeCameraPositions();
+    }
+
+    private void InitializeCameraPositions()
+    {
+        positionList.Add(new Vector3(47, 64, -70));
+        positionList.Add(new Vector3(89, 64, -42));
+        positionList.Add(new Vector3(87.4f, 75.4f, 193.8f));
+        positionList.Add(new Vector3(139.2f, 137.2f, 289.4f));
+        positionList.Add(new Vector3(211.2f, 72.6f, 362.2f));
+
+        rotationList.Add(Quaternion.Euler(36.03f, -33.65f, 0f));
+        rotationList.Add(Quaternion.Euler(36.03f, -33.65f, 0f));
+        rotationList.Add(Quaternion.Euler(39f, 135f, 0f));
+        rotationList.Add(Quaternion.Euler(39f, 135f, 0f));
+        rotationList.Add(Quaternion.Euler(15.7f, 135f, 0f));
+    }
 
     public void Start()
     {
@@ -16,8 +38,9 @@ public class CameraMovementController : MonoBehaviour {
         //Level2.SetActive(false);
         print(MainCam.transform.position);
         index = 0;
-        positionList.Add(new Vector3(47, 64, -70));
-        positionList.Add(new Vector3(89, 64, -42));
+        numberOfStages = 5;
+        //positionList.Add(new Vector3(47, 64, -70));
+        //positionList.Add(new Vector3(89, 64, -42));
         //showLevel(0);
         //MainCam.transform.position = positionList[0];
     }
@@ -30,6 +53,16 @@ public class CameraMovementController : MonoBehaviour {
             //showLevel(index);
             print(index);
             MainCam.transform.position = positionList[index];
+            MainCam.transform.rotation = rotationList[index];
+            //hideLevel(index - 1);
+        }
+        else
+        {
+            index = 0;
+            //showLevel(index);
+            print(index);
+            MainCam.transform.position = positionList[index];
+            MainCam.transform.rotation = rotationList[index];
             //hideLevel(index - 1);
         }
     }
@@ -42,6 +75,16 @@ public class CameraMovementController : MonoBehaviour {
             //showLevel(index);
             print(index + "position: " + positionList[index].x + ", " + positionList[index].y + ", " + positionList[index].z);
             MainCam.transform.position = positionList[index];
+            MainCam.transform.rotation = rotationList[index];
+            //hideLevel(index + 1);
+        }
+        else
+        {
+            index = numberOfStages - 1;
+            //showLevel(index);
+            print(index + "position: " + positionList[index].x + ", " + positionList[index].y + ", " + positionList[index].z);
+            MainCam.transform.position = positionList[index];
+            MainCam.transform.rotation = rotationList[index];
             //hideLevel(index + 1);
         }
     }
