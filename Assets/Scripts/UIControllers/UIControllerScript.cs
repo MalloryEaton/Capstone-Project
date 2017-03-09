@@ -122,6 +122,7 @@ public class UIControllerScript : MonoBehaviour
         }
         else if (panel == "play") // Start game
         {
+            //load scene based on stage that camera is looking at
             SceneManager.LoadScene("GameBoard");
         }
         else if (panel == "tutorial")
