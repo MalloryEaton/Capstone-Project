@@ -20,13 +20,13 @@ public class CameraMovementController : MonoBehaviour {
     private void InitializeCameraPositions()
     {
         positionList.Add(new Vector3(47, 64, -70));
-        positionList.Add(new Vector3(89, 64, -42));
+        positionList.Add(new Vector3(113.3f, 34f, 48.6f));
         positionList.Add(new Vector3(87.4f, 75.4f, 193.8f));
         positionList.Add(new Vector3(139.2f, 137.2f, 289.4f));
         positionList.Add(new Vector3(409.1f, 75.6f, 226.3f));
 
         rotationList.Add(Quaternion.Euler(36.03f, -33.65f, 0f));
-        rotationList.Add(Quaternion.Euler(36.03f, -33.65f, 0f));
+        rotationList.Add(Quaternion.Euler(41.7f, -47f, 0f));
         rotationList.Add(Quaternion.Euler(39f, 135f, 0f));
         rotationList.Add(Quaternion.Euler(39f, 135f, 0f));
         rotationList.Add(Quaternion.Euler(15f, -62.61f, 0f));
