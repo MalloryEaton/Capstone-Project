@@ -335,7 +335,8 @@ public class UIControllerScript : MonoBehaviour
 
     public void startGame()
     {
-        SceneManager.LoadScene("GameBoard");
+        //SceneManager.LoadScene("GameBoard");
+        SceneManager.LoadScene(PlayerPrefs.GetString("Stage") + "GameBoard");
     }
 
     public void quitGame()
