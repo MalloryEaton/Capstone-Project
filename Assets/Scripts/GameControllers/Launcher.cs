@@ -101,6 +101,7 @@ namespace Com.EnsorcelledStudios.Runic
 
                 foreach (RoomInfo room in roomInfo)
                 {
+                    //TODO: Populate ScrollRect
                     //availableGames.options.Add(new Dropdown.OptionData() { text = room.Name });
                 }
             }
@@ -113,6 +114,8 @@ namespace Com.EnsorcelledStudios.Runic
             // This function is called AFTER the game has connected.
             // So this function will make the ScrollRect appear, as well
             // as the join and create game buttons.
+
+            //TODO: Make ScrollRect, Join Game, and Create Game appear
         }
 
         // DEPRECATED: We are no longer using this.
