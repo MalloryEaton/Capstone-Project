@@ -46,15 +46,15 @@ public class CameraMovementController : MonoBehaviour {
 
     private void InitializeCameraPositions()
     {
-        positionList.Add(new Vector3(47, 64, -70)); //forest
-        positionList.Add(new Vector3(49, 64, -70)); //graveyard
+        positionList.Add(new Vector3(7.3f, 64f, -96.4f)); //forest
+        positionList.Add(new Vector3(-7.1f, 84.9f, -146.6f)); //graveyard
         positionList.Add(new Vector3(145.2f, 70.5f, 23.2f)); //desert
         positionList.Add(new Vector3(235.5f, 98.7f, 72.6f)); //volcano
         positionList.Add(new Vector3(139.2f, 137.2f, 289.4f)); //water
         positionList.Add(new Vector3(409.1f, 75.6f, 226.3f)); //tower
 
         rotationList.Add(Quaternion.Euler(36.03f, -33.65f, 0f)); //forest
-        rotationList.Add(Quaternion.Euler(36.03f, -33.65f, 0f)); //graveyard
+        rotationList.Add(Quaternion.Euler(42.5f, -48f, 0f)); //graveyard
         rotationList.Add(Quaternion.Euler(41.2f, -47.8f, 0f)); //desert
         rotationList.Add(Quaternion.Euler(36.1f, -46.5f, 0f)); //volcano
         rotationList.Add(Quaternion.Euler(39f, 135f, 0f)); //water
@@ -65,13 +65,19 @@ public class CameraMovementController : MonoBehaviour {
     {
         //Level1.SetActive(false);
         //Level2.SetActive(false);
-        print(MainCam.transform.position);
         index = 0;
         numberOfStages = 6;
         //positionList.Add(new Vector3(47, 64, -70));
         //positionList.Add(new Vector3(89, 64, -42));
         //showLevel(0);
         //MainCam.transform.position = positionList[0];
+    }
+
+    public void cameraInit()
+    {
+        index = 0;
+        MainCam.transform.position = positionList[0];
+        MainCam.transform.rotation = rotationList[0];
     }
     
     public void moveCameraRight()

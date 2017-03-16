@@ -19,6 +19,8 @@ public class UIControllerScript : MonoBehaviour
     public GameObject TutorialPanel;
     public List<GameObject> TutorialSlides;
 
+    private CameraMovementController cmc;
+
     public bool networkGame = false;
     public bool localGame = false;
     public bool quickGame = false;
@@ -30,6 +32,7 @@ public class UIControllerScript : MonoBehaviour
     {
         MainButtonPanel.GetComponent<Animator>().SetBool("isDisplayed", true);
         MainTitlePanel.GetComponent<Animator>().SetBool("isDisplayed", true);
+        cmc = FindObjectOfType(typeof(CameraMovementController)) as CameraMovementController;
         display("canvas");
         //BioPanel.SetActive(false);
         print("awake");
@@ -110,6 +113,7 @@ public class UIControllerScript : MonoBehaviour
             hide("character");
             hide("canvas");
             hide("bio");
+            cmc.cameraInit();
             LevelSelectPanel.GetComponent<Animator>().SetBool("isDisplayed", true);
         }
         else if (panel == "bio")

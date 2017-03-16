@@ -21,3 +21,5 @@ EditorBuildSettings:
     path: Assets/Scenes/TowerGameBoard.unity
   - enabled: 1
     path: Assets/Scenes/DesertGameBoard.unity
+  - enabled: 1
+    path: Assets/Scenes/GraveyardGameBoard.unity
