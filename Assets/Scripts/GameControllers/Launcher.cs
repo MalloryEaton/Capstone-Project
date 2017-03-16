@@ -25,7 +25,7 @@ namespace Com.EnsorcelledStudios.Runic
         /// This client's version number. Users are separated from each other by gameversion (which allows 
         /// you to make breaking changes).
         /// </summary>
-        string _gameVersion = "0.1";
+        string _gameVersion = "0.2";
 
         /// <summary>
         /// The maximum number of players per room. When a room is full, it can't be joined by new players, 
@@ -39,6 +39,9 @@ namespace Com.EnsorcelledStudios.Runic
         /// receive call back by Photon. Typically this is used for the OnConnectedToMaster() callback.
         /// </summary>
         bool isConnecting;
+
+        // We will keep available games in this array.
+        RoomInfo[] roomInfo;
 
         #endregion
 
@@ -54,8 +57,8 @@ namespace Com.EnsorcelledStudios.Runic
             PhotonNetwork.logLevel = Loglevel;
 
             // #Critical
-            // We don't join the lobby. There is no need to join a lobby to get the list of rooms.
-            PhotonNetwork.autoJoinLobby = false;
+            // We need to join the lobby to get a list of rooms.
+            PhotonNetwork.autoJoinLobby = true;
 
             // #Critical
             // This makes sure we can use PhotonNetwork.LoadLevel() on the master client and all clients 
@@ -81,9 +84,41 @@ namespace Com.EnsorcelledStudios.Runic
 
         #region Photon.PunBehaviour CallBacks
 
+        public override void OnReceivedRoomListUpdate()
+        {
+            // If we're in a lobby, update the list of available games.
+            if (PhotonNetwork.insideLobby == true)
+            {
+                // In my prototype I used a dropdown list, but we will probably do something
+                // different.
+
+                // ScrollRect looks like a really good option. We will need to populate it
+                // using roomInfo (which is an array of available games).
+                
+                //availableGames.options.Clear();
+
+                roomInfo = PhotonNetwork.GetRoomList();
+
+                foreach (RoomInfo room in roomInfo)
+                {
+                    //availableGames.options.Add(new Dropdown.OptionData() { text = room.Name });
+                }
+            }
+        }
+
+        public override void OnJoinedLobby()
+        {
+            // We will probably need to use this function.
+
+            // This function is called AFTER the game has connected.
+            // So this function will make the ScrollRect appear, as well
+            // as the join and create game buttons.
+        }
+
+        // DEPRECATED: We are no longer using this.
         public override void OnConnectedToMaster()
         {
-            Debug.Log("DemoAnimator/Launcher: OnConnectedToMaster() was called by PUN");
+            Debug.Log("OnConnectedToMaster() was called by PUN");
 
             // We don't want to do anything if we are not attempting to join a room. 
             // This case where isConnecting is false is typically when you lost or quit the game, 
@@ -98,20 +133,31 @@ namespace Com.EnsorcelledStudios.Runic
 
         public override void OnDisconnectedFromPhoton()
         {
+            // This will need to take us back to the original connection
+            // menu, not back to the lobby.
+
             LoadingScreen.GetComponent<Animator>().SetBool("isDisplayed", false);
             controlPanel.SetActive(true);
 
             // TODO: Need a better disconnect message
-            Debug.LogWarning("DemoAnimator/Launcher: OnDisconnectedFromPhoton() was called by PUN");
+            Debug.LogWarning("OnDisconnectedFromPhoton() was called by PUN");
         }
 
+        // We are also not using this, as we aren't doing random connects.
         public override void OnPhotonRandomJoinFailed(object[] codeAndMsg)
         {
-            Debug.Log("DemoAnimator/Launcher:OnPhotonRandomJoinFailed() was called by PUN. No random room available, so we create one.\nCalling: PhotonNetwork.CreateRoom(null, new RoomOptions() {maxPlayers = 4}, null);");
+            Debug.Log("OnPhotonRandomJoinFailed() was called by PUN. No random room available, so we create one.\nCalling: PhotonNetwork.CreateRoom(null, new RoomOptions() {maxPlayers = 4}, null);");
 
             // #Critical: We failed to join a random room, maybe none exists or they are all full. 
             // No worries, we create a new room.
             PhotonNetwork.CreateRoom(null, new RoomOptions() { MaxPlayers = MaxPlayersPerRoom }, null);
+        }
+
+        public override void OnPhotonJoinRoomFailed(object[] codeAndMsg)
+        {
+            // TODO: We will need a UI message here that says you tried to join a room and the
+            // action failed.
+            Debug.Log("OnPhotonRandomJoinFailed() was called by PUN. Room not available.");
         }
 
         public override void OnJoinedRoom()
@@ -179,6 +225,24 @@ namespace Com.EnsorcelledStudios.Runic
             {
                 Debug.Log("You are not connected to the internet.");
             }
+        }
+
+        // JoinGame and CreateGame are new functions that we will use in the lobby,
+        // depending on whether or not the user wants to host or join.
+        public void JoinGame()
+        {
+            if (PhotonNetwork.insideLobby)
+            {
+                // This uses the prototype's dropdown list, will need changed.
+                // We will still use JoinRoom, the parameter will just be different.
+                //PhotonNetwork.JoinRoom(availableGames.options[0].text);
+            }
+        }
+
+        public void CreateGame()
+        {
+            // Change room name to be a unique ID
+            PhotonNetwork.CreateRoom(PhotonNetwork.playerName, new RoomOptions() { MaxPlayers = MaxPlayersPerRoom }, null);
         }
 
         #endregion
