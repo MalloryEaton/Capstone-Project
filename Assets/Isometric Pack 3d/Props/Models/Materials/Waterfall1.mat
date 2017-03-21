@@ -10,7 +10,7 @@ Material:
   m_Shader: {fileID: 4800000, guid: e8fc4d3dbb3819346ba9e182bde02652, type: 3}
   m_ShaderKeywords: _ALPHAPREMULTIPLY_ON _NORMALMAP
   m_LightmapFlags: 5
-  m_CustomRenderQueue: 3000
+  m_CustomRenderQueue: -1
   stringTagMap:
     RenderType: Transparent
   m_SavedProperties:
@@ -169,7 +169,7 @@ Material:
       second: 3
     - first:
         name: _NormalPower
-      second: 0.722
+      second: 1
     - first:
         name: _OcclusionStrength
       second: 1

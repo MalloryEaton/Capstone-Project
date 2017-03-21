@@ -19,6 +19,8 @@ public class UIControllerScript : MonoBehaviour
     public GameObject TutorialPanel;
     public List<GameObject> TutorialSlides;
 
+    private CameraMovementController cmc;
+
     public bool networkGame = false;
     public bool localGame = false;
     public bool quickGame = false;
@@ -30,6 +32,7 @@ public class UIControllerScript : MonoBehaviour
     {
         MainButtonPanel.GetComponent<Animator>().SetBool("isDisplayed", true);
         MainTitlePanel.GetComponent<Animator>().SetBool("isDisplayed", true);
+        cmc = FindObjectOfType(typeof(CameraMovementController)) as CameraMovementController;
         display("canvas");
         //BioPanel.SetActive(false);
         print("awake");
@@ -95,6 +98,14 @@ public class UIControllerScript : MonoBehaviour
             {
                 CharacterSelectScript.characterSelectScript.PageHeader.text = "Character Select";
             }
+            if (networkGame == true)
+            {
+                CharacterSelectScript.currentPlayerColor = "PlayerColor";
+            }
+            else if (localGame == true)
+            {
+                CharacterSelectScript.currentPlayerColor = "Player1Color";
+            }
             CharacterSelectPanel.GetComponent<Animator>().SetBool("isDisplayed", true);
         }
         else if (panel == "level")
@@ -102,6 +113,7 @@ public class UIControllerScript : MonoBehaviour
             hide("character");
             hide("canvas");
             hide("bio");
+            cmc.cameraInit();
             LevelSelectPanel.GetComponent<Animator>().SetBool("isDisplayed", true);
         }
         else if (panel == "bio")
@@ -114,6 +126,7 @@ public class UIControllerScript : MonoBehaviour
         }
         else if (panel == "play") // Start game
         {
+            //load scene based on stage that camera is looking at
             SceneManager.LoadScene("GameBoard");
         }
         else if (panel == "tutorial")
@@ -161,6 +174,8 @@ public class UIControllerScript : MonoBehaviour
         {
             CharacterSelectScript.isCharacterSelected = false;
             CharacterSelectScript.characterSelectScript.ResetMages(false);
+           
+
             CharacterSelectPanel.GetComponent<Animator>().SetBool("isDisplayed", false);
           //  BioPanel.SetActive(false);
         }
@@ -314,7 +329,6 @@ public class UIControllerScript : MonoBehaviour
             else if(CharacterSelectScript.currentPlayerColor == "Player2Color")
             {
                 display("level");
-
             }
         }
         else if(quickGame == true)
@@ -325,7 +339,8 @@ public class UIControllerScript : MonoBehaviour
 
     public void startGame()
     {
-        SceneManager.LoadScene("GameBoard");
+        //SceneManager.LoadScene("GameBoard");
+        SceneManager.LoadScene(PlayerPrefs.GetString("Stage") + "GameBoard");
     }
 
     public void quitGame()

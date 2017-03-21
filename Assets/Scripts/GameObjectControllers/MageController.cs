@@ -7,10 +7,11 @@ public class MageController : MonoBehaviour {
     private Animator anim;
     private GameLogicController gameController;
 
-    void Start ()
+    void Awake ()
     {
         anim = GetComponent<Animator>();
         gameController = FindObjectOfType(typeof(GameLogicController)) as GameLogicController;
+        //PlayLevitateAnimation();
     }
 
     public void PlayAttack1Animation(GameObject rune)
@@ -34,5 +35,16 @@ public class MageController : MonoBehaviour {
         {
             LeanTween.rotateY(gameObject, direction, 0.1f);
         });
+    }
+
+    public void PlayLevitateAnimation()
+    {
+        anim.Play("LevitateStart");
+    }
+
+    public void PlayLandingAnimation()
+    {
+        anim.StopPlayback();
+        anim.Play("Landing");
     }
 }

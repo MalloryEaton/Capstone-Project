@@ -136,7 +136,7 @@ Material:
       second: 0.4
     - first:
         name: _DistortPower
-      second: 0.779
+      second: 0.061
     - first:
         name: _DstBlend
       second: 0
@@ -160,7 +160,7 @@ Material:
       second: 0.02
     - first:
         name: _SmallDistortValue
-      second: 0.2
+      second: 0.415
     - first:
         name: _Speed
       second: 5
@@ -188,7 +188,7 @@ Material:
       second: {r: 0, g: 0, b: 0, a: 0}
     - first:
         name: _VectorOffset
-      second: {r: -0.29, g: -1, b: -0.5, a: 0}
+      second: {r: -0.01, g: -0.06, b: 0, a: 0}
     - first:
         name: _node_1307
       second: {r: 0, g: -1, b: 0, a: 0}
