@@ -22,6 +22,7 @@ public class GameBoardUIController : MonoBehaviour {
         }
         else
         {
+            SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene());
             SceneManager.LoadScene("MainMenu");
         }
 

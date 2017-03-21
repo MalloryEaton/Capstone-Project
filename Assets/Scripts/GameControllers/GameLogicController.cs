@@ -10,7 +10,6 @@ using UnityEngine.UI;
 public class GameLogicController : MonoBehaviour
 {
     /*
-     player colors
      scene selected (slected by master client)
      game type (network, one player and AI, two players, story mode?)
      difficulty
@@ -33,6 +32,10 @@ public class GameLogicController : MonoBehaviour
     public string gamePhase; //placement, movementPickup, movementPlace, removal
     private string previousGamePhase;
 
+    private short drawCount;
+    private bool canOfferDraw;
+
+    private bool isAIGame;
     public bool isNetworkGame;
     public bool isPlayer1;
 
@@ -53,16 +56,20 @@ public class GameLogicController : MonoBehaviour
     private List<short> runesThatCanBeMoved;
     private List<short> runesThatCanBeRemoved;
 
+    public GameObject LoadingScreen;
+    public GameObject TextBox;
+
     private AudioSource moveSound;
     private AudioSource removeSound;
 
-    public GameObject LoadingScreen;
 
     private float speed = 0.3f;
 
     void Awake()
     {
         LoadingScreen.GetComponent<Animator>().SetBool("isDisplayed", true);
+
+        TextBox.GetComponent<Animator>().SetBool("isDisplayed", false);
     }
 
     void Start()
@@ -78,8 +85,8 @@ public class GameLogicController : MonoBehaviour
         waitingOnAnimation = false;
         waitingOnOtherPlayer = false;
         isPlayer1Turn = true;
-
-        startingNumberOfOrbs = 9;
+        
+        startingNumberOfOrbs = 4;
         player1OrbCount = 0;
         player2OrbCount = 0;
         placementPhase_RoundCount = 1;
@@ -87,9 +94,21 @@ public class GameLogicController : MonoBehaviour
         player2Mills = new List<Mill>();
         runesThatCanBeMoved = new List<short>();
         runesThatCanBeRemoved = new List<short>();
-        
-        isNetworkGame = PlayerPrefs.GetString("GameType") == "Network" ? true : false;
+
         isNetworkGame = false;
+        isAIGame = false;
+
+        drawCount = 0;
+        canOfferDraw = true;
+
+        if (PlayerPrefs.GetString("GameType") == "Network")
+            isNetworkGame = true;
+        else if (PlayerPrefs.GetString("GameType") == "AI")
+        {
+            isAIGame = true;
+            //difficulty
+            canOfferDraw = false;
+        }
 
         if (isNetworkGame)
         {
@@ -122,6 +141,10 @@ public class GameLogicController : MonoBehaviour
         }
         else
         {
+            if (isAIGame) // have the user select the opponent's color as well
+                player2Color = "Blue";
+            else
+                player2Color = "Red";
             player1Color = "Green";
             player2Color = "Blue";
             //player1Color = PlayerPrefs.GetString("Player1Color");
@@ -340,19 +363,19 @@ public class GameLogicController : MonoBehaviour
         Instantiate(dictionaries.shrinesDictionary[player1Color], new Vector3(12, 0, 12), Quaternion.identity);
     }
 
-    private void InstantiateOrbContainers()
-    {
-        if (!isNetworkGame || (isNetworkGame && isPlayer1))
-        {
-            Instantiate(dictionaries.orbContainersDictionary[player1Color], new Vector3(0, 3, 28), Quaternion.identity);
-            Instantiate(dictionaries.orbContainersDictionary[player2Color], new Vector3(8, 3, -4), Quaternion.identity);
-        }
-        else if(isNetworkGame && !isPlayer1)
-        {
-            Instantiate(dictionaries.orbContainersDictionary[player1Color], new Vector3(8, 3, -4), Quaternion.identity);
-            Instantiate(dictionaries.orbContainersDictionary[player2Color], new Vector3(0, 3, 28), Quaternion.identity);
-        }
-    }
+    //private void InstantiateOrbContainers()
+    //{
+    //    if (!isNetworkGame || (isNetworkGame && isPlayer1))
+    //    {
+    //        Instantiate(dictionaries.orbContainersDictionary[player1Color], new Vector3(0, 3, 28), Quaternion.identity);
+    //        Instantiate(dictionaries.orbContainersDictionary[player2Color], new Vector3(8, 3, -4), Quaternion.identity);
+    //    }
+    //    else if(isNetworkGame && !isPlayer1)
+    //    {
+    //        Instantiate(dictionaries.orbContainersDictionary[player1Color], new Vector3(8, 3, -4), Quaternion.identity);
+    //        Instantiate(dictionaries.orbContainersDictionary[player2Color], new Vector3(0, 3, 28), Quaternion.identity);
+    //    }
+    //}
 
     /*---------------------------------------------------------------------
     || GAME PHASE FUNCTIONS
@@ -431,6 +454,8 @@ public class GameLogicController : MonoBehaviour
 
                 MoveOrb(toLocation);
 
+                drawCount++;
+
                 runeList[toLocation].tag = (isPlayer1Turn) ? "Player" : "Opponent";
                 runeList[runeFromLocation].tag = "Empty";
 
@@ -471,6 +496,8 @@ public class GameLogicController : MonoBehaviour
                 RemoveRunesFromMill();
 
             RemoveOrb(runeToRemove);
+
+            drawCount = 0;
         }
     }
 
@@ -517,6 +544,13 @@ public class GameLogicController : MonoBehaviour
         else if (isNetworkGame && ((isPlayer1Turn && !isPlayer1) || (!isPlayer1Turn && isPlayer1)))
         {
             waitingOnOtherPlayer = false;
+        }
+
+        if(isAIGame && drawCount == 10)
+        {
+            //offer draw
+            print("offering draw");
+            canOfferDraw = true; //show something in the ui
         }
 
         isPlayer1Turn = !isPlayer1Turn;
@@ -989,6 +1023,7 @@ public class GameLogicController : MonoBehaviour
     {
         if (CanFly())
         {
+            DisplayText("You can Fly!");
             foreach (RuneController r in runeList)
             {
                 if (r.tag == "Empty")
@@ -1015,5 +1050,16 @@ public class GameLogicController : MonoBehaviour
         {
             runeList[i].GetComponent<RuneController>().RemoveRuneHighlight();
         }
+    }
+
+    // Text Displaying //
+    private void DisplayText(string text)
+    {
+        TextBox.GetComponent<Text>().text = text;
+        TextBox.GetComponent<Animator>().SetBool("isDisplayed", true);
+        LeanTween.delayedCall(gameObject, 3f, () =>
+        {
+            TextBox.GetComponent<Animator>().SetBool("isDisplayed", false);
+        });
     }
 }
