@@ -69,7 +69,7 @@ public class GameLogicController : MonoBehaviour
     {
         LoadingScreen.GetComponent<Animator>().SetBool("isDisplayed", true);
 
-        TextBox.GetComponent<Animator>().SetBool("isDisplayed", false);
+        TextBox.GetComponent<Animator>().SetBool("isDisplayed", true);
     }
 
     void Start()
