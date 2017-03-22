@@ -35,7 +35,7 @@ public class GameLogicController : MonoBehaviour
     private short drawCount;
     private bool canOfferDraw;
 
-    private bool isAIGame;
+    public bool isAIGame;
     public bool isNetworkGame;
     public bool isPlayer1;
 
@@ -57,19 +57,20 @@ public class GameLogicController : MonoBehaviour
     private List<short> runesThatCanBeRemoved;
 
     public GameObject LoadingScreen;
-    public GameObject TextBox;
+    public Button TextBox;
 
     private AudioSource moveSound;
     private AudioSource removeSound;
 
-
     private float speed = 0.3f;
+
+    public bool showHints;
 
     void Awake()
     {
         LoadingScreen.GetComponent<Animator>().SetBool("isDisplayed", true);
 
-        TextBox.GetComponent<Animator>().SetBool("isDisplayed", true);
+        TextBox.gameObject.SetActive(false);
     }
 
     void Start()
@@ -95,11 +96,15 @@ public class GameLogicController : MonoBehaviour
         runesThatCanBeMoved = new List<short>();
         runesThatCanBeRemoved = new List<short>();
 
+        showHints = true;
+
         isNetworkGame = false;
         isAIGame = false;
 
         drawCount = 0;
         canOfferDraw = true;
+
+        PlayerPrefs.DeleteAll();
 
         if (PlayerPrefs.GetString("GameType") == "Network")
             isNetworkGame = true;
@@ -315,7 +320,7 @@ public class GameLogicController : MonoBehaviour
         LeanTween.delayedCall(4f, () => {
             player1Mage.GetComponent<MageController>().PlayLandingAnimation();
             player2Mage.GetComponent<MageController>().PlayLandingAnimation();
-
+            
             waitingOnAnimation = false;
         });
         
@@ -553,8 +558,45 @@ public class GameLogicController : MonoBehaviour
             canOfferDraw = true; //show something in the ui
         }
 
+
         isPlayer1Turn = !isPlayer1Turn;
         networking.ResetNetworkValues();
+
+        if (showHints)
+        {
+            LeanTween.cancel(GameObject.Find("CenterOfBoard"));
+            if (!isNetworkGame && !isAIGame)
+            {
+                if (isPlayer1Turn)
+                    DisplayText("It's Player 1's Turn");
+                else
+                    DisplayText("It's Player 2's Turn");
+            }
+            else if (isNetworkGame)
+            {
+                if(isPlayer1Turn)
+                {
+                    if (isPlayer1)
+                        DisplayText("It's Your Turn");
+                    else if (!isPlayer1)
+                        DisplayText("It's Your Opponent's Turn");
+                }
+                else
+                {
+                    if (!isPlayer1)
+                        DisplayText("It's Your Turn");
+                    else if (isPlayer1)
+                        DisplayText("It's Your Opponent's Turn");
+                }
+            }
+            else if (isAIGame)
+            {
+                if (isPlayer1Turn)
+                    DisplayText("It's Your Turn");
+                else
+                    DisplayText("It's Your Opponent's Turn");
+            }
+        }
 
         if (previousGamePhase == "placement")
         {
@@ -1023,7 +1065,6 @@ public class GameLogicController : MonoBehaviour
     {
         if (CanFly())
         {
-            DisplayText("You can Fly!");
             foreach (RuneController r in runeList)
             {
                 if (r.tag == "Empty")
@@ -1053,13 +1094,13 @@ public class GameLogicController : MonoBehaviour
     }
 
     // Text Displaying //
-    private void DisplayText(string text)
+    public void DisplayText(string text)
     {
-        TextBox.GetComponent<Text>().text = text;
-        TextBox.GetComponent<Animator>().SetBool("isDisplayed", true);
-        LeanTween.delayedCall(gameObject, 3f, () =>
+        TextBox.GetComponentInChildren<Text>().text = text;
+        TextBox.gameObject.SetActive(true);
+        LeanTween.delayedCall(GameObject.Find("CenterOfBoard"), 2f, () =>
         {
-            TextBox.GetComponent<Animator>().SetBool("isDisplayed", false);
+            TextBox.gameObject.SetActive(false);
         });
     }
 }

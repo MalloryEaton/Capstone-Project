@@ -46,5 +46,23 @@ public class MageController : MonoBehaviour {
     {
         anim.StopPlayback();
         anim.Play("Landing");
+        if (gameController.showHints)
+        {
+            if (!gameController.isNetworkGame && !gameController.isAIGame)
+            {
+                gameController.DisplayText("It's Player 1's Turn");
+            }
+            else if(gameController.isNetworkGame)
+            {
+                if(gameController.isPlayer1)
+                    gameController.DisplayText("It's Your Turn");
+                else
+                    gameController.DisplayText("It's Your Opponent's Turn");
+            }
+            else if (gameController.isAIGame)
+            {
+                gameController.DisplayText("It's Your Turn");
+            }
+        }
     }
 }
