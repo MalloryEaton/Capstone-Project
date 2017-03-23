@@ -746,6 +746,11 @@ Prefab:
       propertyPath: runeList.Array.size
       value: 24
       objectReference: {fileID: 0}
+    - target: {fileID: 114098349528823222, guid: 0211717ac2444bc4796c72efed674c08,
+        type: 2}
+      propertyPath: runeList.Array.size
+      value: 24
+      objectReference: {fileID: 0}
     - target: {fileID: 4844529410368182, guid: 0211717ac2444bc4796c72efed674c08, type: 2}
       propertyPath: m_LocalPosition.x
       value: 1.6777344
@@ -973,6 +978,126 @@ Prefab:
       propertyPath: TextBox
       value: 
       objectReference: {fileID: 647693866}
+    - target: {fileID: 114098349528823222, guid: 0211717ac2444bc4796c72efed674c08,
+        type: 2}
+      propertyPath: runeList.Array.data[0]
+      value: 
+      objectReference: {fileID: 1629085554}
+    - target: {fileID: 114098349528823222, guid: 0211717ac2444bc4796c72efed674c08,
+        type: 2}
+      propertyPath: runeList.Array.data[1]
+      value: 
+      objectReference: {fileID: 391176156}
+    - target: {fileID: 114098349528823222, guid: 0211717ac2444bc4796c72efed674c08,
+        type: 2}
+      propertyPath: runeList.Array.data[2]
+      value: 
+      objectReference: {fileID: 1542320541}
+    - target: {fileID: 114098349528823222, guid: 0211717ac2444bc4796c72efed674c08,
+        type: 2}
+      propertyPath: runeList.Array.data[3]
+      value: 
+      objectReference: {fileID: 382569911}
+    - target: {fileID: 114098349528823222, guid: 0211717ac2444bc4796c72efed674c08,
+        type: 2}
+      propertyPath: runeList.Array.data[4]
+      value: 
+      objectReference: {fileID: 133309575}
+    - target: {fileID: 114098349528823222, guid: 0211717ac2444bc4796c72efed674c08,
+        type: 2}
+      propertyPath: runeList.Array.data[5]
+      value: 
+      objectReference: {fileID: 858219102}
+    - target: {fileID: 114098349528823222, guid: 0211717ac2444bc4796c72efed674c08,
+        type: 2}
+      propertyPath: runeList.Array.data[6]
+      value: 
+      objectReference: {fileID: 662542022}
+    - target: {fileID: 114098349528823222, guid: 0211717ac2444bc4796c72efed674c08,
+        type: 2}
+      propertyPath: runeList.Array.data[7]
+      value: 
+      objectReference: {fileID: 834490999}
+    - target: {fileID: 114098349528823222, guid: 0211717ac2444bc4796c72efed674c08,
+        type: 2}
+      propertyPath: runeList.Array.data[8]
+      value: 
+      objectReference: {fileID: 964741800}
+    - target: {fileID: 114098349528823222, guid: 0211717ac2444bc4796c72efed674c08,
+        type: 2}
+      propertyPath: runeList.Array.data[9]
+      value: 
+      objectReference: {fileID: 1174572493}
+    - target: {fileID: 114098349528823222, guid: 0211717ac2444bc4796c72efed674c08,
+        type: 2}
+      propertyPath: runeList.Array.data[10]
+      value: 
+      objectReference: {fileID: 1469330788}
+    - target: {fileID: 114098349528823222, guid: 0211717ac2444bc4796c72efed674c08,
+        type: 2}
+      propertyPath: runeList.Array.data[11]
+      value: 
+      objectReference: {fileID: 1490195581}
+    - target: {fileID: 114098349528823222, guid: 0211717ac2444bc4796c72efed674c08,
+        type: 2}
+      propertyPath: runeList.Array.data[12]
+      value: 
+      objectReference: {fileID: 684111513}
+    - target: {fileID: 114098349528823222, guid: 0211717ac2444bc4796c72efed674c08,
+        type: 2}
+      propertyPath: runeList.Array.data[13]
+      value: 
+      objectReference: {fileID: 1395148287}
+    - target: {fileID: 114098349528823222, guid: 0211717ac2444bc4796c72efed674c08,
+        type: 2}
+      propertyPath: runeList.Array.data[14]
+      value: 
+      objectReference: {fileID: 475165541}
+    - target: {fileID: 114098349528823222, guid: 0211717ac2444bc4796c72efed674c08,
+        type: 2}
+      propertyPath: runeList.Array.data[15]
+      value: 
+      objectReference: {fileID: 968422300}
+    - target: {fileID: 114098349528823222, guid: 0211717ac2444bc4796c72efed674c08,
+        type: 2}
+      propertyPath: runeList.Array.data[16]
+      value: 
+      objectReference: {fileID: 1571229624}
+    - target: {fileID: 114098349528823222, guid: 0211717ac2444bc4796c72efed674c08,
+        type: 2}
+      propertyPath: runeList.Array.data[17]
+      value: 
+      objectReference: {fileID: 1657611081}
+    - target: {fileID: 114098349528823222, guid: 0211717ac2444bc4796c72efed674c08,
+        type: 2}
+      propertyPath: runeList.Array.data[18]
+      value: 
+      objectReference: {fileID: 484119558}
+    - target: {fileID: 114098349528823222, guid: 0211717ac2444bc4796c72efed674c08,
+        type: 2}
+      propertyPath: runeList.Array.data[19]
+      value: 
+      objectReference: {fileID: 386384569}
+    - target: {fileID: 114098349528823222, guid: 0211717ac2444bc4796c72efed674c08,
+        type: 2}
+      propertyPath: runeList.Array.data[20]
+      value: 
+      objectReference: {fileID: 1916318182}
+    - target: {fileID: 114098349528823222, guid: 0211717ac2444bc4796c72efed674c08,
+        type: 2}
+      propertyPath: runeList.Array.data[21]
+      value: 
+      objectReference: {fileID: 2092593239}
+    - target: {fileID: 114098349528823222, guid: 0211717ac2444bc4796c72efed674c08,
+        type: 2}
+      propertyPath: runeList.Array.data[22]
+      value: 
+      objectReference: {fileID: 1426131507}
+    - target: {fileID: 114098349528823222, guid: 0211717ac2444bc4796c72efed674c08,
+        type: 2}
+      propertyPath: runeList.Array.data[23]
+      value: 
+      objectReference: {fileID: 1644238909}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 0211717ac2444bc4796c72efed674c08, type: 2}
   m_IsPrefabParent: 0
