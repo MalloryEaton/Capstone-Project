@@ -67,6 +67,7 @@ public class CameraMovementController : MonoBehaviour {
         //Level2.SetActive(false);
         index = 0;
         numberOfStages = 6;
+        SetSelectedStage();
         //positionList.Add(new Vector3(47, 64, -70));
         //positionList.Add(new Vector3(89, 64, -42));
         //showLevel(0);

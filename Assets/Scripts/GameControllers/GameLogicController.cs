@@ -106,7 +106,7 @@ public class GameLogicController : MonoBehaviour
         drawCount = 0;
         canOfferDraw = true;
 
-        PlayerPrefs.DeleteAll();
+        //PlayerPrefs.DeleteAll();
 
         if (PlayerPrefs.GetString("GameType") == "Network")
             isNetworkGame = true;
@@ -116,8 +116,6 @@ public class GameLogicController : MonoBehaviour
             difficulty = PlayerPrefs.GetString("Difficulty");
             canOfferDraw = false;
         }
-
-        print(PlayerPrefs.GetString("GameType"));
 
         if (isNetworkGame)
         {
@@ -151,13 +149,11 @@ public class GameLogicController : MonoBehaviour
         else
         {
             if (isAIGame) // have the user select the opponent's color as well
-                player2Color = "Blue";
-            else
-                player2Color = "Red";
-            player1Color = "Green";
-            player2Color = "Blue";
-            //player1Color = PlayerPrefs.GetString("Player1Color");
-            //player2Color = PlayerPrefs.GetString("Player2Color");
+                player2Color = "Black";
+            //player1Color = "Green";
+            //player2Color = "Blue";
+            player1Color = PlayerPrefs.GetString("Player1Color");
+            player2Color = PlayerPrefs.GetString("Player2Color");
             InitializeGameBoard();
             LoadingScreen.GetComponent<Animator>().SetBool("isDisplayed", false);
             Destroy(GameObject.FindGameObjectWithTag("BlackPanel"));
