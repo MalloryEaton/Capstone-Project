@@ -86,7 +86,7 @@ public class GameLogicController : MonoBehaviour
         waitingOnAnimation = false;
         waitingOnOtherPlayer = false;
         isPlayer1Turn = true;
-        
+
         startingNumberOfOrbs = 4;
         player1OrbCount = 0;
         player2OrbCount = 0;
@@ -122,7 +122,7 @@ public class GameLogicController : MonoBehaviour
             LeanTween.delayedCall(gameObject, 5f, () => {
                 isPlayer1 = networking.DetermineIfMasterClient();
                 waitingOnOtherPlayer = !isPlayer1; //prevent player 2 from clicking
-                
+
                 if(isPlayer1)
                 {
                     player1Color = PlayerPrefs.GetString("PlayerColor");
@@ -133,7 +133,7 @@ public class GameLogicController : MonoBehaviour
                     player1Color = networking.otherPlayerColor;
                     player2Color = PlayerPrefs.GetString("PlayerColor");
                 }
-                
+
                 networking.ResetNetworkValues();
 
                 print(player1Color + "  " + player2Color);
@@ -311,7 +311,7 @@ public class GameLogicController : MonoBehaviour
         waitingOnAnimation = true;
         player1Mage.GetComponent<MageController>().PlayLevitateAnimation();
         player2Mage.GetComponent<MageController>().PlayLevitateAnimation();
-        
+
         LeanTween.delayedCall(0.7f, () => {
             InstantiateSide1Orbs(player1Color);
             InstantiateSide2Orbs(player2Color);
@@ -320,12 +320,12 @@ public class GameLogicController : MonoBehaviour
         LeanTween.delayedCall(4f, () => {
             player1Mage.GetComponent<MageController>().PlayLandingAnimation();
             player2Mage.GetComponent<MageController>().PlayLandingAnimation();
-            
+
             waitingOnAnimation = false;
         });
-        
+
     }
-    
+
     public void ShowAvailableMoves() //make it so that if click off a selected rune, shows the available moves again
     {
         RemoveAllRuneHighlights();
@@ -529,7 +529,7 @@ public class GameLogicController : MonoBehaviour
     /*---------------------------------------------------------------------
     || GAME PHASE LOGIC
     -----------------------------------------------------------------------*/
-    private bool CanFly()
+    public bool CanFly()
     {
         if ((isPlayer1Turn && player1OrbCount == 3) || (!isPlayer1Turn && player2OrbCount == 3))
             return true;
@@ -642,7 +642,7 @@ public class GameLogicController : MonoBehaviour
         return false;
     }
 
-    private List<short> MakeListOfRunesForCurrentPlayer()
+    public List<short> MakeListOfRunesForCurrentPlayer()
     {
         List<short> runes = new List<short>();
 
@@ -972,7 +972,7 @@ public class GameLogicController : MonoBehaviour
             player1Mage.GetComponent<MageController>().PlayAttack1Animation(GameObject.Find("Rune" + runeNumber));
         else
             player2Mage.GetComponent<MageController>().PlayAttack1Animation(GameObject.Find("Rune" + runeNumber));
-        
+
         LeanTween.delayedCall(gameObject, 0.6f, () =>
         {
             removeSound.Play();
@@ -1016,7 +1016,7 @@ public class GameLogicController : MonoBehaviour
             else //continue game
                 ChangeSide();
         });
-            
+
     }
 
     private void RemoveAllOrbHighlights(short runeNumber)
