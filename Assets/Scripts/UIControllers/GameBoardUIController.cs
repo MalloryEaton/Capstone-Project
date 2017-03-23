@@ -22,6 +22,7 @@ public class GameBoardUIController : MonoBehaviour {
         }
         else
         {
+            //if using this, add the leantween cancel thing that was used for the ui message
             SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene());
             SceneManager.LoadScene("MainMenu");
         }

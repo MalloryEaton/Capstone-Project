@@ -66,6 +66,8 @@ public class GameLogicController : MonoBehaviour
 
     public bool showHints;
 
+    public string difficulty;
+
     void Awake()
     {
         LoadingScreen.GetComponent<Animator>().SetBool("isDisplayed", true);
@@ -111,9 +113,11 @@ public class GameLogicController : MonoBehaviour
         else if (PlayerPrefs.GetString("GameType") == "AI")
         {
             isAIGame = true;
-            //difficulty
+            difficulty = PlayerPrefs.GetString("Difficulty");
             canOfferDraw = false;
         }
+
+        print(PlayerPrefs.GetString("GameType"));
 
         if (isNetworkGame)
         {
@@ -529,7 +533,7 @@ public class GameLogicController : MonoBehaviour
     /*---------------------------------------------------------------------
     || GAME PHASE LOGIC
     -----------------------------------------------------------------------*/
-    private bool CanFly()
+    public bool CanFly()
     {
         if ((isPlayer1Turn && player1OrbCount == 3) || (!isPlayer1Turn && player2OrbCount == 3))
             return true;
@@ -558,51 +562,20 @@ public class GameLogicController : MonoBehaviour
             canOfferDraw = true; //show something in the ui
         }
 
-
         isPlayer1Turn = !isPlayer1Turn;
         networking.ResetNetworkValues();
-
-        if (showHints)
-        {
-            LeanTween.cancel(GameObject.Find("CenterOfBoard"));
-            if (!isNetworkGame && !isAIGame)
-            {
-                if (isPlayer1Turn)
-                    DisplayText("It's Player 1's Turn");
-                else
-                    DisplayText("It's Player 2's Turn");
-            }
-            else if (isNetworkGame)
-            {
-                if(isPlayer1Turn)
-                {
-                    if (isPlayer1)
-                        DisplayText("It's Your Turn");
-                    else if (!isPlayer1)
-                        DisplayText("It's Your Opponent's Turn");
-                }
-                else
-                {
-                    if (!isPlayer1)
-                        DisplayText("It's Your Turn");
-                    else if (isPlayer1)
-                        DisplayText("It's Your Opponent's Turn");
-                }
-            }
-            else if (isAIGame)
-            {
-                if (isPlayer1Turn)
-                    DisplayText("It's Your Turn");
-                else
-                    DisplayText("It's Your Opponent's Turn");
-            }
-        }
 
         if (previousGamePhase == "placement")
         {
             previousGamePhase = gamePhase;
             if (placementPhase_RoundCount > startingNumberOfOrbs)
             {
+                if (showHints)
+                {
+                    LeanTween.cancel(GameObject.Find("CenterOfBoard"));
+                    DisplayMovementPhaseText();
+                }
+
                 gamePhase = "movementPickup";
                 PrepareForMovementPhase();
             }
@@ -617,6 +590,43 @@ public class GameLogicController : MonoBehaviour
             gamePhase = "movementPickup";
             RemoveAllOrbHighlights(-1);
             PrepareForMovementPhase();
+
+            if (showHints)
+            {
+                LeanTween.cancel(GameObject.Find("CenterOfBoard"));
+
+                if (!isNetworkGame && !isAIGame) //local game
+                {
+                    if (isPlayer1Turn)
+                        DisplayText("It's Player 1's Turn", 2);
+                    else
+                        DisplayText("It's Player 2's Turn", 2);
+                }
+                else if (isNetworkGame)
+                {
+                    if (isPlayer1Turn)
+                    {
+                        if (isPlayer1)
+                            DisplayText("It's Your Turn", 2);
+                        else if (!isPlayer1)
+                            DisplayText("It's Your Opponent's Turn", 2);
+                    }
+                    else
+                    {
+                        if (!isPlayer1)
+                            DisplayText("It's Your Turn", 2);
+                        else if (isPlayer1)
+                            DisplayText("It's Your Opponent's Turn", 2);
+                    }
+                }
+                else if (isAIGame)
+                {
+                    if (isPlayer1Turn && isPlayer1)
+                        DisplayText("It's Your Turn", 2);
+                    else if (!isPlayer1Turn && !isPlayer1)
+                        DisplayText("It's Your Opponent's Turn", 2);
+                }
+            }
         }
     }
 
@@ -642,7 +652,7 @@ public class GameLogicController : MonoBehaviour
         return false;
     }
 
-    private List<short> MakeListOfRunesForCurrentPlayer()
+    public List<short> MakeListOfRunesForCurrentPlayer()
     {
         List<short> runes = new List<short>();
 
@@ -743,6 +753,36 @@ public class GameLogicController : MonoBehaviour
     {
         if (IsInHorizontalMill(rune) || IsInVerticalMill(rune))
         {
+            if (showHints)
+            {
+                LeanTween.cancel(GameObject.Find("CenterOfBoard"));
+
+                if (!isNetworkGame && !isAIGame) //local game
+                {
+                    if (isPlayer1Turn)
+                        DisplayText("Player 1 Got A Mill! \n Remove One Of Your Opponent's Pieces", 3);
+                    else
+                        DisplayText("Player 2 Got A Mill! \n Remove One Of Your Opponent's Pieces", 3);
+                }
+                else if (isNetworkGame)
+                {
+                    if (isPlayer1Turn && isPlayer1)
+                    {
+                        DisplayText("You Got A Mill! \n Remove One Of Your Opponent's Pieces", 3);
+                    }
+                    else if (!isPlayer1Turn && !isPlayer1)
+                    {
+                        DisplayText("You Got A Mill! \n Remove One Of Your Opponent's Pieces", 3);
+                    }
+                }
+                else if (isAIGame)
+                {
+                    if (isPlayer1Turn && isPlayer1)
+                        DisplayText("You Got A Mill! \n Remove One Of Your Opponent's Pieces", 3);
+                    else if (!isPlayer1Turn && !isPlayer1)
+                        DisplayText("You Got A Mill! \n Remove One Of Your Opponent's Pieces", 3);
+                }
+            }
             return true;
         }
 
@@ -1094,13 +1134,52 @@ public class GameLogicController : MonoBehaviour
     }
 
     // Text Displaying //
-    public void DisplayText(string text)
+    public void DisplayText(string text, float time)
     {
         TextBox.GetComponentInChildren<Text>().text = text;
         TextBox.gameObject.SetActive(true);
-        LeanTween.delayedCall(GameObject.Find("CenterOfBoard"), 2f, () =>
+        LeanTween.delayedCall(GameObject.Find("CenterOfBoard"), time, () =>
         {
             TextBox.gameObject.SetActive(false);
+        });
+    }
+
+    private void DisplayMovementPhaseText()
+    {
+        DisplayText("Movement Phase Has Begun!", 3f);
+        LeanTween.delayedCall(GameObject.Find("CenterOfBoard"), 3f, () =>
+        {
+            if (!isNetworkGame && !isAIGame) //local game
+            {
+                if (isPlayer1Turn)
+                    DisplayText("It's Player 1's Turn", 2);
+                else
+                    DisplayText("It's Player 2's Turn", 2);
+            }
+            else if (isNetworkGame)
+            {
+                if (isPlayer1Turn)
+                {
+                    if (isPlayer1)
+                        DisplayText("It's Your Turn", 2);
+                    else if (!isPlayer1)
+                        DisplayText("It's Your Opponent's Turn", 2);
+                }
+                else
+                {
+                    if (!isPlayer1)
+                        DisplayText("It's Your Turn", 2);
+                    else if (isPlayer1)
+                        DisplayText("It's Your Opponent's Turn", 2);
+                }
+            }
+            else if (isAIGame)
+            {
+                if (isPlayer1Turn && isPlayer1)
+                    DisplayText("It's Your Turn", 2);
+                else if (!isPlayer1Turn && !isPlayer1)
+                    DisplayText("It's Your Opponent's Turn", 2);
+            }
         });
     }
 }

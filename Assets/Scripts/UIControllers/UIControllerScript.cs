@@ -297,6 +297,11 @@ public class UIControllerScript : MonoBehaviour
         display("difficulty");
     }
 
+    public void DifficultySelected(string difficulty)
+    {
+        PlayerPrefs.SetString("Difficulty", difficulty);
+    }
+
     public void storySelected()
     {
         story = true;
