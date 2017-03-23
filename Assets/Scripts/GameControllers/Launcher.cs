@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 namespace Com.EnsorcelledStudios.Runic
 {
@@ -16,6 +17,12 @@ namespace Com.EnsorcelledStudios.Runic
         public GameObject progressLabel;
         public GameObject LoadingScreen;
         public InputField inputField;
+		public GameObject gamesPanel;
+		public GameScrollList scrollList;
+
+		//List that will contain available netwrok games
+		//GameListItem defined in GameScrollList.cs
+		public List<GameListItem> gameList;
 
         #endregion
 
@@ -96,6 +103,7 @@ namespace Com.EnsorcelledStudios.Runic
                 // using roomInfo (which is an array of available games).
                 
                 //availableGames.options.Clear();
+				gameList.Clear();
 
                 roomInfo = PhotonNetwork.GetRoomList();
 
@@ -103,7 +111,13 @@ namespace Com.EnsorcelledStudios.Runic
                 {
                     //TODO: Populate ScrollRect
                     //availableGames.options.Add(new Dropdown.OptionData() { text = room.Name });
+
+					GameListItem game = new GameListItem ();
+					game.playerName = room.Name;
+					//game.characterIcon = room.
+					gameList.Add(game);
                 }
+				scrollList.addGames(gameList);
             }
         }
 
@@ -207,7 +221,7 @@ namespace Com.EnsorcelledStudios.Runic
                 // we will get a callback that we are connected, so we need to know what to do then
                 isConnecting = true;
 
-                LoadingScreen.GetComponent<Animator>().SetBool("isDisplayed", true);
+                //LoadingScreen.GetComponent<Animator>().SetBool("isDisplayed", true);
                 controlPanel.SetActive(false);
 
                 // We check if we are connected or not, we join if we are, else we initiate the 
