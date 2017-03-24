@@ -17,6 +17,7 @@ public class UIControllerScript : MonoBehaviour
     public GameObject LevelSelectPanel;
     public GameObject BioPanel;
     public GameObject TutorialPanel;
+    public GameObject LogoPanel;
     public List<GameObject> TutorialSlides;
 
     private CameraMovementController cmc;
@@ -25,18 +26,30 @@ public class UIControllerScript : MonoBehaviour
     public bool localGame = false;
     public bool quickGame = false;
     public bool story = false;
-
+    public bool isLogoPanelActive = true;
     public int slideIndex;
 
     void Awake()
     {
-        MainButtonPanel.GetComponent<Animator>().SetBool("isDisplayed", true);
-        MainTitlePanel.GetComponent<Animator>().SetBool("isDisplayed", true);
+        //MainButtonPanel.GetComponent<Animator>().SetBool("isDisplayed", true);
+        //MainTitlePanel.GetComponent<Animator>().SetBool("isDisplayed", true);
+        CharacterSelectScript.currentPlayerColor = "Player1Color";
         cmc = FindObjectOfType(typeof(CameraMovementController)) as CameraMovementController;
         display("canvas");
-        //BioPanel.SetActive(false);
+        LogoPanel.SetActive(true);
         print("awake");
         slideIndex = 0;
+    }
+
+    private void Update()
+    {
+        if(Input.anyKeyDown)
+        {
+            if(isLogoPanelActive)
+            {
+                display("main");
+            }
+        }
     }
 
     public void display(string panel)
@@ -69,6 +82,7 @@ public class UIControllerScript : MonoBehaviour
             hide("difficulty");
             hide("multiplayer");
             hide("character");
+            hide("logo");
             display("title");
             resetPrefs("GameType", "");
             networkGame = false;
@@ -131,11 +145,10 @@ public class UIControllerScript : MonoBehaviour
         }
         else if (panel == "tutorial")
         {
-            hide("level");
-            hide("title");
-            hide("main");
+            hide("tutorial");
             hide("difficulty");
             hide("multiplayer");
+            hide("character");
             slideIndex = 0;
             TutorialPanel.GetComponent<Animator>().SetBool("isDisplayed", true);
             TutorialSlides[0].SetActive(true);
@@ -143,6 +156,16 @@ public class UIControllerScript : MonoBehaviour
             {
                 TutorialSlides[i].SetActive(false);
             }
+        }
+        else if (panel == "logo")
+        {
+            hide("level");
+            hide("title");
+            hide("main");
+            hide("difficulty");
+            hide("multiplayer");
+            LogoPanel.SetActive(true);
+            isLogoPanelActive = true;
         }
     }
 
@@ -197,13 +220,18 @@ public class UIControllerScript : MonoBehaviour
         {
             TutorialPanel.GetComponent<Animator>().SetBool("isDisplayed", false);
         }
+        else if(panel == "logo")
+        {
+            LogoPanel.SetActive(false);
+            isLogoPanelActive = false;
+        }
     }
 
     public void backButtonSelected(string currentPanel)
     {
         if (currentPanel == "character")
         {
-            if(CharacterSelectScript.currentPlayerColor == "Player1Color")
+            if(CharacterSelectScript.currentPlayerColor == "Player1Color" || CharacterSelectScript.currentPlayerColor == "PlayerColor")
             {
                 if(networkGame == true || localGame == true)
                 {
