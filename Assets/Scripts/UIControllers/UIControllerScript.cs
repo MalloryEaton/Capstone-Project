@@ -100,7 +100,7 @@ public class UIControllerScript : MonoBehaviour
         {
             display("canvas");
             hide("level");
-            hide("title");
+            //hide("title");
             hide("main");
             hide("difficulty");
             hide("multiplayer");
@@ -197,8 +197,7 @@ public class UIControllerScript : MonoBehaviour
         {
             CharacterSelectScript.isCharacterSelected = false;
             CharacterSelectScript.characterSelectScript.ResetMages(false);
-           
-
+          
             CharacterSelectPanel.GetComponent<Animator>().SetBool("isDisplayed", false);
           //  BioPanel.SetActive(false);
         }
