@@ -46,19 +46,21 @@ public class CameraMovementController : MonoBehaviour {
 
     private void InitializeCameraPositions()
     {
-        positionList.Add(new Vector3(-102f, 80f, -242f)); //forest
-        positionList.Add(new Vector3(-7.1f, 84.9f, -146.6f)); //graveyard
-        positionList.Add(new Vector3(145.2f, 70.5f, 23.2f)); //desert
-        positionList.Add(new Vector3(235.5f, 98.7f, 72.6f)); //volcano
-        positionList.Add(new Vector3(139.2f, 137.2f, 289.4f)); //water
-        positionList.Add(new Vector3(409.1f, 75.6f, 226.3f)); //tower
+        //47, 64, -70
+        //36, -33.65, 0
+        positionList.Add(new Vector3(-102.29f, 80f, -242.3f)); //forest
+        positionList.Add(new Vector3(-1.3f, 94.2f, -155.2f)); //graveyard
+        positionList.Add(new Vector3(156.11f, 83.77f, 9.25f)); //desert
+        positionList.Add(new Vector3(262.2f, 158.6f, 47.2f)); //volcano
+        positionList.Add(new Vector3(138.6f, 137.25f, 288.6f)); //water
+        positionList.Add(new Vector3(377f, 104.45f, 243f)); //tower
 
-        rotationList.Add(Quaternion.Euler(45.33f, -46.4f, 0f)); //forest
-        rotationList.Add(Quaternion.Euler(42.5f, -48f, 0f)); //graveyard
-        rotationList.Add(Quaternion.Euler(41.2f, -47.8f, 0f)); //desert
-        rotationList.Add(Quaternion.Euler(36.1f, -46.5f, 0f)); //volcano
+        rotationList.Add(Quaternion.Euler(45.7f, -46f, 0f)); //forest
+        rotationList.Add(Quaternion.Euler(42.62f, -46.2f, 0f)); //graveyard
+        rotationList.Add(Quaternion.Euler(41.2f, -46f, 0f)); //desert
+        rotationList.Add(Quaternion.Euler(43.9f, -46.5f, 0f)); //volcano
         rotationList.Add(Quaternion.Euler(39f, 135f, 0f)); //water
-        rotationList.Add(Quaternion.Euler(15f, -62.61f, 0f)); //tower
+        rotationList.Add(Quaternion.Euler(33.3f, -62.61f, 0f)); //tower
     }
 
     public void Start()
