@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
+//using System.Collections;
+using ExitGames.Client.Photon;
 
 namespace Com.EnsorcelledStudios.Runic
 {
@@ -19,6 +21,8 @@ namespace Com.EnsorcelledStudios.Runic
         public InputField inputField;
 		public GameObject gamesPanel;
 		public GameScrollList scrollList;
+        private Hashtable playerProperties = new Hashtable();
+        private string[] roomProperties = new string[2];
 
 		//List that will contain available netwrok games
 		//GameListItem defined in GameScrollList.cs
@@ -96,13 +100,6 @@ namespace Com.EnsorcelledStudios.Runic
             // If we're in a lobby, update the list of available games.
             if (PhotonNetwork.insideLobby == true)
             {
-                // In my prototype I used a dropdown list, but we will probably do something
-                // different.
-
-                // ScrollRect looks like a really good option. We will need to populate it
-                // using roomInfo (which is an array of available games).
-                
-                //availableGames.options.Clear();
 				gameList.Clear();
 
                 roomInfo = PhotonNetwork.GetRoomList();
@@ -110,11 +107,10 @@ namespace Com.EnsorcelledStudios.Runic
                 foreach (RoomInfo room in roomInfo)
                 {
                     //TODO: Populate ScrollRect
-                    //availableGames.options.Add(new Dropdown.OptionData() { text = room.Name });
-
 					GameListItem game = new GameListItem ();
-					game.playerName = room.Name;
-					//game.characterIcon = room.
+                    game.playerName = room.Name;
+                    // This code works for accessing custom properties
+					//game.characterIcon = room.CustomProperties["color"].ToString();
 					gameList.Add(game);
                 }
 				scrollList.addGames(gameList);
@@ -130,6 +126,8 @@ namespace Com.EnsorcelledStudios.Runic
             // as the join and create game buttons.
 
             //TODO: Make ScrollRect, Join Game, and Create Game appear
+
+            LoadingScreen.GetComponent<Animator>().SetBool("isDisplayed", false);
         }
 
         // DEPRECATED: We are no longer using this.
@@ -221,7 +219,7 @@ namespace Com.EnsorcelledStudios.Runic
                 // we will get a callback that we are connected, so we need to know what to do then
                 isConnecting = true;
 
-                //LoadingScreen.GetComponent<Animator>().SetBool("isDisplayed", true);
+                LoadingScreen.GetComponent<Animator>().SetBool("isDisplayed", true);
                 controlPanel.SetActive(false);
 
                 // We check if we are connected or not, we join if we are, else we initiate the 
@@ -258,8 +256,13 @@ namespace Com.EnsorcelledStudios.Runic
 
         public void CreateGame()
         {
+            // We need to access the player's chosen color and stage here.
+            playerProperties.Add("color", "red");
+            playerProperties.Add("stage", "something");
+            roomProperties[0] = "color";
+            roomProperties[1] = "stage";
             // Change room name to be a unique ID
-            PhotonNetwork.CreateRoom(PhotonNetwork.playerName, new RoomOptions() { MaxPlayers = MaxPlayersPerRoom }, null);
+            PhotonNetwork.CreateRoom(PhotonNetwork.playerName, new RoomOptions() { MaxPlayers = MaxPlayersPerRoom, CustomRoomProperties = playerProperties, CustomRoomPropertiesForLobby = roomProperties }, null);
         }
 
         #endregion
