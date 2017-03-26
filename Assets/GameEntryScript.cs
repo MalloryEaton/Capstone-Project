@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Com.EnsorcelledStudios.Runic;
 
 public class GameEntryScript : MonoBehaviour {
 
@@ -14,7 +15,7 @@ public class GameEntryScript : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		
+		entry.onClick.AddListener (JoinGame);
 	}
 
 	public void Setup(GameListItem game, GameScrollList gameScrollList)
@@ -24,5 +25,10 @@ public class GameEntryScript : MonoBehaviour {
 		//characterIcon.sprite = gameListItem.characterIcon;
 
 		GSL = gameScrollList;
+	}
+
+	public void JoinGame()
+	{
+        LauncherStatic.launcher.JoinGame(playerName.text);
 	}
 }
