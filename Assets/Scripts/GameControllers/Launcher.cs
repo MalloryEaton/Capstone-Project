@@ -89,6 +89,7 @@ namespace Com.EnsorcelledStudios.Runic
         {
             LoadingScreen.GetComponent<Animator>().SetBool("isDisplayed", false);
             controlPanel.SetActive(true);
+            LauncherStatic.launcher = this;
         }
 
         #endregion
@@ -244,13 +245,13 @@ namespace Com.EnsorcelledStudios.Runic
 
         // JoinGame and CreateGame are new functions that we will use in the lobby,
         // depending on whether or not the user wants to host or join.
-        public void JoinGame()
+        public void JoinGame(string roomName)
         {
             if (PhotonNetwork.insideLobby)
             {
                 // This uses the prototype's dropdown list, will need changed.
                 // We will still use JoinRoom, the parameter will just be different.
-                //PhotonNetwork.JoinRoom(availableGames.options[0].text);
+                PhotonNetwork.JoinRoom(roomName);
             }
         }
 
