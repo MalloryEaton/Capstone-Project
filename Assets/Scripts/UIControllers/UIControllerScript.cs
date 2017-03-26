@@ -29,8 +29,11 @@ public class UIControllerScript : MonoBehaviour
     public bool isLogoPanelActive = true;
     public int slideIndex;
 
+    private GameObject LoadingPanel;
+
     void Awake()
     {
+        LoadingPanel = GameObject.Find("LoadingPanel");
         //MainButtonPanel.GetComponent<Animator>().SetBool("isDisplayed", true);
         //MainTitlePanel.GetComponent<Animator>().SetBool("isDisplayed", true);
         CharacterSelectScript.currentPlayerColor = "Player1Color";
@@ -371,8 +374,41 @@ public class UIControllerScript : MonoBehaviour
 
     public void startGame()
     {
-        //SceneManager.LoadScene("GameBoard");
-        SceneManager.LoadScene(PlayerPrefs.GetString("Stage") + "GameBoard");
+        LoadingPanel.GetComponent<Animator>().SetBool("isDisplayed", true);
+        int sceneToLoad = -1;
+
+        switch(PlayerPrefs.GetString("Stage"))
+        {
+            case "Forest":
+                sceneToLoad = 4;
+                break;
+            case "Graveyard":
+                sceneToLoad = 5;
+                break;
+            case "Desert":
+                sceneToLoad = 6;
+                break;
+            case "Volcano":
+                sceneToLoad = 7;
+                break;
+            case "Water":
+                sceneToLoad = 8;
+                break;
+            case "Tower":
+                sceneToLoad = 9;
+                break;
+        }
+
+        StartCoroutine(LoadAsync(sceneToLoad));
+    }
+
+    private IEnumerator LoadAsync(int levelNum)
+    {
+        AsyncOperation async = SceneManager.LoadSceneAsync(levelNum);
+        while (!async.isDone)
+        {
+            yield return null;
+        }
     }
 
     public void quitGame()
