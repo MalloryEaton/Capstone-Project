@@ -205,7 +205,6 @@ GameObject:
   - component: {fileID: 194888480}
   - component: {fileID: 22538006}
   - component: {fileID: 22538005}
-  - component: {fileID: 22538004}
   m_Layer: 0
   m_Name: Rock_07 (1)
   m_TagString: Untagged
@@ -213,21 +212,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
   m_IsActive: 1
---- !u!64 &22538004
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 64565572668027010, guid: 4409e3c49dd45f54e9252d2c07262cab,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 22538003}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Convex: 1
-  m_InflateMesh: 0
-  m_SkinWidth: 0.01
-  m_Mesh: {fileID: 4300000, guid: 1733033260b325942ab0bfe8ef3221a5, type: 3}
 --- !u!23 &22538005
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -851,7 +835,6 @@ GameObject:
   - component: {fileID: 1260949296}
   - component: {fileID: 125177211}
   - component: {fileID: 125177210}
-  - component: {fileID: 125177209}
   m_Layer: 0
   m_Name: Rock_10 (1)
   m_TagString: Untagged
@@ -859,21 +842,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
   m_IsActive: 1
---- !u!64 &125177209
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 64923583809294372, guid: 4409e3c49dd45f54e9252d2c07262cab,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 125177208}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Convex: 1
-  m_InflateMesh: 0
-  m_SkinWidth: 0.01
-  m_Mesh: {fileID: 4300000, guid: 94c99f79fbc1497409c8b0274f26d58d, type: 3}
 --- !u!23 &125177210
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1691,7 +1659,6 @@ GameObject:
   - component: {fileID: 2029802287}
   - component: {fileID: 274337512}
   - component: {fileID: 274337511}
-  - component: {fileID: 274337510}
   m_Layer: 0
   m_Name: Magic_Pillar3
   m_TagString: Untagged
@@ -1699,19 +1666,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
   m_IsActive: 1
---- !u!65 &274337510
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 65105850314753738, guid: 4409e3c49dd45f54e9252d2c07262cab,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 274337509}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.7442431, y: 1.9575982, z: 0.7459222}
-  m_Center: {x: 0.02188769, y: 0.98672295, z: 0.0030967742}
 --- !u!23 &274337511
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -3881,7 +3835,6 @@ GameObject:
   - component: {fileID: 977313213}
   - component: {fileID: 474304474}
   - component: {fileID: 474304473}
-  - component: {fileID: 474304472}
   m_Layer: 0
   m_Name: Rock_07 (4)
   m_TagString: Untagged
@@ -3889,21 +3842,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
   m_IsActive: 1
---- !u!64 &474304472
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 64366247166138966, guid: 4409e3c49dd45f54e9252d2c07262cab,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 474304471}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Convex: 1
-  m_InflateMesh: 0
-  m_SkinWidth: 0.01
-  m_Mesh: {fileID: 4300000, guid: 1733033260b325942ab0bfe8ef3221a5, type: 3}
 --- !u!23 &474304473
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -4029,7 +3967,6 @@ GameObject:
   - component: {fileID: 1427176683}
   - component: {fileID: 482231703}
   - component: {fileID: 482231702}
-  - component: {fileID: 482231701}
   m_Layer: 0
   m_Name: Rock_10 (6)
   m_TagString: Untagged
@@ -4037,21 +3974,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
   m_IsActive: 1
---- !u!64 &482231701
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 64347578458095382, guid: 4409e3c49dd45f54e9252d2c07262cab,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 482231700}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Convex: 1
-  m_InflateMesh: 0
-  m_SkinWidth: 0.01
-  m_Mesh: {fileID: 4300000, guid: 94c99f79fbc1497409c8b0274f26d58d, type: 3}
 --- !u!23 &482231702
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -4730,7 +4652,6 @@ GameObject:
   - component: {fileID: 453216297}
   - component: {fileID: 519727920}
   - component: {fileID: 519727919}
-  - component: {fileID: 519727918}
   m_Layer: 0
   m_Name: Rock_11 (2)
   m_TagString: Untagged
@@ -4738,21 +4659,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
   m_IsActive: 1
---- !u!64 &519727918
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 64674031562323254, guid: 4409e3c49dd45f54e9252d2c07262cab,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 519727917}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Convex: 1
-  m_InflateMesh: 0
-  m_SkinWidth: 0.01
-  m_Mesh: {fileID: 4300000, guid: 53d47675ef9dad249982cfcb57520132, type: 3}
 --- !u!23 &519727919
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -4892,7 +4798,6 @@ GameObject:
   - component: {fileID: 252263080}
   - component: {fileID: 552853545}
   - component: {fileID: 552853544}
-  - component: {fileID: 552853543}
   m_Layer: 0
   m_Name: Rock_07 (8)
   m_TagString: Untagged
@@ -4900,21 +4805,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
   m_IsActive: 1
---- !u!64 &552853543
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 64674254351011988, guid: 4409e3c49dd45f54e9252d2c07262cab,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 552853542}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Convex: 1
-  m_InflateMesh: 0
-  m_SkinWidth: 0.01
-  m_Mesh: {fileID: 4300000, guid: 1733033260b325942ab0bfe8ef3221a5, type: 3}
 --- !u!23 &552853544
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -5248,7 +5138,6 @@ GameObject:
   - component: {fileID: 229174213}
   - component: {fileID: 586110578}
   - component: {fileID: 586110577}
-  - component: {fileID: 586110576}
   m_Layer: 0
   m_Name: Rock_10 (5)
   m_TagString: Untagged
@@ -5256,21 +5145,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
   m_IsActive: 1
---- !u!64 &586110576
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 64729532175813854, guid: 4409e3c49dd45f54e9252d2c07262cab,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 586110575}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Convex: 1
-  m_InflateMesh: 0
-  m_SkinWidth: 0.01
-  m_Mesh: {fileID: 4300000, guid: 94c99f79fbc1497409c8b0274f26d58d, type: 3}
 --- !u!23 &586110577
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -5350,7 +5224,6 @@ GameObject:
   - component: {fileID: 2086296723}
   - component: {fileID: 596146515}
   - component: {fileID: 596146514}
-  - component: {fileID: 596146513}
   m_Layer: 0
   m_Name: Rock_07 (5)
   m_TagString: Untagged
@@ -5358,21 +5231,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
   m_IsActive: 1
---- !u!64 &596146513
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 64233962519142230, guid: 4409e3c49dd45f54e9252d2c07262cab,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 596146512}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Convex: 1
-  m_InflateMesh: 0
-  m_SkinWidth: 0.01
-  m_Mesh: {fileID: 4300000, guid: 1733033260b325942ab0bfe8ef3221a5, type: 3}
 --- !u!23 &596146514
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -5544,7 +5402,6 @@ GameObject:
   - component: {fileID: 361784087}
   - component: {fileID: 602311078}
   - component: {fileID: 602311077}
-  - component: {fileID: 602311076}
   m_Layer: 0
   m_Name: Plants_23
   m_TagString: Untagged
@@ -5552,20 +5409,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
   m_IsActive: 1
---- !u!136 &602311076
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 136590094937498078, guid: 4409e3c49dd45f54e9252d2c07262cab,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 602311075}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.16
-  m_Height: 1.4771243
-  m_Direction: 1
-  m_Center: {x: -0.012428075, y: 0.6228712, z: -0.13152325}
 --- !u!23 &602311077
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -5617,7 +5460,6 @@ GameObject:
   - component: {fileID: 1891398713}
   - component: {fileID: 606844520}
   - component: {fileID: 606844519}
-  - component: {fileID: 606844518}
   m_Layer: 0
   m_Name: Rock_11 (1)
   m_TagString: Untagged
@@ -5625,21 +5467,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
   m_IsActive: 1
---- !u!64 &606844518
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 64387466532782204, guid: 4409e3c49dd45f54e9252d2c07262cab,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 606844517}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Convex: 1
-  m_InflateMesh: 0
-  m_SkinWidth: 0.01
-  m_Mesh: {fileID: 4300000, guid: 53d47675ef9dad249982cfcb57520132, type: 3}
 --- !u!23 &606844519
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -6013,7 +5840,6 @@ GameObject:
   - component: {fileID: 1819271668}
   - component: {fileID: 662748484}
   - component: {fileID: 662748483}
-  - component: {fileID: 662748482}
   m_Layer: 0
   m_Name: Magic_Pillar2
   m_TagString: Untagged
@@ -6021,19 +5847,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
   m_IsActive: 1
---- !u!65 &662748482
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 65943120005272992, guid: 4409e3c49dd45f54e9252d2c07262cab,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 662748481}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.7085169, y: 1.9621351, z: 0.7129666}
-  m_Center: {x: 0.10693274, y: 0.98836577, z: 0.04176116}
 --- !u!23 &662748483
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -7262,7 +7075,6 @@ GameObject:
   - component: {fileID: 929014757}
   - component: {fileID: 799282711}
   - component: {fileID: 799282710}
-  - component: {fileID: 799282709}
   m_Layer: 0
   m_Name: Plants_24
   m_TagString: Untagged
@@ -7270,20 +7082,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
   m_IsActive: 1
---- !u!136 &799282709
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 136700224925218292, guid: 4409e3c49dd45f54e9252d2c07262cab,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 799282708}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.16
-  m_Height: 1.4771243
-  m_Direction: 1
-  m_Center: {x: -0.012428075, y: 0.6228712, z: -0.13152325}
 --- !u!23 &799282710
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -8017,7 +7815,6 @@ GameObject:
   - component: {fileID: 867996308}
   - component: {fileID: 823006602}
   - component: {fileID: 823006601}
-  - component: {fileID: 823006600}
   m_Layer: 0
   m_Name: Rock_10 (3)
   m_TagString: Untagged
@@ -8025,21 +7822,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
   m_IsActive: 1
---- !u!64 &823006600
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 64959576693718590, guid: 4409e3c49dd45f54e9252d2c07262cab,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 823006599}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Convex: 1
-  m_InflateMesh: 0
-  m_SkinWidth: 0.01
-  m_Mesh: {fileID: 4300000, guid: 94c99f79fbc1497409c8b0274f26d58d, type: 3}
 --- !u!23 &823006601
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -10605,7 +10387,6 @@ GameObject:
   - component: {fileID: 926984591}
   - component: {fileID: 1134553148}
   - component: {fileID: 1134553147}
-  - component: {fileID: 1134553146}
   m_Layer: 0
   m_Name: Rock_07 (6)
   m_TagString: Untagged
@@ -10613,21 +10394,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
   m_IsActive: 1
---- !u!64 &1134553146
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 64563291599260802, guid: 4409e3c49dd45f54e9252d2c07262cab,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1134553145}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Convex: 1
-  m_InflateMesh: 0
-  m_SkinWidth: 0.01
-  m_Mesh: {fileID: 4300000, guid: 1733033260b325942ab0bfe8ef3221a5, type: 3}
 --- !u!23 &1134553147
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -10827,7 +10593,6 @@ GameObject:
   - component: {fileID: 1785636552}
   - component: {fileID: 1141613531}
   - component: {fileID: 1141613530}
-  - component: {fileID: 1141613529}
   m_Layer: 0
   m_Name: Rock_10 (4)
   m_TagString: Untagged
@@ -10835,21 +10600,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
   m_IsActive: 1
---- !u!64 &1141613529
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 64890651187564622, guid: 4409e3c49dd45f54e9252d2c07262cab,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1141613528}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Convex: 1
-  m_InflateMesh: 0
-  m_SkinWidth: 0.01
-  m_Mesh: {fileID: 4300000, guid: 94c99f79fbc1497409c8b0274f26d58d, type: 3}
 --- !u!23 &1141613530
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -12445,7 +12195,6 @@ GameObject:
   - component: {fileID: 439486067}
   - component: {fileID: 1373696635}
   - component: {fileID: 1373696634}
-  - component: {fileID: 1373696633}
   m_Layer: 0
   m_Name: Plants_24
   m_TagString: Untagged
@@ -12453,20 +12202,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
   m_IsActive: 1
---- !u!136 &1373696633
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 136235623955670832, guid: 4409e3c49dd45f54e9252d2c07262cab,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1373696632}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.16
-  m_Height: 1.4771243
-  m_Direction: 1
-  m_Center: {x: -0.012428075, y: 0.6228712, z: -0.13152325}
 --- !u!23 &1373696634
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -13082,7 +12817,6 @@ GameObject:
   - component: {fileID: 794609768}
   - component: {fileID: 1480800781}
   - component: {fileID: 1480800780}
-  - component: {fileID: 1480800779}
   m_Layer: 0
   m_Name: Rock_07 (7)
   m_TagString: Untagged
@@ -13090,21 +12824,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
   m_IsActive: 1
---- !u!64 &1480800779
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 64955246260313454, guid: 4409e3c49dd45f54e9252d2c07262cab,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1480800778}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Convex: 1
-  m_InflateMesh: 0
-  m_SkinWidth: 0.01
-  m_Mesh: {fileID: 4300000, guid: 1733033260b325942ab0bfe8ef3221a5, type: 3}
 --- !u!23 &1480800780
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -13316,7 +13035,6 @@ GameObject:
   - component: {fileID: 735073311}
   - component: {fileID: 1496939675}
   - component: {fileID: 1496939674}
-  - component: {fileID: 1496939673}
   m_Layer: 0
   m_Name: Magic_Pillar4
   m_TagString: Untagged
@@ -13324,21 +13042,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
   m_IsActive: 1
---- !u!64 &1496939673
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 64662161785797486, guid: 4409e3c49dd45f54e9252d2c07262cab,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1496939672}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Convex: 0
-  m_InflateMesh: 0
-  m_SkinWidth: 0.01
-  m_Mesh: {fileID: 4300000, guid: abe9cf7761aa7eb45bf6f911818bab75, type: 3}
 --- !u!23 &1496939674
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -13620,7 +13323,6 @@ GameObject:
   - component: {fileID: 1930851684}
   - component: {fileID: 1561830722}
   - component: {fileID: 1561830721}
-  - component: {fileID: 1561830720}
   m_Layer: 0
   m_Name: Rock_07 (3)
   m_TagString: Untagged
@@ -13628,21 +13330,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
   m_IsActive: 1
---- !u!64 &1561830720
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 64916962255173008, guid: 4409e3c49dd45f54e9252d2c07262cab,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1561830719}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Convex: 1
-  m_InflateMesh: 0
-  m_SkinWidth: 0.01
-  m_Mesh: {fileID: 4300000, guid: 1733033260b325942ab0bfe8ef3221a5, type: 3}
 --- !u!23 &1561830721
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -13808,7 +13495,6 @@ GameObject:
   - component: {fileID: 1655792875}
   - component: {fileID: 1601332442}
   - component: {fileID: 1601332441}
-  - component: {fileID: 1601332440}
   m_Layer: 0
   m_Name: Rock_10 (2)
   m_TagString: Untagged
@@ -13816,21 +13502,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
   m_IsActive: 1
---- !u!64 &1601332440
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 64180618797880568, guid: 4409e3c49dd45f54e9252d2c07262cab,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1601332439}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Convex: 1
-  m_InflateMesh: 0
-  m_SkinWidth: 0.01
-  m_Mesh: {fileID: 4300000, guid: 94c99f79fbc1497409c8b0274f26d58d, type: 3}
 --- !u!23 &1601332441
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -14013,7 +13684,6 @@ GameObject:
   - component: {fileID: 2124420877}
   - component: {fileID: 1634022942}
   - component: {fileID: 1634022941}
-  - component: {fileID: 1634022940}
   m_Layer: 0
   m_Name: Plants_23
   m_TagString: Untagged
@@ -14021,20 +13691,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
   m_IsActive: 1
---- !u!136 &1634022940
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 136432844703125796, guid: 4409e3c49dd45f54e9252d2c07262cab,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1634022939}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.16
-  m_Height: 1.4771243
-  m_Direction: 1
-  m_Center: {x: -0.012428075, y: 0.6228712, z: -0.13152325}
 --- !u!23 &1634022941
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -14086,7 +13742,6 @@ GameObject:
   - component: {fileID: 1963215397}
   - component: {fileID: 1637656009}
   - component: {fileID: 1637656008}
-  - component: {fileID: 1637656007}
   m_Layer: 0
   m_Name: Magic_Pillar1 (1)
   m_TagString: Untagged
@@ -14094,19 +13749,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
   m_IsActive: 1
---- !u!65 &1637656007
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 65455223353316332, guid: 4409e3c49dd45f54e9252d2c07262cab,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1637656006}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.7019919, y: 1.9398559, z: 0.6809766}
-  m_Center: {x: 0.0014215857, y: 0.97683805, z: 0.010343865}
 --- !u!23 &1637656008
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -14172,7 +13814,6 @@ GameObject:
   - component: {fileID: 1305247124}
   - component: {fileID: 1640678646}
   - component: {fileID: 1640678645}
-  - component: {fileID: 1640678644}
   m_Layer: 0
   m_Name: Rock_07
   m_TagString: Untagged
@@ -14180,21 +13821,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
   m_IsActive: 1
---- !u!64 &1640678644
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 64441251479662506, guid: 4409e3c49dd45f54e9252d2c07262cab,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1640678643}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Convex: 1
-  m_InflateMesh: 0
-  m_SkinWidth: 0.01
-  m_Mesh: {fileID: 4300000, guid: 1733033260b325942ab0bfe8ef3221a5, type: 3}
 --- !u!23 &1640678645
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -14246,7 +13872,6 @@ GameObject:
   - component: {fileID: 1093185111}
   - component: {fileID: 1643466887}
   - component: {fileID: 1643466886}
-  - component: {fileID: 1643466885}
   m_Layer: 0
   m_Name: Rock_07 (2)
   m_TagString: Untagged
@@ -14254,21 +13879,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
   m_IsActive: 1
---- !u!64 &1643466885
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 64112090406887380, guid: 4409e3c49dd45f54e9252d2c07262cab,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1643466884}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Convex: 1
-  m_InflateMesh: 0
-  m_SkinWidth: 0.01
-  m_Mesh: {fileID: 4300000, guid: 1733033260b325942ab0bfe8ef3221a5, type: 3}
 --- !u!23 &1643466886
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -14932,7 +14542,6 @@ GameObject:
   - component: {fileID: 374364914}
   - component: {fileID: 1766134481}
   - component: {fileID: 1766134480}
-  - component: {fileID: 1766134479}
   m_Layer: 0
   m_Name: Rock_11
   m_TagString: Untagged
@@ -14940,21 +14549,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
   m_IsActive: 1
---- !u!64 &1766134479
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 64509298343626526, guid: 4409e3c49dd45f54e9252d2c07262cab,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1766134478}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Convex: 1
-  m_InflateMesh: 0
-  m_SkinWidth: 0.01
-  m_Mesh: {fileID: 4300000, guid: 53d47675ef9dad249982cfcb57520132, type: 3}
 --- !u!23 &1766134480
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -16441,7 +16035,6 @@ GameObject:
   - component: {fileID: 487492949}
   - component: {fileID: 1934870740}
   - component: {fileID: 1934870739}
-  - component: {fileID: 1934870738}
   m_Layer: 0
   m_Name: Magic_Pillar1
   m_TagString: Untagged
@@ -16449,19 +16042,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
   m_IsActive: 1
---- !u!65 &1934870738
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 65155458446586602, guid: 4409e3c49dd45f54e9252d2c07262cab,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1934870737}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.7019919, y: 1.9398559, z: 0.6809766}
-  m_Center: {x: 0.0014215857, y: 0.97683805, z: 0.010343865}
 --- !u!23 &1934870739
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -16513,7 +16093,6 @@ GameObject:
   - component: {fileID: 789419928}
   - component: {fileID: 1935774668}
   - component: {fileID: 1935774667}
-  - component: {fileID: 1935774666}
   m_Layer: 0
   m_Name: Plants_24 (1)
   m_TagString: Untagged
@@ -16521,20 +16100,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
   m_IsActive: 1
---- !u!136 &1935774666
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 136927857984199678, guid: 4409e3c49dd45f54e9252d2c07262cab,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1935774665}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.16
-  m_Height: 1.4771243
-  m_Direction: 1
-  m_Center: {x: -0.012428075, y: 0.6228712, z: -0.13152325}
 --- !u!23 &1935774667
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -17847,7 +17412,6 @@ GameObject:
   - component: {fileID: 98470353}
   - component: {fileID: 2046167964}
   - component: {fileID: 2046167963}
-  - component: {fileID: 2046167962}
   m_Layer: 0
   m_Name: Rock_10
   m_TagString: Untagged
@@ -17855,21 +17419,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
   m_IsActive: 1
---- !u!64 &2046167962
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 64324157952167600, guid: 4409e3c49dd45f54e9252d2c07262cab,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 2046167961}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Convex: 1
-  m_InflateMesh: 0
-  m_SkinWidth: 0.01
-  m_Mesh: {fileID: 4300000, guid: 94c99f79fbc1497409c8b0274f26d58d, type: 3}
 --- !u!23 &2046167963
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -18390,7 +17939,7 @@ Prefab:
   m_IsPrefabParent: 0
 --- !u!114 &2115547681 stripped
 MonoBehaviour:
-  m_PrefabParentObject: {fileID: 114716837533234214, guid: dcee6bc593bfb9b48a71763998ac9a25,
+  m_PrefabParentObject: {fileID: 114131366172625200, guid: dcee6bc593bfb9b48a71763998ac9a25,
     type: 2}
   m_PrefabInternal: {fileID: 2115547680}
   m_Script: {fileID: 1392445389, guid: f70555f144d8491a825f0804e09c671c, type: 3}
