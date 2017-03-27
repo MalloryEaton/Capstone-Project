@@ -40,7 +40,6 @@ public class GameLogicController : MonoBehaviour
     public bool isPlayer1;
 
     public bool isPlayer1Turn;
-    public bool preventClick;
     public bool waitingOnOtherPlayer;
     public bool waitingOnAnimation;
 
@@ -89,7 +88,7 @@ public class GameLogicController : MonoBehaviour
         waitingOnOtherPlayer = false;
         isPlayer1Turn = true;
         
-        startingNumberOfOrbs = 4;
+        startingNumberOfOrbs = 9;
         player1OrbCount = 0;
         player2OrbCount = 0;
         placementPhase_RoundCount = 1;
@@ -150,10 +149,10 @@ public class GameLogicController : MonoBehaviour
         {
             if (isAIGame) // have the user select the opponent's color as well
                 player2Color = "Black";
-            //player1Color = "Green";
-            //player2Color = "Blue";
-            player1Color = PlayerPrefs.GetString("Player1Color");
-            player2Color = PlayerPrefs.GetString("Player2Color");
+            player1Color = "Green";
+            player2Color = "Purple";
+            //player1Color = PlayerPrefs.GetString("Player1Color");
+            //player2Color = PlayerPrefs.GetString("Player2Color");
             InitializeGameBoard();
             LoadingScreen.GetComponent<Animator>().SetBool("isDisplayed", false);
             Destroy(GameObject.FindGameObjectWithTag("BlackPanel"));
@@ -340,7 +339,6 @@ public class GameLogicController : MonoBehaviour
     {
         InstantiateMages();
         InstantiateShrine();
-        //InstantiateOrbContainers();
     }
 
     private void InstantiateMages()
@@ -485,7 +483,6 @@ public class GameLogicController : MonoBehaviour
     private void PrepareForRemovalPhase()
     {
         print("YOU GOT A MILL!");
-        preventClick = false;
         previousGamePhase = gamePhase;
         gamePhase = "removal";
         HighlightMoveableOrbs(MakeListOfRunesThatCanBeRemoved());

@@ -148,17 +148,21 @@ public class UIControllerScript : MonoBehaviour
         }
         else if (panel == "tutorial")
         {
-            hide("tutorial");
-            hide("difficulty");
-            hide("multiplayer");
-            hide("character");
-            slideIndex = 0;
-            TutorialPanel.GetComponent<Animator>().SetBool("isDisplayed", true);
-            TutorialSlides[0].SetActive(true);
-            for (int i = 1; i < TutorialSlides.Count; i++)
-            {
-                TutorialSlides[i].SetActive(false);
-            }
+            LoadingPanel.GetComponent<Animator>().SetBool("isDisplayed", true);
+            int sceneToLoad = 10;
+            StartCoroutine(LoadAsync(sceneToLoad));
+
+            //hide("tutorial");
+            //hide("difficulty");
+            //hide("multiplayer");
+            //hide("character");
+            //slideIndex = 0;
+            //TutorialPanel.GetComponent<Animator>().SetBool("isDisplayed", true);
+            //TutorialSlides[0].SetActive(true);
+            //for (int i = 1; i < TutorialSlides.Count; i++)
+            //{
+            //    TutorialSlides[i].SetActive(false);
+            //}
         }
         else if (panel == "logo")
         {

@@ -12,6 +12,7 @@ public class Dictionaries : MonoBehaviour {
     public Dictionary<short, Material> runeHighlightsDictionary;
     public Dictionary<short, Material> runeOriginalsDictionary;
     public Dictionary<string, GameObject> shrinesDictionary;
+    public Dictionary<string, GameObject> shrinesTutorialDictionary;
     public Dictionary<string, GameObject> magicRingDictionary;
     public Dictionary<string, GameObject> magesDictionary;
     public Dictionary<string, GameObject> magicHitDictionary;
@@ -29,10 +30,12 @@ public class Dictionaries : MonoBehaviour {
         runeHighlightsDictionary = new Dictionary<short, Material>();
         runeOriginalsDictionary = new Dictionary<short, Material>();
         orbsDictionary = new Dictionary<string, GameObject>();
+        shrinesTutorialDictionary = new Dictionary<string, GameObject>();
         shrinesDictionary = new Dictionary<string, GameObject>();
         magicRingDictionary = new Dictionary<string, GameObject>();
         magesDictionary = new Dictionary<string, GameObject>();
         magicHitDictionary = new Dictionary<string, GameObject>();
+        orbContainersDictionary = new Dictionary<string, GameObject>();
         verticalMillsList = new List<Mill>();
 
         InitializeAdjacencyDictionary();
@@ -42,10 +45,24 @@ public class Dictionaries : MonoBehaviour {
         InitializeStartingLocationsDictionary();
         InitializeOrbDictionary();
         InitializeShrineDictionary();
+        InitializeShrineTutorialDictionary();
         InitializeVerticalMillsList();
         InitializeMagicRingDictionary();
         InitializeMagesDictionary();
         InitializeMagicHitDictionary();
+        InitializeOrbContainersDictionary();
+    }
+
+    private void InitializeOrbContainersDictionary()
+    {
+        orbContainersDictionary.Add("Black", Resources.Load(@"Orbs\OrbContainers\BlackOrbContainer", typeof(GameObject)) as GameObject);
+        orbContainersDictionary.Add("Blue", Resources.Load(@"Orbs\OrbContainers\BlueOrbContainer", typeof(GameObject)) as GameObject);
+        orbContainersDictionary.Add("Green", Resources.Load(@"Orbs\OrbContainers\GreenOrbContainer", typeof(GameObject)) as GameObject);
+        orbContainersDictionary.Add("Orange", Resources.Load(@"Orbs\OrbContainers\OrangeOrbContainer", typeof(GameObject)) as GameObject);
+        orbContainersDictionary.Add("Purple", Resources.Load(@"Orbs\OrbContainers\PurpleOrbContainer", typeof(GameObject)) as GameObject);
+        orbContainersDictionary.Add("Red", Resources.Load(@"Orbs\OrbContainers\RedOrbContainer", typeof(GameObject)) as GameObject);
+        orbContainersDictionary.Add("White", Resources.Load(@"Orbs\OrbContainers\WhiteOrbContainer", typeof(GameObject)) as GameObject);
+        orbContainersDictionary.Add("Yellow", Resources.Load(@"Orbs\OrbContainers\YellowOrbContainer", typeof(GameObject)) as GameObject);
     }
 
     private void InitializeMagesDictionary()
@@ -228,6 +245,18 @@ public class Dictionaries : MonoBehaviour {
         shrinesDictionary.Add("Red", Resources.Load(@"Shrines\ShrineRed", typeof(GameObject)) as GameObject);
         shrinesDictionary.Add("White", Resources.Load(@"Shrines\ShrineWhite", typeof(GameObject)) as GameObject);
         shrinesDictionary.Add("Yellow", Resources.Load(@"Shrines\ShrineYellow", typeof(GameObject)) as GameObject);
+    }
+
+    private void InitializeShrineTutorialDictionary()
+    {
+        shrinesTutorialDictionary.Add("Black", Resources.Load(@"ShrinesTutorial\ShrineBlack", typeof(GameObject)) as GameObject);
+        shrinesTutorialDictionary.Add("Blue", Resources.Load(@"ShrinesTutorial\ShrineBlue", typeof(GameObject)) as GameObject);
+        shrinesTutorialDictionary.Add("Green", Resources.Load(@"ShrinesTutorial\ShrineGreen", typeof(GameObject)) as GameObject);
+        shrinesTutorialDictionary.Add("Orange", Resources.Load(@"ShrinesTutorial\ShrineOrange", typeof(GameObject)) as GameObject);
+        shrinesTutorialDictionary.Add("Purple", Resources.Load(@"ShrinesTutorial\ShrinePurple", typeof(GameObject)) as GameObject);
+        shrinesTutorialDictionary.Add("Red", Resources.Load(@"ShrinesTutorial\ShrineRed", typeof(GameObject)) as GameObject);
+        shrinesTutorialDictionary.Add("White", Resources.Load(@"ShrinesTutorial\ShrineWhite", typeof(GameObject)) as GameObject);
+        shrinesTutorialDictionary.Add("Yellow", Resources.Load(@"ShrinesTutorial\ShrineYellow", typeof(GameObject)) as GameObject);
     }
 
     private void InitializeMagicRingDictionary()

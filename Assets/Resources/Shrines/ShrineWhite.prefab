@@ -21,7 +21,6 @@ GameObject:
   - component: {fileID: 4281504779486372}
   - component: {fileID: 33479012337013046}
   - component: {fileID: 23982792169855084}
-  - component: {fileID: 64096842604772176}
   - component: {fileID: 114163643944428084}
   m_Layer: 0
   m_Name: ShrineWhite
@@ -180,20 +179,6 @@ MeshFilter:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1079611787356714}
-  m_Mesh: {fileID: 4300000, guid: e0dea2bb7b8ceed43aebb85009c22234, type: 3}
---- !u!64 &64096842604772176
-MeshCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1079611787356714}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Convex: 0
-  m_InflateMesh: 0
-  m_SkinWidth: 0.01
   m_Mesh: {fileID: 4300000, guid: e0dea2bb7b8ceed43aebb85009c22234, type: 3}
 --- !u!114 &114163643944428084
 MonoBehaviour:

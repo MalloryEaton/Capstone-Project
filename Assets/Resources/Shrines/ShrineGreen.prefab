@@ -21,7 +21,6 @@ GameObject:
   - component: {fileID: 4300819612694350}
   - component: {fileID: 33281369229636434}
   - component: {fileID: 23164535578939376}
-  - component: {fileID: 64871946819106152}
   - component: {fileID: 114597103570865456}
   m_Layer: 0
   m_Name: ShrineGreen
@@ -180,20 +179,6 @@ MeshFilter:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1161215683703308}
-  m_Mesh: {fileID: 4300000, guid: e0dea2bb7b8ceed43aebb85009c22234, type: 3}
---- !u!64 &64871946819106152
-MeshCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1161215683703308}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Convex: 0
-  m_InflateMesh: 0
-  m_SkinWidth: 0.01
   m_Mesh: {fileID: 4300000, guid: e0dea2bb7b8ceed43aebb85009c22234, type: 3}
 --- !u!114 &114597103570865456
 MonoBehaviour:

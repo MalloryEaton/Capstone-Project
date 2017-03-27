@@ -38,7 +38,6 @@ GameObject:
   - component: {fileID: 4199547835833952}
   - component: {fileID: 33089917518393282}
   - component: {fileID: 23524943521760164}
-  - component: {fileID: 64544199411995976}
   - component: {fileID: 114677002413923428}
   m_Layer: 0
   m_Name: ShrineBlack
@@ -181,20 +180,6 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1100311611571212}
   m_Mesh: {fileID: 4300000, guid: 770f29e254c48da4fba314b617d8b98e, type: 3}
---- !u!64 &64544199411995976
-MeshCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1147077825607718}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Convex: 0
-  m_InflateMesh: 0
-  m_SkinWidth: 0.01
-  m_Mesh: {fileID: 4300000, guid: e0dea2bb7b8ceed43aebb85009c22234, type: 3}
 --- !u!114 &114677002413923428
 MonoBehaviour:
   m_ObjectHideFlags: 1
