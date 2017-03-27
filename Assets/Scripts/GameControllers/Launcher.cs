@@ -51,6 +51,8 @@ namespace Com.EnsorcelledStudios.Runic
         /// </summary>
         bool isConnecting;
 
+        bool playerDisconnected = false;
+
         // We will keep available games in this array.
         RoomInfo[] roomInfo;
 
@@ -156,7 +158,13 @@ namespace Com.EnsorcelledStudios.Runic
             controlPanel.SetActive(true);
 
             // TODO: Need a better disconnect message
-            Debug.LogWarning("OnDisconnectedFromPhoton() was called by PUN");
+            Debug.Log("You have been disconnected from the game.");
+
+            if (playerDisconnected)
+            {
+                // TODO: Add a disconnect notification in the UI.
+                Debug.Log("Please check to see if you are connected to the internet.");
+            }
         }
 
         // We are also not using this, as we aren't doing random connects.
@@ -190,6 +198,11 @@ namespace Com.EnsorcelledStudios.Runic
                 // TODO: This will almost certainly be named something different
                 PhotonNetwork.LoadLevel("GameBoard");
             }
+        }
+
+        public override void OnConnectionFail(DisconnectCause cause)
+        {
+            playerDisconnected = true;
         }
 
         #endregion
