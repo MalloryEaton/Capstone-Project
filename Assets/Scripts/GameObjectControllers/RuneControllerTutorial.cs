@@ -57,10 +57,28 @@ public class RuneControllerTutorial : MonoBehaviour
         {
             switch(tutorialController.textIndex)
             {
-                case 1:
+                case 10:
                     if (runeNumber == 20)
                     {
-                        tutorialController.MoveOrb(20, "Green_Orb_1");
+                        tutorialController.MoveOrb(20, "Green_Orb_1", 0.3f);
+                    }
+                    break;
+                case 12:
+                    if (runeNumber == 5)
+                    {
+                        tutorialController.MoveOrb(5, "Green_Orb_2", 0.3f);
+                    }
+                    break;
+                case 14:
+                    if (runeNumber == 13)
+                    {
+                        tutorialController.MoveOrb(13, "Green_Orb_3", 0.3f);
+                    }
+                    break;
+                case 15:
+                    if (runeNumber == 2 || runeNumber == 3)
+                    {
+                        tutorialController.DestroyOrb(runeNumber);
                     }
                     break;
             }
