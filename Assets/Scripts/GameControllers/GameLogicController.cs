@@ -20,8 +20,9 @@ public class GameLogicController : MonoBehaviour
     || GAME VARIABLES
     -----------------------------------------------------------------------*/
     public RuneController[] runeList;
-    private Dictionaries dictionaries;
+    public Dictionaries dictionaries;
     private NetworkingController networking;
+    private AIController aicontroller;
 
     private GameObject player1Mage;
     private GameObject player2Mage;
@@ -81,6 +82,7 @@ public class GameLogicController : MonoBehaviour
 
         dictionaries = FindObjectOfType(typeof(Dictionaries)) as Dictionaries;
         networking = FindObjectOfType(typeof(NetworkingController)) as NetworkingController;
+        aicontroller = FindObjectOfType(typeof(AIController)) as AIController;
         gamePhase = "placement";
         previousGamePhase = "placement";
         waitingOnAnimation = false;
@@ -99,7 +101,7 @@ public class GameLogicController : MonoBehaviour
         showHints = true;
 
         isNetworkGame = false;
-        isAIGame = false;
+        isAIGame = true;
 
         drawCount = 0;
         canOfferDraw = true;
@@ -551,6 +553,16 @@ public class GameLogicController : MonoBehaviour
             waitingOnOtherPlayer = false;
         }
 
+        // Get move from AI opponent
+        else if (isAIGame && ((isPlayer1Turn && isPlayer1) || (!isPlayer1Turn && !isPlayer1))) {
+            List<short> AIMove;
+
+            if (gamePhase == "placement")
+                AIMove = aicontroller.GetAIMove("placement");
+            else
+                AIMove = aicontroller.GetAIMove("movement");
+        }
+
         if(isAIGame && drawCount == 10)
         {
             //offer draw
@@ -739,7 +751,7 @@ public class GameLogicController : MonoBehaviour
     /*---------------------------------------------------------------------
     || MILL FUNCTIONS
     -----------------------------------------------------------------------*/
-    private bool RuneIsInMill(short rune)
+    public bool RuneIsInMill(short rune)
     {
         if (IsInHorizontalMill(rune) || IsInVerticalMill(rune))
         {
