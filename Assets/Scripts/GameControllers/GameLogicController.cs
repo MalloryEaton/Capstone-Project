@@ -22,7 +22,7 @@ public class GameLogicController : MonoBehaviour
     public RuneController[] runeList;
     public Dictionaries dictionaries;
     private NetworkingController networking;
-    private AIController aicontroller;
+    private MyAIController aicontroller;
 
     private GameObject player1Mage;
     private GameObject player2Mage;
@@ -57,6 +57,8 @@ public class GameLogicController : MonoBehaviour
     private List<short> runesThatCanBeMoved;
     private List<short> runesThatCanBeRemoved;
 
+    private List<short> AIMove;
+
     public GameObject LoadingScreen;
     public Button TextBox;
 
@@ -82,12 +84,13 @@ public class GameLogicController : MonoBehaviour
 
         dictionaries = FindObjectOfType(typeof(Dictionaries)) as Dictionaries;
         networking = FindObjectOfType(typeof(NetworkingController)) as NetworkingController;
-        aicontroller = FindObjectOfType(typeof(AIController)) as AIController;
+        aicontroller = FindObjectOfType(typeof(MyAIController)) as MyAIController;
         gamePhase = "placement";
         previousGamePhase = "placement";
         waitingOnAnimation = false;
         waitingOnOtherPlayer = false;
         isPlayer1Turn = true;
+        AIMove = new List<short> { -1, -1, -1 };
 
         startingNumberOfOrbs = 4;
         player1OrbCount = 0;
@@ -541,6 +544,7 @@ public class GameLogicController : MonoBehaviour
 
     private void ChangeSide()
     {
+        Debug.Log("ChangeSide");
         // Send move to opponent if in a network game
         if (isNetworkGame && ((isPlayer1Turn && isPlayer1) || (!isPlayer1Turn && !isPlayer1)))
         {
@@ -553,14 +557,20 @@ public class GameLogicController : MonoBehaviour
             waitingOnOtherPlayer = false;
         }
 
-        // Get move from AI opponent
-        else if (isAIGame && ((isPlayer1Turn && isPlayer1) || (!isPlayer1Turn && !isPlayer1))) {
-            List<short> AIMove;
-
+        // Get move from AI opponent if it is their turn
+        else if (isAIGame && ((isPlayer1Turn && !isPlayer1) || (!isPlayer1Turn && isPlayer1))) {
             if (gamePhase == "placement")
+            {
                 AIMove = aicontroller.GetAIMove("placement");
+                Debug.Log("AIMOVE: " + AIMove[1]);
+                PlacementPhase(AIMove[1]);
+            }
             else
+            {
                 AIMove = aicontroller.GetAIMove("movement");
+                runeFromLocation = AIMove[0];
+                MovementPhase_Place(AIMove[1]);
+            }
         }
 
         if(isAIGame && drawCount == 10)
@@ -955,6 +965,26 @@ public class GameLogicController : MonoBehaviour
                         if (((isPlayer1Turn && !isPlayer1) || (!isPlayer1Turn && isPlayer1)) && (networking.removeFrom != -1))
                         {
                             RemovalPhase(networking.removeFrom);
+                        }
+                        else
+                        {
+                            ChangeSide();
+                        }
+                    }
+                }
+                else if (isAIGame)
+                {
+                    if (((isPlayer1Turn && isPlayer1) || (!isPlayer1Turn && !isPlayer1)) && RuneIsInMill(toLocation))
+                    {
+                        PrepareForRemovalPhase();
+                    }
+                    else
+                    {
+                        // If there is an orb to remove on the receiving side, however,
+                        // we don't want to call ChangeSide() quite yet.
+                        if (((isPlayer1Turn && !isPlayer1) || (!isPlayer1Turn && isPlayer1)) && (AIMove[2] != -1))
+                        {
+                            RemovalPhase(AIMove[2]);
                         }
                         else
                         {
