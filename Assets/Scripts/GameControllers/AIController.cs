@@ -31,7 +31,7 @@ public class AIController
   }
 
   // Gets a move from the AI
-  public short[] GetAIMove(string phase) {
+  public List<short> GetAIMove(string phase) {
     short[] move = new short[3] { -1, -1, -1 };
 
     if (phase == "placement")
@@ -42,7 +42,7 @@ public class AIController
     if (gameLogicController.RuneIsInMill(move[1]))
       removePiece(ref move);
 
-    return move;
+    return (move);
   }
 
   // Choose a slot to place an orb //
