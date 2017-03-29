@@ -81,6 +81,10 @@ public class RuneControllerTutorial : MonoBehaviour
                         tutorialController.DestroyOrb(runeNumber);
                     }
                     break;
+                case 22:
+                    tutorialController.MoveOrb(runeNumber, "Green_Orb_1", 0.3f);
+                    tutorialController.preventClick = true;
+                    break;
             }
         }
     }

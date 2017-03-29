@@ -103,6 +103,9 @@ public class TutorialLogic : MonoBehaviour {
         TextBoxes[18].SetActive(false);
         TextBoxes[19].SetActive(false);
         TextBoxes[20].SetActive(false);
+        TextBoxes[21].SetActive(false);
+        TextBoxes[22].SetActive(false);
+        TextBoxes[23].SetActive(false);
     }
 
     public void TransitionText()
@@ -119,7 +122,7 @@ public class TutorialLogic : MonoBehaviour {
         }
         if (textIndex == 11)
         {
-            MoveOrb(3, "Purple_Orb_1", 3f);
+            MoveOrb(3, "Purple_Orb_1", 1f); //3
         }
 
         if (textIndex == 12)
@@ -129,7 +132,7 @@ public class TutorialLogic : MonoBehaviour {
         }
         if (textIndex == 13)
         {
-            MoveOrb(2, "Purple_Orb_2", 3f);
+            MoveOrb(2, "Purple_Orb_2", 1f); //3
         }
 
         if (textIndex == 14)
@@ -144,6 +147,27 @@ public class TutorialLogic : MonoBehaviour {
             MakeOrbHover(GameObject.Find("OrbAtLocation_2"));
             MakeOrbHover(GameObject.Find("OrbAtLocation_3"));
         }
+        if(textIndex == 19)
+        {
+            ResetBoard();
+        }
+        if (textIndex == 22)
+        {
+            GameObject.Find("Green_Orb_1").AddComponent<OrbHoverController>();
+            preventClick = false;
+        }
+    }
+
+    private void ResetBoard()
+    {
+        Destroy(GameObject.Find("GreenOrbContainer(Clone)"));
+        Destroy(GameObject.Find("PurpleOrbContainer(Clone)"));
+        foreach (RuneControllerTutorial rune in runeList)
+        {
+            rune.tag = "Empty";
+        }
+        InstantiateOrbContainers();
+        isPlayer1Turn = true;
     }
 
     private void PlayAttackAnimation(short toLocation)
@@ -175,10 +199,11 @@ public class TutorialLogic : MonoBehaviour {
         waitingOnAnimation = true;
         GameObject orbToMove = GameObject.Find(name);
 
-        RemoveOrbHighlight(orbToMove);
+        RemoveOrbHighlightMoving(orbToMove);
         RemoveAllRuneHighlights();
 
         orbToMove.name = "OrbAtLocation_" + toLocation;
+        runeList[toLocation].tag = isPlayer1Turn ? "Player" : "Opponent";
 
         LeanTween.delayedCall(orbToMove, speed, () =>
         {
@@ -201,6 +226,7 @@ public class TutorialLogic : MonoBehaviour {
     {
         PlayAttackAnimation(runeNumber);
         GameObject orbToDestroy = GameObject.Find("OrbAtLocation_" + runeNumber);
+        runeList[runeNumber].tag = "Empty";
         GameObject hit;
         LeanTween.delayedCall(gameObject, 0.6f, () =>
         {
@@ -224,6 +250,9 @@ public class TutorialLogic : MonoBehaviour {
             LeanTween.delayedCall(gameObject, 1f, () =>
             {
                 Destroy(hit);
+                RemoveAllOrbHighlights();
+                DestroyMagicRings();
+
                 TransitionText();
             });
         });
@@ -237,14 +266,29 @@ public class TutorialLogic : MonoBehaviour {
         }
     }
 
+    private void RemoveAllOrbHighlights()
+    {
+        foreach (RuneControllerTutorial rune in runeList)
+        {
+            if (rune.tag != "Empty")
+                RemoveOrbHighlightStill(GameObject.Find("OrbAtLocation_" + rune.runeNumber), rune.runeNumber);
+        }
+    }
+
     private void MakeOrbHover(GameObject orb)
     {
         orb.AddComponent<OrbHoverController>();
     }
 
-    private void RemoveOrbHighlight(GameObject orb)
+    private void RemoveOrbHighlightMoving(GameObject orb)
     {
         Destroy(orb.GetComponent<OrbHoverController>());
+    }
+
+    private void RemoveOrbHighlightStill(GameObject orb, short rune)
+    {
+        Destroy(orb.GetComponent<OrbHoverController>());
+        orb.transform.position = dictionaries.orbPositionsDictionary[rune];
     }
 
     private void InstantiateMagicRings(string color)
