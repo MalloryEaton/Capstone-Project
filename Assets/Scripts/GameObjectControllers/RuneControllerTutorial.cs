@@ -41,13 +41,13 @@ public class RuneControllerTutorial : MonoBehaviour
 
     private void OnMouseEnter()
     {
-        if(!tutorialController.preventClick)
+        if(tutorialController.gamePhase == "Placement" && !tutorialController.preventClick)
             AddRuneHighlight();
     }
 
     private void OnMouseExit()
     {
-        if (!tutorialController.preventClick)
+        if (tutorialController.gamePhase == "Placement" && !tutorialController.preventClick)
             RemoveRuneHighlight();
     }
 

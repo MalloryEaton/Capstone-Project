@@ -24,6 +24,7 @@ public class TutorialLogic : MonoBehaviour {
     private AudioSource moveSound;
     private AudioSource removeSound;
 
+    public string gamePhase = "Placement";
     private bool isPlayer1Turn = true;
 
     private float speed = 0.3f;
@@ -106,6 +107,9 @@ public class TutorialLogic : MonoBehaviour {
         TextBoxes[21].SetActive(false);
         TextBoxes[22].SetActive(false);
         TextBoxes[23].SetActive(false);
+        TextBoxes[24].SetActive(false);
+        TextBoxes[25].SetActive(false);
+        TextBoxes[26].SetActive(false);
     }
 
     public void TransitionText()
@@ -156,6 +160,45 @@ public class TutorialLogic : MonoBehaviour {
             GameObject.Find("Green_Orb_1").AddComponent<OrbHoverController>();
             preventClick = false;
         }
+        if (textIndex == 25)
+        {
+            ResetBoard();
+            gamePhase = "Movement";
+
+            // set up board for movement phase
+            SetPosition(GameObject.Find("/GreenOrbContainer(Clone)/Green_Orb_1"), 0);
+            SetPosition(GameObject.Find("/GreenOrbContainer(Clone)/Green_Orb_2"), 5);
+            SetPosition(GameObject.Find("/GreenOrbContainer(Clone)/Green_Orb_3"), 22);
+            SetPosition(GameObject.Find("/GreenOrbContainer(Clone)/Green_Orb_4"), 13);
+            SetPosition(GameObject.Find("/GreenOrbContainer(Clone)/Green_Orb_5"), 6);
+            SetPosition(GameObject.Find("/GreenOrbContainer(Clone)/Green_Orb_6"), 24);
+            SetPosition(GameObject.Find("/GreenOrbContainer(Clone)/Green_Orb_7"), 2);
+            SetPosition(GameObject.Find("/GreenOrbContainer(Clone)/Green_Orb_8"), 7);
+            SetPosition(GameObject.Find("/GreenOrbContainer(Clone)/Green_Orb_9"), 16);
+
+            SetPosition(GameObject.Find("Purple_Orb_1"), 0);
+            SetPosition(GameObject.Find("Purple_Orb_2"), 0);
+            SetPosition(GameObject.Find("Purple_Orb_3"), 0);
+            SetPosition(GameObject.Find("Purple_Orb_4"), 0);
+            SetPosition(GameObject.Find("Purple_Orb_5"), 0);
+            SetPosition(GameObject.Find("Purple_Orb_6"), 0);
+            SetPosition(GameObject.Find("Purple_Orb_7"), 0);
+            SetPosition(GameObject.Find("Purple_Orb_8"), 0);
+            SetPosition(GameObject.Find("Purple_Orb_9"), 0);
+
+            // highlight moveable orbs
+            //GameObject.Find("OrbAtLocation_").AddComponent<OrbHoverController>();
+        }
+        if(textIndex == 26)
+        {
+            //allow them to move an orb
+        }
+    }
+
+    private void SetPosition(GameObject orb, short rune)
+    {
+        orb.transform.position = dictionaries.orbPositionsDictionary[rune];
+        orb.name = "OrbAtLocation_" + rune;
     }
 
     private void ResetBoard()
@@ -197,6 +240,7 @@ public class TutorialLogic : MonoBehaviour {
     public void MoveOrb(short toLocation, string name, float speed)
     {
         waitingOnAnimation = true;
+        preventClick = true;
         GameObject orbToMove = GameObject.Find(name);
 
         RemoveOrbHighlightMoving(orbToMove);
