@@ -580,36 +580,37 @@ public class GameLogicController : MonoBehaviour
         if (showHints)
         {
             LeanTween.cancel(GameObject.Find("CenterOfBoard"));
-            if (!isNetworkGame && !isAIGame)
+
+            if (!isNetworkGame && !isAIGame) //local game
             {
                 if (isPlayer1Turn)
-                    DisplayText("It's Player 1's Turn");
+                    DisplayText("It's Player 1's Turn", 2);
                 else
-                    DisplayText("It's Player 2's Turn");
+                    DisplayText("It's Player 2's Turn", 2);
             }
             else if (isNetworkGame)
             {
-                if(isPlayer1Turn)
+                if (isPlayer1Turn)
                 {
                     if (isPlayer1)
-                        DisplayText("It's Your Turn");
+                        DisplayText("It's Your Turn", 2);
                     else if (!isPlayer1)
-                        DisplayText("It's Your Opponent's Turn");
+                        DisplayText("It's Your Opponent's Turn", 2);
                 }
                 else
                 {
                     if (!isPlayer1)
-                        DisplayText("It's Your Turn");
+                        DisplayText("It's Your Turn", 2);
                     else if (isPlayer1)
-                        DisplayText("It's Your Opponent's Turn");
+                        DisplayText("It's Your Opponent's Turn", 2);
                 }
             }
             else if (isAIGame)
             {
-                if (isPlayer1Turn)
-                    DisplayText("It's Your Turn");
-                else
-                    DisplayText("It's Your Opponent's Turn");
+                if (isPlayer1Turn && isPlayer1)
+                    DisplayText("It's Your Turn", 2);
+                else if (!isPlayer1Turn && !isPlayer1)
+                    DisplayText("It's Your Opponent's Turn", 2);
             }
         }
 
@@ -1148,11 +1149,11 @@ public class GameLogicController : MonoBehaviour
     }
 
     // Text Displaying //
-    public void DisplayText(string text)
+    public void DisplayText(string text, float time)
     {
         TextBox.GetComponentInChildren<Text>().text = text;
         TextBox.gameObject.SetActive(true);
-        LeanTween.delayedCall(GameObject.Find("CenterOfBoard"), 2f, () =>
+        LeanTween.delayedCall(GameObject.Find("CenterOfBoard"), time, () =>
         {
             TextBox.gameObject.SetActive(false);
         });
