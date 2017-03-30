@@ -37,11 +37,11 @@ public class GameLogicController : MonoBehaviour
     private bool canOfferDraw;
 
     public bool isAIGame;
+    public bool isAITurn;
     public bool isNetworkGame;
     public bool isPlayer1;
 
     public bool isPlayer1Turn;
-    public bool preventClick;
     public bool waitingOnOtherPlayer;
     public bool waitingOnAnimation;
 
@@ -116,6 +116,7 @@ public class GameLogicController : MonoBehaviour
         else if (PlayerPrefs.GetString("GameType") == "AI")
         {
             isAIGame = true;
+            isAITurn = false;
             //difficulty
             canOfferDraw = false;
         }
@@ -152,7 +153,12 @@ public class GameLogicController : MonoBehaviour
         else
         {
             if (isAIGame) // have the user select the opponent's color as well
+            {
+                // TODO: Set a player preference that determines who is going first -
+                // the player or the AI.
+                isPlayer1 = true;
                 player2Color = "Blue";
+            }
             else
                 player2Color = "Red";
             player1Color = "Green";
@@ -460,7 +466,11 @@ public class GameLogicController : MonoBehaviour
             {
                 networking.moveTo = toLocation;
 
-                RemoveOrbHighlight(runeFromLocation);
+                // Do not call this if it is the AI's turn
+                if (isAIGame && !isAITurn)
+                    RemoveOrbHighlight(runeFromLocation);
+                else if (!isAIGame)
+                    RemoveOrbHighlight(runeFromLocation);
 
                 MoveOrb(toLocation);
 
@@ -490,7 +500,6 @@ public class GameLogicController : MonoBehaviour
     private void PrepareForRemovalPhase()
     {
         print("YOU GOT A MILL!");
-        preventClick = false;
         previousGamePhase = gamePhase;
         gamePhase = "removal";
         HighlightMoveableOrbs(MakeListOfRunesThatCanBeRemoved());
@@ -544,11 +553,9 @@ public class GameLogicController : MonoBehaviour
 
     private void ChangeSide()
     {
-        Debug.Log("ChangeSide");
         // Send move to opponent if in a network game
         if (isNetworkGame && ((isPlayer1Turn && isPlayer1) || (!isPlayer1Turn && !isPlayer1)))
         {
-            Debug.Log("We're sending a move.");
             networking.SendMove();
             waitingOnOtherPlayer = true;
         }
@@ -557,31 +564,17 @@ public class GameLogicController : MonoBehaviour
             waitingOnOtherPlayer = false;
         }
 
-        // Get move from AI opponent if it is their turn
-        else if (isAIGame && ((isPlayer1Turn && !isPlayer1) || (!isPlayer1Turn && isPlayer1))) {
-            if (gamePhase == "placement")
-            {
-                AIMove = aicontroller.GetAIMove("placement");
-                Debug.Log("AIMOVE: " + AIMove[1]);
-                PlacementPhase(AIMove[1]);
-            }
-            else
-            {
-                AIMove = aicontroller.GetAIMove("movement");
-                runeFromLocation = AIMove[0];
-                MovementPhase_Place(AIMove[1]);
-            }
-        }
-
-        if(isAIGame && drawCount == 10)
+        if (isAIGame && drawCount == 10)
         {
             //offer draw
             print("offering draw");
             canOfferDraw = true; //show something in the ui
         }
 
-
+        if(isAIGame)
+            waitingOnOtherPlayer = !isAITurn;
         isPlayer1Turn = !isPlayer1Turn;
+        isAITurn = !isAITurn;
         networking.ResetNetworkValues();
 
         if (showHints)
@@ -639,6 +632,25 @@ public class GameLogicController : MonoBehaviour
             gamePhase = "movementPickup";
             RemoveAllOrbHighlights(-1);
             PrepareForMovementPhase();
+        }
+
+        // Get move from AI opponent if it is their turn
+        // TODO: IF GAME IS NOT OVER
+        if (isAIGame && isAITurn)
+        {
+            if (gamePhase == "placement")
+            {
+                AIMove = aicontroller.GetAIMove("placement");
+                PlacementPhase(AIMove[1]);
+            }
+            else
+            {
+                AIMove = aicontroller.GetAIMove("movement");
+                Debug.Log("AI Move From: " + AIMove[0]);
+                Debug.Log("AI Move To: " + AIMove[1]);
+                runeFromLocation = AIMove[0];
+                MovementPhase_Place(AIMove[1]);
+            }
         }
     }
 
