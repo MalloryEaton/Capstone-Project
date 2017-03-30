@@ -20,8 +20,9 @@ public class GameLogicController : MonoBehaviour
     || GAME VARIABLES
     -----------------------------------------------------------------------*/
     public RuneController[] runeList;
-    private Dictionaries dictionaries;
+    public Dictionaries dictionaries;
     private NetworkingController networking;
+    private MyAIController aicontroller;
 
     private GameObject player1Mage;
     private GameObject player2Mage;
@@ -36,6 +37,7 @@ public class GameLogicController : MonoBehaviour
     private bool canOfferDraw;
 
     public bool isAIGame;
+    public bool isAITurn;
     public bool isNetworkGame;
     public bool isPlayer1;
 
@@ -55,6 +57,8 @@ public class GameLogicController : MonoBehaviour
     private List<short> runesThatCanBeMoved;
     private List<short> runesThatCanBeRemoved;
 
+    private List<short> AIMove;
+
     public GameObject LoadingScreen;
     public Button TextBox;
 
@@ -64,8 +68,6 @@ public class GameLogicController : MonoBehaviour
     private float speed = 0.3f;
 
     public bool showHints;
-
-    public string difficulty;
 
     void Awake()
     {
@@ -82,13 +84,15 @@ public class GameLogicController : MonoBehaviour
 
         dictionaries = FindObjectOfType(typeof(Dictionaries)) as Dictionaries;
         networking = FindObjectOfType(typeof(NetworkingController)) as NetworkingController;
+        aicontroller = FindObjectOfType(typeof(MyAIController)) as MyAIController;
         gamePhase = "placement";
         previousGamePhase = "placement";
         waitingOnAnimation = false;
         waitingOnOtherPlayer = false;
         isPlayer1Turn = true;
-        
-        startingNumberOfOrbs = 9;
+        AIMove = new List<short> { -1, -1, -1 };
+
+        startingNumberOfOrbs = 4;
         player1OrbCount = 0;
         player2OrbCount = 0;
         placementPhase_RoundCount = 1;
@@ -100,19 +104,20 @@ public class GameLogicController : MonoBehaviour
         showHints = true;
 
         isNetworkGame = false;
-        isAIGame = false;
+        isAIGame = true;
 
         drawCount = 0;
         canOfferDraw = true;
 
-        //PlayerPrefs.DeleteAll();
+        PlayerPrefs.DeleteAll();
 
         if (PlayerPrefs.GetString("GameType") == "Network")
             isNetworkGame = true;
         else if (PlayerPrefs.GetString("GameType") == "AI")
         {
             isAIGame = true;
-            difficulty = PlayerPrefs.GetString("Difficulty");
+            isAITurn = false;
+            //difficulty
             canOfferDraw = false;
         }
 
@@ -123,7 +128,7 @@ public class GameLogicController : MonoBehaviour
             LeanTween.delayedCall(gameObject, 5f, () => {
                 isPlayer1 = networking.DetermineIfMasterClient();
                 waitingOnOtherPlayer = !isPlayer1; //prevent player 2 from clicking
-                
+
                 if(isPlayer1)
                 {
                     player1Color = PlayerPrefs.GetString("PlayerColor");
@@ -134,7 +139,7 @@ public class GameLogicController : MonoBehaviour
                     player1Color = networking.otherPlayerColor;
                     player2Color = PlayerPrefs.GetString("PlayerColor");
                 }
-                
+
                 networking.ResetNetworkValues();
 
                 print(player1Color + "  " + player2Color);
@@ -148,9 +153,16 @@ public class GameLogicController : MonoBehaviour
         else
         {
             if (isAIGame) // have the user select the opponent's color as well
-                player2Color = "Black";
+            {
+                // TODO: Set a player preference that determines who is going first -
+                // the player or the AI.
+                isPlayer1 = true;
+                player2Color = "Blue";
+            }
+            else
+                player2Color = "Red";
             player1Color = "Green";
-            player2Color = "Purple";
+            player2Color = "Blue";
             //player1Color = PlayerPrefs.GetString("Player1Color");
             //player2Color = PlayerPrefs.GetString("Player2Color");
             InitializeGameBoard();
@@ -310,7 +322,7 @@ public class GameLogicController : MonoBehaviour
         waitingOnAnimation = true;
         player1Mage.GetComponent<MageController>().PlayLevitateAnimation();
         player2Mage.GetComponent<MageController>().PlayLevitateAnimation();
-        
+
         LeanTween.delayedCall(0.7f, () => {
             InstantiateSide1Orbs(player1Color);
             InstantiateSide2Orbs(player2Color);
@@ -319,12 +331,12 @@ public class GameLogicController : MonoBehaviour
         LeanTween.delayedCall(4f, () => {
             player1Mage.GetComponent<MageController>().PlayLandingAnimation();
             player2Mage.GetComponent<MageController>().PlayLandingAnimation();
-            
+
             waitingOnAnimation = false;
         });
-        
+
     }
-    
+
     public void ShowAvailableMoves() //make it so that if click off a selected rune, shows the available moves again
     {
         RemoveAllRuneHighlights();
@@ -339,6 +351,7 @@ public class GameLogicController : MonoBehaviour
     {
         InstantiateMages();
         InstantiateShrine();
+        //InstantiateOrbContainers();
     }
 
     private void InstantiateMages()
@@ -453,7 +466,11 @@ public class GameLogicController : MonoBehaviour
             {
                 networking.moveTo = toLocation;
 
-                RemoveOrbHighlight(runeFromLocation);
+                // Do not call this if it is the AI's turn
+                if (isAIGame && !isAITurn)
+                    RemoveOrbHighlight(runeFromLocation);
+                else if (!isAIGame)
+                    RemoveOrbHighlight(runeFromLocation);
 
                 MoveOrb(toLocation);
 
@@ -539,7 +556,6 @@ public class GameLogicController : MonoBehaviour
         // Send move to opponent if in a network game
         if (isNetworkGame && ((isPlayer1Turn && isPlayer1) || (!isPlayer1Turn && !isPlayer1)))
         {
-            Debug.Log("We're sending a move.");
             networking.SendMove();
             waitingOnOtherPlayer = true;
         }
@@ -548,27 +564,60 @@ public class GameLogicController : MonoBehaviour
             waitingOnOtherPlayer = false;
         }
 
-        if(isAIGame && drawCount == 10)
+        if (isAIGame && drawCount == 10)
         {
             //offer draw
             print("offering draw");
             canOfferDraw = true; //show something in the ui
         }
 
+        if(isAIGame)
+            waitingOnOtherPlayer = !isAITurn;
         isPlayer1Turn = !isPlayer1Turn;
+        isAITurn = !isAITurn;
         networking.ResetNetworkValues();
+
+        if (showHints)
+        {
+            LeanTween.cancel(GameObject.Find("CenterOfBoard"));
+            if (!isNetworkGame && !isAIGame)
+            {
+                if (isPlayer1Turn)
+                    DisplayText("It's Player 1's Turn");
+                else
+                    DisplayText("It's Player 2's Turn");
+            }
+            else if (isNetworkGame)
+            {
+                if(isPlayer1Turn)
+                {
+                    if (isPlayer1)
+                        DisplayText("It's Your Turn");
+                    else if (!isPlayer1)
+                        DisplayText("It's Your Opponent's Turn");
+                }
+                else
+                {
+                    if (!isPlayer1)
+                        DisplayText("It's Your Turn");
+                    else if (isPlayer1)
+                        DisplayText("It's Your Opponent's Turn");
+                }
+            }
+            else if (isAIGame)
+            {
+                if (isPlayer1Turn)
+                    DisplayText("It's Your Turn");
+                else
+                    DisplayText("It's Your Opponent's Turn");
+            }
+        }
 
         if (previousGamePhase == "placement")
         {
             previousGamePhase = gamePhase;
             if (placementPhase_RoundCount > startingNumberOfOrbs)
             {
-                if (showHints)
-                {
-                    LeanTween.cancel(GameObject.Find("CenterOfBoard"));
-                    DisplayMovementPhaseText();
-                }
-
                 gamePhase = "movementPickup";
                 PrepareForMovementPhase();
             }
@@ -583,42 +632,24 @@ public class GameLogicController : MonoBehaviour
             gamePhase = "movementPickup";
             RemoveAllOrbHighlights(-1);
             PrepareForMovementPhase();
+        }
 
-            if (showHints)
+        // Get move from AI opponent if it is their turn
+        // TODO: IF GAME IS NOT OVER
+        if (isAIGame && isAITurn)
+        {
+            if (gamePhase == "placement")
             {
-                LeanTween.cancel(GameObject.Find("CenterOfBoard"));
-
-                if (!isNetworkGame && !isAIGame) //local game
-                {
-                    if (isPlayer1Turn)
-                        DisplayText("It's Player 1's Turn", 2);
-                    else
-                        DisplayText("It's Player 2's Turn", 2);
-                }
-                else if (isNetworkGame)
-                {
-                    if (isPlayer1Turn)
-                    {
-                        if (isPlayer1)
-                            DisplayText("It's Your Turn", 2);
-                        else if (!isPlayer1)
-                            DisplayText("It's Your Opponent's Turn", 2);
-                    }
-                    else
-                    {
-                        if (!isPlayer1)
-                            DisplayText("It's Your Turn", 2);
-                        else if (isPlayer1)
-                            DisplayText("It's Your Opponent's Turn", 2);
-                    }
-                }
-                else if (isAIGame)
-                {
-                    if (isPlayer1Turn && isPlayer1)
-                        DisplayText("It's Your Turn", 2);
-                    else if (!isPlayer1Turn && !isPlayer1)
-                        DisplayText("It's Your Opponent's Turn", 2);
-                }
+                AIMove = aicontroller.GetAIMove("placement");
+                PlacementPhase(AIMove[1]);
+            }
+            else
+            {
+                AIMove = aicontroller.GetAIMove("movement");
+                Debug.Log("AI Move From: " + AIMove[0]);
+                Debug.Log("AI Move To: " + AIMove[1]);
+                runeFromLocation = AIMove[0];
+                MovementPhase_Place(AIMove[1]);
             }
         }
     }
@@ -742,40 +773,10 @@ public class GameLogicController : MonoBehaviour
     /*---------------------------------------------------------------------
     || MILL FUNCTIONS
     -----------------------------------------------------------------------*/
-    private bool RuneIsInMill(short rune)
+    public bool RuneIsInMill(short rune)
     {
         if (IsInHorizontalMill(rune) || IsInVerticalMill(rune))
         {
-            if (showHints)
-            {
-                LeanTween.cancel(GameObject.Find("CenterOfBoard"));
-
-                if (!isNetworkGame && !isAIGame) //local game
-                {
-                    if (isPlayer1Turn)
-                        DisplayText("Player 1 Got A Mill! \n Remove One Of Your Opponent's Pieces", 3);
-                    else
-                        DisplayText("Player 2 Got A Mill! \n Remove One Of Your Opponent's Pieces", 3);
-                }
-                else if (isNetworkGame)
-                {
-                    if (isPlayer1Turn && isPlayer1)
-                    {
-                        DisplayText("You Got A Mill! \n Remove One Of Your Opponent's Pieces", 3);
-                    }
-                    else if (!isPlayer1Turn && !isPlayer1)
-                    {
-                        DisplayText("You Got A Mill! \n Remove One Of Your Opponent's Pieces", 3);
-                    }
-                }
-                else if (isAIGame)
-                {
-                    if (isPlayer1Turn && isPlayer1)
-                        DisplayText("You Got A Mill! \n Remove One Of Your Opponent's Pieces", 3);
-                    else if (!isPlayer1Turn && !isPlayer1)
-                        DisplayText("You Got A Mill! \n Remove One Of Your Opponent's Pieces", 3);
-                }
-            }
             return true;
         }
 
@@ -983,6 +984,26 @@ public class GameLogicController : MonoBehaviour
                         }
                     }
                 }
+                else if (isAIGame)
+                {
+                    if (((isPlayer1Turn && isPlayer1) || (!isPlayer1Turn && !isPlayer1)) && RuneIsInMill(toLocation))
+                    {
+                        PrepareForRemovalPhase();
+                    }
+                    else
+                    {
+                        // If there is an orb to remove on the receiving side, however,
+                        // we don't want to call ChangeSide() quite yet.
+                        if (((isPlayer1Turn && !isPlayer1) || (!isPlayer1Turn && isPlayer1)) && (AIMove[2] != -1))
+                        {
+                            RemovalPhase(AIMove[2]);
+                        }
+                        else
+                        {
+                            ChangeSide();
+                        }
+                    }
+                }
                 else
                 {
                     if (RuneIsInMill(toLocation))
@@ -1005,7 +1026,7 @@ public class GameLogicController : MonoBehaviour
             player1Mage.GetComponent<MageController>().PlayAttack1Animation(GameObject.Find("Rune" + runeNumber));
         else
             player2Mage.GetComponent<MageController>().PlayAttack1Animation(GameObject.Find("Rune" + runeNumber));
-        
+
         LeanTween.delayedCall(gameObject, 0.6f, () =>
         {
             removeSound.Play();
@@ -1049,7 +1070,7 @@ public class GameLogicController : MonoBehaviour
             else //continue game
                 ChangeSide();
         });
-            
+
     }
 
     private void RemoveAllOrbHighlights(short runeNumber)
@@ -1127,52 +1148,13 @@ public class GameLogicController : MonoBehaviour
     }
 
     // Text Displaying //
-    public void DisplayText(string text, float time)
+    public void DisplayText(string text)
     {
         TextBox.GetComponentInChildren<Text>().text = text;
         TextBox.gameObject.SetActive(true);
-        LeanTween.delayedCall(GameObject.Find("CenterOfBoard"), time, () =>
+        LeanTween.delayedCall(GameObject.Find("CenterOfBoard"), 2f, () =>
         {
             TextBox.gameObject.SetActive(false);
-        });
-    }
-
-    private void DisplayMovementPhaseText()
-    {
-        DisplayText("Movement Phase Has Begun!", 3f);
-        LeanTween.delayedCall(GameObject.Find("CenterOfBoard"), 3f, () =>
-        {
-            if (!isNetworkGame && !isAIGame) //local game
-            {
-                if (isPlayer1Turn)
-                    DisplayText("It's Player 1's Turn", 2);
-                else
-                    DisplayText("It's Player 2's Turn", 2);
-            }
-            else if (isNetworkGame)
-            {
-                if (isPlayer1Turn)
-                {
-                    if (isPlayer1)
-                        DisplayText("It's Your Turn", 2);
-                    else if (!isPlayer1)
-                        DisplayText("It's Your Opponent's Turn", 2);
-                }
-                else
-                {
-                    if (!isPlayer1)
-                        DisplayText("It's Your Turn", 2);
-                    else if (isPlayer1)
-                        DisplayText("It's Your Opponent's Turn", 2);
-                }
-            }
-            else if (isAIGame)
-            {
-                if (isPlayer1Turn && isPlayer1)
-                    DisplayText("It's Your Turn", 2);
-                else if (!isPlayer1Turn && !isPlayer1)
-                    DisplayText("It's Your Opponent's Turn", 2);
-            }
         });
     }
 }
