@@ -33,6 +33,12 @@ public class UIControllerScript : MonoBehaviour
 
     void Awake()
     {
+        //load correct tower
+        //if (PlayerPrefs.GetString("HasWon") == null)
+        //    GameObject.Find("FlagsNotWon").SetActive(true);
+        //else
+        //    GameObject.Find("FlagsWon").SetActive(true);
+
         LoadingPanel = GameObject.Find("LoadingPanel");
         //MainButtonPanel.GetComponent<Animator>().SetBool("isDisplayed", true);
         //MainTitlePanel.GetComponent<Animator>().SetBool("isDisplayed", true);
@@ -420,6 +426,7 @@ public class UIControllerScript : MonoBehaviour
 
     public void quitGame()
     {
+        PlayerPrefs.DeleteAll();
         Application.Quit();
     }
 

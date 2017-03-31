@@ -46,21 +46,21 @@ public class CameraMovementController : MonoBehaviour {
 
     private void InitializeCameraPositions()
     {
-        //47, 64, -70
-        //36, -33.65, 0
+        //192.5, 105.7, 5
+        //44.774, 135, 0
         positionList.Add(new Vector3(-102.29f, 80f, -242.3f)); //forest
         positionList.Add(new Vector3(-1.3f, 94.2f, -155.2f)); //graveyard
         positionList.Add(new Vector3(156.11f, 83.77f, 9.25f)); //desert
         positionList.Add(new Vector3(262.2f, 158.6f, 47.2f)); //volcano
         positionList.Add(new Vector3(138.6f, 137.25f, 288.6f)); //water
-        positionList.Add(new Vector3(377f, 104.45f, 243f)); //tower
+        positionList.Add(new Vector3(357.2f, 124.5f, 253.2f)); //tower
 
         rotationList.Add(Quaternion.Euler(45.7f, -46f, 0f)); //forest
         rotationList.Add(Quaternion.Euler(42.62f, -46.2f, 0f)); //graveyard
         rotationList.Add(Quaternion.Euler(41.2f, -46f, 0f)); //desert
         rotationList.Add(Quaternion.Euler(43.9f, -46.5f, 0f)); //volcano
         rotationList.Add(Quaternion.Euler(39f, 135f, 0f)); //water
-        rotationList.Add(Quaternion.Euler(33.3f, -62.61f, 0f)); //tower
+        rotationList.Add(Quaternion.Euler(46.6f, -62.8f, 0f)); //tower
     }
 
     public void Start()

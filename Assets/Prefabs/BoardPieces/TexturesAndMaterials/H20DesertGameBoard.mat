@@ -141,7 +141,7 @@ Material:
       second: 0
     - first:
         name: _WaveScale
-      second: 0.283
+      second: 0.058
     - first:
         name: _ZWrite
       second: 1

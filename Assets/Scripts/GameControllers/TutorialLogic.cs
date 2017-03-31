@@ -45,7 +45,7 @@ public class TutorialLogic : MonoBehaviour {
 
     void Start ()
     {
-        textIndex = 23;
+        textIndex = 0;
         preventClick = true;
 
         AudioSource[] audio = GetComponents<AudioSource>();
@@ -91,7 +91,7 @@ public class TutorialLogic : MonoBehaviour {
 
     public void SetupText()
     {
-        TextBoxes[0].SetActive(false);
+        TextBoxes[0].SetActive(true);
         TextBoxes[1].SetActive(false);
         TextBoxes[2].SetActive(false);
         TextBoxes[3].SetActive(false);
@@ -115,7 +115,7 @@ public class TutorialLogic : MonoBehaviour {
         TextBoxes[21].SetActive(false);
         TextBoxes[22].SetActive(false);
         TextBoxes[23].SetActive(false);
-        TextBoxes[24].SetActive(true);
+        TextBoxes[24].SetActive(false);
         TextBoxes[25].SetActive(false);
         TextBoxes[26].SetActive(false);
         TextBoxes[27].SetActive(false);
