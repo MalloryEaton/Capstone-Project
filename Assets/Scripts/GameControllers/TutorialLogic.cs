@@ -24,8 +24,13 @@ public class TutorialLogic : MonoBehaviour {
     private AudioSource moveSound;
     private AudioSource removeSound;
 
+    public short runeFromLocation;
+
     public string gamePhase = "Placement";
+    public string previousGamePhase = "MovementPickup";
     private bool isPlayer1Turn = true;
+
+    private bool canFly = false;
 
     private float speed = 0.3f;
 
@@ -38,6 +43,7 @@ public class TutorialLogic : MonoBehaviour {
 
     void Start ()
     {
+        textIndex = 23;
         preventClick = true;
 
         AudioSource[] audio = GetComponents<AudioSource>();
@@ -83,7 +89,7 @@ public class TutorialLogic : MonoBehaviour {
 
     public void SetupText()
     {
-        TextBoxes[0].SetActive(true);
+        TextBoxes[0].SetActive(false);
         TextBoxes[1].SetActive(false);
         TextBoxes[2].SetActive(false);
         TextBoxes[3].SetActive(false);
@@ -106,10 +112,14 @@ public class TutorialLogic : MonoBehaviour {
         TextBoxes[20].SetActive(false);
         TextBoxes[21].SetActive(false);
         TextBoxes[22].SetActive(false);
-        TextBoxes[23].SetActive(false);
+        TextBoxes[23].SetActive(true);
         TextBoxes[24].SetActive(false);
         TextBoxes[25].SetActive(false);
         TextBoxes[26].SetActive(false);
+        TextBoxes[27].SetActive(false);
+        TextBoxes[28].SetActive(false);
+        TextBoxes[29].SetActive(false);
+        TextBoxes[30].SetActive(false);
     }
 
     public void TransitionText()
@@ -162,43 +172,193 @@ public class TutorialLogic : MonoBehaviour {
         }
         if (textIndex == 25)
         {
-            ResetBoard();
-            gamePhase = "Movement";
+            Destroy(GameObject.Find("GreenOrbContainer(Clone)"));
+            Destroy(GameObject.Find("PurpleOrbContainer(Clone)"));
+            foreach (RuneControllerTutorial rune in runeList)
+            {
+                rune.tag = "Empty";
+            }
+            gamePhase = "MovementPickup";
 
             // set up board for movement phase
-            SetPosition(GameObject.Find("/GreenOrbContainer(Clone)/Green_Orb_1"), 0);
-            SetPosition(GameObject.Find("/GreenOrbContainer(Clone)/Green_Orb_2"), 5);
-            SetPosition(GameObject.Find("/GreenOrbContainer(Clone)/Green_Orb_3"), 22);
-            SetPosition(GameObject.Find("/GreenOrbContainer(Clone)/Green_Orb_4"), 13);
-            SetPosition(GameObject.Find("/GreenOrbContainer(Clone)/Green_Orb_5"), 6);
-            SetPosition(GameObject.Find("/GreenOrbContainer(Clone)/Green_Orb_6"), 24);
-            SetPosition(GameObject.Find("/GreenOrbContainer(Clone)/Green_Orb_7"), 2);
-            SetPosition(GameObject.Find("/GreenOrbContainer(Clone)/Green_Orb_8"), 7);
-            SetPosition(GameObject.Find("/GreenOrbContainer(Clone)/Green_Orb_9"), 16);
+            Instantiate(dictionaries.orbContainersDictionary["GreenMovement"], new Vector3(0, 0, 0), Quaternion.identity);
+            Instantiate(dictionaries.orbContainersDictionary["PurpleMovement"], new Vector3(0, 0, 0), Quaternion.identity);
 
-            SetPosition(GameObject.Find("Purple_Orb_1"), 0);
-            SetPosition(GameObject.Find("Purple_Orb_2"), 0);
-            SetPosition(GameObject.Find("Purple_Orb_3"), 0);
-            SetPosition(GameObject.Find("Purple_Orb_4"), 0);
-            SetPosition(GameObject.Find("Purple_Orb_5"), 0);
-            SetPosition(GameObject.Find("Purple_Orb_6"), 0);
-            SetPosition(GameObject.Find("Purple_Orb_7"), 0);
-            SetPosition(GameObject.Find("Purple_Orb_8"), 0);
-            SetPosition(GameObject.Find("Purple_Orb_9"), 0);
+            //add tags to non-empty runes
+            runeList[0].tag = "Player";
+            runeList[2].tag = "Player";
+            runeList[5].tag = "Player";
+            runeList[6].tag = "Player";
+            runeList[7].tag = "Player";
+            runeList[10].tag = "Player";
+            runeList[13].tag = "Player";
+            runeList[16].tag = "Player";
+            runeList[22].tag = "Player";
+            runeList[1].tag = "Opponent";
+            runeList[3].tag = "Opponent";
+            runeList[4].tag = "Opponent";
+            runeList[8].tag = "Opponent";
+            runeList[9].tag = "Opponent";
+            runeList[11].tag = "Opponent";
+            runeList[17].tag = "Opponent";
+            runeList[21].tag = "Opponent";
+            runeList[23].tag = "Opponent";
 
             // highlight moveable orbs
-            //GameObject.Find("OrbAtLocation_").AddComponent<OrbHoverController>();
+            HighlightMoveableOrbs(ThereIsAnAvailableMove(MakeListOfRunesForCurrentPlayer()));
         }
-        if(textIndex == 26)
+        if(textIndex == 30)
         {
-            //allow them to move an orb
+            //fly phase
+            Destroy(GameObject.Find("GreenOrbsMovementPhase(Clone)"));
+            Destroy(GameObject.Find("PurpleOrbsMovementPhase(Clone)"));
+            foreach (RuneControllerTutorial rune in runeList)
+            {
+                rune.tag = "Empty";
+            }
+            gamePhase = "MovementPickup";
+            canFly = true;
+            isPlayer1Turn = true;
+
+            // set up board for movement phase
+            Instantiate(dictionaries.orbContainersDictionary["GreenFly"], new Vector3(0, 0, 0), Quaternion.identity);
+            Instantiate(dictionaries.orbContainersDictionary["PurpleFly"], new Vector3(0, 0, 0), Quaternion.identity);
+
+            //add tags to non-empty runes
+            runeList[2].tag = "Player";
+            runeList[10].tag = "Player";
+            runeList[16].tag = "Player";
+            runeList[1].tag = "Opponent";
+            runeList[4].tag = "Opponent";
+            runeList[7].tag = "Opponent";
+            runeList[11].tag = "Opponent";
+            runeList[21].tag = "Opponent";
+
+            HighlightMoveableOrbs(ThereIsAnAvailableMove(MakeListOfRunesForCurrentPlayer()));
         }
     }
 
-    private void SetPosition(GameObject orb, short rune)
+    public void MovementPhase_Pickup(short selectedRune)
     {
-        orb.transform.position = dictionaries.orbPositionsDictionary[rune];
-        orb.name = "OrbAtLocation_" + rune;
+        if (RuneCanBeMoved(selectedRune))
+        {
+            runeFromLocation = selectedRune;
+
+            RemoveAllRuneHighlights();
+            RemoveAllOrbHighlights(selectedRune);
+            HighlightAvailableMoves(selectedRune);
+
+            previousGamePhase = gamePhase;
+            gamePhase = "MovementPlace";
+        }
+    }
+
+    public void MovementPhase_Place(short toLocation)
+    {
+        if (runeList[toLocation].tag == "Empty")
+        {
+            if (IsLegalMove(toLocation))
+            {
+                RemoveOrbHighlight(runeFromLocation);
+
+                MoveOrb(toLocation, "OrbAtLocation_" + runeFromLocation, 0.3f);
+
+                runeList[toLocation].tag = (isPlayer1Turn) ? "Player" : "Opponent";
+                runeList[runeFromLocation].tag = "Empty";
+            }
+        }
+        else if (ClickedOnDifferentPiece(toLocation)) //switch to highlighted piece
+        {
+            previousGamePhase = "MovementPlace";
+            MovementPhase_Pickup(toLocation);
+        }
+    }
+
+    private bool IsLegalMove(short toLocation)
+    {
+        if (canFly) //can fly
+        {
+            if (runeList[toLocation])
+                return true;
+        }
+        else
+        {
+            short[] adjacentRunes = dictionaries.adjacencyDictionary[runeFromLocation];
+            foreach (short rune in adjacentRunes)
+                if(rune == toLocation)
+                    return true;
+        }
+
+        return false;
+    }
+
+    public bool ClickedOnDifferentPiece(short selectedRune)
+    {
+        List<short> runesThatCanMove = ThereIsAnAvailableMove(MakeListOfRunesForCurrentPlayer());
+
+        if (runeList[selectedRune].tag == "Player" && runesThatCanMove.Contains(selectedRune))
+            return true;
+        return false;
+    }
+
+    private void RemoveAllOrbHighlights(short runeNumber)
+    {
+        List<short> runes = MakeListOfRunesForCurrentPlayer();
+        List<short> runesThatCanMove = ThereIsAnAvailableMove(MakeListOfRunesForCurrentPlayer());
+
+        if(runesThatCanMove.Contains(runeNumber))
+        {
+            foreach (short rune in runes)
+            {
+                RemoveOrbHighlight(rune);
+                if (rune == runeNumber)
+                {
+                    MakeOrbHover(GameObject.Find("OrbAtLocation_" + rune));
+                }
+            }
+        }
+    }
+
+    private void RemoveAllOrbHighlights()
+    {
+        foreach (RuneControllerTutorial rune in runeList)
+        {
+            if (rune.tag != "Empty")
+                RemoveOrbHighlightStill(GameObject.Find("OrbAtLocation_" + rune.runeNumber), rune.runeNumber);
+        }
+    }
+
+    private void HighlightAvailableMoves(short rune)
+    {
+        if (canFly)
+        {
+            foreach (RuneControllerTutorial r in runeList)
+            {
+                if (r.tag == "Empty")
+                {
+                    r.GetComponent<RuneControllerTutorial>().AddRuneHighlight();
+                }
+            }
+        }
+        else
+        {
+            foreach (short availableMove in dictionaries.adjacencyDictionary[rune])
+            {
+                if (runeList[availableMove].tag == "Empty")
+                {
+                    runeList[availableMove].GetComponent<RuneControllerTutorial>().AddRuneHighlight();
+                }
+            }
+        }
+    }
+
+    private bool RuneCanBeMoved(short selectedRune)
+    {
+        if (runeList[selectedRune].tag == "Player")
+        {
+            return true;
+        }
+        return false;
     }
 
     private void ResetBoard()
@@ -211,6 +371,13 @@ public class TutorialLogic : MonoBehaviour {
         }
         InstantiateOrbContainers();
         isPlayer1Turn = true;
+    }
+
+    private void RemoveOrbHighlight(short rune)
+    {
+        GameObject orb = GameObject.Find("OrbAtLocation_" + rune);
+        Destroy(orb.GetComponent<OrbHoverController>());
+        orb.transform.position = dictionaries.orbPositionsDictionary[rune];
     }
 
     private void PlayAttackAnimation(short toLocation)
@@ -309,16 +476,7 @@ public class TutorialLogic : MonoBehaviour {
             runeList[i].GetComponent<RuneControllerTutorial>().RemoveRuneHighlight();
         }
     }
-
-    private void RemoveAllOrbHighlights()
-    {
-        foreach (RuneControllerTutorial rune in runeList)
-        {
-            if (rune.tag != "Empty")
-                RemoveOrbHighlightStill(GameObject.Find("OrbAtLocation_" + rune.runeNumber), rune.runeNumber);
-        }
-    }
-
+    
     private void MakeOrbHover(GameObject orb)
     {
         orb.AddComponent<OrbHoverController>();
@@ -356,4 +514,55 @@ public class TutorialLogic : MonoBehaviour {
             Destroy(ring);
         }
     }
-}
+
+    public List<short> MakeListOfRunesForCurrentPlayer()
+    {
+        List<short> runes = new List<short>();
+
+        foreach (RuneControllerTutorial rune in runeList)
+            if (rune.tag == "Player")
+                runes.Add(rune.runeNumber);
+
+        return runes;
+    }
+
+    private void HighlightMoveableOrbs(List<short> runes)
+    {
+        foreach (short rune in runes)
+        {
+            MakeOrbHover(GameObject.Find("OrbAtLocation_" + rune));
+        }
+    }
+
+    private List<short> ThereIsAnAvailableMove(List<short> runes)
+    {
+        List<short> moveableRunes = new List<short>();
+        if (!canFly)
+        {
+            foreach (short rune in runes)
+            {
+                foreach (short availableMove in dictionaries.adjacencyDictionary[rune])
+                {
+                    if (runeList[availableMove].tag == "Empty")
+                    {
+                        if (!moveableRunes.Contains(rune))
+                        {
+                            moveableRunes.Add(rune);
+                        }
+                    }
+                }
+            }
+        }
+        else
+        {
+            foreach (short rune in runes)
+            {
+                if (!moveableRunes.Contains(rune))
+                {
+                    moveableRunes.Add(rune);
+                }
+            }
+        }
+        return moveableRunes;
+    }
+ }

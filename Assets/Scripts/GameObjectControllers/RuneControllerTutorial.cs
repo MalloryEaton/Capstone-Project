@@ -85,6 +85,26 @@ public class RuneControllerTutorial : MonoBehaviour
                     tutorialController.MoveOrb(runeNumber, "Green_Orb_1", 0.3f);
                     tutorialController.preventClick = true;
                     break;
+                case 26:
+                    if(tutorialController.gamePhase == "MovementPickup")
+                    {
+                        tutorialController.MovementPhase_Pickup(runeNumber);
+                    }
+                    else if(tutorialController.gamePhase == "MovementPlace")
+                    {
+                        tutorialController.MovementPhase_Place(runeNumber);
+                    }
+                    break;
+                case 30:
+                    if (tutorialController.gamePhase == "MovementPickup")
+                    {
+                        tutorialController.MovementPhase_Pickup(runeNumber);
+                    }
+                    else if (tutorialController.gamePhase == "MovementPlace")
+                    {
+                        tutorialController.MovementPhase_Place(runeNumber);
+                    }
+                    break;
             }
         }
     }

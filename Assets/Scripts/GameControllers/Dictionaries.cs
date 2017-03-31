@@ -55,14 +55,12 @@ public class Dictionaries : MonoBehaviour {
 
     private void InitializeOrbContainersDictionary()
     {
-        orbContainersDictionary.Add("Black", Resources.Load(@"Orbs\OrbContainers\BlackOrbContainer", typeof(GameObject)) as GameObject);
-        orbContainersDictionary.Add("Blue", Resources.Load(@"Orbs\OrbContainers\BlueOrbContainer", typeof(GameObject)) as GameObject);
         orbContainersDictionary.Add("Green", Resources.Load(@"Orbs\OrbContainers\GreenOrbContainer", typeof(GameObject)) as GameObject);
-        orbContainersDictionary.Add("Orange", Resources.Load(@"Orbs\OrbContainers\OrangeOrbContainer", typeof(GameObject)) as GameObject);
         orbContainersDictionary.Add("Purple", Resources.Load(@"Orbs\OrbContainers\PurpleOrbContainer", typeof(GameObject)) as GameObject);
-        orbContainersDictionary.Add("Red", Resources.Load(@"Orbs\OrbContainers\RedOrbContainer", typeof(GameObject)) as GameObject);
-        orbContainersDictionary.Add("White", Resources.Load(@"Orbs\OrbContainers\WhiteOrbContainer", typeof(GameObject)) as GameObject);
-        orbContainersDictionary.Add("Yellow", Resources.Load(@"Orbs\OrbContainers\YellowOrbContainer", typeof(GameObject)) as GameObject);
+        orbContainersDictionary.Add("GreenMovement", Resources.Load(@"Orbs\OrbContainers\GreenOrbsMovementPhase", typeof(GameObject)) as GameObject);
+        orbContainersDictionary.Add("PurpleMovement", Resources.Load(@"Orbs\OrbContainers\PurpleOrbsMovementPhase", typeof(GameObject)) as GameObject);
+        orbContainersDictionary.Add("GreenFly", Resources.Load(@"Orbs\OrbContainers\GreenOrbsFlyPhase", typeof(GameObject)) as GameObject);
+        orbContainersDictionary.Add("PurpleFly", Resources.Load(@"Orbs\OrbContainers\PurpleOrbsFlyPhase", typeof(GameObject)) as GameObject);
     }
 
     private void InitializeMagesDictionary()
