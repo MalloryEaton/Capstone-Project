@@ -7,10 +7,12 @@ public class GameBoardUIController : MonoBehaviour {
 
     public GameObject exitButton;
     NetworkingController networking;
-   
+
+    private GameObject LoadingPanel;
 
     void Start()
     {
+        LoadingPanel = GameObject.Find("LoadingPanel");
         networking = FindObjectOfType(typeof(NetworkingController)) as NetworkingController;
     }
 
@@ -22,10 +24,18 @@ public class GameBoardUIController : MonoBehaviour {
         }
         else
         {
-            //if using this, add the leantween cancel thing that was used for the ui message
-            SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene());
-            SceneManager.LoadScene("MainMenu");
+            LoadingPanel.GetComponent<Animator>().SetBool("isDisplayed", true);
+            LeanTween.cancelAll();
+            StartCoroutine(LoadAsync(1));
         }
+    }
 
+    private IEnumerator LoadAsync(int levelNum)
+    {
+        AsyncOperation async = SceneManager.LoadSceneAsync(levelNum);
+        while (!async.isDone)
+        {
+            yield return null;
+        }
     }
 }

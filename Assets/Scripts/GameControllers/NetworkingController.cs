@@ -44,7 +44,9 @@ public class NetworkingController : Photon.PunBehaviour
 
     public override void OnPhotonPlayerConnected(PhotonPlayer other)
     {
-        Debug.Log("OnPhotonPlayerConnected() " + other.NickName); // Not seen if you're the player connecting
+        Debug.Log("Player connected: " + other.NickName); // Not seen if you're the player connecting
+
+        SendColor();
 
         if (PhotonNetwork.isMasterClient)
         {

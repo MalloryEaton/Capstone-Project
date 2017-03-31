@@ -57,35 +57,35 @@ public class RuneControllerTutorial : MonoBehaviour
         {
             switch(tutorialController.textIndex)
             {
-                case 10:
+                case 11:
                     if (runeNumber == 20)
                     {
                         tutorialController.MoveOrb(20, "Green_Orb_1", 0.3f);
                     }
                     break;
-                case 12:
+                case 13:
                     if (runeNumber == 5)
                     {
                         tutorialController.MoveOrb(5, "Green_Orb_2", 0.3f);
                     }
                     break;
-                case 14:
+                case 15:
                     if (runeNumber == 13)
                     {
                         tutorialController.MoveOrb(13, "Green_Orb_3", 0.3f);
                     }
                     break;
-                case 15:
+                case 16:
                     if (runeNumber == 2 || runeNumber == 3)
                     {
                         tutorialController.DestroyOrb(runeNumber);
                     }
                     break;
-                case 22:
+                case 23:
                     tutorialController.MoveOrb(runeNumber, "Green_Orb_1", 0.3f);
                     tutorialController.preventClick = true;
                     break;
-                case 26:
+                case 27:
                     if(tutorialController.gamePhase == "MovementPickup")
                     {
                         tutorialController.MovementPhase_Pickup(runeNumber);
@@ -95,7 +95,7 @@ public class RuneControllerTutorial : MonoBehaviour
                         tutorialController.MovementPhase_Place(runeNumber);
                     }
                     break;
-                case 30:
+                case 31:
                     if (tutorialController.gamePhase == "MovementPickup")
                     {
                         tutorialController.MovementPhase_Pickup(runeNumber);

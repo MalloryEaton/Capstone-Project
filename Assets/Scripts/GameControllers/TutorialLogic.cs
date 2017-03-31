@@ -8,8 +8,9 @@ public class TutorialLogic : MonoBehaviour {
     public GameObject TextList;
     private Dictionaries dictionaries;
     public RuneControllerTutorial[] runeList;
-    public GameObject TutorialPanel;
     public List<GameObject> TextBoxes;
+
+    public GameObject LoadingScreen;
 
     private GameObject player1Mage;
     private GameObject player2Mage;
@@ -38,6 +39,7 @@ public class TutorialLogic : MonoBehaviour {
 
     private void Awake()
     {
+        LoadingScreen.GetComponent<Animator>().SetBool("isDisplayed", false);
         dictionaries = FindObjectOfType(typeof(Dictionaries)) as Dictionaries;
     }
 
@@ -66,7 +68,7 @@ public class TutorialLogic : MonoBehaviour {
 
     private void InstantiateMages()
     {
-        player1Mage = Instantiate(dictionaries.magesDictionary[player1Color], new Vector3(20, 1, 28), new Quaternion(0, 180, 0, 0));
+        player1Mage = Instantiate(dictionaries.magesDictionary[player1Color], new Vector3(20, 1, 28.5f), new Quaternion(0, 180, 0, 0));
         player1Mage.tag = "Mage";
 
         player2Mage = Instantiate(dictionaries.magesDictionary[player2Color], new Vector3(4, 1, -4), new Quaternion(0, 0, 0, 0));
@@ -112,14 +114,16 @@ public class TutorialLogic : MonoBehaviour {
         TextBoxes[20].SetActive(false);
         TextBoxes[21].SetActive(false);
         TextBoxes[22].SetActive(false);
-        TextBoxes[23].SetActive(true);
-        TextBoxes[24].SetActive(false);
+        TextBoxes[23].SetActive(false);
+        TextBoxes[24].SetActive(true);
         TextBoxes[25].SetActive(false);
         TextBoxes[26].SetActive(false);
         TextBoxes[27].SetActive(false);
         TextBoxes[28].SetActive(false);
         TextBoxes[29].SetActive(false);
         TextBoxes[30].SetActive(false);
+        TextBoxes[31].SetActive(false);
+        TextBoxes[32].SetActive(false);
     }
 
     public void TransitionText()
@@ -129,27 +133,27 @@ public class TutorialLogic : MonoBehaviour {
         TextBoxes[textIndex - 1].SetActive(false);
         TextBoxes[textIndex].SetActive(true);
 
-        if (textIndex == 10)
+        if (textIndex == 11)
         {
             GameObject.Find("Green_Orb_1").AddComponent<OrbHoverController>();
             runeList[20].GetComponent<RuneControllerTutorial>().AddRuneHighlight();
         }
-        if (textIndex == 11)
+        if (textIndex == 12)
         {
             MoveOrb(3, "Purple_Orb_1", 1f); //3
         }
 
-        if (textIndex == 12)
+        if (textIndex == 13)
         {
             GameObject.Find("Green_Orb_2").AddComponent<OrbHoverController>();
             runeList[5].GetComponent<RuneControllerTutorial>().AddRuneHighlight();
         }
-        if (textIndex == 13)
+        if (textIndex == 14)
         {
             MoveOrb(2, "Purple_Orb_2", 1f); //3
         }
 
-        if (textIndex == 14)
+        if (textIndex == 15)
         {
             GameObject.Find("Green_Orb_3").AddComponent<OrbHoverController>();
             runeList[13].GetComponent<RuneControllerTutorial>().AddRuneHighlight();
@@ -161,16 +165,16 @@ public class TutorialLogic : MonoBehaviour {
             MakeOrbHover(GameObject.Find("OrbAtLocation_2"));
             MakeOrbHover(GameObject.Find("OrbAtLocation_3"));
         }
-        if(textIndex == 19)
+        if(textIndex == 20)
         {
             ResetBoard();
         }
-        if (textIndex == 22)
+        if (textIndex == 23)
         {
             GameObject.Find("Green_Orb_1").AddComponent<OrbHoverController>();
             preventClick = false;
         }
-        if (textIndex == 25)
+        if (textIndex == 26)
         {
             Destroy(GameObject.Find("GreenOrbContainer(Clone)"));
             Destroy(GameObject.Find("PurpleOrbContainer(Clone)"));
@@ -207,7 +211,7 @@ public class TutorialLogic : MonoBehaviour {
             // highlight moveable orbs
             HighlightMoveableOrbs(ThereIsAnAvailableMove(MakeListOfRunesForCurrentPlayer()));
         }
-        if(textIndex == 30)
+        if (textIndex == 31)
         {
             //fly phase
             Destroy(GameObject.Find("GreenOrbsMovementPhase(Clone)"));
@@ -233,8 +237,6 @@ public class TutorialLogic : MonoBehaviour {
             runeList[7].tag = "Opponent";
             runeList[11].tag = "Opponent";
             runeList[21].tag = "Opponent";
-
-            HighlightMoveableOrbs(ThereIsAnAvailableMove(MakeListOfRunesForCurrentPlayer()));
         }
     }
 

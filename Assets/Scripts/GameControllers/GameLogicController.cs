@@ -104,15 +104,20 @@ public class GameLogicController : MonoBehaviour
         showHints = true;
 
         isNetworkGame = false;
-        isAIGame = true;
+        isAIGame = false;
 
         drawCount = 0;
         canOfferDraw = true;
 
-        PlayerPrefs.DeleteAll();
+        //PlayerPrefs.DeleteAll();
+
+        Debug.Log(PlayerPrefs.GetString("GameType").ToString());
 
         if (PlayerPrefs.GetString("GameType") == "Network")
+        {
             isNetworkGame = true;
+            Debug.Log("This is a network game.");
+        }
         else if (PlayerPrefs.GetString("GameType") == "AI")
         {
             isAIGame = true;
@@ -132,11 +137,17 @@ public class GameLogicController : MonoBehaviour
                 if(isPlayer1)
                 {
                     player1Color = PlayerPrefs.GetString("PlayerColor");
-                    player2Color = networking.otherPlayerColor;
+                    if (networking.otherPlayerColor != null)
+                        player2Color = networking.otherPlayerColor;
+                    else
+                        player2Color = "Black";
                 }
                 else
                 {
-                    player1Color = networking.otherPlayerColor;
+                    if (networking.otherPlayerColor != null)
+                        player1Color = networking.otherPlayerColor;
+                    else
+                        player1Color = "Black";
                     player2Color = PlayerPrefs.GetString("PlayerColor");
                 }
 
@@ -148,6 +159,8 @@ public class GameLogicController : MonoBehaviour
                 Destroy(GameObject.FindGameObjectWithTag("BlackPanel"));
 
                 InitializeGameBoard();
+
+                PlayMageIntroAnimations();
             });
         }
         else

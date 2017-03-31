@@ -65,6 +65,8 @@ namespace Com.EnsorcelledStudios.Runic
         /// </summary>
         void Awake()
         {
+            PlayerPrefs.SetString("GameType", "Network");
+
             // #NotImportant
             // Force LogLevel
             PhotonNetwork.logLevel = Loglevel;
@@ -113,7 +115,7 @@ namespace Com.EnsorcelledStudios.Runic
 					GameListItem game = new GameListItem ();
                     game.playerName = room.Name;
                     // This code works for accessing custom properties
-					//game.characterIcon = room.CustomProperties["color"].ToString();
+					game.characterIconString = room.CustomProperties["color"].ToString();
 					gameList.Add(game);
                 }
 				scrollList.addGames(gameList);
@@ -271,8 +273,8 @@ namespace Com.EnsorcelledStudios.Runic
         public void CreateGame()
         {
             // We need to access the player's chosen color and stage here.
-            playerProperties.Add("color", "red");
-            playerProperties.Add("stage", "something");
+            playerProperties.Add("color", PlayerPrefs.GetString("PlayerColor"));
+            playerProperties.Add("stage", PlayerPrefs.GetString("Stage"));
             roomProperties[0] = "color";
             roomProperties[1] = "stage";
             // Change room name to be a unique ID

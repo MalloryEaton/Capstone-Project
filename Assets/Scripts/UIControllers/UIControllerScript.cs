@@ -309,6 +309,7 @@ public class UIControllerScript : MonoBehaviour
         networkGame = true;
         localGame = false;
         quickGame = false;
+        story = false;
         PlayerPrefs.SetString("GameType", "Network");
         display("character");
     }
@@ -318,6 +319,7 @@ public class UIControllerScript : MonoBehaviour
         localGame = true;
         networkGame = false;
         quickGame = false;
+        story = false;
         PlayerPrefs.SetString("GameType", "Local");
         display("character");
     }
@@ -327,6 +329,7 @@ public class UIControllerScript : MonoBehaviour
         quickGame = true;
         networkGame = false;
         localGame = false;
+        story = false;
         PlayerPrefs.SetString("GameType", "AI");
         display("difficulty");
     }
