@@ -266,6 +266,7 @@ namespace Com.EnsorcelledStudios.Runic
             {
                 // This uses the prototype's dropdown list, will need changed.
                 // We will still use JoinRoom, the parameter will just be different.
+                print("Join " + roomName);
                 PhotonNetwork.JoinRoom(roomName);
             }
         }

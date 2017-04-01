@@ -79,7 +79,14 @@ MonoBehaviour:
   entry: {fileID: 114885645630323056}
   playerName: {fileID: 114841625787387952}
   characterIcon: {fileID: 114563449548802938}
-  launcher: {fileID: 0}
+  redSprite: {fileID: 21300000, guid: 05a39e117cb34884090034b539dc4ea6, type: 3}
+  blueSprite: {fileID: 21300000, guid: 27582a9e7fa43a24caa20aa3784ac2f6, type: 3}
+  blackSprite: {fileID: 21300000, guid: a99a6982c55e5cc44a69cc536cb856a6, type: 3}
+  greenSprite: {fileID: 21300000, guid: e40e770250f400f4a85570493adae560, type: 3}
+  yellowSprite: {fileID: 21300000, guid: c06d50a5bca5e7547bd21c66a56b6305, type: 3}
+  orangeSprite: {fileID: 21300000, guid: 47c84b89b4383664fac5e001fbece580, type: 3}
+  purpleSprite: {fileID: 21300000, guid: 19faf1209774db44da971d00f90fa2d6, type: 3}
+  whiteSprite: {fileID: 21300000, guid: ead853694216af641b53de299b26e9b0, type: 3}
 --- !u!114 &114316293187460592
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -92,7 +99,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0}
+  m_Color: {r: 0.31617647, g: 0.31617647, b: 0.31617647, a: 0.434}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -204,8 +211,8 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 0.447}
+    m_HighlightedColor: {r: 1, g: 1, b: 1, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1

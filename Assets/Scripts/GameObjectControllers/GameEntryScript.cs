@@ -22,15 +22,19 @@ public class GameEntryScript : MonoBehaviour {
 	private GameListItem gameListItem;
 	private GameScrollList GSL;
 
+    //public Launcher launcher;
+
 	// Use this for initialization
 	void Start () {
+        print("START " + playerName.text);
 		entry.onClick.AddListener (JoinGame);
-	}
+    }
 
 	public void Setup(GameListItem game, GameScrollList gameScrollList)
 	{
 		gameListItem = game;
 		playerName.text = gameListItem.playerName;
+       // entry.onClick.AddListener(JoinGame);
 
         switch (gameListItem.characterIconString)
         {
@@ -68,5 +72,6 @@ public class GameEntryScript : MonoBehaviour {
 	public void JoinGame()
 	{
         LauncherStatic.launcher.JoinGame(playerName.text);
+        Debug.Log("Join " + playerName.text);
 	}
 }
