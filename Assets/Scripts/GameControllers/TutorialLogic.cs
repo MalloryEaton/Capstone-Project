@@ -9,6 +9,7 @@ public class TutorialLogic : MonoBehaviour {
     private Dictionaries dictionaries;
     public RuneControllerTutorial[] runeList;
     public List<GameObject> TextBoxes;
+    public GameObject plane;
 
     public GameObject LoadingScreen;
 
@@ -36,6 +37,7 @@ public class TutorialLogic : MonoBehaviour {
     private float speed = 0.3f;
 
     public int textIndex = 0;
+
 
     private void Awake()
     {
@@ -135,7 +137,6 @@ public class TutorialLogic : MonoBehaviour {
 
         if (textIndex == 11)
         {
-            GameObject.Find("Green_Orb_1").AddComponent<OrbHoverController>();
             runeList[20].GetComponent<RuneControllerTutorial>().AddRuneHighlight();
         }
         if (textIndex == 12)
@@ -145,7 +146,6 @@ public class TutorialLogic : MonoBehaviour {
 
         if (textIndex == 13)
         {
-            GameObject.Find("Green_Orb_2").AddComponent<OrbHoverController>();
             runeList[5].GetComponent<RuneControllerTutorial>().AddRuneHighlight();
         }
         if (textIndex == 14)
@@ -155,10 +155,9 @@ public class TutorialLogic : MonoBehaviour {
 
         if (textIndex == 15)
         {
-            GameObject.Find("Green_Orb_3").AddComponent<OrbHoverController>();
             runeList[13].GetComponent<RuneControllerTutorial>().AddRuneHighlight();
         }
-        if (textIndex == 15)
+        if (textIndex == 16)
         {
             isPlayer1Turn = true;
             InstantiateMagicRings("Green");
@@ -171,7 +170,6 @@ public class TutorialLogic : MonoBehaviour {
         }
         if (textIndex == 23)
         {
-            GameObject.Find("Green_Orb_1").AddComponent<OrbHoverController>();
             preventClick = false;
         }
         if (textIndex == 26)

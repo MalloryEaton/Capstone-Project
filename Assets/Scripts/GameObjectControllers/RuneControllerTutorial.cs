@@ -53,6 +53,7 @@ public class RuneControllerTutorial : MonoBehaviour
 
     private void OnMouseDown()
     {
+        print("rune");
         if (!tutorialController.waitingOnAnimation)
         {
             switch(tutorialController.textIndex)

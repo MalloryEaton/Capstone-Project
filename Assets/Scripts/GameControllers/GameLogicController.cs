@@ -92,7 +92,7 @@ public class GameLogicController : MonoBehaviour
         isPlayer1Turn = true;
         AIMove = new List<short> { -1, -1, -1 };
 
-        startingNumberOfOrbs = 9;
+        startingNumberOfOrbs = 4;
         player1OrbCount = 0;
         player2OrbCount = 0;
         placementPhase_RoundCount = 1;
@@ -364,7 +364,6 @@ public class GameLogicController : MonoBehaviour
     {
         InstantiateMages();
         InstantiateShrine();
-        //InstantiateOrbContainers();
     }
 
     private void InstantiateMages()
@@ -391,20 +390,6 @@ public class GameLogicController : MonoBehaviour
     {
         Instantiate(dictionaries.shrinesDictionary[player1Color], new Vector3(12, 0, 12), Quaternion.identity);
     }
-
-    //private void InstantiateOrbContainers()
-    //{
-    //    if (!isNetworkGame || (isNetworkGame && isPlayer1))
-    //    {
-    //        Instantiate(dictionaries.orbContainersDictionary[player1Color], new Vector3(0, 3, 28), Quaternion.identity);
-    //        Instantiate(dictionaries.orbContainersDictionary[player2Color], new Vector3(8, 3, -4), Quaternion.identity);
-    //    }
-    //    else if(isNetworkGame && !isPlayer1)
-    //    {
-    //        Instantiate(dictionaries.orbContainersDictionary[player1Color], new Vector3(8, 3, -4), Quaternion.identity);
-    //        Instantiate(dictionaries.orbContainersDictionary[player2Color], new Vector3(0, 3, 28), Quaternion.identity);
-    //    }
-    //}
 
     /*---------------------------------------------------------------------
     || GAME PHASE FUNCTIONS
@@ -502,6 +487,10 @@ public class GameLogicController : MonoBehaviour
         {
             previousGamePhase = "movementPlace";
             MovementPhase_Pickup(toLocation);
+        }
+        else if((isPlayer1Turn && runeList[toLocation].tag != "Player") || (!isPlayer1Turn && runeList[toLocation].tag != "Opponent"))
+        {
+            //nothing
         }
         else
         {
@@ -634,6 +623,11 @@ public class GameLogicController : MonoBehaviour
             {
                 gamePhase = "movementPickup";
                 PrepareForMovementPhase();
+                if (showHints)
+                {
+                    LeanTween.cancel(GameObject.Find("CenterOfBoard"));
+                    DisplayMovementPhaseText();
+                }
             }
             else
             {
@@ -791,6 +785,35 @@ public class GameLogicController : MonoBehaviour
     {
         if (IsInHorizontalMill(rune) || IsInVerticalMill(rune))
         {
+            if (showHints)
+            {
+                LeanTween.cancel(GameObject.Find("CenterOfBoard"));
+                if (!isNetworkGame && !isAIGame) //local game		
+                {
+                    if (isPlayer1Turn)
+                        DisplayText("Player 1 Got A Mill! \n Remove One Of Your Opponent's Pieces", 3);
+                    else
+                        DisplayText("Player 2 Got A Mill! \n Remove One Of Your Opponent's Pieces", 3);
+                }
+                else if (isNetworkGame)
+                {
+                    if (isPlayer1Turn && isPlayer1)
+                    {
+                        DisplayText("You Got A Mill! \n Remove One Of Your Opponent's Pieces", 3);
+                    }
+                    else if (!isPlayer1Turn && !isPlayer1)
+                    {
+                        DisplayText("You Got A Mill! \n Remove One Of Your Opponent's Pieces", 3);
+                    }
+                }
+                else if (isAIGame)
+                {
+                    if (isPlayer1Turn && isPlayer1)
+                        DisplayText("You Got A Mill! \n Remove One Of Your Opponent's Pieces", 3);
+                    else if (!isPlayer1Turn && !isPlayer1)
+                        DisplayText("You Got A Mill! \n Remove One Of Your Opponent's Pieces", 3);
+                }
+            }
             return true;
         }
 
@@ -1171,4 +1194,43 @@ public class GameLogicController : MonoBehaviour
             TextBox.gameObject.SetActive(false);
         });
     }
-}
+
+    private void DisplayMovementPhaseText()
+    {
+        DisplayText("Movement Phase Has Begun!", 3f);
+        LeanTween.delayedCall(GameObject.Find("CenterOfBoard"), 3f, () =>
+        {
+            if (!isNetworkGame && !isAIGame) //local game		
+            {
+                if (isPlayer1Turn)
+                    DisplayText("It's Player 1's Turn", 2);
+                else
+                    DisplayText("It's Player 2's Turn", 2);
+            }
+            else if (isNetworkGame)
+            {
+                if (isPlayer1Turn)
+                {
+                    if (isPlayer1)
+                        DisplayText("It's Your Turn", 2);
+                    else if (!isPlayer1)
+                        DisplayText("It's Your Opponent's Turn", 2);
+                }
+                else
+                {
+                    if (!isPlayer1)
+                        DisplayText("It's Your Turn", 2);
+                    else if (isPlayer1)
+                        DisplayText("It's Your Opponent's Turn", 2);
+                }
+            }
+            else if (isAIGame)
+            {
+                if (isPlayer1Turn && isPlayer1)
+                    DisplayText("It's Your Turn", 2);
+                else if (!isPlayer1Turn && !isPlayer1)
+                    DisplayText("It's Your Opponent's Turn", 2);
+            }
+        });
+    }
+    }
