@@ -9,6 +9,7 @@ public class GameBoardUIController : MonoBehaviour {
     NetworkingController networking;
 
     private GameObject LoadingPanel;
+    public GameObject MenuPanel;
 
     void Start()
     {
@@ -37,5 +38,22 @@ public class GameBoardUIController : MonoBehaviour {
         {
             yield return null;
         }
+    }
+
+    public void displayMenu()
+    {
+        if(MenuPanel.GetComponent<Animator>().GetBool("isDisplayed") == false)
+        {
+            MenuPanel.GetComponent<Animator>().SetBool("isDisplayed", true);
+        }
+        else
+        {
+            hideMenu();
+        }
+    }
+
+    public void hideMenu()
+    {
+        MenuPanel.GetComponent<Animator>().SetBool("isDisplayed", false);
     }
 }

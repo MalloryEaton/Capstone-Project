@@ -69,6 +69,7 @@ public class GameLogicController : MonoBehaviour
 
     public bool showHints;
 
+
     void Awake()
     {
         LoadingScreen.GetComponent<Animator>().SetBool("isDisplayed", true);
@@ -586,9 +587,9 @@ public class GameLogicController : MonoBehaviour
             if (!isNetworkGame && !isAIGame) //local game
             {
                 if (isPlayer1Turn)
-                    DisplayText("It's Player 1's Turn", 2);
+                    DisplayText("Player 1's Turn", 2);
                 else
-                    DisplayText("It's Player 2's Turn", 2);
+                    DisplayText("Player 2's Turn", 2);
             }
             else if (isNetworkGame)
             {
