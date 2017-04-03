@@ -273,6 +273,7 @@ namespace Com.EnsorcelledStudios.Runic
 
         public void CreateGame()
         {
+            
             // We need to access the player's chosen color and stage here.
             playerProperties.Add("color", PlayerPrefs.GetString("PlayerColor"));
             playerProperties.Add("stage", PlayerPrefs.GetString("Stage"));
@@ -280,6 +281,7 @@ namespace Com.EnsorcelledStudios.Runic
             roomProperties[1] = "stage";
             // Change room name to be a unique ID
             PhotonNetwork.CreateRoom(PhotonNetwork.playerName, new RoomOptions() { MaxPlayers = MaxPlayersPerRoom, CustomRoomProperties = playerProperties, CustomRoomPropertiesForLobby = roomProperties }, null);
+            
         }
 
         #endregion

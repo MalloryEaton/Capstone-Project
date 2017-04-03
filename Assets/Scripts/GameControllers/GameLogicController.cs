@@ -792,27 +792,27 @@ public class GameLogicController : MonoBehaviour
                 if (!isNetworkGame && !isAIGame) //local game		
                 {
                     if (isPlayer1Turn)
-                        DisplayText("Player 1 Got A Mill! \n Remove One Of Your Opponent's Pieces", 3);
+                        DisplayText("Player 1 Got A Mill!", 3);
                     else
-                        DisplayText("Player 2 Got A Mill! \n Remove One Of Your Opponent's Pieces", 3);
+                        DisplayText("Player 2 Got A Mill!", 3);
                 }
                 else if (isNetworkGame)
                 {
                     if (isPlayer1Turn && isPlayer1)
                     {
-                        DisplayText("You Got A Mill! \n Remove One Of Your Opponent's Pieces", 3);
+                        DisplayText("You Got A Mill!", 3);
                     }
                     else if (!isPlayer1Turn && !isPlayer1)
                     {
-                        DisplayText("You Got A Mill! \n Remove One Of Your Opponent's Pieces", 3);
+                        DisplayText("You Got A Mill!", 3);
                     }
                 }
                 else if (isAIGame)
                 {
                     if (isPlayer1Turn && isPlayer1)
-                        DisplayText("You Got A Mill! \n Remove One Of Your Opponent's Pieces", 3);
+                        DisplayText("You Got A Mill!", 3);
                     else if (!isPlayer1Turn && !isPlayer1)
-                        DisplayText("You Got A Mill! \n Remove One Of Your Opponent's Pieces", 3);
+                        DisplayText("You Got A Mill!", 3);
                 }
             }
             return true;
@@ -1193,6 +1193,7 @@ public class GameLogicController : MonoBehaviour
         LeanTween.delayedCall(GameObject.Find("CenterOfBoard"), time, () =>
         {
             TextBox.gameObject.SetActive(false);
+            //TextBox.GetComponent<Renderer>().material.color.a = 0.5;
         });
     }
 

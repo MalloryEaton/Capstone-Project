@@ -19,6 +19,7 @@ public class GameBoardUIController : MonoBehaviour {
 
     public void exitToMenu()
     {
+        hideMenu();
         if (PlayerPrefs.GetString("GameType") == "Network")
         {
             networking.LeaveRoom();
