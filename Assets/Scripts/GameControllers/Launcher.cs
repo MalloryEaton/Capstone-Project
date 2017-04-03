@@ -254,6 +254,7 @@ namespace Com.EnsorcelledStudios.Runic
             }
             else
             {
+                // TODO: We need a popup for this. And some others.
                 Debug.Log("You are not connected to the internet.");
             }
         }
@@ -272,16 +273,21 @@ namespace Com.EnsorcelledStudios.Runic
         }
 
         public void CreateGame()
-        {
-            
+        {            
             // We need to access the player's chosen color and stage here.
             playerProperties.Add("color", PlayerPrefs.GetString("PlayerColor"));
             playerProperties.Add("stage", PlayerPrefs.GetString("Stage"));
             roomProperties[0] = "color";
             roomProperties[1] = "stage";
             // Change room name to be a unique ID
-            PhotonNetwork.CreateRoom(PhotonNetwork.playerName, new RoomOptions() { MaxPlayers = MaxPlayersPerRoom, CustomRoomProperties = playerProperties, CustomRoomPropertiesForLobby = roomProperties }, null);
-            
+            PhotonNetwork.CreateRoom(PhotonNetwork.playerName, new RoomOptions() { MaxPlayers = MaxPlayersPerRoom, CustomRoomProperties = playerProperties, CustomRoomPropertiesForLobby = roomProperties }, null);            
+        }
+
+        public void DisconnectFromLobby()
+        {
+            PhotonNetwork.Disconnect();
+
+            // TODO: Go back to part where user puts in their name.
         }
 
         #endregion
