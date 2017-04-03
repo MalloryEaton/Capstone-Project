@@ -53,6 +53,8 @@ namespace Com.EnsorcelledStudios.Runic
 
         bool playerDisconnected = false;
 
+        short randomStage;
+
         // We will keep available games in this array.
         RoomInfo[] roomInfo;
 
@@ -116,6 +118,7 @@ namespace Com.EnsorcelledStudios.Runic
                     game.playerName = room.Name;
                     // This code works for accessing custom properties
 					game.characterIconString = room.CustomProperties["color"].ToString();
+                    //game.stageIconString = room.CustomProperties["stage"].ToString();
 					gameList.Add(game);
                 }
 				scrollList.addGames(gameList);
@@ -188,17 +191,36 @@ namespace Com.EnsorcelledStudios.Runic
 
         public override void OnJoinedRoom()
         {
-            Debug.Log("DemoAnimator/Launcher: OnJoinedRoom() called by PUN. Now this client is in a room.");
+            Debug.Log("OnJoinedRoom() called by PUN. Now this client is in a room.");
             LoadingScreen.GetComponent<Animator>().SetBool("isDisplayed", false);
             // #Critical: We only load if we are the first player, else we rely on 
             // PhotonNetwork.automaticallySyncScene to sync our instance scene.
             if (PhotonNetwork.room.PlayerCount == 1)
             {
-                Debug.Log("We load the 'Game'");
+                Debug.Log("Loading a stage...");
 
                 // #Critical Load the Game
-                // TODO: This will almost certainly be named something different
-                PhotonNetwork.LoadLevel("GameBoard");
+                switch (randomStage)
+                {
+                    case 0:
+                        PhotonNetwork.LoadLevel("ForestGameBoard");
+                        break;
+                    case 1:
+                        PhotonNetwork.LoadLevel("GraveyardGameBoard");
+                        break;
+                    case 2:
+                        PhotonNetwork.LoadLevel("DesertGameBoard");
+                        break;
+                    case 3:
+                        PhotonNetwork.LoadLevel("VolcanoGameBoard");
+                        break;
+                    case 4:
+                        PhotonNetwork.LoadLevel("WaterGameBoard");
+                        break;
+                    case 5:
+                        PhotonNetwork.LoadLevel("TowerGameBoard");
+                        break;
+                }
             }
         }
 
@@ -273,7 +295,9 @@ namespace Com.EnsorcelledStudios.Runic
         }
 
         public void CreateGame()
-        {            
+        {
+            GetRandomStage();
+
             // We need to access the player's chosen color and stage here.
             playerProperties.Add("color", PlayerPrefs.GetString("PlayerColor"));
             playerProperties.Add("stage", PlayerPrefs.GetString("Stage"));
@@ -288,6 +312,44 @@ namespace Com.EnsorcelledStudios.Runic
             PhotonNetwork.Disconnect();
 
             // TODO: Go back to part where user puts in their name.
+        }
+
+        #endregion
+
+        #region Private Methods
+
+        private void GetRandomStage()
+        {
+            randomStage = (short)Random.Range(0, 5);
+
+            switch (randomStage)
+            {
+                // TODO: Instead of LoadLevel, set stage PlayerPref.
+                case 0:
+                    //PhotonNetwork.LoadLevel("ForestGameBoard");
+                    PlayerPrefs.SetString("Stage", "Forest");
+                    break;
+                case 1:
+                    //PhotonNetwork.LoadLevel("GraveyardGameBoard");
+                    PlayerPrefs.SetString("Stage", "Graveyard");
+                    break;
+                case 2:
+                    //PhotonNetwork.LoadLevel("DesertGameBoard");
+                    PlayerPrefs.SetString("Stage", "Desert");
+                    break;
+                case 3:
+                    //PhotonNetwork.LoadLevel("VolcanoGameBoard");
+                    PlayerPrefs.SetString("Stage", "Volcano");
+                    break;
+                case 4:
+                    //PhotonNetwork.LoadLevel("WaterGameBoard");
+                    PlayerPrefs.SetString("Stage", "Water");
+                    break;
+                case 5:
+                    //PhotonNetwork.LoadLevel("TowerGameBoard");
+                    PlayerPrefs.SetString("Stage", "Tower");
+                    break;
+            }
         }
 
         #endregion
