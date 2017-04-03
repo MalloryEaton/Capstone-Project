@@ -88,7 +88,8 @@ public class CharacterSelectScript : MonoBehaviour {
             WhiteMage.SetActive(false);
             PurpleMage.SetActive(false);
             CharacterName.text = "Fariday Fink";
-            CharacterBio.text = "Fariday Fink is infamous for his cunning. Able to think fast on his feet, he is almost always one step ahead. Almost.";
+            CharacterBio.text = "Fariday Fink is famous for his ability to think fast on his feet. Though his cunning is great, he prefers a more relaxing life among the soothing waters of Lapucha, the floating island know for its waterfalls.";
+            //CharacterBio.text = "Fariday Fink is infamous for his cunning. Able to think fast on his feet, he is almost always one step ahead. Almost.";
         }
         else if (selection == "Orange")
         {
@@ -140,7 +141,8 @@ public class CharacterSelectScript : MonoBehaviour {
             WhiteMage.SetActive(false);
             PurpleMage.SetActive(false);
             CharacterName.text = "Quin Zoltan";
-            CharacterBio.text = "Quin Zoltan was born in a small village at the base of the great volcano Mount Goragundi. Naturally, he learned to harness fire from a young age. So young, in fact, that travelers would come from lands far away just to witness the spectacle themselves.";
+            CharacterBio.text = "Quin Zoltan is rumored to have been born out of the fires of Mount Goragundi. Naturally, he learned to harness fire from a young age. So young, in fact, that travelers would come from lands far away just to witness the spectacle.";
+            //CharacterBio.text = "Quin Zoltan was born in a small village at the base of the great volcano Mount Goragundi. Naturally, he learned to harness fire from a young age. So young, in fact, that travelers would come from lands far away just to witness the spectacle themselves.";
         }
         else if (selection == "White")
         {
@@ -153,7 +155,7 @@ public class CharacterSelectScript : MonoBehaviour {
             WhiteMage.SetActive(true);
             PurpleMage.SetActive(false);
             CharacterName.text = "Targus Zweilander";
-            CharacterBio.text = "Targus Zweilander was destined to face a great trial in his lifetime. This burden drove him to greatness, and he is renowned for his mastery of ancient Virillian sorcery. He is the only known living sorcerer to have uncovered its secrets.";
+            CharacterBio.text = "As a child, Targus Zweilander was given a prophecy that he was destined to face a great trial in his lifetime. This knowledge drove him to attain greatness, and he is renowned for his mastery of ancient Virillian sorcery. He is the only known living sorcerer to have uncovered its secrets.";
         }
         else if (selection == "Purple")
         {
@@ -166,7 +168,8 @@ public class CharacterSelectScript : MonoBehaviour {
             WhiteMage.SetActive(false);
             PurpleMage.SetActive(true);
             CharacterName.text = "Sir Gilbaard";
-            CharacterBio.text = "Sir Gilbaard was born into royalty. He was set to become the ruler of Remmelford until it was overthrown by the roaming barbarian clans. He now wanders the colonies, determined to avenge his fallen kingdom.";
+            CharacterBio.text = "Sir Gilbaard was born into royalty. He was set to become the ruler of Remmelford, that is until his facination with necromancy drove him from a life of luxury to a life as an undertaker, tending to the dead.";
+                //until it was overthrown by the roaming barbarian clans. He now wanders the colonies, determined to avenge his fallen kingdom.";
         }
     }
 
