@@ -174,6 +174,7 @@ public class TutorialLogic : MonoBehaviour {
         }
         if (textIndex == 26)
         {
+            isPlayer1Turn = true;
             Destroy(GameObject.Find("GreenOrbContainer(Clone)"));
             Destroy(GameObject.Find("PurpleOrbContainer(Clone)"));
             foreach (RuneControllerTutorial rune in runeList)
@@ -211,6 +212,7 @@ public class TutorialLogic : MonoBehaviour {
         }
         if (textIndex == 31)
         {
+            isPlayer1Turn = true;
             //fly phase
             Destroy(GameObject.Find("GreenOrbsMovementPhase(Clone)"));
             Destroy(GameObject.Find("PurpleOrbsMovementPhase(Clone)"));

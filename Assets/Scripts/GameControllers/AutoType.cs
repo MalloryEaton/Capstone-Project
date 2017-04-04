@@ -5,36 +5,64 @@ using UnityEngine.UI;
 
 public class AutoType : MonoBehaviour {
 
-    private float letterPause;
+    private float normalSpeed;
+    private float fastSpeed;
     public AudioClip sound;
 
-    public string message;
+    private bool speedUp = false;
+
+    public bool autoType = true;
+
+    //public string message;
     
     // Use this for initialization
     void Start()
     {
-        letterPause = 0.03f;
-        message = "In a world far away from our own lies the Kingdom Of Derraveth. This kingdom thrives on the energy given off by ancient magic artifacts which the citizens call shrines. The king of Derraveth employs seven sorcerers who protect the shrines, using magic to keep evil-doers at bay.";
-        GetComponent<Text>().text = "";
-        StartCoroutine(TypeText());
+        normalSpeed = 0.03f;
+        fastSpeed = 0.001f;
+    }
+
+    private void Update()
+    {
+        if (Input.GetKey(KeyCode.Space))
+        {
+            speedUp = true;
+        }
+        if(Input.GetKeyUp(KeyCode.Space))
+        {
+            speedUp = false;
+        }
     }
 
     public void StartText(string text)
     {
-        message = text;
+        //message = text;
         GetComponent<Text>().text = "";
-        StartCoroutine(TypeText());
+        StopAllCoroutines();
+        StartCoroutine(TypeText(text));
     }
 
-    IEnumerator TypeText()
+    IEnumerator TypeText(string message)
     {
         foreach (char letter in message.ToCharArray())
         {
-            GetComponent<Text>().text += letter;
-            //if (sound)
-            //    audio.PlayOneShot(sound);
-            yield return 0;
-            yield return new WaitForSeconds(letterPause);
+            if (autoType)
+            {
+                GetComponent<Text>().text += letter;
+                //if (sound)
+                //    audio.PlayOneShot(sound);
+                //yield return 0;
+                if(speedUp)
+                    yield return new WaitForSeconds(fastSpeed);
+                else
+                    yield return new WaitForSeconds(normalSpeed);
+            }
+            else
+            {
+                GetComponent<Text>().text = message;
+                yield return 0;
+            }
         }
+        autoType = false;
     }
 }
