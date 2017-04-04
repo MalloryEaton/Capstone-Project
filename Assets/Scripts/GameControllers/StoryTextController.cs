@@ -20,6 +20,10 @@ public class StoryTextController : MonoBehaviour
     public GameObject rightTextBox;
     public GameObject leftTextBox;
 
+    private Vector3 mainTextOriginalPosition;
+    private Vector3 rightTextOriginalPosition;
+    private Vector3 leftTextOriginalPosition;
+
     private string textbox;
 
     private List<List<Light>> lightsList;
@@ -27,12 +31,16 @@ public class StoryTextController : MonoBehaviour
     // Use this for initialization
     void Start ()
     {
+        mainTextOriginalPosition = mainTextBox.GetComponent<RectTransform>().position;
+        rightTextOriginalPosition = mainTextBox.GetComponent<RectTransform>().position;
+        leftTextOriginalPosition = mainTextBox.GetComponent<RectTransform>().position;
         TextList = new List<string>();
         InitializeTextList();
         textbox = "main";
         lightsList = new List<List<Light>>();
         SetUpLightsList();
         SetUpCameras("Main");
+        
         SetUpTextBoxes("main");
 
         textIndex = 0;
@@ -109,9 +117,11 @@ public class StoryTextController : MonoBehaviour
     {
         if (textIndex == 3)
         {
-            SetUpTextBoxes("left");
             SetUpCameras("Forest");
+            transform.position = new Vector3(14, 16, 5);
+            transform.rotation = new Quaternion(0, 125, 0, 0);
             textbox = "left";
+            SetUpTextBoxes("left");
             autoTypeLeft.StartText(TextList[textIndex]);
         }
         if (textIndex == 5)
@@ -136,24 +146,23 @@ public class StoryTextController : MonoBehaviour
 
     private void SetUpTextBoxes(string box)
     {
-        if(box == "main")
+        if (box == "main")
         {
-            mainTextBox.SetActive(true);
-            rightTextBox.SetActive(false);
-            leftTextBox.SetActive(false);
+            mainTextBox.transform.position = mainTextOriginalPosition;
+            leftTextBox.transform.position = new Vector3(leftTextOriginalPosition.x, 1000, 0);
+            rightTextBox.transform.position = new Vector3(rightTextOriginalPosition.x, 1000, 0);
         }
         else if (box == "left")
         {
-            leftTextBox.SetActive(true);
-            mainTextBox.SetActive(false);
-            rightTextBox.SetActive(false);
-            print("none");
+            mainTextBox.transform.position = new Vector3(mainTextOriginalPosition.x, 1000, 0);
+            leftTextBox.transform.position = leftTextOriginalPosition;
+            rightTextBox.transform.position = new Vector3(rightTextOriginalPosition.x, 1000, 0);
         }
         else if (box == "right")
         {
-            mainTextBox.SetActive(false);
-            rightTextBox.SetActive(true);
-            leftTextBox.SetActive(false);
+            mainTextBox.transform.position = new Vector3(mainTextOriginalPosition.x, 1000, 0);
+            leftTextBox.transform.position = new Vector3(leftTextOriginalPosition.x, 1000, 0);
+            rightTextBox.transform.position = rightTextOriginalPosition;
         }
     }
 
