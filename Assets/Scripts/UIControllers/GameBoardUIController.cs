@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameBoardUIController : MonoBehaviour {
 
@@ -10,6 +11,10 @@ public class GameBoardUIController : MonoBehaviour {
 
     private GameObject LoadingPanel;
     public GameObject MenuPanel;
+    public InputField chatInput;
+
+    public ChatScrollList csl;
+
 
     void Start()
     {
@@ -56,5 +61,11 @@ public class GameBoardUIController : MonoBehaviour {
     public void hideMenu()
     {
         MenuPanel.GetComponent<Animator>().SetBool("isDisplayed", false);
+    }
+
+    public void addMessage()
+    {
+        csl.updateChat("test", chatInput.text);
+        chatInput.text = "";
     }
 }
