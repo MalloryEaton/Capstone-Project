@@ -65,8 +65,8 @@ public class UIControllerScript : MonoBehaviour
     {
         if (panel == "story")
         {
-            print(panel);
             PlayerPrefs.SetString("GameType", "Story");
+            StartCoroutine(LoadAsync(11));
         }
         else if (panel == "difficulty") //quickplay
         {
@@ -187,7 +187,7 @@ public class UIControllerScript : MonoBehaviour
     {
         if (panel == "story")
         {
-
+            
         }
         else if (panel == "difficulty")
         {
