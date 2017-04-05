@@ -14,12 +14,24 @@ public class GameBoardUIController : MonoBehaviour {
     public InputField chatInput;
 
     public ChatScrollList csl;
+    public GameLogicController glc;
+    public Button chatButton;
+    public GameObject chatComponent;
+    public NetworkingController networkController;
 
 
     void Start()
     {
         LoadingPanel = GameObject.Find("LoadingPanel");
         networking = FindObjectOfType(typeof(NetworkingController)) as NetworkingController;
+        if(PlayerPrefs.GetString("GameType") == "Network")
+        {
+            chatComponent.SetActive(true);
+        }
+        else
+        {
+            chatComponent.SetActive(false);
+        }
     }
 
     public void exitToMenu()
@@ -51,6 +63,10 @@ public class GameBoardUIController : MonoBehaviour {
         if(MenuPanel.GetComponent<Animator>().GetBool("isDisplayed") == false)
         {
             MenuPanel.GetComponent<Animator>().SetBool("isDisplayed", true);
+            glc.waitingOnAnimation = true;
+            chatInput.enabled = false;
+            csl.enabled = false;
+            chatButton.enabled = false;
         }
         else
         {
@@ -61,11 +77,20 @@ public class GameBoardUIController : MonoBehaviour {
     public void hideMenu()
     {
         MenuPanel.GetComponent<Animator>().SetBool("isDisplayed", false);
+        glc.waitingOnAnimation = false;
+        chatInput.enabled = true;
+        csl.enabled = true;
+        chatButton.enabled = true;
     }
 
-    public void addMessage()
+    public void sendChat()
     {
-        csl.updateChat("test", chatInput.text);
-        chatInput.text = "";
+        networkController.SendChat();
+    }
+
+    public void addMessage(string name, string message)
+    {
+        csl.updateChat(name, message);
+        //chatInput.text = "";
     }
 }

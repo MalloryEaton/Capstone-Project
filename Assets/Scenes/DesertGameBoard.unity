@@ -770,8 +770,8 @@ RectTransform:
   - {fileID: 181398357}
   - {fileID: 596366596}
   - {fileID: 1902121592}
-  - {fileID: 812171606}
   - {fileID: 86303524}
+  - {fileID: 812171606}
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -843,7 +843,7 @@ RectTransform:
   - {fileID: 1556945494}
   - {fileID: 964432643}
   m_Father: {fileID: 84514448}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -6551,6 +6551,31 @@ Prefab:
       propertyPath: chatInput
       value: 
       objectReference: {fileID: 1556945495}
+    - target: {fileID: 114871755207064086, guid: 4d4feccf8c8d4bd48a87e9686cefb156,
+        type: 2}
+      propertyPath: glc
+      value: 
+      objectReference: {fileID: 1491464151}
+    - target: {fileID: 114871755207064086, guid: 4d4feccf8c8d4bd48a87e9686cefb156,
+        type: 2}
+      propertyPath: chatButton
+      value: 
+      objectReference: {fileID: 332509660}
+    - target: {fileID: 114871755207064086, guid: 4d4feccf8c8d4bd48a87e9686cefb156,
+        type: 2}
+      propertyPath: scrollView
+      value: 
+      objectReference: {fileID: 964432642}
+    - target: {fileID: 114871755207064086, guid: 4d4feccf8c8d4bd48a87e9686cefb156,
+        type: 2}
+      propertyPath: chatComponent
+      value: 
+      objectReference: {fileID: 86303523}
+    - target: {fileID: 114871755207064086, guid: 4d4feccf8c8d4bd48a87e9686cefb156,
+        type: 2}
+      propertyPath: networkController
+      value: 
+      objectReference: {fileID: 2024071725}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 4d4feccf8c8d4bd48a87e9686cefb156, type: 2}
   m_IsPrefabParent: 0
@@ -7784,7 +7809,7 @@ RectTransform:
   - {fileID: 1724484340}
   - {fileID: 480876921}
   m_Father: {fileID: 84514448}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -13504,6 +13529,16 @@ Prefab:
       propertyPath: LoadingScreen
       value: 
       objectReference: {fileID: 596366595}
+    - target: {fileID: 114797083737760412, guid: 0211717ac2444bc4796c72efed674c08,
+        type: 2}
+      propertyPath: chatInputField
+      value: 
+      objectReference: {fileID: 1556945495}
+    - target: {fileID: 114797083737760412, guid: 0211717ac2444bc4796c72efed674c08,
+        type: 2}
+      propertyPath: gameBoardUI
+      value: 
+      objectReference: {fileID: 672730460}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 0211717ac2444bc4796c72efed674c08, type: 2}
   m_IsPrefabParent: 0
@@ -15473,6 +15508,12 @@ Transform:
   m_Father: {fileID: 804438926}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1491464151 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114098349528823222, guid: 0211717ac2444bc4796c72efed674c08,
+    type: 2}
+  m_PrefabInternal: {fileID: 1310761310}
+  m_Script: {fileID: 11500000, guid: b08cb85219de0eb44a1dbd07ad912fbe, type: 3}
 --- !u!1 &1495445568
 GameObject:
   m_ObjectHideFlags: 0
@@ -16363,7 +16404,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 672730460}
-        m_MethodName: addMessage
+        m_MethodName: sendChat
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -19798,6 +19839,81 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2005936203}
   m_Mesh: {fileID: 4300000, guid: 6b87acad5e684b94fab7d81976586cad, type: 3}
+--- !u!1 &2024071724
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 2024071727}
+  - component: {fileID: 2024071726}
+  - component: {fileID: 2024071725}
+  m_Layer: 0
+  m_Name: NetworkController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2024071725
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2024071724}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f10f93efa03d464f987b2944410357f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  chatInputField: {fileID: 1556945495}
+  gameBoardUI: {fileID: 672730460}
+  isMasterClient: 0
+  opponentName: 
+  moveTo: 0
+  moveFrom: 0
+  removeFrom: 0
+  otherPlayerColor: 
+--- !u!114 &2024071726
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2024071724}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ownerId: 0
+  group: 0
+  OwnerShipWasTransfered: 0
+  prefixBackup: -1
+  synchronization: 0
+  onSerializeTransformOption: 3
+  onSerializeRigidBodyOption: 2
+  ownershipTransfer: 0
+  ObservedComponents:
+  - {fileID: 0}
+  ObservedComponentsFoldoutOpen: 1
+  viewIdField: 2
+  instantiationId: 2
+  currentMasterID: -1
+  isRuntimeInstantiated: 0
+--- !u!4 &2024071727
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2024071724}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 708.29913, y: 338.63486, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 9
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2031138008
 GameObject:
   m_ObjectHideFlags: 0

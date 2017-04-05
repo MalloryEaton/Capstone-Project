@@ -44,6 +44,7 @@ public class GameLogicController : MonoBehaviour
     public bool isPlayer1Turn;
     public bool waitingOnOtherPlayer;
     public bool waitingOnAnimation;
+    
 
     private short startingNumberOfOrbs;
     private short player1OrbCount;

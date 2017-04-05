@@ -14,6 +14,7 @@ public class NetworkingController : Photon.PunBehaviour
     -----------------------------------------------------------------------*/
     public InputField chatInputField;
     private GameLogicController gameLogicController;
+    public GameBoardUIController gameBoardUI;
 
     public bool isMasterClient;
 
@@ -93,11 +94,12 @@ public class NetworkingController : Photon.PunBehaviour
     public void SendChat()
     {
         string sentMessage;
-        sentMessage = chatInputField.text;
+        sentMessage = gameBoardUI.chatInput.text;
         sentMessage = sentMessage.Trim();
         if (sentMessage != "")
         {
             photonView.RPC("ReceiveChat", PhotonTargets.Others, sentMessage);
+            gameBoardUI.addMessage(PhotonNetwork.playerName, sentMessage);
         }
     }
 
@@ -120,6 +122,7 @@ public class NetworkingController : Photon.PunBehaviour
     [PunRPC]
     public void ReceiveName(string opponentName)
     {
+        Debug.Log(opponentName + " received!");
         this.opponentName = opponentName;
         //opponentNameText.text = opponentName;
     }
@@ -156,6 +159,8 @@ public class NetworkingController : Photon.PunBehaviour
     public void ReceiveChat(string receivedMessage)
     {
         Debug.Log("Opponent: " + receivedMessage);
-        chatInputField.text = opponentName + ": " + receivedMessage;
+        Debug.Log(opponentName.ToString());
+        //chatInputField.text = opponentName + ": " + receivedMessage;
+        gameBoardUI.addMessage(opponentName.ToString(), receivedMessage);
     }    
 }
