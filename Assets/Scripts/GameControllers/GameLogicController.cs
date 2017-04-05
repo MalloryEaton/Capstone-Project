@@ -130,6 +130,7 @@ public class GameLogicController : MonoBehaviour
         if (isNetworkGame)
         {
             networking.SendColor();
+            networking.SendName();
 
             LeanTween.delayedCall(gameObject, 5f, () => {
                 isPlayer1 = networking.DetermineIfMasterClient();

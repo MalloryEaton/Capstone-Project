@@ -40,25 +40,8 @@ public class NetworkingController : Photon.PunBehaviour
     public override void OnLeftRoom()
     {
         // Scene 1 is the network lobby
+        // TODO: Load the correct scene.
         SceneManager.LoadScene(1);
-    }
-
-    public override void OnPhotonPlayerConnected(PhotonPlayer other)
-    {
-        Debug.Log("Player connected: " + other.NickName); // Not seen if you're the player connecting
-
-        SendColor();
-
-        SendName();
-
-        stageToLoad = PhotonNetwork.room.CustomProperties["stage"].ToString();
-
-        if (PhotonNetwork.isMasterClient)
-        {
-            Debug.Log("OnPhotonPlayerConnected isMasterClient " + PhotonNetwork.isMasterClient); // Called before OnPhotonPlayerDisconnected
-
-            LoadArena();
-        }
     }
 
     public override void OnPhotonPlayerDisconnected(PhotonPlayer other)
@@ -81,7 +64,6 @@ public class NetworkingController : Photon.PunBehaviour
 
     public void SendName()
     {
-        //playerNameText.text = PhotonNetwork.playerName;
         photonView.RPC("ReceieveName", PhotonTargets.Others, PhotonNetwork.playerName);
     }
 
@@ -109,38 +91,6 @@ public class NetworkingController : Photon.PunBehaviour
     public void ResetNetworkValues()
     {
         moveTo = moveFrom = removeFrom = -1;
-    }
-
-    private void LoadArena()
-    {
-        if (!PhotonNetwork.isMasterClient)
-        {
-            Debug.LogError("PhotonNetwork: Trying to load a level but we are not the master Client");
-        }
-
-        Debug.Log("PhotonNetwork: Loading game...");
-
-        switch (stageToLoad)
-        {
-            case "Forest":
-                PhotonNetwork.LoadLevel("ForestGameBoard");
-                break;
-            case "Graveyard":
-                PhotonNetwork.LoadLevel("GraveyardGameBoard");
-                break;
-            case "Desert":
-                PhotonNetwork.LoadLevel("DesertGameBoard");
-                break;
-            case "Volcano":
-                PhotonNetwork.LoadLevel("VolcanoGameBoard");
-                break;
-            case "Water":
-                PhotonNetwork.LoadLevel("WaterGameBoard");
-                break;
-            case "Tower":
-                PhotonNetwork.LoadLevel("TowerGameBoard");
-                break;
-        }
     }
 
     [PunRPC]
