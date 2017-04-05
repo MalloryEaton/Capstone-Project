@@ -1,0 +1,244 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: Water_mob 2
+  m_Shader: {fileID: 4800000, guid: 1fbc789d845c20248a9a743f50307d9e, type: 3}
+  m_ShaderKeywords: _NORMALMAP
+  m_LightmapFlags: 5
+  m_CustomRenderQueue: 2000
+  stringTagMap: {}
+  m_SavedProperties:
+    serializedVersion: 2
+    m_TexEnvs:
+    - first:
+        name: _BaseColor
+      second:
+        m_Texture: {fileID: 2800000, guid: c8c314ac9e49e2e47bb06ac3634002a2, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - first:
+        name: _BaseTexture
+      second:
+        m_Texture: {fileID: 2800000, guid: c8c314ac9e49e2e47bb06ac3634002a2, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - first:
+        name: _BaseTextureRGBA
+      second:
+        m_Texture: {fileID: 2800000, guid: 7df355da0863db146a7e3933c504bb01, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - first:
+        name: _BumpMap
+      second:
+        m_Texture: {fileID: 2800000, guid: 11fc85105913c1742a82a9e2a8b1a148, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - first:
+        name: _Caustics
+      second:
+        m_Texture: {fileID: 2800000, guid: 60270ddf9f9c9544faba19185b56cae6, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - first:
+        name: _DetailAlbedoMap
+      second:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - first:
+        name: _DetailMask
+      second:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - first:
+        name: _DetailNormalMap
+      second:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - first:
+        name: _DistortTexture
+      second:
+        m_Texture: {fileID: 2800000, guid: 30a79a332bea58041a6a2aac2ae8c969, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - first:
+        name: _EmissionMap
+      second:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - first:
+        name: _MainTex
+      second:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - first:
+        name: _MainTex_copy
+      second:
+        m_Texture: {fileID: 2800000, guid: c8c314ac9e49e2e47bb06ac3634002a2, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - first:
+        name: _MetallicGlossMap
+      second:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - first:
+        name: _Normal
+      second:
+        m_Texture: {fileID: 2800000, guid: 11fc85105913c1742a82a9e2a8b1a148, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - first:
+        name: _Normal1
+      second:
+        m_Texture: {fileID: 2800000, guid: d60dabca6ca21c94dbf8c389df6fb5ee, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - first:
+        name: _Normal2
+      second:
+        m_Texture: {fileID: 2800000, guid: d60dabca6ca21c94dbf8c389df6fb5ee, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - first:
+        name: _OcclusionMap
+      second:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - first:
+        name: _ParallaxMap
+      second:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - first:
+        name: _node_9510
+      second:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - first:
+        name: _BumpScale
+      second: 1
+    - first:
+        name: _Cutoff
+      second: 0.5
+    - first:
+        name: _DepthClip
+      second: 1
+    - first:
+        name: _DetailNormalMapScale
+      second: 1
+    - first:
+        name: _DstBlend
+      second: 0
+    - first:
+        name: _Emission
+      second: 0
+    - first:
+        name: _Gloss
+      second: 0.463
+    - first:
+        name: _Glossiness
+      second: 0.5
+    - first:
+        name: _Metallic
+      second: 0
+    - first:
+        name: _Mode
+      second: 0
+    - first:
+        name: _NormalPower
+      second: 0.353
+    - first:
+        name: _OcclusionStrength
+      second: 1
+    - first:
+        name: _Opacity
+      second: 0.676
+    - first:
+        name: _Parallax
+      second: 0.02
+    - first:
+        name: _Specular
+      second: 1
+    - first:
+        name: _SrcBlend
+      second: 1
+    - first:
+        name: _UVSec
+      second: 0
+    - first:
+        name: _WaveScale
+      second: 0.95
+    - first:
+        name: _ZWrite
+      second: 1
+    - first:
+        name: _node_2226
+      second: 0
+    - first:
+        name: _node_4163
+      second: 0
+    - first:
+        name: _node_5381
+      second: 1
+    - first:
+        name: _node_9489
+      second: 0
+    m_Colors:
+    - first:
+        name: _BaseColor
+      second: {r: 0.19117647, g: 0.19117647, b: 0.19117647, a: 1}
+    - first:
+        name: _Boobles
+      second: {r: 0, g: 0.41318446, b: 0.61764705, a: 1}
+    - first:
+        name: _CausticColor
+      second: {r: 0.1740917, g: 0.24701707, b: 0.25735295, a: 1}
+    - first:
+        name: _Color
+      second: {r: 0, g: 0.33189642, b: 0.5661765, a: 1}
+    - first:
+        name: _Color1
+      second: {r: 0.4411765, g: 0.2099391, b: 0, a: 1}
+    - first:
+        name: _Color2
+      second: {r: 0.9568627, g: 0.8509804, b: 0, a: 1}
+    - first:
+        name: _EmissionColor
+      second: {r: 0, g: 0, b: 0, a: 1}
+    - first:
+        name: _Water
+      second: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    - first:
+        name: _WaterColor
+      second: {r: 0, g: 0.13620692, b: 0.25, a: 1}
+    - first:
+        name: _Waters
+      second: {r: 0, g: 0.4117647, b: 0.6156863, a: 1}
+    - first:
+        name: _node_190
+      second: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    - first:
+        name: _node_6618
+      second: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    - first:
+        name: _node_6855
+      second: {r: 0.4044118, g: 0.35683393, b: 0.35683393, a: 1}
+    - first:
+        name: _node_9091
+      second: {r: 0.2179931, g: 0.3617558, b: 0.4632353, a: 1}
