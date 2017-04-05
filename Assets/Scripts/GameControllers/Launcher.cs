@@ -330,27 +330,29 @@ namespace Com.EnsorcelledStudios.Runic
 
             Debug.Log("PhotonNetwork: Loading game...");
 
-            switch (randomStage)
-            {
-                case 0:
-                    PhotonNetwork.LoadLevel("ForestGameBoard");
-                    break;
-                case 1:
-                    PhotonNetwork.LoadLevel("GraveyardGameBoard");
-                    break;
-                case 2:
-                    PhotonNetwork.LoadLevel("DesertGameBoard");
-                    break;
-                case 3:
-                    PhotonNetwork.LoadLevel("VolcanoGameBoard");
-                    break;
-                case 4:
-                    PhotonNetwork.LoadLevel("WaterGameBoard");
-                    break;
-                case 5:
-                    PhotonNetwork.LoadLevel("TowerGameBoard");
-                    break;
-            }
+            PhotonNetwork.LoadLevel("DesertGameBoard");
+
+            //switch (randomStage)
+            //{
+            //    case 0:
+            //        PhotonNetwork.LoadLevel("ForestGameBoard");
+            //        break;
+            //    case 1:
+            //        PhotonNetwork.LoadLevel("GraveyardGameBoard");
+            //        break;
+            //    case 2:
+            //        PhotonNetwork.LoadLevel("DesertGameBoard");
+            //        break;
+            //    case 3:
+            //        PhotonNetwork.LoadLevel("VolcanoGameBoard");
+            //        break;
+            //    case 4:
+            //        PhotonNetwork.LoadLevel("WaterGameBoard");
+            //        break;
+            //    case 5:
+            //        PhotonNetwork.LoadLevel("TowerGameBoard");
+            //        break;
+            //}
         }
 
         public void DisconnectFromLobby()
@@ -367,7 +369,7 @@ namespace Com.EnsorcelledStudios.Runic
         private void GetRandomStage()
         {
             randomStage = (short)Random.Range(0, 5);
-            PhotonNetwork.LoadLevel("DesertGameBoard");
+            //PhotonNetwork.LoadLevel("DesertGameBoard");
             PlayerPrefs.SetString("Stage", "Desert");
 
             //switch (randomStage)

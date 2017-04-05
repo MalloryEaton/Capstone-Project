@@ -65,7 +65,8 @@ public class NetworkingController : Photon.PunBehaviour
 
     public void SendName()
     {
-        photonView.RPC("ReceieveName", PhotonTargets.Others, PhotonNetwork.playerName);
+        photonView.RPC("ReceiveName", PhotonTargets.Others, PhotonNetwork.playerName);
+        Debug.Log("send name");
     }
 
     public void SendColor()
@@ -85,7 +86,7 @@ public class NetworkingController : Photon.PunBehaviour
         sentMessage = sentMessage.Trim();
         if (sentMessage != "")
         {
-            photonView.RPC("ReceiveChat", PhotonTargets.Others, sentMessage);
+            photonView.RPC("ReceiveChat", PhotonTargets.Others, sentMessage, PhotonNetwork.playerName);
             gameBoardUI.addMessage(PhotonNetwork.playerName, sentMessage);
         }
     }
@@ -96,10 +97,11 @@ public class NetworkingController : Photon.PunBehaviour
     }
 
     [PunRPC]
-    public void ReceiveName(string opponentName)
+    public void ReceiveName(string opName)
     {
+        
+        opponentName = opName;
         Debug.Log(opponentName + " received!");
-        this.opponentName = opponentName;
         //opponentNameText.text = opponentName;
     }
 
@@ -132,11 +134,11 @@ public class NetworkingController : Photon.PunBehaviour
     }
 
     [PunRPC]
-    public void ReceiveChat(string receivedMessage)
+    public void ReceiveChat(string receivedMessage, string name)
     {
         Debug.Log("Opponent: " + receivedMessage);
-        Debug.Log(opponentName.ToString());
+        Debug.Log(opponentName);
         //chatInputField.text = opponentName + ": " + receivedMessage;
-        gameBoardUI.addMessage(opponentName.ToString(), receivedMessage);
+        gameBoardUI.addMessage(name, receivedMessage);
     }    
 }
