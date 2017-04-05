@@ -86,6 +86,10 @@ namespace Com.EnsorcelledStudios.Runic
             //-- 3 should be faster than default
             PhotonNetwork.MaxResendsBeforeDisconnect = 3;
             Debug.Log("MaxResendsBeforeDisconnect = " + PhotonNetwork.MaxResendsBeforeDisconnect);
+
+            PhotonNetwork.QuickResends = 3;
+
+            PhotonNetwork.CrcCheckEnabled = true;
         }
 
         /// <summary>
@@ -163,7 +167,7 @@ namespace Com.EnsorcelledStudios.Runic
             controlPanel.SetActive(true);
 
             // TODO: Need a better disconnect message
-            Debug.Log("You have been disconnected from the game.");
+            Debug.Log("You have been disconnected from the server.");
 
             if (playerDisconnected)
             {
@@ -198,29 +202,6 @@ namespace Com.EnsorcelledStudios.Runic
             if (PhotonNetwork.room.PlayerCount == 1)
             {
                 Debug.Log("Loading a stage...");
-
-                // #Critical Load the Game
-                //switch (randomStage)
-                //{
-                //    case 0:
-                //        PhotonNetwork.LoadLevel("ForestGameBoard");
-                //        break;
-                //    case 1:
-                //        PhotonNetwork.LoadLevel("GraveyardGameBoard");
-                //        break;
-                //    case 2:
-                //        PhotonNetwork.LoadLevel("DesertGameBoard");
-                //        break;
-                //    case 3:
-                //        PhotonNetwork.LoadLevel("VolcanoGameBoard");
-                //        break;
-                //    case 4:
-                //        PhotonNetwork.LoadLevel("WaterGameBoard");
-                //        break;
-                //    case 5:
-                //        PhotonNetwork.LoadLevel("TowerGameBoard");
-                //        break;
-                //}
 
                 // TODO: Put a message that says "Searching for Opponent..."
             }
@@ -276,13 +257,7 @@ namespace Com.EnsorcelledStudios.Runic
 
                 // We check if we are connected or not, we join if we are, else we initiate the 
                 // connection to the server.
-                if (PhotonNetwork.connected)
-                {
-                    // #Critical We need to attempt joining a Random Room. If it fails, we'll get notified 
-                    // in OnPhotonRandomJoinFailed() and we'll create one.
-                    PhotonNetwork.JoinRandomRoom();
-                }
-                else
+                if (!PhotonNetwork.connected)
                 {
                     // #Critical We must first and foremost connect to Photon Online Server.
                     PhotonNetwork.ConnectUsingSettings(_gameVersion);

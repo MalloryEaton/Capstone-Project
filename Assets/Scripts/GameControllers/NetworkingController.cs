@@ -17,6 +17,7 @@ public class NetworkingController : Photon.PunBehaviour
     public GameBoardUIController gameBoardUI;
 
     public bool isMasterClient;
+    public bool playerDisconnected;
 
     public string opponentName;
     public string stageToLoad;
@@ -42,15 +43,35 @@ public class NetworkingController : Photon.PunBehaviour
     {
         // Scene 1 is the network lobby
         // TODO: Load the correct scene.
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene(2);
     }
 
     public override void OnPhotonPlayerDisconnected(PhotonPlayer other)
     {
         // If one player disconnects, we disconnect the other player and alert them
-        Debug.Log("OnPhotonPlayerDisconnected() " + other.NickName); // Seen when other disconnects
+        Debug.Log("OnPhotonPlayerDisconnected(): " + other.NickName); // Seen when other disconnects
 
         LeaveRoom();
+    }
+
+    public override void OnDisconnectedFromPhoton()
+    {
+        // This will need to take us back to the original connection
+        // menu, not back to the lobby.
+
+        // TODO: Need a better disconnect message
+        Debug.Log("You have been disconnected from the server.");
+
+        if (playerDisconnected)
+        {
+            // TODO: Add a disconnect notification in the UI.
+            Debug.Log("Please check to see if you are connected to the internet.");
+        }
+    }
+
+    public override void OnConnectionFail(DisconnectCause cause)
+    {
+        playerDisconnected = true;
     }
 
     public bool DetermineIfMasterClient()
@@ -98,8 +119,7 @@ public class NetworkingController : Photon.PunBehaviour
 
     [PunRPC]
     public void ReceiveName(string opName)
-    {
-        
+    {       
         opponentName = opName;
         Debug.Log(opponentName + " received!");
         //opponentNameText.text = opponentName;
@@ -139,6 +159,6 @@ public class NetworkingController : Photon.PunBehaviour
         Debug.Log("Opponent: " + receivedMessage);
         Debug.Log(opponentName);
         //chatInputField.text = opponentName + ": " + receivedMessage;
-        gameBoardUI.addMessage(name, receivedMessage);
-    }    
+        gameBoardUI.addMessage(opponentName, receivedMessage);
+    }   
 }
