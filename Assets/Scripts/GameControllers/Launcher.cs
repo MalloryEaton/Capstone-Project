@@ -323,30 +323,23 @@ namespace Com.EnsorcelledStudios.Runic
             randomStage = (short)Random.Range(0, 5);
 
             switch (randomStage)
-            {
-                // TODO: Instead of LoadLevel, set stage PlayerPref.
+            { 
                 case 0:
-                    //PhotonNetwork.LoadLevel("ForestGameBoard");
                     PlayerPrefs.SetString("Stage", "Forest");
                     break;
                 case 1:
-                    //PhotonNetwork.LoadLevel("GraveyardGameBoard");
                     PlayerPrefs.SetString("Stage", "Graveyard");
                     break;
                 case 2:
-                    //PhotonNetwork.LoadLevel("DesertGameBoard");
                     PlayerPrefs.SetString("Stage", "Desert");
                     break;
                 case 3:
-                    //PhotonNetwork.LoadLevel("VolcanoGameBoard");
                     PlayerPrefs.SetString("Stage", "Volcano");
                     break;
                 case 4:
-                    //PhotonNetwork.LoadLevel("WaterGameBoard");
                     PlayerPrefs.SetString("Stage", "Water");
                     break;
                 case 5:
-                    //PhotonNetwork.LoadLevel("TowerGameBoard");
                     PlayerPrefs.SetString("Stage", "Tower");
                     break;
             }
