@@ -200,27 +200,41 @@ namespace Com.EnsorcelledStudios.Runic
                 Debug.Log("Loading a stage...");
 
                 // #Critical Load the Game
-                switch (randomStage)
-                {
-                    case 0:
-                        PhotonNetwork.LoadLevel("ForestGameBoard");
-                        break;
-                    case 1:
-                        PhotonNetwork.LoadLevel("GraveyardGameBoard");
-                        break;
-                    case 2:
-                        PhotonNetwork.LoadLevel("DesertGameBoard");
-                        break;
-                    case 3:
-                        PhotonNetwork.LoadLevel("VolcanoGameBoard");
-                        break;
-                    case 4:
-                        PhotonNetwork.LoadLevel("WaterGameBoard");
-                        break;
-                    case 5:
-                        PhotonNetwork.LoadLevel("TowerGameBoard");
-                        break;
-                }
+                //switch (randomStage)
+                //{
+                //    case 0:
+                //        PhotonNetwork.LoadLevel("ForestGameBoard");
+                //        break;
+                //    case 1:
+                //        PhotonNetwork.LoadLevel("GraveyardGameBoard");
+                //        break;
+                //    case 2:
+                //        PhotonNetwork.LoadLevel("DesertGameBoard");
+                //        break;
+                //    case 3:
+                //        PhotonNetwork.LoadLevel("VolcanoGameBoard");
+                //        break;
+                //    case 4:
+                //        PhotonNetwork.LoadLevel("WaterGameBoard");
+                //        break;
+                //    case 5:
+                //        PhotonNetwork.LoadLevel("TowerGameBoard");
+                //        break;
+                //}
+
+                // TODO: Put a message that says "Searching for Opponent..."
+            }
+        }
+
+        public override void OnPhotonPlayerConnected(PhotonPlayer other)
+        {
+            Debug.Log("Player connected: " + other.NickName); // Not seen if you're the player connecting
+
+            if (PhotonNetwork.isMasterClient)
+            {
+                Debug.Log("OnPhotonPlayerConnected isMasterClient " + PhotonNetwork.isMasterClient); // Called before OnPhotonPlayerDisconnected
+
+                LoadArena();
             }
         }
 
@@ -305,6 +319,38 @@ namespace Com.EnsorcelledStudios.Runic
             roomProperties[1] = "stage";
             // Change room name to be a unique ID
             PhotonNetwork.CreateRoom(PhotonNetwork.playerName, new RoomOptions() { MaxPlayers = MaxPlayersPerRoom, CustomRoomProperties = playerProperties, CustomRoomPropertiesForLobby = roomProperties }, null);            
+        }
+
+        private void LoadArena()
+        {
+            if (!PhotonNetwork.isMasterClient)
+            {
+                Debug.LogError("PhotonNetwork: Trying to load a level but we are not the master Client");
+            }
+
+            Debug.Log("PhotonNetwork: Loading game...");
+
+            switch (randomStage)
+            {
+                case 0:
+                    PhotonNetwork.LoadLevel("ForestGameBoard");
+                    break;
+                case 1:
+                    PhotonNetwork.LoadLevel("GraveyardGameBoard");
+                    break;
+                case 2:
+                    PhotonNetwork.LoadLevel("DesertGameBoard");
+                    break;
+                case 3:
+                    PhotonNetwork.LoadLevel("VolcanoGameBoard");
+                    break;
+                case 4:
+                    PhotonNetwork.LoadLevel("WaterGameBoard");
+                    break;
+                case 5:
+                    PhotonNetwork.LoadLevel("TowerGameBoard");
+                    break;
+            }
         }
 
         public void DisconnectFromLobby()

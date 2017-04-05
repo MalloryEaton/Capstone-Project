@@ -131,6 +131,7 @@ public class GameLogicController : MonoBehaviour
         if (isNetworkGame)
         {
             networking.SendColor();
+            networking.SendName();
 
             LeanTween.delayedCall(gameObject, 5f, () => {
                 isPlayer1 = networking.DetermineIfMasterClient();
@@ -176,10 +177,10 @@ public class GameLogicController : MonoBehaviour
             }
             else
                 player2Color = "Red";
-            player1Color = "Green";
-            player2Color = "Blue";
-            //player1Color = PlayerPrefs.GetString("Player1Color");
-            //player2Color = PlayerPrefs.GetString("Player2Color");
+            //player1Color = "Green";
+            //player2Color = "Blue";
+            player1Color = PlayerPrefs.GetString("Player1Color");
+            player2Color = PlayerPrefs.GetString("Player2Color");
             InitializeGameBoard();
             LoadingScreen.GetComponent<Animator>().SetBool("isDisplayed", false);
             Destroy(GameObject.FindGameObjectWithTag("BlackPanel"));

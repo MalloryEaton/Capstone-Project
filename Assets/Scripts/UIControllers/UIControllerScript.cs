@@ -16,7 +16,6 @@ public class UIControllerScript : MonoBehaviour
     public GameObject MainPanel;
     public GameObject LevelSelectPanel;
     public GameObject BioPanel;
-    public GameObject TutorialPanel;
     public GameObject LogoPanel;
     public List<GameObject> TutorialSlides;
 
@@ -227,10 +226,6 @@ public class UIControllerScript : MonoBehaviour
         else if(panel == "level")
         {
             LevelSelectPanel.GetComponent<Animator>().SetBool("isDisplayed", false);
-        }
-        else if(panel == "tutorial")
-        {
-            TutorialPanel.GetComponent<Animator>().SetBool("isDisplayed", false);
         }
         else if(panel == "logo")
         {
