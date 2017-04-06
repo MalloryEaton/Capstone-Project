@@ -131,14 +131,6 @@ namespace Com.EnsorcelledStudios.Runic
 
         public override void OnJoinedLobby()
         {
-            // We will probably need to use this function.
-
-            // This function is called AFTER the game has connected.
-            // So this function will make the ScrollRect appear, as well
-            // as the join and create game buttons.
-
-            //TODO: Make ScrollRect, Join Game, and Create Game appear
-
             LoadingScreen.GetComponent<Animator>().SetBool("isDisplayed", false);
         }
 
