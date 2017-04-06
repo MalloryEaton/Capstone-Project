@@ -125,6 +125,8 @@ namespace Com.EnsorcelledStudios.Runic
                     //game.stageIconString = room.CustomProperties["stage"].ToString();
 					gameList.Add(game);
                 }
+
+                scrollList.clearList();
 				scrollList.addGames(gameList);
             }
         }
