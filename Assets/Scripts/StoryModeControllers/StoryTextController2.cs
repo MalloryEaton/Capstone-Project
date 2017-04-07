@@ -35,6 +35,7 @@ public class StoryTextController2 : MonoBehaviour
     // Use this for initialization
     void Start ()
     {
+        PlayerPrefs.SetInt("StoryStage", 1);
         mainTextOriginalPosition = mainTextBox.GetComponent<RectTransform>().position;
         rightTextOriginalPosition = mainTextBox.GetComponent<RectTransform>().position;
         leftTextOriginalPosition = mainTextBox.GetComponent<RectTransform>().position;

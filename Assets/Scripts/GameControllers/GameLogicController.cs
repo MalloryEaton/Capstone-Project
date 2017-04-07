@@ -44,7 +44,7 @@ public class GameLogicController : MonoBehaviour
     public bool isPlayer1Turn;
     public bool waitingOnOtherPlayer;
     public bool waitingOnAnimation;
-    
+
 
     private short startingNumberOfOrbs;
     private short player1OrbCount;
@@ -69,7 +69,6 @@ public class GameLogicController : MonoBehaviour
     private float speed = 0.3f;
 
     public bool showHints;
-
 
     void Awake()
     {
@@ -137,7 +136,7 @@ public class GameLogicController : MonoBehaviour
                 isPlayer1 = networking.DetermineIfMasterClient();
                 waitingOnOtherPlayer = !isPlayer1; //prevent player 2 from clicking
 
-                if(isPlayer1)
+                if (isPlayer1)
                 {
                     player1Color = PlayerPrefs.GetString("PlayerColor");
                     if (networking.otherPlayerColor != null)
@@ -188,6 +187,17 @@ public class GameLogicController : MonoBehaviour
             PlayMageIntroAnimations();
         }
     }
+
+    //REMOVE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    void Update()
+    {
+        if (Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.Keypad2) && Input.GetKeyDown(KeyCode.Q))
+        {
+            print("you cheeky little punk");
+            GameOver();
+        }
+    }
+    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
     private void InstantiateSide1Orbs(string color)
     {
@@ -538,10 +548,34 @@ public class GameLogicController : MonoBehaviour
         RemoveAllOrbHighlights(-1);
         RemoveAllRuneHighlights();
 
+        //show win and lose messages
         if (isPlayer1Turn)
             print("Game Over. " + player1Color + " wins!");
         else
             print("Game Over. " + player2Color + " wins!");
+
+        if(PlayerPrefs.GetString("GameType") == "Story")
+        {
+            LoadingScreen.GetComponent<Animator>().SetBool("isDisplayed", true);
+            switch (PlayerPrefs.GetInt("StoryStage"))
+            {
+                case 1:
+                    StartCoroutine(LoadAsync(11));
+                    break;
+                case 2:
+                    StartCoroutine(LoadAsync(12));
+                    break;
+            }
+        }
+    }
+
+    private IEnumerator LoadAsync(int levelNum)
+    {
+        AsyncOperation async = SceneManager.LoadSceneAsync(levelNum);
+        while (!async.isDone)
+        {
+            yield return null;
+        }
     }
 
 
