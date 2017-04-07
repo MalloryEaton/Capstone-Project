@@ -159,6 +159,6 @@ public class NetworkingController : Photon.PunBehaviour
         Debug.Log("Opponent: " + receivedMessage);
         Debug.Log(opponentName);
         //chatInputField.text = opponentName + ": " + receivedMessage;
-        gameBoardUI.addMessage(opponentName, receivedMessage);
+        gameBoardUI.addMessage(name, receivedMessage);
     }   
 }
