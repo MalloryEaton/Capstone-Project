@@ -129,7 +129,7 @@ public class StoryTextController1 : MonoBehaviour
         {
             TextList.Add("In a world far away from our own lies the Kingdom Of Derraveth. This kingdom thrives on the energy given off by ancient magic artifacts which the citizens call shrines. The king of Derraveth employs seven sorcerers who protect the shrines, using magic to keep evil-doers at bay.");
             TextList.Add("The most renowned of these sorcerers is Targus Zweilander. His skills in the ancient art of Virillian sorcerery has made him the stongest and wisest of all sorcerers. He oversees the kingdom from the keep of his tower, a stronghold floating high above the land.");
-            TextList.Add("Targus is also the liaision between the king and the sorcerers of the land. Our story begins as Targus is returning to his home after a visit with the king and the royal librarian, Theodore Darden, another sorcerer employed by the king. Targus crosses the great bridge, headed for home.");
+            TextList.Add("Targus is also the liaison between the king and the sorcerers of the land. Our story begins as Targus is returning to his home after a visit with the king and the royal librarian, Theodore Darden, another sorcerer employed by the king. Targus crosses the great bridge, headed for home.");
             //zoom into map and cut to forest stage
 
             TextList.Add("I always love taking the scenic route back home. I wonder where Sebastian Meriweather is? He should be around here somewhere. Probably tending to his plants.");
@@ -144,18 +144,21 @@ public class StoryTextController1 : MonoBehaviour
         }
         else
         {
-            TextList.Add("Owwwww..... Targus, is that you? Man, I really owe you one.");
-            
+            TextList.Add("Owwwww..... Targus, is that you? What just happened?");
+            TextList.Add("Sebastian! It seems you have come to your senses. Have you been eating anything different lately? Perhaps something of the mushroom variety?");
+            TextList.Add("Uhhhh... my head. I think... maybe... No, I honestly don't remember anything. I wish I could be of more help!");
+            TextList.Add("Hmmmmm.... very strange. Well, I'm glad you're feeling better now. However, I must be going now. I want to check up with the other sorcerers on my way home.");
+            TextList.Add("Say hello to everyone for me. Oh, and let me know if you ever need some healthy additions to your diet!");
+            TextList.Add("Thanks, Sebastian. I'll... I'll get back to you on that. I'll honestly probably be sticking to my favorite snacks and pastries.");
         }
     }
 
     private void SceneLogic()
     {
-        if (textIndex == 3)
+        if(isFirstTime)
         {
-            if(isFirstTime)
+            if (textIndex == 3)
             {
-                print(textIndex);
                 SetUpCameras("Forest");
                 transform.position = new Vector3(14, 16, 5);
                 transform.Rotate(0, 130, 0);
@@ -163,15 +166,7 @@ public class StoryTextController1 : MonoBehaviour
                 SetUpTextBoxes("left");
                 autoTypeLeft.StartText(TextList[textIndex]);
             }
-            else
-            {
-
-            }
-            
-        }
-        else if (textIndex == 5)
-        {
-            if (isFirstTime)
+            else if (textIndex == 5)
             {
                 GameObject mage = Instantiate(Resources.Load(@"MagesForBoard\GreenMage", typeof(GameObject)) as GameObject);
                 mage.transform.position = new Vector3(4, 0, -4);
@@ -179,47 +174,20 @@ public class StoryTextController1 : MonoBehaviour
                 SetUpTextBoxes("right");
                 autoTypeRight.StartText(TextList[textIndex]);
             }
-            else
+            else if (textIndex == 6)
             {
-
-            }
-            
-        }
-        else if (textIndex == 6)
-        {
-            if (isFirstTime)
-            {
-                print(textIndex);
                 textbox = "left";
                 SetUpTextBoxes("left");
                 autoTypeLeft.StartText(TextList[textIndex]);
             }
-            else
+            else if (textIndex == 7)
             {
-
-            }
-            
-        }
-        else if (textIndex == 7)
-        {
-            if (isFirstTime)
-            {
-                print(textIndex);
                 textbox = "right";
                 SetUpTextBoxes("right");
                 autoTypeRight.StartText(TextList[textIndex]);
             }
-            else
+            else if (textIndex == 8)
             {
-
-            }
-            
-        }
-        else if (textIndex == 8)
-        {
-            if (isFirstTime)
-            {
-                print(textIndex);
                 SetUpTextBoxes("none");
                 PlayerPrefs.SetString("Player1Color", "White");
                 PlayerPrefs.SetString("Player2Color", "Green");
@@ -229,18 +197,60 @@ public class StoryTextController1 : MonoBehaviour
             }
             else
             {
-
+                if (textbox == "main")
+                    autoTypeMain.StartText(TextList[textIndex]);
+                if (textbox == "right")
+                    autoTypeRight.StartText(TextList[textIndex]);
+                if (textbox == "left")
+                    autoTypeLeft.StartText(TextList[textIndex]);
             }
-            
         }
         else
         {
-            if (textbox == "main")
-                autoTypeMain.StartText(TextList[textIndex]);
-            if (textbox == "right")
-                autoTypeRight.StartText(TextList[textIndex]);
-            if (textbox == "left")
+            if(textIndex == 1)
+            {
+                textbox = "left";
+                SetUpTextBoxes("left");
                 autoTypeLeft.StartText(TextList[textIndex]);
+            }
+            else if(textIndex == 2)
+            {
+                textbox = "right";
+                SetUpTextBoxes("right");
+                autoTypeRight.StartText(TextList[textIndex]);
+            }
+            else if(textIndex == 3)
+            {
+                textbox = "left";
+                SetUpTextBoxes("left");
+                autoTypeLeft.StartText(TextList[textIndex]);
+            }
+            else if(textIndex == 4)
+            {
+                textbox = "right";
+                SetUpTextBoxes("right");
+                autoTypeRight.StartText(TextList[textIndex]);
+            }
+            else if(textIndex == 5)
+            {
+                textbox = "left";
+                SetUpTextBoxes("left");
+                autoTypeLeft.StartText(TextList[textIndex]);
+            }
+            else if (textIndex == 6)
+            {
+                LoadingPanel.GetComponent<Animator>().SetBool("isDisplayed", true);
+                StartCoroutine(LoadAsync(12));
+            }
+            else
+            {
+                if (textbox == "main")
+                    autoTypeMain.StartText(TextList[textIndex]);
+                if (textbox == "right")
+                    autoTypeRight.StartText(TextList[textIndex]);
+                if (textbox == "left")
+                    autoTypeLeft.StartText(TextList[textIndex]);
+            }
         }
     }
 
