@@ -129,16 +129,11 @@ public class StoryTextController1 : MonoBehaviour
         {
             TextList.Add("In a world far away from our own lies the Kingdom Of Derraveth. This kingdom thrives on the energy given off by ancient magic artifacts which the citizens call shrines. The king of Derraveth employs seven sorcerers who protect the shrines, using magic to keep evil-doers at bay.");
             TextList.Add("The most renowned of these sorcerers is Targus Zweilander. His skills in the ancient art of Virillian sorcerery has made him the stongest and wisest of all sorcerers. He oversees the kingdom from the keep of his tower, a stronghold floating high above the land.");
-            TextList.Add("Targus is also the liaison between the king and the sorcerers of the land. Our story begins as Targus is returning to his home after a visit with the king and the royal librarian, Theodore Darden, another sorcerer employed by the king. Targus crosses the great bridge, headed for home.");
-            //zoom into map and cut to forest stage
-
+            TextList.Add("Targus is returning from a visit with Theodore Darden, a sorcerer employed as the royal librarian and the liaison between the king and the sorcerers of the land. On his way home, Targus stops in the forest to visit a friend.");
             TextList.Add("I always love taking the scenic route back home. I wonder where Sebastian Meriweather is? He should be around here somewhere. Probably tending to his plants.");
             TextList.Add("Oh, there he is! How are you doing Sebastian? It's been a whi--");
-
             TextList.Add("Your carcass is mine, intruder! I will use you as fertilizer for my precious plants! You are no match for my garden variety of spells and alchemy!");
-
             TextList.Add("Oh dear, this certainly isn't the welcome I expected. Sebastian, did you get into the yellow mushrooms again? You know we aren't supposed to eat the yellow ones...");
-
             TextList.Add("You will make a fine meal for my children. They haven't tasted flesh in a long time!");
             TextList.Add("");
         }
@@ -147,9 +142,9 @@ public class StoryTextController1 : MonoBehaviour
             TextList.Add("Owwwww..... Targus, is that you? What just happened?");
             TextList.Add("Sebastian! It seems you have come to your senses. Have you been eating anything different lately? Perhaps something of the mushroom variety?");
             TextList.Add("Uhhhh... my head. I think... maybe... No, I honestly don't remember anything. I wish I could be of more help!");
-            TextList.Add("Hmmmmm.... very strange. Well, I'm glad you're feeling better now. However, I must be going now. I want to check up with the other sorcerers on my way home.");
-            TextList.Add("Say hello to everyone for me. Oh, and let me know if you ever need some healthy additions to your diet!");
-            TextList.Add("Thanks, Sebastian. I'll... I'll get back to you on that. I'll honestly probably be sticking to my favorite snacks and pastries.");
+            TextList.Add("Hmmmmm.... very strange. Well, I'm glad you're feeling better now. However, I must be going. I want to check up with the other sorcerers on my way home.");
+            TextList.Add("Say hello to everyone for me. Oh, and let me know if you ever need some healthy additions to your diet! Maybe a nice mushroom salad?");
+            TextList.Add("Thanks, Sebastian. I'll... I'll get back to you on that. *Mumbles* I don't want to give up my pastries. That would be pure pandemonium... *Mumbles*");
         }
     }
 

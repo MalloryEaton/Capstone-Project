@@ -127,16 +127,19 @@ public class StoryTextController2 : MonoBehaviour
     {
         if (isFirstTime)
         {
-            TextList.Add("After tangling with Sebastian in the forest, Targus set out ");
+            TextList.Add("After tangling with Sebastian in the forest, Targus sets out again on his journey home. On the way, he makes another detour, stopping to visit his friend in the graveyard.");
+            TextList.Add("Surely Sebastian's fit of madness was just an unfortunate encounter with the wrong fungus, right?");
+            TextList.Add("I'm sure glad that Sebastian is back to normal. That was frightening!");
+            TextList.Add("I'll have to tell Sir Gilbaard about it. He could use a good laugh; crypt keepers are always so... grave.");
+            TextList.Add("Good evening sir, you look like death walking. May I interest you in our premium package?");
+            TextList.Add("Hey, Sir Gilbaard. How's life? Or, well, the lack thereof?");
+            TextList.Add("I can assure you that it is a steal of a deal!");
+            TextList.Add("I’m afraid I have no idea what you’re talking about.");
+            TextList.Add("I'm talking about a free casket! As a special bonus, I'll provide the means for you to get there!");
         }
         else
         {
-            TextList.Add("Owwwww..... Targus, is that you? What just happened?");
-            TextList.Add("Sebastian! It seems you have come to your senses. Have you been eating anything different lately? Perhaps something in the mushroom family?");
-            TextList.Add("I honestly don't remember anything. I wish I could be of more help!");
-            TextList.Add("No worries. I must be going now. I've want to meet with the other sorcerers on my way home.");
-            TextList.Add("Say hello to everyone for me. Oh, and let me know if you ever need some healthy additions to your diet!");
-            TextList.Add("Thanks, Sebastian. I'll get back to you on that. I'll honestly probably be sticking to my favorite snacks and pastries.");
+            TextList.Add("");
         }
     }
 
@@ -144,7 +147,7 @@ public class StoryTextController2 : MonoBehaviour
     {
         if (isFirstTime)
         {
-            if (textIndex == 3)
+            if (textIndex == 2)
             {
                 SetUpCameras("Graveyard");
                 transform.position = new Vector3(-25, 16, 38);
@@ -153,7 +156,7 @@ public class StoryTextController2 : MonoBehaviour
                 SetUpTextBoxes("left");
                 autoTypeLeft.StartText(TextList[textIndex]);
             }
-            else if (textIndex == 5)
+            else if (textIndex == 4)
             {
                 GameObject mage = Instantiate(Resources.Load(@"MagesForBoard\PurpleMage", typeof(GameObject)) as GameObject);
                 mage.transform.position = new Vector3(4, 0, -4);
@@ -161,19 +164,31 @@ public class StoryTextController2 : MonoBehaviour
                 SetUpTextBoxes("right");
                 autoTypeRight.StartText(TextList[textIndex]);
             }
-            else if (textIndex == 6)
+            else if (textIndex == 5)
             {
                 textbox = "left";
                 SetUpTextBoxes("left");
                 autoTypeLeft.StartText(TextList[textIndex]);
             }
-            else if (textIndex == 7)
+            else if (textIndex == 6)
             {
                 textbox = "right";
                 SetUpTextBoxes("right");
                 autoTypeRight.StartText(TextList[textIndex]);
             }
+            else if (textIndex == 7)
+            {
+                textbox = "left";
+                SetUpTextBoxes("left");
+                autoTypeLeft.StartText(TextList[textIndex]);
+            }
             else if (textIndex == 8)
+            {
+                textbox = "right";
+                SetUpTextBoxes("right");
+                autoTypeRight.StartText(TextList[textIndex]);
+            }
+            else if (textIndex == 9)
             {
                 SetUpTextBoxes("none");
                 PlayerPrefs.SetString("Player1Color", "White");

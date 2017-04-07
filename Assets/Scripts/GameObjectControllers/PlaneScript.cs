@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+//this file is used on the gameboards to allow stuff to happen with clicking off runes
 public class PlaneScript : MonoBehaviour
 {
     private GameLogicController gameController;
