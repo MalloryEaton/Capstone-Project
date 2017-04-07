@@ -14,10 +14,15 @@ public class GameBoardUIController : MonoBehaviour {
     public InputField chatInput;
 
     public ChatScrollList csl;
+    public GameObject scrollView;
     public GameLogicController glc;
     public Button chatButton;
     public GameObject chatComponent;
     public NetworkingController networkController;
+    public Button chatScrollButton;
+
+    public Sprite up;
+    public Sprite down;
 
 
     void Start()
@@ -32,6 +37,8 @@ public class GameBoardUIController : MonoBehaviour {
         {
             chatComponent.SetActive(false);
         }
+
+        chatScrollButton.enabled = false;
     }
 
     public void exitToMenu()
@@ -86,11 +93,52 @@ public class GameBoardUIController : MonoBehaviour {
     public void sendChat()
     {
         networkController.SendChat();
+        chatInput.text = "";
     }
 
     public void addMessage(string name, string message)
     {
         csl.updateChat(name, message);
         //chatInput.text = "";
+    }
+
+    public void enforceCharacterLimit()
+    {
+        Debug.Log("enforce " + chatInput.text.Length);
+        if(chatInput.text.Length > 54)
+        {
+            Debug.Log("remove " + chatInput.text.Length);
+            chatInput.text = chatInput.text.Remove(chatInput.text.Length - 1);
+        }
+    }
+
+    public void displayChatInput()
+    {
+        if(chatInput.GetComponent<Animator>().GetBool("isDisplayed") == false)
+        {
+            chatInput.GetComponent<Animator>().SetBool("isDisplayed", true);
+            chatScrollButton.enabled = true;
+            displayChatScroll();
+        }
+        else
+        {
+            chatInput.GetComponent<Animator>().SetBool("isDisplayed", false);
+            scrollView.GetComponent<Animator>().SetBool("isDisplayed", false);
+            chatScrollButton.enabled = false;
+        }
+    }
+
+    public void displayChatScroll()
+    {
+        if(scrollView.GetComponent<Animator>().GetBool("isDisplayed") == false)
+        {
+            scrollView.GetComponent<Animator>().SetBool("isDisplayed", true);
+            chatScrollButton.image.sprite = down;
+        }
+        else
+        {
+            scrollView.GetComponent<Animator>().SetBool("isDisplayed", false);
+            chatScrollButton.image.sprite = up;
+        }
     }
 }
