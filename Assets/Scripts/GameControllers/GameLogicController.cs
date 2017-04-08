@@ -121,6 +121,33 @@ public class GameLogicController : MonoBehaviour
         }
         else if (PlayerPrefs.GetString("GameType") == "AI" || PlayerPrefs.GetString("GameType") == "Story")
         {
+            // TODO: Reinstate this when we actually have these player prefs.
+            //// In the story, the player will go first in stages 1, 3, and 5.
+            //if (PlayerPrefs.GetString("GameType") == "Story")
+            //{
+            //    if (PlayerPrefs.GetInt("StoryStage") == 1 || PlayerPrefs.GetInt("StoryStage") == 3 ||
+            //        PlayerPrefs.GetInt("StoryStage") == 5)
+            //    {
+            //        isPlayer1Turn = true;
+            //    }
+            //    else
+            //    {
+            //        isPlayer1Turn = false;
+            //    }
+            //}
+            //// Otherwise we are determining who goes first through a Player Pref.
+            //else
+            //{
+            //    if (PlayerPrefs.GetString("AIGoesFirst") == "true")
+            //    {
+            //        isPlayer1Turn = false;
+            //    }
+            //    else
+            //    {
+            //        isPlayer1Turn = true;
+            //    }
+            //}
+
             isAIGame = true;
             isAITurn = false;
             AIDifficulty = PlayerPrefs.GetString("Difficulty");
@@ -139,24 +166,23 @@ public class GameLogicController : MonoBehaviour
                 if (isPlayer1)
                 {
                     player1Color = PlayerPrefs.GetString("PlayerColor");
-                    if (networking.otherPlayerColor != null)
-                        player2Color = networking.otherPlayerColor;
+                    if (networking.otherPlayerColor == null || networking.otherPlayerColor == player1Color)
+                        PickRandomColor(2);
                     else
-                        player2Color = "Black";
+                        player2Color = networking.otherPlayerColor;
                 }
                 else
                 {
-                    if (networking.otherPlayerColor != null)
-                        player1Color = networking.otherPlayerColor;
-                    else
-                        player1Color = "Black";
                     player2Color = PlayerPrefs.GetString("PlayerColor");
+                    if (networking.otherPlayerColor == null || networking.otherPlayerColor == player2Color)
+                        PickRandomColor(1);
+                    else
+                        player1Color = networking.otherPlayerColor;
                 }
 
                 networking.ResetNetworkValues();
 
                 print(player1Color + "  " + player2Color);
-
                 InitializeGameBoard();
 
                 LoadingScreen.GetComponent<Animator>().SetBool("isDisplayed", false);
@@ -172,17 +198,19 @@ public class GameLogicController : MonoBehaviour
                 // TODO: Set a player preference that determines who is going first -
                 // the player or the AI.
                 isPlayer1 = true;
-                player2Color = "Blue";
+                PickRandomColor(2);
             }
             else
-                player2Color = "Red";
-            //player1Color = "Green";
-            //player2Color = "Blue";
+            {
+                player2Color = PlayerPrefs.GetString("Player2Color");
+            }
             player1Color = PlayerPrefs.GetString("Player1Color");
-            player2Color = PlayerPrefs.GetString("Player2Color");
             InitializeGameBoard();
             LoadingScreen.GetComponent<Animator>().SetBool("isDisplayed", false);
             Destroy(GameObject.FindGameObjectWithTag("BlackPanel"));
+
+            // TODO: Set this as an actual player pref somewhere else.
+            PlayerPrefs.SetString("AIGoesFirst", "false");
 
             PlayMageIntroAnimations();
         }
@@ -349,15 +377,7 @@ public class GameLogicController : MonoBehaviour
         player1Mage.GetComponent<MageController>().PlayLevitateAnimation();
         player2Mage.GetComponent<MageController>().PlayLevitateAnimation();
 
-        if (isNetworkGame && isPlayer1)
-        {
-            LeanTween.delayedCall(0.7f, () =>
-            {
-                InstantiateSide1Orbs(player1Color);
-                InstantiateSide2Orbs(player2Color);
-            });
-        }
-        else if (isNetworkGame && !isPlayer1)
+        if (isNetworkGame && !isPlayer1)
         {
             LeanTween.delayedCall(0.7f, () =>
             {
@@ -365,14 +385,87 @@ public class GameLogicController : MonoBehaviour
                 InstantiateSide2Orbs(player1Color);
             });
         }
+        else
+        {
+            LeanTween.delayedCall(0.7f, () =>
+            {
+                InstantiateSide1Orbs(player1Color);
+                InstantiateSide2Orbs(player2Color);
+            });
+        }
 
         LeanTween.delayedCall(4f, () => {
             player1Mage.GetComponent<MageController>().PlayLandingAnimation();
             player2Mage.GetComponent<MageController>().PlayLandingAnimation();
 
+            if (isAIGame && PlayerPrefs.GetString("AIGoesFirst") == "true")
+                ChangeSide();
+
             waitingOnAnimation = false;
         });
+    }
 
+    // We don't want the AI (or other network player) to be the same color as
+    // the user.
+    private void PickRandomColor(int player)
+    {
+        do
+        {
+            short randomOpponentColor;
+            randomOpponentColor = (short)UnityEngine.Random.Range(0, 7);
+
+            switch (randomOpponentColor)
+            {
+                case 0:
+                    if (player == 1)
+                        player1Color = "Black";
+                    else
+                        player2Color = "Black";
+                    break;
+                case 1:
+                    if (player == 1)
+                        player1Color = "Blue";
+                    else
+                        player2Color = "Blue";
+                    break;
+                case 2:
+                    if (player == 1)
+                        player1Color = "Green";
+                    else
+                        player2Color = "Green";
+                    break;
+                case 3:
+                    if (player == 1)
+                        player1Color = "Orange";
+                    else
+                        player2Color = "Orange";
+                    break;
+                case 4:
+                    if (player == 1)
+                        player1Color = "Purple";
+                    else
+                        player2Color = "Purple";
+                    break;
+                case 5:
+                    if (player == 1)
+                        player1Color = "Red";
+                    else
+                        player2Color = "Red";
+                    break;
+                case 6:
+                    if (player == 1)
+                        player1Color = "White";
+                    else
+                        player2Color = "White";
+                    break;
+                case 7:
+                    if (player == 1)
+                        player1Color = "Yellow";
+                    else
+                        player2Color = "Yellow";
+                    break;
+            }
+        } while (player1Color == player2Color);
     }
 
     public void ShowAvailableMoves() //make it so that if click off a selected rune, shows the available moves again
@@ -431,13 +524,23 @@ public class GameLogicController : MonoBehaviour
             {
                 runeList[rune].tag = "Player";
                 player1OrbCount++;
+                if (isAIGame)
+                {
+                    if (PlayerPrefs.GetString("AIGoesFirst") == "true")
+                    {
+                        placementPhase_RoundCount++;
+                    }
+                }
             }
             else
             {
                 runeList[rune].tag = "Opponent";
                 player2OrbCount++;
                 // Round count will always increment after second player's turn
-                placementPhase_RoundCount++;
+                if (PlayerPrefs.GetString("AIGoesFirst") == "false" || isNetworkGame || (!isNetworkGame && !isAIGame))
+                {
+                    placementPhase_RoundCount++;
+                }
             }
 
             RemoveAllRuneHighlights();

@@ -31,7 +31,7 @@ namespace Com.EnsorcelledStudios.Runic
 
         public string selectedRoomName;
         public Button joinGameButton;
-
+        public LobbyController lobbyUI;
         #endregion
 
         #region Private Variables
@@ -205,7 +205,8 @@ namespace Com.EnsorcelledStudios.Runic
             {
                 Debug.Log("Loading a stage...");
 
-                // TODO: Put a message that says "Searching for Opponent..."
+
+                lobbyUI.displayWaitingForOpponent();
             }
         }
 
@@ -219,6 +220,8 @@ namespace Com.EnsorcelledStudios.Runic
 
                 LoadArena();
             }
+
+            lobbyUI.hideWaitingForOpponent();
         }
 
         public override void OnConnectionFail(DisconnectCause cause)
@@ -287,6 +290,8 @@ namespace Com.EnsorcelledStudios.Runic
 
         public void CreateGame()
         {
+            //Display SEARCHING FOR PLAYERS popup
+
             GetRandomStage();
 
             // We need to access the player's chosen color and stage here.
@@ -334,9 +339,16 @@ namespace Com.EnsorcelledStudios.Runic
 
         public void DisconnectFromLobby()
         {
-            PhotonNetwork.Disconnect();
+            //PhotonNetwork.Disconnect();
+            PhotonNetwork.LeaveLobby();
+            lobbyUI.hideWaitingForOpponent();
+            //TODO: Remove room key from dictionary
+        }
 
-            // TODO: Go back to part where user puts in their name.
+        public void DisconnectFromPhoton()
+        {
+            PhotonNetwork.Disconnect();
+            // TODO: This should bring back up the login stuff.
         }
 
         //public void enforceCharacterLimit()
@@ -398,7 +410,6 @@ namespace Com.EnsorcelledStudios.Runic
             //        PlayerPrefs.SetString("Stage", "Tower");
             //        break;
             //}
-
         }
 
         #endregion

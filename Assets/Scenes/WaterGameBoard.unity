@@ -1837,8 +1837,8 @@ RectTransform:
   - {fileID: 501578092}
   - {fileID: 578190004}
   - {fileID: 426636760}
-  - {fileID: 364308023}
   - {fileID: 1720119686}
+  - {fileID: 364308023}
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3108,7 +3108,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &364308023
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3129,7 +3129,7 @@ RectTransform:
   - {fileID: 823242071}
   - {fileID: 943865624}
   m_Father: {fileID: 209198951}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -13955,7 +13955,7 @@ Prefab:
     - target: {fileID: 224258400020533642, guid: ebdec55599f98b1478baaf76372e0f50,
         type: 2}
       propertyPath: m_RootOrder
-      value: 5
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 224258400020533642, guid: ebdec55599f98b1478baaf76372e0f50,
         type: 2}
@@ -14046,6 +14046,16 @@ Prefab:
         type: 2}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: displayChatScroll
+      objectReference: {fileID: 0}
+    - target: {fileID: 114956804999390624, guid: ebdec55599f98b1478baaf76372e0f50,
+        type: 2}
+      propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 2003220478}
+    - target: {fileID: 114956804999390624, guid: ebdec55599f98b1478baaf76372e0f50,
+        type: 2}
+      propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: submit
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ebdec55599f98b1478baaf76372e0f50, type: 2}
