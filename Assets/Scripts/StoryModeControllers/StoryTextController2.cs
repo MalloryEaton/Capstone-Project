@@ -148,6 +148,7 @@ public class StoryTextController2 : MonoBehaviour
             TextList.Add("Interesting. Can you remember anything else?");
             TextList.Add("I'm afraid not.");
             TextList.Add("Well... I'm on my way to meet with Merwin Etherfrost. Maybe he can help us figure out what is going on.");
+            TextList.Add("Hopefully, I won't be walking into a showdown in the desert...");
             TextList.Add("I wish you luck, dear Targus. I must get back to my duties, tending to the dead.");
             TextList.Add("Be sure to get out every once in a while, talk to some people. Preferably those with heartbeats.");
             TextList.Add("");
@@ -262,17 +263,23 @@ public class StoryTextController2 : MonoBehaviour
             }
             else if (textIndex == 7)
             {
+                textbox = "left";
+                SetUpTextBoxes("left");
+                autoTypeLeft.StartText(TextList[textIndex]);
+            }
+            else if (textIndex == 8)
+            {
                 textbox = "right";
                 SetUpTextBoxes("right");
                 autoTypeRight.StartText(TextList[textIndex]);
             }
-            else if (textIndex == 8)
+            else if (textIndex == 9)
             {
                 textbox = "left";
                 SetUpTextBoxes("left");
                 autoTypeLeft.StartText(TextList[textIndex]);
             }
-            else if (textIndex == 9)
+            else if (textIndex == 10)
             {
                 LoadingPanel.GetComponent<Animator>().SetBool("isDisplayed", true);
                 StartCoroutine(LoadAsync(13));
