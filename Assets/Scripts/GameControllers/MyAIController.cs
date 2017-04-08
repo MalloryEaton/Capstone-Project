@@ -94,17 +94,18 @@ public class MyAIController : MonoBehaviour
 
     // Check if we can make a mill
     newMove = findMill(orbsAvailableToMove);
+    // If not, check if we can block a mill
     if (newMove[0] == -1 || newMove[1] == -1) {
       List<short> movableOpponentOrbs = new List<short> { };
       movableOpponentOrbs = getMovableOrbs(PLAYER_TAG);
       newMove = findMill(movableOpponentOrbs);
     }
+    // No mills to make or block. Pick randomly
     if (newMove[0] == -1 || newMove[1] == -1) {
-      newMove[0] = (short)rand.Next(0, orbsAvailableToMove.Count);
-
-      newMove[1] = (short)rand.Next(0, orbsAvailableToMove.Count);
-      while (gameLogicController.runeList[newMove[1]].tag != EMPTY)
-        newMove[1] = (short)rand.Next(0, orbsAvailableToMove.Count);
+      // Piece to move
+      newMove[0] = orbsAvailableToMove[(short)rand.Next(0, orbsAvailableToMove.Count)];
+      List<short> potentialMoves = placesToMove(newMove[0]);
+      newMove[1] = potentialMoves[(short)rand.Next(0, potentialMoves.Count)];
     }
 
     move[0] = newMove[0];
@@ -248,5 +249,13 @@ public class MyAIController : MonoBehaviour
       return (true);
     else
       return (false);
+  }
+
+  private List<short> placesToMove(short slot) {
+    List<short> emptyMoves = new List<short> { };
+    foreach (short potentialMove in adjacentSlots[slot])
+      if (gameLogicController.runeList[potentialMove].tag == EMPTY)
+        emptyMoves.Add(potentialMove);
+    return (emptyMoves);
   }
 }
