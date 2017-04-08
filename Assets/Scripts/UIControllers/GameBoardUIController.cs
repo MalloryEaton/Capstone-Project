@@ -96,21 +96,29 @@ public class GameBoardUIController : MonoBehaviour {
         chatInput.text = "";
     }
 
+    public void submit()
+    {
+        if (Input.GetKeyDown(KeyCode.Return))
+        {
+            sendChat();
+        }
+    }
+
     public void addMessage(string name, string message)
     {
         csl.updateChat(name, message);
         //chatInput.text = "";
     }
 
-    public void enforceCharacterLimit()
-    {
-        Debug.Log("enforce " + chatInput.text.Length);
-        if(chatInput.text.Length > 54)
-        {
-            Debug.Log("remove " + chatInput.text.Length);
-            chatInput.text = chatInput.text.Remove(chatInput.text.Length - 1);
-        }
-    }
+    //public void enforceCharacterLimit()
+    //{
+    //    Debug.Log("enforce " + chatInput.text.Length);
+    //    if(chatInput.text.Length > 51)
+    //    {
+    //        Debug.Log("remove " + chatInput.text.Length);
+    //        chatInput.text = chatInput.text.Remove(chatInput.text.Length - 1);
+    //    }
+    //}
 
     public void displayChatInput()
     {

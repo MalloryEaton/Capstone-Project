@@ -27,7 +27,7 @@ public class ChatScrollList : MonoBehaviour {
         GameObject newChatEntry = Instantiate(chatEntry) as GameObject;
         Text [] labels = newChatEntry.GetComponentsInChildren<Text>();
         labels[0].text = msg;
-        labels[1].text = name;
+        labels[1].text = name + ":";
         //ces.playerName.text = name;
         // ces.message.text = msg;
         newChatEntry.transform.SetParent(contentPanel);

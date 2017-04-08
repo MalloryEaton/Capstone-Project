@@ -331,6 +331,16 @@ namespace Com.EnsorcelledStudios.Runic
             // TODO: Go back to part where user puts in their name.
         }
 
+        public void enforceCharacterLimit()
+        {
+            Debug.Log("enforce " + inputField.text.Length);
+            if (inputField.text.Length > 14)
+            {
+                Debug.Log("remove " + inputField.text.Length);
+                inputField.text = inputField.text.Remove(inputField.text.Length - 1);
+            }
+        }
+
         #endregion
 
         #region Private Methods
