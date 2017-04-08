@@ -690,8 +690,8 @@ public class GameLogicController : MonoBehaviour
             {
                 AIMove = aicontroller.GetAIMove("placement");
                 PlacementPhase(AIMove[1]);
-                if (AIMove[2] != -1)
-                    RemovalPhase(AIMove[2]);
+                //if (AIMove[2] != -1)
+                //    RemovalPhase(AIMove[2]);
             }
             else
             {
