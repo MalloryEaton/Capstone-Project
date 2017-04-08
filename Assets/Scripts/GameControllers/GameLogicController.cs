@@ -166,23 +166,21 @@ public class GameLogicController : MonoBehaviour
                 if (isPlayer1)
                 {
                     player1Color = PlayerPrefs.GetString("PlayerColor");
-                    if (networking.otherPlayerColor != null)
-                        player2Color = networking.otherPlayerColor;
+                    if (networking.otherPlayerColor == null || networking.otherPlayerColor == player1Color)
+                        PickRandomColor(2);
                     else
-                        player2Color = "Black";
+                        player2Color = networking.otherPlayerColor;
                 }
                 else
                 {
-                    if (networking.otherPlayerColor != null)
-                        player1Color = networking.otherPlayerColor;
-                    else
-                        player1Color = "Black";
                     player2Color = PlayerPrefs.GetString("PlayerColor");
+                    if (networking.otherPlayerColor == null || networking.otherPlayerColor == player2Color)
+                        PickRandomColor(1);
+                    else
+                        player1Color = networking.otherPlayerColor;
                 }
 
                 networking.ResetNetworkValues();
-
-                print(player1Color + "  " + player2Color);
 
                 LoadingScreen.GetComponent<Animator>().SetBool("isDisplayed", false);
                 Destroy(GameObject.FindGameObjectWithTag("BlackPanel"));
@@ -199,14 +197,13 @@ public class GameLogicController : MonoBehaviour
                 // TODO: Set a player preference that determines who is going first -
                 // the player or the AI.
                 isPlayer1 = true;
-                player2Color = "Blue";
+                PickRandomColor(2);
             }
             else
-                player2Color = "Red";
-            //player1Color = "Green";
-            //player2Color = "Blue";
+            {
+                player2Color = PlayerPrefs.GetString("Player2Color");
+            }
             player1Color = PlayerPrefs.GetString("Player1Color");
-            player2Color = PlayerPrefs.GetString("Player2Color");
             InitializeGameBoard();
             LoadingScreen.GetComponent<Animator>().SetBool("isDisplayed", false);
             Destroy(GameObject.FindGameObjectWithTag("BlackPanel"));
@@ -405,7 +402,69 @@ public class GameLogicController : MonoBehaviour
 
             waitingOnAnimation = false;
         });
+    }
 
+    // We don't want the AI (or other network player) to be the same color as
+    // the user.
+    private void PickRandomColor(int player)
+    {
+        do
+        {
+            short randomOpponentColor;
+            randomOpponentColor = (short)UnityEngine.Random.Range(0, 7);
+
+            switch (randomOpponentColor)
+            {
+                case 0:
+                    if (player == 1)
+                        player1Color = "Black";
+                    else
+                        player2Color = "Black";
+                    break;
+                case 1:
+                    if (player == 1)
+                        player1Color = "Blue";
+                    else
+                        player2Color = "Blue";
+                    break;
+                case 2:
+                    if (player == 1)
+                        player1Color = "Green";
+                    else
+                        player2Color = "Green";
+                    break;
+                case 3:
+                    if (player == 1)
+                        player1Color = "Orange";
+                    else
+                        player2Color = "Orange";
+                    break;
+                case 4:
+                    if (player == 1)
+                        player1Color = "Purple";
+                    else
+                        player2Color = "Purple";
+                    break;
+                case 5:
+                    if (player == 1)
+                        player1Color = "Red";
+                    else
+                        player2Color = "Red";
+                    break;
+                case 6:
+                    if (player == 1)
+                        player1Color = "White";
+                    else
+                        player2Color = "White";
+                    break;
+                case 7:
+                    if (player == 1)
+                        player1Color = "Yellow";
+                    else
+                        player2Color = "Yellow";
+                    break;
+            }
+        } while (player1Color == player2Color);
     }
 
     public void ShowAvailableMoves() //make it so that if click off a selected rune, shows the available moves again

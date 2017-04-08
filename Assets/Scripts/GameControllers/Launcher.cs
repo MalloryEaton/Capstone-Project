@@ -398,7 +398,6 @@ namespace Com.EnsorcelledStudios.Runic
             //        PlayerPrefs.SetString("Stage", "Tower");
             //        break;
             //}
-
         }
 
         #endregion
