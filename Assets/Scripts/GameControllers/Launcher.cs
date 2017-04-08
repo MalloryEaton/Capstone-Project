@@ -101,15 +101,8 @@ namespace Com.EnsorcelledStudios.Runic
         /// </summary>
         void Start()
         {
+            controlPanel.SetActive(true);
             LoadingScreen.GetComponent<Animator>().SetBool("isDisplayed", false);
-            if (PhotonNetwork.insideLobby == true)
-            {
-                controlPanel.SetActive(false);
-            }
-            else
-            {
-                controlPanel.SetActive(true);
-            }
             LauncherStatic.launcher = this;
         }
 
@@ -146,6 +139,7 @@ namespace Com.EnsorcelledStudios.Runic
         public override void OnJoinedLobby()
         {
             LoadingScreen.GetComponent<Animator>().SetBool("isDisplayed", false);
+            controlPanel.SetActive(false);
 
             OnReceivedRoomListUpdate();
         }
