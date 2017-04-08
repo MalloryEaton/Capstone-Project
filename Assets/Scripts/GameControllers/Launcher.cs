@@ -343,12 +343,12 @@ namespace Com.EnsorcelledStudios.Runic
             PhotonNetwork.LeaveLobby();
             lobbyUI.hideWaitingForOpponent();
             //TODO: Remove room key from dictionary
-            // TODO: Go back to part where user puts in their name.
         }
 
         public void DisconnectFromPhoton()
         {
             PhotonNetwork.Disconnect();
+            // TODO: This should bring back up the login stuff.
         }
 
         //public void enforceCharacterLimit()
