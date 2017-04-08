@@ -193,6 +193,8 @@ public class GameLogicController : MonoBehaviour
         }
         else
         {
+            player1Color = PlayerPrefs.GetString("Player1Color");
+
             if (isAIGame) // have the user select the opponent's color as well
             {
                 // TODO: Set a player preference that determines who is going first -
@@ -204,7 +206,7 @@ public class GameLogicController : MonoBehaviour
             {
                 player2Color = PlayerPrefs.GetString("Player2Color");
             }
-            player1Color = PlayerPrefs.GetString("Player1Color");
+            
             InitializeGameBoard();
             LoadingScreen.GetComponent<Animator>().SetBool("isDisplayed", false);
             Destroy(GameObject.FindGameObjectWithTag("BlackPanel"));
