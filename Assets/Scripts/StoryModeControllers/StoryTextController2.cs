@@ -137,6 +137,7 @@ public class StoryTextController2 : MonoBehaviour
             TextList.Add("I can assure you that it is a steal of a deal!");
             TextList.Add("I’m afraid I have no idea what you’re talking about.");
             TextList.Add("I'm talking about a free casket! As a special bonus, I'll provide the means for you to get there!");
+            TextList.Add("");
         }
         else
         {
@@ -149,6 +150,7 @@ public class StoryTextController2 : MonoBehaviour
             TextList.Add("Well... I'm on my way to meet with Merwin Etherfrost. Maybe he can help us figure out what is going on.");
             TextList.Add("I wish you luck, dear Targus. I must get back to my duties, tending to the dead.");
             TextList.Add("Be sure to get out every once in a while, talk to some people. Preferably those with heartbeats.");
+            TextList.Add("");
         }
     }
 
