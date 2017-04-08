@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class StoryTextController1 : MonoBehaviour
+public class StoryTextController4 : MonoBehaviour
 {
     private List<string> TextList;
     private AutoTypeMainBox autoTypeMain;
@@ -15,7 +15,7 @@ public class StoryTextController1 : MonoBehaviour
 
     public List<Camera> cameras;
     public List<Light> mainLights;
-    public List<Light> forestLights;
+    public List<Light> volcanoLights;
 
     public GameObject mainTextBox;
     public GameObject rightTextBox;
@@ -33,10 +33,17 @@ public class StoryTextController1 : MonoBehaviour
 
     private bool isFirstTime = true;
 
-    // Use this for initialization
-    void Start ()
+    private GameObject redMage;
+    private GameObject whiteMage;
+    private GameObject flyRock;
+
+    void Start()
     {
-        if(PlayerPrefs.GetInt("StoryStage") == 1)
+        PlayerPrefs.SetInt("StoryStage", 4);
+        redMage = GameObject.Find("RedMage");
+        whiteMage = GameObject.Find("WhiteMage");
+        flyRock = GameObject.Find("FlyRock");
+        if (PlayerPrefs.GetInt("StoryStage") == 4)
         {
             isFirstTime = false;
             transform.position = new Vector3(14, 16, 5);
@@ -47,33 +54,32 @@ public class StoryTextController1 : MonoBehaviour
         leftTextOriginalPosition = mainTextBox.GetComponent<RectTransform>().position;
         TextList = new List<string>();
         InitializeTextList();
-        if(isFirstTime)
+        if (isFirstTime)
             InstantiateShine("Black");
         else
             InstantiateShine("White");
         textbox = "main";
         lightsList = new List<List<Light>>();
         SetUpLightsList();
-        if(isFirstTime)
+        if (isFirstTime)
             SetUpCameras("Main");
         else
-            SetUpCameras("Forest");
+            SetUpCameras("Volcano");
         SetUpTextBoxes("main");
         LoadingPanel = GameObject.Find("LoadingPanel");
         textIndex = 0;
         autoTypeMain = FindObjectOfType(typeof(AutoTypeMainBox)) as AutoTypeMainBox;
         autoTypeLeft = FindObjectOfType(typeof(AutoTypeLeftBox)) as AutoTypeLeftBox;
         autoTypeRight = FindObjectOfType(typeof(AutoTypeRightBox)) as AutoTypeRightBox;
-        
-        if(isFirstTime)
+        redMage.SetActive(false);
+        if (isFirstTime)
             autoTypeMain.StartText(TextList[0]);
         else
         {
-            GameObject mage = Instantiate(Resources.Load(@"MagesForBoard\GreenMage", typeof(GameObject)) as GameObject);
-            mage.transform.position = new Vector3(4, 0, -4);
+            redMage.SetActive(true);
             textbox = "right";
             SetUpTextBoxes("right");
-            
+
             autoTypeRight.StartText(TextList[0]);
         }
     }
@@ -87,14 +93,14 @@ public class StoryTextController1 : MonoBehaviour
     private void SetUpLightsList()
     {
         lightsList.Add(mainLights);
-        lightsList.Add(forestLights);
+        lightsList.Add(volcanoLights);
     }
 
     private void SetUpCameras(string cam)
     {
         foreach (List<Light> l in lightsList)
         {
-            foreach(Light light in l)
+            foreach (Light light in l)
             {
                 light.enabled = false;
             }
@@ -105,7 +111,7 @@ public class StoryTextController1 : MonoBehaviour
             c.enabled = false;
         }
 
-        if(cam == "Main")
+        if (cam == "Main")
         {
             cameras[0].enabled = true;
             foreach (Light light in mainLights)
@@ -113,59 +119,124 @@ public class StoryTextController1 : MonoBehaviour
                 light.enabled = true;
             }
         }
-        else if (cam == "Forest")
+        else if (cam == "Volcano")
         {
             cameras[1].enabled = true;
-            foreach (Light light in forestLights)
+            foreach (Light light in volcanoLights)
             {
                 light.enabled = true;
             }
         }
     }
-	
-	private void InitializeTextList()
+
+    private void InitializeTextList()
     {
         if (isFirstTime)
         {
-            TextList.Add("In a world far away from our own lies the Kingdom Of Derraveth. This kingdom thrives on the energy given off by ancient magic artifacts which the citizens call shrines. The king of Derraveth employs seven sorcerers who protect the shrines, using magic to keep evil-doers at bay.");
-            TextList.Add("The most renowned of these sorcerers is Targus Zweilander. His skills in the ancient art of Virillian sorcerery has made him the stongest and wisest of all sorcerers. He oversees the kingdom from the keep of his tower, a stronghold floating high above the land.");
-            TextList.Add("Targus is returning from a visit with Theodore Darden, a sorcerer employed as the royal librarian and the liaison between the king and the sorcerers of the land. On his way home, Targus stops in the forest to visit a friend.");
-            TextList.Add("I always love taking the scenic route back home. I wonder where Sebastian Meriweather is? He should be around here somewhere. Probably tending to his plants.");
-            TextList.Add("Oh, there he is! How are you doing Sebastian? It's been a whi--");
-            TextList.Add("Your carcass is mine, intruder! I will use you as fertilizer for my precious plants! You are no match for my garden variety of spells and alchemy!");
-            TextList.Add("Oh dear, this certainly isn't the welcome I expected. Sebastian, did you get into the yellow mushrooms again? You know we aren't supposed to eat the yellow ones...");
-            TextList.Add("You will make a fine meal for my children. They haven't tasted flesh in a long time!");
+            TextList.Add("To find his next friend, Targus had to travel over the seas to the volcanic island of Goragundi, named after the volcano which created it.");
+            TextList.Add("He hoped to find Quin Zoltan, the famous fire sorecerer and protector of the island, before someone else did.");
+            TextList.Add("I’m certain Quin is around here somewhere. He’s always been a homebody.");
+            TextList.Add("Hey, you! Come here! Want to take a dip in my state-of-the-art hot tub?");
+            TextList.Add("Don’t mind the red coloring. That’s just, um, colored dye.");
+            TextList.Add("Very tempting, but I'm going to have to pass.");
+            TextList.Add("Hmph, it appears you aren’t as stupid as you look!");
             TextList.Add("");
         }
         else
         {
-            TextList.Add("Owwwww..... Targus, is that you? What just happened?");
-            TextList.Add("Sebastian! It seems you have come to your senses. Have you been eating anything different lately? Perhaps something of the mushroom variety?");
-            TextList.Add("Uhhhh... my head. I think... maybe... No, I honestly don't remember anything. I wish I could be of more help!");
-            TextList.Add("Hmmmmm.... very strange. Well, I'm glad you're feeling better now. However, I must be going. I want to check up with the other sorcerers on my way home.");
-            TextList.Add("Say hello to everyone for me. Oh, and let me know if you ever need some healthy additions to your diet! Maybe a nice mushroom salad?");
-            TextList.Add("Thanks, Sebastian. I'll... I'll get back to you on that. *Mumbles* I don't want to give up my pastries. That would be pure pandemonium... *Mumbles*");
+            TextList.Add("Targus, I remember everything! The one enslaving the minds of the king's sorcerers in none other than Iver Hagroot!");
+            TextList.Add("It seems he has come back with some new skills. He dabbling in necromancy now!");
+            TextList.Add("What?! I always knew he would make a return.");
+            TextList.Add("He is stronger now than ever before! I was no match for him, Targus. You have to stop him.");
+            TextList.Add("I’ve defeated him once, and I can do it again! Where do you think will he go next?");
+            TextList.Add("To the floating isle of Lapucha, I would assume. He's probably already gotten to our friend, Fariday.");
+            TextList.Add("I must get there as quickly as possible, then.");
+            TextList.Add("Here, hang on to this rock.");
+            TextList.Add("What are you doing? I suppose you are going to cause the volcano to blast me into th-- AAAAAAAHHHHHH!!!");
+            TextList.Add("");
+            TextList.Add("Precisely!");
             TextList.Add("");
         }
     }
 
     private void SceneLogic()
     {
-        if(isFirstTime)
+        #region FirstTime
+        if (isFirstTime)
         {
-            if (textIndex == 3)
+            if (textIndex == 2)
             {
-                SetUpCameras("Forest");
-                transform.position = new Vector3(14, 16, 5);
+                SetUpCameras("Volcano");
+                transform.position = new Vector3(15, 16, 9);
                 transform.Rotate(0, 130, 0);
+                textbox = "left";
+                SetUpTextBoxes("left");
+                autoTypeLeft.StartText(TextList[textIndex]);
+            }
+            else if (textIndex == 3)
+            {
+                redMage.SetActive(true);
+                textbox = "right";
+                SetUpTextBoxes("right");
+                autoTypeRight.StartText(TextList[textIndex]);
+            }
+            else if (textIndex == 5)
+            {
+                textbox = "left";
+                SetUpTextBoxes("left");
+                autoTypeLeft.StartText(TextList[textIndex]);
+            }
+            else if (textIndex == 6)
+            {
+                textbox = "right";
+                SetUpTextBoxes("right");
+                autoTypeRight.StartText(TextList[textIndex]);
+            }
+            else if (textIndex == 7)
+            {
+                SetUpTextBoxes("none");
+                PlayerPrefs.SetString("Player1Color", "White");
+                PlayerPrefs.SetString("Player2Color", "Yellow");
+                PlayerPrefs.SetString("Difficulty", "Medium");
+                PlayerPrefs.SetString("GameType", "Story");
+                PlayerPrefs.SetInt("StoryStage", 4);
+                LoadingPanel.GetComponent<Animator>().SetBool("isDisplayed", true);
+                StartCoroutine(LoadAsync(7));
+            }
+            else
+            {
+                if (textbox == "main")
+                    autoTypeMain.StartText(TextList[textIndex]);
+                if (textbox == "right")
+                    autoTypeRight.StartText(TextList[textIndex]);
+                if (textbox == "left")
+                    autoTypeLeft.StartText(TextList[textIndex]);
+            }
+        }
+        #endregion
+        #region SecondTime
+        else
+        {
+            if (textIndex == 2)
+            {
+                textbox = "left";
+                SetUpTextBoxes("left");
+                autoTypeLeft.StartText(TextList[textIndex]);
+            }
+            else if (textIndex == 3)
+            {
+                textbox = "right";
+                SetUpTextBoxes("right");
+                autoTypeRight.StartText(TextList[textIndex]);
+            }
+            else if (textIndex == 4)
+            {
                 textbox = "left";
                 SetUpTextBoxes("left");
                 autoTypeLeft.StartText(TextList[textIndex]);
             }
             else if (textIndex == 5)
             {
-                GameObject mage = Instantiate(Resources.Load(@"MagesForBoard\GreenMage", typeof(GameObject)) as GameObject);
-                mage.transform.position = new Vector3(4, 0, -4);
                 textbox = "right";
                 SetUpTextBoxes("right");
                 autoTypeRight.StartText(TextList[textIndex]);
@@ -184,13 +255,31 @@ public class StoryTextController1 : MonoBehaviour
             }
             else if (textIndex == 8)
             {
-                SetUpTextBoxes("none");
-                PlayerPrefs.SetString("Player1Color", "White");
-                PlayerPrefs.SetString("Player2Color", "Green");
-                PlayerPrefs.SetString("Difficulty", "Easy");
-                PlayerPrefs.SetInt("StoryStage", 1);
+                textbox = "left";
+                SetUpTextBoxes("left");
+                autoTypeLeft.StartText(TextList[textIndex]);
+            }
+            else if (textIndex == 9)
+            {
+                //animation
+                Vector3 position = transform.position;
+                transform.position = new Vector3(50, 50, 50);
+                LeanTween.moveY(flyRock, 50, 0.2f);
+                LeanTween.moveY(whiteMage, 50, 0.2f);
+                LeanTween.delayedCall(0.4f, () => {
+                    transform.position = position;
+                });
+            }
+            else if (textIndex == 10)
+            {
+                textbox = "right";
+                SetUpTextBoxes("right");
+                autoTypeRight.StartText(TextList[textIndex]);
+            }
+            else if (textIndex == 11)
+            {
                 LoadingPanel.GetComponent<Animator>().SetBool("isDisplayed", true);
-                StartCoroutine(LoadAsync(4));
+                StartCoroutine(LoadAsync(14));
             }
             else
             {
@@ -202,53 +291,7 @@ public class StoryTextController1 : MonoBehaviour
                     autoTypeLeft.StartText(TextList[textIndex]);
             }
         }
-        else
-        {
-            if(textIndex == 1)
-            {
-                textbox = "left";
-                SetUpTextBoxes("left");
-                autoTypeLeft.StartText(TextList[textIndex]);
-            }
-            else if(textIndex == 2)
-            {
-                textbox = "right";
-                SetUpTextBoxes("right");
-                autoTypeRight.StartText(TextList[textIndex]);
-            }
-            else if(textIndex == 3)
-            {
-                textbox = "left";
-                SetUpTextBoxes("left");
-                autoTypeLeft.StartText(TextList[textIndex]);
-            }
-            else if(textIndex == 4)
-            {
-                textbox = "right";
-                SetUpTextBoxes("right");
-                autoTypeRight.StartText(TextList[textIndex]);
-            }
-            else if(textIndex == 5)
-            {
-                textbox = "left";
-                SetUpTextBoxes("left");
-                autoTypeLeft.StartText(TextList[textIndex]);
-            }
-            else if (textIndex == 6)
-            {
-                LoadingPanel.GetComponent<Animator>().SetBool("isDisplayed", true);
-                StartCoroutine(LoadAsync(12));
-            }
-            else
-            {
-                if (textbox == "main")
-                    autoTypeMain.StartText(TextList[textIndex]);
-                if (textbox == "right")
-                    autoTypeRight.StartText(TextList[textIndex]);
-                if (textbox == "left")
-                    autoTypeLeft.StartText(TextList[textIndex]);
-            }
-        }
+        #endregion
     }
 
     private void SetUpTextBoxes(string box)
@@ -281,7 +324,7 @@ public class StoryTextController1 : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if(textbox == "main")
+        if (textbox == "main")
         {
             if (autoTypeMain.autoType)
                 autoTypeMain.autoType = false;

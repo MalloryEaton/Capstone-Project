@@ -37,7 +37,6 @@ public class StoryTextController3 : MonoBehaviour
     
     void Start()
     {
-        PlayerPrefs.SetInt("StoryStage", 2);
         yellowMage = GameObject.Find("YellowMage");
         if (PlayerPrefs.GetInt("StoryStage") == 3)
         {
@@ -73,10 +72,10 @@ public class StoryTextController3 : MonoBehaviour
         else
         {
             yellowMage.SetActive(true);
-            textbox = "left";
-            SetUpTextBoxes("left");
+            textbox = "right";
+            SetUpTextBoxes("right");
 
-            autoTypeLeft.StartText(TextList[0]);
+            autoTypeRight.StartText(TextList[0]);
         }
     }
 
@@ -138,6 +137,16 @@ public class StoryTextController3 : MonoBehaviour
         }
         else
         {
+            TextList.Add("Targus! It sure is good to see you, now that I have control over my own mind.");
+            TextList.Add("You’ll have to forgive me for the threats against your life and such. I was... ah... not myself.");
+            TextList.Add("No worries, Merwin, I’m already a bit familiar with what's going on. Do you remember who it was that attacked you?");
+            TextList.Add("Eh... Only vaguely. I do remember him (in typical villain fashion) describing his master plan to no one in particular.");
+            TextList.Add("Oh, do tell!");
+            TextList.Add("My mind is still hazy, but I think he mentioned something about enslaving all the king's sorcerers!");
+            TextList.Add("What about all the king's men?");
+            TextList.Add("What?");
+            TextList.Add("Nevermind. I must track this guy down before he can do any more harm to us.");
+            TextList.Add("Good luck!");
             TextList.Add("");
         }
     }
@@ -194,13 +203,7 @@ public class StoryTextController3 : MonoBehaviour
         #region SecondTime
         else
         {
-            if (textIndex == 1)
-            {
-                textbox = "right";
-                SetUpTextBoxes("right");
-                autoTypeRight.StartText(TextList[textIndex]);
-            }
-            else if (textIndex == 2)
+            if (textIndex == 2)
             {
                 textbox = "left";
                 SetUpTextBoxes("left");
@@ -244,8 +247,14 @@ public class StoryTextController3 : MonoBehaviour
             }
             else if (textIndex == 9)
             {
+                textbox = "right";
+                SetUpTextBoxes("right");
+                autoTypeRight.StartText(TextList[textIndex]);
+            }
+            else if (textIndex == 10)
+            {
                 LoadingPanel.GetComponent<Animator>().SetBool("isDisplayed", true);
-                StartCoroutine(LoadAsync(13));
+                StartCoroutine(LoadAsync(14));
             }
             else
             {

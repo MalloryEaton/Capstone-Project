@@ -157,11 +157,11 @@ public class GameLogicController : MonoBehaviour
 
                 print(player1Color + "  " + player2Color);
 
-                LoadingScreen.GetComponent<Animator>().SetBool("isDisplayed", false);
-                Destroy(GameObject.FindGameObjectWithTag("BlackPanel"));
-
                 InitializeGameBoard();
 
+                LoadingScreen.GetComponent<Animator>().SetBool("isDisplayed", false);
+                Destroy(GameObject.FindGameObjectWithTag("BlackPanel"));
+                
                 PlayMageIntroAnimations();
             });
         }
@@ -580,6 +580,9 @@ public class GameLogicController : MonoBehaviour
                     break;
                 case 2:
                     StartCoroutine(LoadAsync(12));
+                    break;
+                case 3:
+                    StartCoroutine(LoadAsync(13));
                     break;
             }
         }

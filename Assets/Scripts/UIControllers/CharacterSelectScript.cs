@@ -75,7 +75,6 @@ public class CharacterSelectScript : MonoBehaviour {
             PurpleMage.SetActive(false);
             CharacterName.text = "Iver Hagroot";
             CharacterBio.text = "Iver is something of a mystery. Legend has it that he was born in the Mangleroot swamps. Whatever the case may be, he is thirsty for power and will stop at nothing to get it.";
-
         }
         else if (selection == "Blue")
         {
@@ -89,7 +88,6 @@ public class CharacterSelectScript : MonoBehaviour {
             PurpleMage.SetActive(false);
             CharacterName.text = "Fariday Fink";
             CharacterBio.text = "Fariday Fink is famous for his ability to think fast on his feet. Though his cunning is great, he prefers a more relaxing life among the soothing waters of Lapucha, the floating island know for its waterfalls.";
-            //CharacterBio.text = "Fariday Fink is infamous for his cunning. Able to think fast on his feet, he is almost always one step ahead. Almost.";
         }
         else if (selection == "Orange")
         {
@@ -142,7 +140,6 @@ public class CharacterSelectScript : MonoBehaviour {
             PurpleMage.SetActive(false);
             CharacterName.text = "Quin Zoltan";
             CharacterBio.text = "Quin Zoltan is rumored to have been born out of the fires of Mount Goragundi. Naturally, he learned to harness fire from a young age. So young, in fact, that travelers would come from lands far away just to witness the spectacle.";
-            //CharacterBio.text = "Quin Zoltan was born in a small village at the base of the great volcano Mount Goragundi. Naturally, he learned to harness fire from a young age. So young, in fact, that travelers would come from lands far away just to witness the spectacle themselves.";
         }
         else if (selection == "White")
         {
