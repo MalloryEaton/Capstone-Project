@@ -339,10 +339,16 @@ namespace Com.EnsorcelledStudios.Runic
 
         public void DisconnectFromLobby()
         {
-            PhotonNetwork.Disconnect();
+            //PhotonNetwork.Disconnect();
+            PhotonNetwork.LeaveLobby();
             lobbyUI.hideWaitingForOpponent();
             //TODO: Remove room key from dictionary
             // TODO: Go back to part where user puts in their name.
+        }
+
+        public void DisconnectFromPhoton()
+        {
+            PhotonNetwork.Disconnect();
         }
 
         //public void enforceCharacterLimit()
