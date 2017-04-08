@@ -33,13 +33,21 @@ public class GameScrollList : MonoBehaviour {
 		for (int i = 0; i < list.Count; i++) {
 			GameListItem game = list [i];
 			GameObject newEntry = listObjectPool.GetObject ();
-			newEntry.transform.SetParent (contentPanel);
+			//newEntry.transform.SetParent (contentPanel);
 
 			GameEntryScript listItem = newEntry.GetComponent<GameEntryScript> ();
 			listItem.Setup (game, this);
-            //listItem.transform.SetParent(contentPanel);
+            listItem.transform.SetParent(contentPanel);
 		}
 	}
+
+    public void deselectGames()
+    {
+        foreach(GameEntryScript game in contentPanel.GetComponentsInChildren<GameEntryScript>())
+        {
+            game.DeselectGame();
+        }
+    }
 
     public void clearList()
     {

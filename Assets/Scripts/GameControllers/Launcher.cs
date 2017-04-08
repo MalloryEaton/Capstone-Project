@@ -23,10 +23,14 @@ namespace Com.EnsorcelledStudios.Runic
 		public GameScrollList scrollList;
         private Hashtable playerProperties = new Hashtable();
         private string[] roomProperties = new string[2];
+        public GameEntryScript gameEntry;
 
 		//List that will contain available netwrok games
 		//GameListItem defined in GameScrollList.cs
 		public List<GameListItem> gameList;
+
+        public string selectedRoomName;
+        public Button joinGameButton;
 
         #endregion
 
@@ -118,7 +122,8 @@ namespace Com.EnsorcelledStudios.Runic
                 foreach (RoomInfo room in roomInfo)
                 {
                     //TODO: Populate ScrollRect
-					GameListItem game = new GameListItem ();
+                    GameListItem game = new GameListItem ();
+                    //GameEntryScript game = Instantiate(gameEntry);
                     game.playerName = room.Name;
                     // This code works for accessing custom properties
 					game.characterIconString = room.CustomProperties["color"].ToString();
@@ -266,14 +271,14 @@ namespace Com.EnsorcelledStudios.Runic
 
         // JoinGame and CreateGame are new functions that we will use in the lobby,
         // depending on whether or not the user wants to host or join.
-        public void JoinGame(string roomName)
+        public void JoinGame()
         {
             if (PhotonNetwork.insideLobby)
             {
                 // This uses the prototype's dropdown list, will need changed.
                 // We will still use JoinRoom, the parameter will just be different.
-                print("Join " + roomName);
-                PhotonNetwork.JoinRoom(roomName);
+                print("Join " + selectedRoomName);
+                PhotonNetwork.JoinRoom(selectedRoomName);
             }
         }
 
@@ -331,15 +336,26 @@ namespace Com.EnsorcelledStudios.Runic
             // TODO: Go back to part where user puts in their name.
         }
 
-        public void enforceCharacterLimit()
-        {
-            Debug.Log("enforce " + inputField.text.Length);
-            if (inputField.text.Length > 14)
-            {
-                Debug.Log("remove " + inputField.text.Length);
-                inputField.text = inputField.text.Remove(inputField.text.Length - 1);
-            }
-        }
+        //public void enforceCharacterLimit()
+        //{
+        //    Debug.Log("enforce " + inputField.text.Length);
+        //    if (inputField.text.Length > 14)
+        //    {
+        //        Debug.Log("remove " + inputField.text.Length);
+        //        inputField.text = inputField.text.Remove(inputField.text.Length - 1);
+        //    }
+        //}
+
+        //public void deselectGames()
+        //{
+        //    if(gameList.Count > 0)
+        //    {
+        //        foreach (GameEntryScript game in gameList)
+        //        {
+        //            game.DeselectGame();
+        //        }
+        //    }
+        //}
 
         #endregion
 

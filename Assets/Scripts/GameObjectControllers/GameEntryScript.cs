@@ -17,26 +17,34 @@ public class GameEntryScript : MonoBehaviour {
     public Sprite yellowSprite;
     public Sprite orangeSprite;
     public Sprite purpleSprite;
-    public Sprite whiteSprite; 
+    public Sprite whiteSprite;
+
+    public Sprite selectedFlourish;
+    public Sprite deselectedFlourish;
+
+    public Image leftFlourish;
+    public Image rightFlourish; 
 
 	private GameListItem gameListItem;
 	private GameScrollList GSL;
+
+    //public string characterIconString;
 
     //public Launcher launcher;
 
 	// Use this for initialization
 	void Start () {
         print("START " + playerName.text);
-		entry.onClick.AddListener (JoinGame);
+		entry.onClick.AddListener (SelectGame);
     }
 
 	public void Setup(GameListItem game, GameScrollList gameScrollList)
 	{
-		gameListItem = game;
-		playerName.text = gameListItem.playerName;
+		//gameListItem = game;
+		playerName.text = game.playerName;
        // entry.onClick.AddListener(JoinGame);
 
-        switch (gameListItem.characterIconString)
+        switch (game.characterIconString)
         {
             case "Red":
                 characterIcon.sprite = redSprite;
@@ -69,9 +77,34 @@ public class GameEntryScript : MonoBehaviour {
 		GSL = gameScrollList;
 	}
 
-	public void JoinGame()
-	{
-        LauncherStatic.launcher.JoinGame(playerName.text);
-        Debug.Log("Join " + playerName.text);
-	}
+	//public void JoinGame()
+	//{
+ //       LauncherStatic.launcher.JoinGame();
+ //       Debug.Log("Join " + playerName.text);
+	//}
+
+    public void SelectGame()
+    {
+        //LauncherStatic.launcher.deselectGames();
+        if (leftFlourish.sprite == deselectedFlourish)
+        {
+            GSL.deselectGames();
+            leftFlourish.sprite = selectedFlourish;
+            rightFlourish.sprite = selectedFlourish;
+            LauncherStatic.launcher.selectedRoomName = playerName.text;
+            LauncherStatic.launcher.joinGameButton.interactable = true;
+        }
+        else
+        {
+            leftFlourish.sprite = deselectedFlourish;
+            rightFlourish.sprite = deselectedFlourish;
+            LauncherStatic.launcher.joinGameButton.interactable = false;
+        }
+    }
+
+    public void DeselectGame()
+    {
+        leftFlourish.sprite = deselectedFlourish;
+        rightFlourish.sprite = deselectedFlourish;
+    }
 }
