@@ -40,12 +40,12 @@ public class GameLogicController : MonoBehaviour
     public bool isAITurn;
     public bool isNetworkGame;
     public bool isPlayer1;
+    public string AIDifficulty;
 
     public bool isPlayer1Turn;
     public bool waitingOnOtherPlayer;
     public bool waitingOnAnimation;
-
-
+    
     private short startingNumberOfOrbs;
     private short player1OrbCount;
     private short player2OrbCount;
@@ -119,11 +119,11 @@ public class GameLogicController : MonoBehaviour
             isNetworkGame = true;
             Debug.Log("This is a network game.");
         }
-        else if (PlayerPrefs.GetString("GameType") == "AI")
+        else if (PlayerPrefs.GetString("GameType") == "AI" || PlayerPrefs.GetString("GameType") == "Story")
         {
             isAIGame = true;
             isAITurn = false;
-            //difficulty
+            AIDifficulty = PlayerPrefs.GetString("Difficulty");
             canOfferDraw = false;
         }
 

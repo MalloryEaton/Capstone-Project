@@ -193,6 +193,7 @@ public class StoryTextController2 : MonoBehaviour
                 SetUpTextBoxes("none");
                 PlayerPrefs.SetString("Player1Color", "White");
                 PlayerPrefs.SetString("Player2Color", "Purple");
+                PlayerPrefs.SetString("Difficulty", "Easy");
                 PlayerPrefs.SetInt("StoryStage", 2);
                 LoadingPanel.GetComponent<Animator>().SetBool("isDisplayed", true);
                 StartCoroutine(LoadAsync(5));
