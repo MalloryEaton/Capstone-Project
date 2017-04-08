@@ -349,10 +349,22 @@ public class GameLogicController : MonoBehaviour
         player1Mage.GetComponent<MageController>().PlayLevitateAnimation();
         player2Mage.GetComponent<MageController>().PlayLevitateAnimation();
 
-        LeanTween.delayedCall(0.7f, () => {
-            InstantiateSide1Orbs(player1Color);
-            InstantiateSide2Orbs(player2Color);
-        });
+        if (isNetworkGame && isPlayer1)
+        {
+            LeanTween.delayedCall(0.7f, () =>
+            {
+                InstantiateSide1Orbs(player1Color);
+                InstantiateSide2Orbs(player2Color);
+            });
+        }
+        else if (isNetworkGame && !isPlayer1)
+        {
+            LeanTween.delayedCall(0.7f, () =>
+            {
+                InstantiateSide1Orbs(player2Color);
+                InstantiateSide2Orbs(player1Color);
+            });
+        }
 
         LeanTween.delayedCall(4f, () => {
             player1Mage.GetComponent<MageController>().PlayLandingAnimation();
