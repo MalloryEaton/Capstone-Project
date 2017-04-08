@@ -102,7 +102,14 @@ namespace Com.EnsorcelledStudios.Runic
         void Start()
         {
             LoadingScreen.GetComponent<Animator>().SetBool("isDisplayed", false);
-            controlPanel.SetActive(true);
+            if (PhotonNetwork.insideLobby == true)
+            {
+                controlPanel.SetActive(false);
+            }
+            else
+            {
+                controlPanel.SetActive(true);
+            }
             LauncherStatic.launcher = this;
         }
 
@@ -139,6 +146,8 @@ namespace Com.EnsorcelledStudios.Runic
         public override void OnJoinedLobby()
         {
             LoadingScreen.GetComponent<Animator>().SetBool("isDisplayed", false);
+
+            OnReceivedRoomListUpdate();
         }
 
         // DEPRECATED: We are no longer using this.
@@ -176,14 +185,14 @@ namespace Com.EnsorcelledStudios.Runic
         }
 
         // We are also not using this, as we aren't doing random connects.
-        public override void OnPhotonRandomJoinFailed(object[] codeAndMsg)
-        {
-            Debug.Log("OnPhotonRandomJoinFailed() was called by PUN. No random room available, so we create one.\nCalling: PhotonNetwork.CreateRoom(null, new RoomOptions() {maxPlayers = 4}, null);");
+        //public override void OnPhotonRandomJoinFailed(object[] codeAndMsg)
+        //{
+        //    Debug.Log("OnPhotonRandomJoinFailed() was called by PUN. No random room available, so we create one.\nCalling: PhotonNetwork.CreateRoom(null, new RoomOptions() {maxPlayers = 4}, null);");
 
-            // #Critical: We failed to join a random room, maybe none exists or they are all full. 
-            // No worries, we create a new room.
-            PhotonNetwork.CreateRoom(null, new RoomOptions() { MaxPlayers = MaxPlayersPerRoom }, null);
-        }
+        //    // #Critical: We failed to join a random room, maybe none exists or they are all full. 
+        //    // No worries, we create a new room.
+        //    PhotonNetwork.CreateRoom(null, new RoomOptions() { MaxPlayers = MaxPlayersPerRoom }, null);
+        //}
 
         public override void OnPhotonJoinRoomFailed(object[] codeAndMsg)
         {

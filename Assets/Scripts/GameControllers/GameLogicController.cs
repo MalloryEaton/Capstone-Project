@@ -105,7 +105,7 @@ public class GameLogicController : MonoBehaviour
         showHints = true;
 
         isNetworkGame = false;
-        isAIGame = true;
+        isAIGame = false;
 
         drawCount = 0;
         canOfferDraw = true;
