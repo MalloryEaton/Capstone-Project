@@ -121,6 +121,33 @@ public class GameLogicController : MonoBehaviour
         }
         else if (PlayerPrefs.GetString("GameType") == "AI" || PlayerPrefs.GetString("GameType") == "Story")
         {
+            // TODO: Reinstate this when we actually have these player prefs.
+            //// In the story, the player will go first in stages 1, 3, and 5.
+            //if (PlayerPrefs.GetString("GameType") == "Story")
+            //{
+            //    if (PlayerPrefs.GetInt("StoryStage") == 1 || PlayerPrefs.GetInt("StoryStage") == 3 ||
+            //        PlayerPrefs.GetInt("StoryStage") == 5)
+            //    {
+            //        isPlayer1Turn = true;
+            //    }
+            //    else
+            //    {
+            //        isPlayer1Turn = false;
+            //    }
+            //}
+            //// Otherwise we are determining who goes first through a Player Pref.
+            //else
+            //{
+            //    if (PlayerPrefs.GetString("AIGoesFirst") == "true")
+            //    {
+            //        isPlayer1Turn = false;
+            //    }
+            //    else
+            //    {
+            //        isPlayer1Turn = true;
+            //    }
+            //}
+
             isAIGame = true;
             isAITurn = false;
             AIDifficulty = PlayerPrefs.GetString("Difficulty");
@@ -183,6 +210,9 @@ public class GameLogicController : MonoBehaviour
             InitializeGameBoard();
             LoadingScreen.GetComponent<Animator>().SetBool("isDisplayed", false);
             Destroy(GameObject.FindGameObjectWithTag("BlackPanel"));
+
+            // TODO: Set this as an actual player pref somewhere else.
+            PlayerPrefs.SetString("AIGoesFirst", "false");
 
             PlayMageIntroAnimations();
         }
@@ -358,6 +388,9 @@ public class GameLogicController : MonoBehaviour
             player1Mage.GetComponent<MageController>().PlayLandingAnimation();
             player2Mage.GetComponent<MageController>().PlayLandingAnimation();
 
+            if (isAIGame && PlayerPrefs.GetString("AIGoesFirst") == "true")
+                ChangeSide();
+
             waitingOnAnimation = false;
         });
 
@@ -419,13 +452,23 @@ public class GameLogicController : MonoBehaviour
             {
                 runeList[rune].tag = "Player";
                 player1OrbCount++;
+                if (isAIGame)
+                {
+                    if (PlayerPrefs.GetString("AIGoesFirst") == "true")
+                    {
+                        placementPhase_RoundCount++;
+                    }
+                }
             }
             else
             {
                 runeList[rune].tag = "Opponent";
                 player2OrbCount++;
                 // Round count will always increment after second player's turn
-                placementPhase_RoundCount++;
+                if (PlayerPrefs.GetString("AIGoesFirst") == "false" || isNetworkGame || (!isNetworkGame && !isAIGame))
+                {
+                    placementPhase_RoundCount++;
+                }
             }
 
             RemoveAllRuneHighlights();
