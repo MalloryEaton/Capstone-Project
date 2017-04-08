@@ -15,7 +15,7 @@ public class CameraMovement : MonoBehaviour {
     
     void LateUpdate()
     {
-        if(!gbui.chatInput.isFocused)
+        if(gbui != null && !gbui.chatInput.isFocused)
         {
             if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
             {

@@ -33,9 +33,11 @@ public class StoryTextController2 : MonoBehaviour
 
     private bool isFirstTime = true;
 
-    // Use this for initialization
+    private GameObject purpleMage;
+    
     void Start()
     {
+        purpleMage = GameObject.Find("PurpleMage");
         if (PlayerPrefs.GetInt("StoryStage") == 2)
         {
             isFirstTime = false;
@@ -64,17 +66,16 @@ public class StoryTextController2 : MonoBehaviour
         autoTypeMain = FindObjectOfType(typeof(AutoTypeMainBox)) as AutoTypeMainBox;
         autoTypeLeft = FindObjectOfType(typeof(AutoTypeLeftBox)) as AutoTypeLeftBox;
         autoTypeRight = FindObjectOfType(typeof(AutoTypeRightBox)) as AutoTypeRightBox;
-
+        purpleMage.SetActive(false);
         if (isFirstTime)
             autoTypeMain.StartText(TextList[0]);
         else
         {
-            GameObject mage = Instantiate(Resources.Load(@"MagesForBoard\GreenMage", typeof(GameObject)) as GameObject);
-            mage.transform.position = new Vector3(4, 0, -4);
-            textbox = "right";
-            SetUpTextBoxes("right");
+            purpleMage.SetActive(true);
+            textbox = "left";
+            SetUpTextBoxes("left");
 
-            autoTypeRight.StartText(TextList[0]);
+            autoTypeLeft.StartText(TextList[0]);
         }
     }
 
@@ -139,18 +140,27 @@ public class StoryTextController2 : MonoBehaviour
         }
         else
         {
-            TextList.Add("");
+            TextList.Add("Sir Gilbaard, are you alright?");
+            TextList.Add("It seems I'll be staying among the living for now. Well... still among the dead.");
+            TextList.Add("It can't be coincidence that both you and Sebastian tried to attack me. Can you remember anything?");
+            TextList.Add("Hmmm... I think I can remember a fellow coming through here. He seemed particularly interested in the undead.");
+            TextList.Add("Interesting. Can you remember anything else?");
+            TextList.Add("I'm afraid not.");
+            TextList.Add("Well... I'm on my way to meet with Merwin Etherfrost. Maybe he can help us figure out what is going on.");
+            TextList.Add("I wish you luck, dear Targus. I must get back to my duties, tending to the dead.");
+            TextList.Add("Be sure to get out every once in a while, talk to some people. Preferably those with heartbeats.");
         }
     }
 
     private void SceneLogic()
     {
+        #region FirstTime
         if (isFirstTime)
         {
             if (textIndex == 2)
             {
                 SetUpCameras("Graveyard");
-                transform.position = new Vector3(-25, 16, 38);
+                transform.position = new Vector3(15, 16, 9);
                 transform.Rotate(0, 130, 0);
                 textbox = "left";
                 SetUpTextBoxes("left");
@@ -158,8 +168,7 @@ public class StoryTextController2 : MonoBehaviour
             }
             else if (textIndex == 4)
             {
-                GameObject mage = Instantiate(Resources.Load(@"MagesForBoard\PurpleMage", typeof(GameObject)) as GameObject);
-                mage.transform.position = new Vector3(4, 0, -4);
+                purpleMage.SetActive(true);
                 textbox = "right";
                 SetUpTextBoxes("right");
                 autoTypeRight.StartText(TextList[textIndex]);
@@ -194,6 +203,7 @@ public class StoryTextController2 : MonoBehaviour
                 PlayerPrefs.SetString("Player1Color", "White");
                 PlayerPrefs.SetString("Player2Color", "Purple");
                 PlayerPrefs.SetString("Difficulty", "Easy");
+                PlayerPrefs.SetString("GameType", "Story");
                 PlayerPrefs.SetInt("StoryStage", 2);
                 LoadingPanel.GetComponent<Animator>().SetBool("isDisplayed", true);
                 StartCoroutine(LoadAsync(5));
@@ -208,42 +218,62 @@ public class StoryTextController2 : MonoBehaviour
                     autoTypeLeft.StartText(TextList[textIndex]);
             }
         }
+        #endregion
+        #region SecondTime
         else
         {
             if (textIndex == 1)
             {
-                textbox = "left";
-                SetUpTextBoxes("left");
-                autoTypeLeft.StartText(TextList[textIndex]);
+                textbox = "right";
+                SetUpTextBoxes("right");
+                autoTypeRight.StartText(TextList[textIndex]);
             }
             else if (textIndex == 2)
             {
-                textbox = "right";
-                SetUpTextBoxes("right");
-                autoTypeRight.StartText(TextList[textIndex]);
+                textbox = "left";
+                SetUpTextBoxes("left");
+                autoTypeLeft.StartText(TextList[textIndex]);
             }
             else if (textIndex == 3)
             {
+                textbox = "right";
+                SetUpTextBoxes("right");
+                autoTypeRight.StartText(TextList[textIndex]);
+            }
+            else if (textIndex == 4)
+            {
                 textbox = "left";
                 SetUpTextBoxes("left");
                 autoTypeLeft.StartText(TextList[textIndex]);
             }
-            else if (textIndex == 4)
+            else if (textIndex == 5)
             {
                 textbox = "right";
                 SetUpTextBoxes("right");
                 autoTypeRight.StartText(TextList[textIndex]);
             }
-            else if (textIndex == 5)
+            else if (textIndex == 6)
             {
                 textbox = "left";
                 SetUpTextBoxes("left");
                 autoTypeLeft.StartText(TextList[textIndex]);
             }
-            else if (textIndex == 6)
+            else if (textIndex == 7)
+            {
+                textbox = "right";
+                SetUpTextBoxes("right");
+                autoTypeRight.StartText(TextList[textIndex]);
+            }
+            else if (textIndex == 8)
+            {
+                textbox = "left";
+                SetUpTextBoxes("left");
+                autoTypeLeft.StartText(TextList[textIndex]);
+            }
+            else if (textIndex == 9)
             {
                 LoadingPanel.GetComponent<Animator>().SetBool("isDisplayed", true);
-                StartCoroutine(LoadAsync(12));
+                StartCoroutine(LoadAsync(13));
             }
             else
             {
@@ -255,6 +285,7 @@ public class StoryTextController2 : MonoBehaviour
                     autoTypeLeft.StartText(TextList[textIndex]);
             }
         }
+        #endregion
     }
 
     private void SetUpTextBoxes(string box)

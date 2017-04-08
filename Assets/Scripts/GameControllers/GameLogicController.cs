@@ -556,9 +556,10 @@ public class GameLogicController : MonoBehaviour
             print("Game Over. " + player1Color + " wins!");
         else
             print("Game Over. " + player2Color + " wins!");
-
+        
         if(PlayerPrefs.GetString("GameType") == "Story")
         {
+            //some kind of delay here
             LoadingScreen.GetComponent<Animator>().SetBool("isDisplayed", true);
             switch (PlayerPrefs.GetInt("StoryStage"))
             {
