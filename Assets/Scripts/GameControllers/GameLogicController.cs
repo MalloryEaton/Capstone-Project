@@ -105,7 +105,7 @@ public class GameLogicController : MonoBehaviour
         showHints = true;
 
         isNetworkGame = false;
-        isAIGame = false;
+        isAIGame = true;
 
         drawCount = 0;
         canOfferDraw = true;
@@ -473,7 +473,7 @@ public class GameLogicController : MonoBehaviour
     {
         if (runeList[toLocation].tag == "Empty")
         {
-            if (IsLegalMove(toLocation))
+            if (IsLegalMove(toLocation) || (isAIGame && isAITurn))
             {
                 networking.moveTo = toLocation;
 
@@ -522,7 +522,10 @@ public class GameLogicController : MonoBehaviour
 
     public void RemovalPhase(short runeToRemove)
     {
-        if (RuneCanBeRemoved(runeToRemove) || (isNetworkGame && ((isPlayer1Turn && !isPlayer1) || (!isPlayer1Turn && isPlayer1))))
+        if ((isAIGame) ||
+            (RuneCanBeRemoved(runeToRemove) ||
+             (isNetworkGame && ((isPlayer1Turn && !isPlayer1) ||
+                                (!isPlayer1Turn && isPlayer1)))))
         {
             networking.removeFrom = runeToRemove;
 
@@ -687,6 +690,8 @@ public class GameLogicController : MonoBehaviour
             {
                 AIMove = aicontroller.GetAIMove("placement");
                 PlacementPhase(AIMove[1]);
+                if (AIMove[2] != -1)
+                    RemovalPhase(AIMove[2]);
             }
             else
             {
@@ -857,7 +862,7 @@ public class GameLogicController : MonoBehaviour
         return false;
     }
 
-    private bool AllRunesAreInMills()
+    public bool AllRunesAreInMills()
     {
         List<short> runes = new List<short>();
 
