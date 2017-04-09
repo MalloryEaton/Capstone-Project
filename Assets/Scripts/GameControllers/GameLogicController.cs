@@ -217,7 +217,7 @@ public class GameLogicController : MonoBehaviour
             InitializeGameBoard();
 
             // TODO: Set this as an actual player pref somewhere else.
-            PlayerPrefs.SetString("AIGoesFirst", "false");
+            PlayerPrefs.SetString("AIGoesFirst", "true");
 
             PlayMageIntroAnimations();
         }
@@ -1202,7 +1202,7 @@ public class GameLogicController : MonoBehaviour
                     {
                         // If there is an orb to remove on the receiving side, however,
                         // we don't want to call ChangeSide() quite yet.
-                        if (((isPlayer1Turn && !isPlayer1) || (!isPlayer1Turn && isPlayer1)) && (AIMove[2] != -1))
+                        if (((isPlayer1Turn && !isPlayer1) || (!isPlayer1Turn && isPlayer1)) && (AIMove[2] != -1) && RuneIsInMill(AIMove[1]))
                         {
                             RemovalPhase(AIMove[2]);
                         }
