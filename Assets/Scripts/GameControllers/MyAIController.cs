@@ -188,7 +188,8 @@ public class MyAIController : MonoBehaviour
 
   // Move a piece to an empty slot
   private void movementPhase(ref List<short> move) {
-    List<short> potentialMills;
+    List<short[]> potentialMills;
+    short moveTo;
     short[] newMove = new short[2] { -1, -1 };
 
     /* Check if there are any places on the board with two pieces owned
@@ -196,17 +197,19 @@ public class MyAIController : MonoBehaviour
      */
     potentialMills = findPotentialMills(AI_TAG);
     // If there are any, check if the AI can make any mills
-    foreach (short slot in potentialMills)
-      if ((newMove[0] = findAdjacentOrb(slot, AI_TAG)) != -1) {
-        newMove[1] = slot;
+    foreach (short[] mill in potentialMills)
+      if ((newMove[0] = findAdjacentOrb(mill, AI_TAG)) != -1 &&
+          !mill.Contains(newMove[0])) {
+        newMove[1] = findEmptySlotInMill(mill);
         break;
       }
     // If no mill can be made, see if we can block one
     if (newMove[0] == -1 || newMove[1] == -1) {
       potentialMills = findPotentialMills(PLAYER_TAG);
-      foreach (short slot in potentialMills)
-        if ((newMove[0] = findAdjacentOrb(slot, AI_TAG)) != -1) {
-          newMove[1] = slot;
+      foreach (short[] mill in potentialMills)
+        if ((newMove[0] = findAdjacentOrb(mill, AI_TAG)) != -1 &&
+            !mill.Contains(newMove[0])) {
+          newMove[1] = findEmptySlotInMill(mill);
           break;
         }
     }        
@@ -222,6 +225,16 @@ public class MyAIController : MonoBehaviour
 
     move[0] = newMove[0];
     move[1] = newMove[1];
+  }
+
+  private short findEmptySlotInMill(short[] mill) {
+    short emptySlot = -1;
+    foreach (short slot in mill)
+      if (gameLogicController.runeList[slot].tag == EMPTY) {
+        emptySlot = slot;
+        break;
+      }
+    return (emptySlot);
   }
 
   // Chooses an opponent's piece to remove
@@ -294,67 +307,33 @@ public class MyAIController : MonoBehaviour
     return (-1);
   }
 
-  /* Find a potential mill in the movement/flying phase
-   * On success, returns short[2] { slotToMoveFrom, slotToMoveTo }
-   * On failure, returns short[2] { -1, -1 }
-   */
-   /*private short[] findMills(List<short> movableOrbs) {
-    string currentTag;
-    short currentPieces;
-
-    currentTag = gameLogicController.runeList[movableOrbs[0]].tag;
-
-    // Find available slots to move to
-    foreach (short orb in movableOrbs) {
-      foreach (short adjacentSlot in adjacentSlots[orb])
-        if (gameLogicController.runeList[adjacentSlot].tag == EMPTY)
-          // An available move. Check for possible mills
-          foreach (short[] mill in mills)
-            if (mill.Contains(adjacentSlot) && !mill.Contains(orb)) {
-              /* If the mill contains the adjacent slot and does not
-               * contain the original sloto, check if moving there will
-               * make a mill
-               *
-              currentPieces = 0;
-              foreach (short slot in mill)
-                if (gameLogicController.runeList[slot].tag == currentTag)
-                  currentPieces += 1;
-
-              if (currentPieces == 2)
-                return (new short[] { orb, adjacentSlot });
-            }
-    }
-    return (new short[] { -1, -1 });
-  }
-  */
-
   /* Returns all empty slots that would make a mill if an orb owned by
    * 'tag' were placed there. Returns an empty list if there are none
    */
-  private List<short> findPotentialMills(string tag) {
-    List<short> slotsThatMakeMill = new List<short> { };
+  private List<short[]> findPotentialMills(string tag) {
+    List<short[]> potentialMills = new List<short[]> { };
     foreach (short[] mill in mills) {
       short pieces = 0;
       short emptySlots = 0;
-      short emptySlot = -1;
+
       foreach (short slot in mill)
         if (gameLogicController.runeList[slot].tag == tag)
           pieces += 1;
-        else if (gameLogicController.runeList[slot].tag == EMPTY) {
+        else if (gameLogicController.runeList[slot].tag == EMPTY)
           emptySlots += 1;
-          emptySlot = slot;
-        }
       if (pieces == 2 && emptySlots == 1)
-        slotsThatMakeMill.Add(emptySlot);
+        potentialMills.Add(mill);
     }
 
-    return (slotsThatMakeMill);
+    return (potentialMills);
   }
 
   // Find an orb owned by 'tag' that's adjacent to slot 'slot'
-  private short findAdjacentOrb(short slot, string tag) {
-    foreach (short adjacentSlot in adjacentSlots[slot])
-      if (gameLogicController.runeList[adjacentSlot].tag == tag)
+  private short findAdjacentOrb(short[] mill, string tag) {
+    short emptySlot = findEmptySlotInMill(mill);
+    foreach (short adjacentSlot in adjacentSlots[emptySlot])
+      if (!mill.Contains(adjacentSlot) &&
+        gameLogicController.runeList[adjacentSlot].tag == tag)
         return (adjacentSlot);
     // None found
     return (-1);

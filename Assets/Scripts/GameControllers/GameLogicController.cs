@@ -94,7 +94,7 @@ public class GameLogicController : MonoBehaviour
         isPlayer1Turn = true;
         AIMove = new List<short> { -1, -1, -1 };
 
-        startingNumberOfOrbs = 4;
+        startingNumberOfOrbs = 9;
         player1OrbCount = 0;
         player2OrbCount = 0;
         placementPhase_RoundCount = 1;
