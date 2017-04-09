@@ -36,13 +36,14 @@ public class StoryTextController4 : MonoBehaviour
     private GameObject redMage;
     private GameObject whiteMage;
     private GameObject flyRock;
+    private GameObject lavaPlume;
 
     void Start()
     {
-        PlayerPrefs.SetInt("StoryStage", 4);
         redMage = GameObject.Find("RedMage");
         whiteMage = GameObject.Find("WhiteMage");
         flyRock = GameObject.Find("FlyRock");
+        lavaPlume = GameObject.Find("LavaPlume");
         if (PlayerPrefs.GetInt("StoryStage") == 4)
         {
             isFirstTime = false;
@@ -284,6 +285,7 @@ public class StoryTextController4 : MonoBehaviour
                 autoTypeLeft.autoType = false;
                 LeanTween.moveY(flyRock, 50, 0.4f);
                 LeanTween.moveY(whiteMage, 50, 0.4f);
+                LeanTween.moveY(lavaPlume, 100, 1f);
             }
             else if (textIndex == 10)
             {
