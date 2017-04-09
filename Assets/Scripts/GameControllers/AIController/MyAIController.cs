@@ -14,22 +14,28 @@ using AI;
 
 public class MyAIController : MonoBehaviour
 {
+  private EasyAI easyAI;
+  private MediumAI mediumAI;
+
+  void Start() {
+    easyAI = FindObjectOfType(typeof(EasyAI)) as EasyAI;
+    mediumAI = FindObjectOfType(typeof(MediumAI)) as MediumAI;
+  }
+
   // Gets a move from the AI
   public List<short> GetAIMove(string phase, string difficulty) {
     List<short> move;
 
     if (difficulty == Constants.EASY) {
-      EasyAI ai = new EasyAI();
-      move = ai.GetEasyAIMove(phase);
+      //EasyAI ai = new EasyAI();
+      move = easyAI.GetEasyAIMove(phase);
     }
     else if (difficulty == Constants.MEDIUM) {
-      EasyAI ai = new EasyAI();
-      move = ai.GetEasyAIMove(phase);
+      move = easyAI.GetEasyAIMove(phase);
     }
     // Hard
-    else { 
-      EasyAI ai = new EasyAI();
-      move = ai.GetEasyAIMove(phase);
+    else {
+      move = easyAI.GetEasyAIMove(phase);
     }
 
     return (move);

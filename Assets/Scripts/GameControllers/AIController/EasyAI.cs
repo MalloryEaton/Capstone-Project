@@ -9,11 +9,16 @@ namespace AI
 {
   public class EasyAI : MonoBehaviour
   {
-    private System.Random rand = new System.Random();
-    private GameLogicController gameLogicController = FindObjectOfType(typeof(GameLogicController)) as GameLogicController;
+    private System.Random rand;
+    private GameLogicController gameLogicController;
     private short moveFrom;
     private short moveTo;
     private short removeFrom;
+
+    void Start() {
+      rand = new System.Random();
+      gameLogicController = FindObjectOfType(typeof(GameLogicController)) as GameLogicController;
+    }
 
     public List<short> GetEasyAIMove(string phase) {
       List<short> move = new List<short> { -1, -1, -1 };

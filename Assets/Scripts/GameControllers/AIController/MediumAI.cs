@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 using AI;
 
 namespace AI
 {
-  public class AIMedium
+  public class MediumAI : MonoBehaviour
   {
     /* +----------------------------------------------------------------+
      * | Minimax w/ alpha-beta pruning                                  |
