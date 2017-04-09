@@ -62,6 +62,7 @@ public class AutoTypeRightBox : MonoBehaviour {
                 yield return 0;
             }
         }
-        autoType = false;
+        if (autoType)
+            autoType = false;
     }
 }

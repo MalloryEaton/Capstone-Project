@@ -201,16 +201,20 @@ public class GameLogicController : MonoBehaviour
                 // TODO: Set a player preference that determines who is going first -
                 // the player or the AI.
                 isPlayer1 = true;
-                PickRandomColor(2);
+                if (PlayerPrefs.GetString("GameType") == "AI")
+                    PickRandomColor(2);
+                else
+                    player2Color = PlayerPrefs.GetString("Player2Color");
             }
             else
             {
                 player2Color = PlayerPrefs.GetString("Player2Color");
             }
             
-            InitializeGameBoard();
             LoadingScreen.GetComponent<Animator>().SetBool("isDisplayed", false);
             Destroy(GameObject.FindGameObjectWithTag("BlackPanel"));
+
+            InitializeGameBoard();
 
             // TODO: Set this as an actual player pref somewhere else.
             PlayerPrefs.SetString("AIGoesFirst", "false");
@@ -556,7 +560,7 @@ public class GameLogicController : MonoBehaviour
     private void PrepareForMovementPhase()
     {
         //only do this if it is your move
-        if(!isNetworkGame || (isNetworkGame && ((isPlayer1 && isPlayer1Turn) || (!isPlayer1 && !isPlayer1Turn))))
+        if (!isNetworkGame || (isNetworkGame && ((isPlayer1 && isPlayer1Turn) || (!isPlayer1 && !isPlayer1Turn))))
         {
             if (ThereIsAnAvailableMove(MakeListOfRunesForCurrentPlayer()))
             {
@@ -640,7 +644,8 @@ public class GameLogicController : MonoBehaviour
 
     public void RemovalPhase(short runeToRemove)
     {
-        if ((isAIGame) ||
+        if ((isAIGame && ((isPlayer1Turn && !isPlayer1) ||
+                           (!isPlayer1Turn && isPlayer1))) ||
             (RuneCanBeRemoved(runeToRemove) ||
              (isNetworkGame && ((isPlayer1Turn && !isPlayer1) ||
                                 (!isPlayer1Turn && isPlayer1)))))
@@ -1268,7 +1273,7 @@ public class GameLogicController : MonoBehaviour
             RemoveAllOrbHighlights(-1);
             DestroyMagicRings();
 
-            if (previousGamePhase != "placement" && (player1OrbCount == 2 || player2OrbCount == 2)) //check for win
+            if (placementPhase_RoundCount > startingNumberOfOrbs && (player1OrbCount == 2 || player2OrbCount == 2)) //check for win
                 GameOver();
             else //continue game
                 ChangeSide();

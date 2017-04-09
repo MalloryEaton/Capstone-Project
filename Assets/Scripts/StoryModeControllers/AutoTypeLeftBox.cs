@@ -35,7 +35,6 @@ public class AutoTypeLeftBox : MonoBehaviour {
 
     public void StartText(string text)
     {
-        //message = text;
         textbox.text = "";
         StopAllCoroutines();
         StartCoroutine(TypeText(text));
@@ -62,6 +61,7 @@ public class AutoTypeLeftBox : MonoBehaviour {
                 yield return 0;
             }
         }
-        autoType = false;
+        if (autoType)
+            autoType = false;
     }
 }
