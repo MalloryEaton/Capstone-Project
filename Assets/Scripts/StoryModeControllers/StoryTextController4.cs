@@ -148,7 +148,7 @@ public class StoryTextController4 : MonoBehaviour
             TextList.Add("Targus, I remember everything! The one enslaving the minds of the king's sorcerers in none other than Iver Hagroot!");
             TextList.Add("It seems he has come back with some new skills. He dabbling in necromancy now!");
             TextList.Add("What?! I always knew he would make a return.");
-            TextList.Add("He is stronger now than ever before! I was no match for him, Targus. You have to stop him.");
+            TextList.Add("He is stronger now than ever before! I was no match for him, Targus. You have to stop this barbarian!");
             TextList.Add("I’ve defeated him once, and I can do it again! Where do you think will he go next?");
             TextList.Add("To the floating isle of Lapucha, I would assume. He's probably already gotten to our friend, Fariday.");
             TextList.Add("I must get there as quickly as possible, then.");
@@ -199,13 +199,13 @@ public class StoryTextController4 : MonoBehaviour
             }
             else if (textIndex == 7)
             {
+                LoadingPanel.GetComponent<Animator>().SetBool("isDisplayed", true);
                 SetUpTextBoxes("none");
                 PlayerPrefs.SetString("Player1Color", "White");
                 PlayerPrefs.SetString("Player2Color", "Yellow");
                 PlayerPrefs.SetString("Difficulty", "Medium");
                 PlayerPrefs.SetString("GameType", "Story");
                 PlayerPrefs.SetInt("StoryStage", 4);
-                LoadingPanel.GetComponent<Animator>().SetBool("isDisplayed", true);
                 StartCoroutine(LoadAsync(7));
             }
             else

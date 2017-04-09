@@ -208,13 +208,13 @@ public class StoryTextController2 : MonoBehaviour
             }
             else if (textIndex == 9)
             {
+                LoadingPanel.GetComponent<Animator>().SetBool("isDisplayed", true);
                 SetUpTextBoxes("none");
                 PlayerPrefs.SetString("Player1Color", "White");
                 PlayerPrefs.SetString("Player2Color", "Purple");
                 PlayerPrefs.SetString("Difficulty", "Easy");
                 PlayerPrefs.SetString("GameType", "Story");
                 PlayerPrefs.SetInt("StoryStage", 2);
-                LoadingPanel.GetComponent<Animator>().SetBool("isDisplayed", true);
                 StartCoroutine(LoadAsync(5));
             }
             else

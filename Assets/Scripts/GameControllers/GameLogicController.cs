@@ -685,6 +685,15 @@ public class GameLogicController : MonoBehaviour
                 case 3:
                     StartCoroutine(LoadAsync(13));
                     break;
+                case 4:
+                    StartCoroutine(LoadAsync(14));
+                    break;
+                case 5:
+                    StartCoroutine(LoadAsync(15));
+                    break;
+                //case 6:
+                //    StartCoroutine(LoadAsync(16));
+                //    break;
             }
         }
     }
