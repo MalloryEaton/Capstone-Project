@@ -211,9 +211,10 @@ public class GameLogicController : MonoBehaviour
                 player2Color = PlayerPrefs.GetString("Player2Color");
             }
             
-            InitializeGameBoard();
             LoadingScreen.GetComponent<Animator>().SetBool("isDisplayed", false);
             Destroy(GameObject.FindGameObjectWithTag("BlackPanel"));
+
+            InitializeGameBoard();
 
             // TODO: Set this as an actual player pref somewhere else.
             PlayerPrefs.SetString("AIGoesFirst", "false");
