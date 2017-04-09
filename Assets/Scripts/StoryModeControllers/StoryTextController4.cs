@@ -36,13 +36,14 @@ public class StoryTextController4 : MonoBehaviour
     private GameObject redMage;
     private GameObject whiteMage;
     private GameObject flyRock;
+    private GameObject lavaPlume;
 
     void Start()
     {
-        PlayerPrefs.SetInt("StoryStage", 4);
         redMage = GameObject.Find("RedMage");
         whiteMage = GameObject.Find("WhiteMage");
         flyRock = GameObject.Find("FlyRock");
+        lavaPlume = GameObject.Find("LavaPlume");
         if (PlayerPrefs.GetInt("StoryStage") == 4)
         {
             isFirstTime = false;
@@ -79,7 +80,7 @@ public class StoryTextController4 : MonoBehaviour
             redMage.SetActive(true);
             textbox = "right";
             SetUpTextBoxes("right");
-
+            autoTypeRight.autoType = true;
             autoTypeRight.StartText(TextList[0]);
         }
     }
@@ -171,6 +172,7 @@ public class StoryTextController4 : MonoBehaviour
                 transform.Rotate(0, 130, 0);
                 textbox = "left";
                 SetUpTextBoxes("left");
+                autoTypeLeft.autoType = true;
                 autoTypeLeft.StartText(TextList[textIndex]);
             }
             else if (textIndex == 3)
@@ -178,18 +180,21 @@ public class StoryTextController4 : MonoBehaviour
                 redMage.SetActive(true);
                 textbox = "right";
                 SetUpTextBoxes("right");
+                autoTypeRight.autoType = true;
                 autoTypeRight.StartText(TextList[textIndex]);
             }
             else if (textIndex == 5)
             {
                 textbox = "left";
                 SetUpTextBoxes("left");
+                autoTypeLeft.autoType = true;
                 autoTypeLeft.StartText(TextList[textIndex]);
             }
             else if (textIndex == 6)
             {
                 textbox = "right";
                 SetUpTextBoxes("right");
+                autoTypeRight.autoType = true;
                 autoTypeRight.StartText(TextList[textIndex]);
             }
             else if (textIndex == 7)
@@ -206,11 +211,20 @@ public class StoryTextController4 : MonoBehaviour
             else
             {
                 if (textbox == "main")
+                {
+                    autoTypeMain.autoType = true;
                     autoTypeMain.StartText(TextList[textIndex]);
+                }
                 if (textbox == "right")
+                {
+                    autoTypeRight.autoType = true;
                     autoTypeRight.StartText(TextList[textIndex]);
+                }
                 if (textbox == "left")
+                {
+                    autoTypeLeft.autoType = true;
                     autoTypeLeft.StartText(TextList[textIndex]);
+                }
             }
         }
         #endregion
@@ -221,74 +235,87 @@ public class StoryTextController4 : MonoBehaviour
             {
                 textbox = "left";
                 SetUpTextBoxes("left");
+                autoTypeLeft.autoType = true;
                 autoTypeLeft.StartText(TextList[textIndex]);
             }
             else if (textIndex == 3)
             {
                 textbox = "right";
                 SetUpTextBoxes("right");
+                autoTypeRight.autoType = true;
                 autoTypeRight.StartText(TextList[textIndex]);
             }
             else if (textIndex == 4)
             {
                 textbox = "left";
                 SetUpTextBoxes("left");
+                autoTypeLeft.autoType = true;
                 autoTypeLeft.StartText(TextList[textIndex]);
             }
             else if (textIndex == 5)
             {
                 textbox = "right";
                 SetUpTextBoxes("right");
+                autoTypeRight.autoType = true;
                 autoTypeRight.StartText(TextList[textIndex]);
             }
             else if (textIndex == 6)
             {
                 textbox = "left";
                 SetUpTextBoxes("left");
+                autoTypeLeft.autoType = true;
                 autoTypeLeft.StartText(TextList[textIndex]);
             }
             else if (textIndex == 7)
             {
                 textbox = "right";
                 SetUpTextBoxes("right");
+                autoTypeRight.autoType = true;
                 autoTypeRight.StartText(TextList[textIndex]);
             }
             else if (textIndex == 8)
             {
                 textbox = "left";
                 SetUpTextBoxes("left");
+                autoTypeLeft.autoType = true;
                 autoTypeLeft.StartText(TextList[textIndex]);
             }
             else if (textIndex == 9)
             {
-                //animation
-                Vector3 position = transform.position;
-                transform.position = new Vector3(50, 50, 50);
-                LeanTween.moveY(flyRock, 50, 0.2f);
-                LeanTween.moveY(whiteMage, 50, 0.2f);
-                LeanTween.delayedCall(0.4f, () => {
-                    transform.position = position;
-                });
+                autoTypeLeft.autoType = false;
+                LeanTween.moveY(flyRock, 50, 0.4f);
+                LeanTween.moveY(whiteMage, 50, 0.4f);
+                LeanTween.moveY(lavaPlume, 100, 1f);
             }
             else if (textIndex == 10)
             {
                 textbox = "right";
                 SetUpTextBoxes("right");
+                autoTypeRight.autoType = true;
                 autoTypeRight.StartText(TextList[textIndex]);
             }
             else if (textIndex == 11)
             {
                 LoadingPanel.GetComponent<Animator>().SetBool("isDisplayed", true);
-                StartCoroutine(LoadAsync(14));
+                StartCoroutine(LoadAsync(15));
             }
             else
             {
                 if (textbox == "main")
+                {
+                    autoTypeMain.autoType = true;
                     autoTypeMain.StartText(TextList[textIndex]);
+                }
                 if (textbox == "right")
+                {
+                    autoTypeRight.autoType = true;
                     autoTypeRight.StartText(TextList[textIndex]);
+                }
                 if (textbox == "left")
+                {
+                    autoTypeLeft.autoType = true;
                     autoTypeLeft.StartText(TextList[textIndex]);
+                }
             }
         }
         #endregion
@@ -324,13 +351,13 @@ public class StoryTextController4 : MonoBehaviour
 
     private void OnMouseDown()
     {
+        print(textIndex);
         if (textbox == "main")
         {
             if (autoTypeMain.autoType)
                 autoTypeMain.autoType = false;
             else
             {
-                autoTypeMain.autoType = true;
                 textIndex++;
                 SceneLogic();
             }
@@ -341,7 +368,6 @@ public class StoryTextController4 : MonoBehaviour
                 autoTypeRight.autoType = false;
             else
             {
-                autoTypeRight.autoType = true;
                 textIndex++;
                 SceneLogic();
             }
@@ -352,7 +378,6 @@ public class StoryTextController4 : MonoBehaviour
                 autoTypeLeft.autoType = false;
             else
             {
-                autoTypeLeft.autoType = true;
                 textIndex++;
                 SceneLogic();
             }

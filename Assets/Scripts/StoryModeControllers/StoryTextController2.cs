@@ -167,6 +167,7 @@ public class StoryTextController2 : MonoBehaviour
                 transform.Rotate(0, 130, 0);
                 textbox = "left";
                 SetUpTextBoxes("left");
+                autoTypeLeft.autoType = true;
                 autoTypeLeft.StartText(TextList[textIndex]);
             }
             else if (textIndex == 4)
@@ -174,30 +175,35 @@ public class StoryTextController2 : MonoBehaviour
                 purpleMage.SetActive(true);
                 textbox = "right";
                 SetUpTextBoxes("right");
+                autoTypeRight.autoType = true;
                 autoTypeRight.StartText(TextList[textIndex]);
             }
             else if (textIndex == 5)
             {
                 textbox = "left";
                 SetUpTextBoxes("left");
+                autoTypeLeft.autoType = true;
                 autoTypeLeft.StartText(TextList[textIndex]);
             }
             else if (textIndex == 6)
             {
                 textbox = "right";
                 SetUpTextBoxes("right");
+                autoTypeRight.autoType = true;
                 autoTypeRight.StartText(TextList[textIndex]);
             }
             else if (textIndex == 7)
             {
                 textbox = "left";
                 SetUpTextBoxes("left");
+                autoTypeLeft.autoType = true;
                 autoTypeLeft.StartText(TextList[textIndex]);
             }
             else if (textIndex == 8)
             {
                 textbox = "right";
                 SetUpTextBoxes("right");
+                autoTypeRight.autoType = true;
                 autoTypeRight.StartText(TextList[textIndex]);
             }
             else if (textIndex == 9)
@@ -214,11 +220,20 @@ public class StoryTextController2 : MonoBehaviour
             else
             {
                 if (textbox == "main")
+                {
+                    autoTypeMain.autoType = true;
                     autoTypeMain.StartText(TextList[textIndex]);
+                }
                 if (textbox == "right")
+                {
+                    autoTypeRight.autoType = true;
                     autoTypeRight.StartText(TextList[textIndex]);
+                }
                 if (textbox == "left")
+                {
+                    autoTypeLeft.autoType = true;
                     autoTypeLeft.StartText(TextList[textIndex]);
+                }
             }
         }
         #endregion
@@ -229,54 +244,63 @@ public class StoryTextController2 : MonoBehaviour
             {
                 textbox = "right";
                 SetUpTextBoxes("right");
+                autoTypeRight.autoType = true;
                 autoTypeRight.StartText(TextList[textIndex]);
             }
             else if (textIndex == 2)
             {
                 textbox = "left";
                 SetUpTextBoxes("left");
+                autoTypeLeft.autoType = true;
                 autoTypeLeft.StartText(TextList[textIndex]);
             }
             else if (textIndex == 3)
             {
                 textbox = "right";
                 SetUpTextBoxes("right");
+                autoTypeRight.autoType = true;
                 autoTypeRight.StartText(TextList[textIndex]);
             }
             else if (textIndex == 4)
             {
                 textbox = "left";
                 SetUpTextBoxes("left");
+                autoTypeLeft.autoType = true;
                 autoTypeLeft.StartText(TextList[textIndex]);
             }
             else if (textIndex == 5)
             {
                 textbox = "right";
                 SetUpTextBoxes("right");
+                autoTypeRight.autoType = true;
                 autoTypeRight.StartText(TextList[textIndex]);
             }
             else if (textIndex == 6)
             {
                 textbox = "left";
                 SetUpTextBoxes("left");
+                autoTypeLeft.autoType = true;
                 autoTypeLeft.StartText(TextList[textIndex]);
             }
             else if (textIndex == 7)
             {
                 textbox = "left";
                 SetUpTextBoxes("left");
+                autoTypeLeft.autoType = true;
                 autoTypeLeft.StartText(TextList[textIndex]);
             }
             else if (textIndex == 8)
             {
                 textbox = "right";
                 SetUpTextBoxes("right");
+                autoTypeRight.autoType = true;
                 autoTypeRight.StartText(TextList[textIndex]);
             }
             else if (textIndex == 9)
             {
                 textbox = "left";
                 SetUpTextBoxes("left");
+                autoTypeLeft.autoType = true;
                 autoTypeLeft.StartText(TextList[textIndex]);
             }
             else if (textIndex == 10)
@@ -287,11 +311,20 @@ public class StoryTextController2 : MonoBehaviour
             else
             {
                 if (textbox == "main")
+                {
+                    autoTypeMain.autoType = true;
                     autoTypeMain.StartText(TextList[textIndex]);
+                }
                 if (textbox == "right")
+                {
+                    autoTypeRight.autoType = true;
                     autoTypeRight.StartText(TextList[textIndex]);
+                }
                 if (textbox == "left")
+                {
+                    autoTypeLeft.autoType = true;
                     autoTypeLeft.StartText(TextList[textIndex]);
+                }
             }
         }
         #endregion
@@ -333,7 +366,6 @@ public class StoryTextController2 : MonoBehaviour
                 autoTypeMain.autoType = false;
             else
             {
-                autoTypeMain.autoType = true;
                 textIndex++;
                 SceneLogic();
             }
@@ -344,7 +376,6 @@ public class StoryTextController2 : MonoBehaviour
                 autoTypeRight.autoType = false;
             else
             {
-                autoTypeRight.autoType = true;
                 textIndex++;
                 SceneLogic();
             }
@@ -355,7 +386,6 @@ public class StoryTextController2 : MonoBehaviour
                 autoTypeLeft.autoType = false;
             else
             {
-                autoTypeLeft.autoType = true;
                 textIndex++;
                 SceneLogic();
             }
