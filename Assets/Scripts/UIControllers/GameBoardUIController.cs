@@ -24,11 +24,15 @@ public class GameBoardUIController : MonoBehaviour {
     public Sprite up;
     public Sprite down;
 
+    public GameObject winMessage;
+    public Text winMessageText;
+
 
     void Start()
     {
         LoadingPanel = GameObject.Find("LoadingPanel");
         networking = FindObjectOfType(typeof(NetworkingController)) as NetworkingController;
+        winMessage.SetActive(false);
         if(PlayerPrefs.GetString("GameType") == "Network")
         {
             chatComponent.SetActive(true);
@@ -110,15 +114,18 @@ public class GameBoardUIController : MonoBehaviour {
         //chatInput.text = "";
     }
 
-    //public void enforceCharacterLimit()
-    //{
-    //    Debug.Log("enforce " + chatInput.text.Length);
-    //    if(chatInput.text.Length > 51)
-    //    {
-    //        Debug.Log("remove " + chatInput.text.Length);
-    //        chatInput.text = chatInput.text.Remove(chatInput.text.Length - 1);
-    //    }
-    //}
+    public void displayWinMessage(string color)
+    {
+        winMessage.SetActive(true);
+        winMessageText.text = color + " wins!"; 
+        winMessage.GetComponent<Animator>().SetBool("isDisplayed", true);
+    }
+    public void hideWinMessage()
+    {
+        winMessage.GetComponent<Animator>().SetBool("isDisplayed", false);
+        winMessage.SetActive(false);
+    }
+
 
     public void displayChatInput()
     {

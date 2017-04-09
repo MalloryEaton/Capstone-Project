@@ -23,6 +23,7 @@ public class GameLogicController : MonoBehaviour
     public Dictionaries dictionaries;
     private NetworkingController networking;
     private MyAIController aicontroller;
+    public GameBoardUIController uiController;
 
     private GameObject player1Mage;
     private GameObject player2Mage;
@@ -670,11 +671,13 @@ public class GameLogicController : MonoBehaviour
 
         //show win and lose messages
         if (isPlayer1Turn)
-            print("Game Over. " + player1Color + " wins!");
+            uiController.displayWinMessage(player1Color);
+        //print("Game Over. " + player1Color + " wins!");
         else
-            print("Game Over. " + player2Color + " wins!");
-        
-        if(PlayerPrefs.GetString("GameType") == "Story")
+            uiController.displayWinMessage(player2Color);
+        //print("Game Over. " + player2Color + " wins!");
+
+        if (PlayerPrefs.GetString("GameType") == "Story")
         {
             //some kind of delay here
             LoadingScreen.GetComponent<Animator>().SetBool("isDisplayed", true);

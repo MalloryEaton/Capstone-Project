@@ -351,27 +351,6 @@ namespace Com.EnsorcelledStudios.Runic
             // TODO: This should bring back up the login stuff.
         }
 
-        //public void enforceCharacterLimit()
-        //{
-        //    Debug.Log("enforce " + inputField.text.Length);
-        //    if (inputField.text.Length > 14)
-        //    {
-        //        Debug.Log("remove " + inputField.text.Length);
-        //        inputField.text = inputField.text.Remove(inputField.text.Length - 1);
-        //    }
-        //}
-
-        //public void deselectGames()
-        //{
-        //    if(gameList.Count > 0)
-        //    {
-        //        foreach (GameEntryScript game in gameList)
-        //        {
-        //            game.DeselectGame();
-        //        }
-        //    }
-        //}
-
         #endregion
 
         #region Private Methods
