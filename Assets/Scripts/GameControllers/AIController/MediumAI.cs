@@ -24,7 +24,7 @@ namespace AI
 
       // Depth reached
       if (depth == 0)
-        return (evaluate(gameBoard, phase));
+        return (evaluateBoardstate(gameBoard, phase));
       // Game over
       else if (gameOver(gameBoard))
         return (0);
@@ -69,7 +69,7 @@ namespace AI
           return (beta);
       }
     }
-    private int evaluate(Board gameBoard, string phase) {
+    private int evaluateBoardstate(Board gameBoard, string phase) {
       int score = 0;
       int numberOfAIMills = 0;
       int numberOfHumanMills = 0;
@@ -176,6 +176,7 @@ namespace AI
       }
       return (moves);
     }
+
     // Apply the move to the gameBoard
     private void applyMove(Move m, string playerTag,
                            ref Board gameBoard, string phase) {
