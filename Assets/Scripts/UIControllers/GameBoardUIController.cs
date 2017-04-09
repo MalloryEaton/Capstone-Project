@@ -26,6 +26,8 @@ public class GameBoardUIController : MonoBehaviour {
 
     public GameObject winMessage;
     public Text winMessageText;
+    public GameObject phasePanel;
+    public Text phaseText;
 
 
     void Start()
@@ -43,7 +45,10 @@ public class GameBoardUIController : MonoBehaviour {
         }
 
         chatScrollButton.enabled = false;
+        phasePanel.GetComponent<Animator>().SetBool("isDisplayed", false);
     }
+
+   
 
     public void exitToMenu()
     {
@@ -124,6 +129,16 @@ public class GameBoardUIController : MonoBehaviour {
     {
         winMessage.GetComponent<Animator>().SetBool("isDisplayed", false);
         winMessage.SetActive(false);
+    }
+
+    public void displayPhase(string phase)
+    {
+        phaseText.text = phase;
+        phasePanel.GetComponent<Animator>().SetBool("isDisplayed", true);
+        Debug.Log("Phase before");
+       // yield return new WaitForSeconds(2f);
+        Debug.Log("Phase after");
+       // phasePanel.GetComponent<Animator>().SetBool("isDisplayed", false);
     }
 
 

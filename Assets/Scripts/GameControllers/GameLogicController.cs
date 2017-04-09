@@ -1397,7 +1397,8 @@ public class GameLogicController : MonoBehaviour
 
     private void DisplayMovementPhaseText()
     {
-        DisplayText("Movement Phase Has Begun!", 3f);
+        Debug.Log("Movement Phase Has Begun!");
+        uiController.displayPhase("Movement Phase!");
         LeanTween.delayedCall(GameObject.Find("CenterOfBoard"), 3f, () =>
         {
             if (!isNetworkGame && !isAIGame) //local game		
