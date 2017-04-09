@@ -129,23 +129,11 @@ public class GameLogicController : MonoBehaviour
             //    if (PlayerPrefs.GetInt("StoryStage") == 1 || PlayerPrefs.GetInt("StoryStage") == 3 ||
             //        PlayerPrefs.GetInt("StoryStage") == 5)
             //    {
-            //        isPlayer1Turn = true;
+            //        PlayerPrefs.SetString("AIGoesFirst", "false");
             //    }
             //    else
             //    {
-            //        isPlayer1Turn = false;
-            //    }
-            //}
-            //// Otherwise we are determining who goes first through a Player Pref.
-            //else
-            //{
-            //    if (PlayerPrefs.GetString("AIGoesFirst") == "true")
-            //    {
-            //        isPlayer1Turn = false;
-            //    }
-            //    else
-            //    {
-            //        isPlayer1Turn = true;
+            //        PlayerPrefs.SetString("AIGoesFirst", "true");
             //    }
             //}
 
@@ -1020,6 +1008,10 @@ public class GameLogicController : MonoBehaviour
                     runeList[mill.position2].isInMill = false;
                     runeList[mill.position3].isInMill = false;
                     player1Mills.Remove(player1Mills[i]);
+                    // It is possible that some of these orbs could still be in a mill.
+                    RecheckForMills(mill.position1);
+                    RecheckForMills(mill.position2);
+                    RecheckForMills(mill.position3);
                 }
             }
         }
@@ -1034,6 +1026,10 @@ public class GameLogicController : MonoBehaviour
                     runeList[mill.position2].isInMill = false;
                     runeList[mill.position3].isInMill = false;
                     player2Mills.Remove(mill);
+                    // It is possible that some of these orbs could still be in a mill.
+                    RecheckForMills(mill.position1);
+                    RecheckForMills(mill.position2);
+                    RecheckForMills(mill.position3);
                 }
             }
         }
@@ -1123,6 +1119,40 @@ public class GameLogicController : MonoBehaviour
         return false;
     }
 
+    private void RecheckForMills(short rune)
+    {
+        for (short i = 0; i <= 21; i += 3)
+        {
+            if (runeList[i].tag == runeList[i + 1].tag &&
+                runeList[i].tag == runeList[i + 2].tag &&
+                runeList[i].tag != "Empty")
+            {
+                if (((rune == i || rune == (i + 1) || rune == (i + 2)) && isPlayer1Turn && runeList[rune].tag == "Player") ||
+                    ((rune == i || rune == (i + 1) || rune == (i + 2)) && !isPlayer1Turn && runeList[rune].tag == "Opponent"))
+                {
+                    runeList[i].isInMill = true;
+                    runeList[i + 1].isInMill = true;
+                    runeList[i + 2].isInMill = true;
+                }
+            }
+        }
+
+        foreach (Mill mill in dictionaries.verticalMillsList)
+        {
+            if (runeList[mill.position1].tag == runeList[mill.position2].tag &&
+            runeList[mill.position2].tag == runeList[mill.position3].tag &&
+            runeList[mill.position1].tag != "Empty")
+            {
+                if (((rune == mill.position1 || rune == mill.position2 || rune == mill.position3) && isPlayer1Turn && runeList[rune].tag == "Player") ||
+                    ((rune == mill.position1 || rune == mill.position2 || rune == mill.position3) && !isPlayer1Turn && runeList[rune].tag == "Opponent"))
+                {
+                    runeList[mill.position1].isInMill = true;
+                    runeList[mill.position2].isInMill = true;
+                    runeList[mill.position3].isInMill = true;
+                }
+            }
+        }
+    }
 
     /*---------------------------------------------------------------------
     || VISUALS FUNCTIONS
@@ -1200,7 +1230,7 @@ public class GameLogicController : MonoBehaviour
                     {
                         // If there is an orb to remove on the receiving side, however,
                         // we don't want to call ChangeSide() quite yet.
-                        if (((isPlayer1Turn && !isPlayer1) || (!isPlayer1Turn && isPlayer1)) && (AIMove[2] != -1))
+                        if (((isPlayer1Turn && !isPlayer1) || (!isPlayer1Turn && isPlayer1)) && (AIMove[2] != -1) && RuneIsInMill(AIMove[1]))
                         {
                             RemovalPhase(AIMove[2]);
                         }
