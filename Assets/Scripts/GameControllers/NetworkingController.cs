@@ -81,6 +81,8 @@ public class NetworkingController : Photon.PunBehaviour
 
     public void LeaveRoom()
     {
+        LeanTween.cancelAll();
+
         PhotonNetwork.LeaveRoom();
     }
 

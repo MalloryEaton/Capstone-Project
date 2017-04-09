@@ -201,7 +201,10 @@ public class GameLogicController : MonoBehaviour
                 // TODO: Set a player preference that determines who is going first -
                 // the player or the AI.
                 isPlayer1 = true;
-                PickRandomColor(2);
+                if (PlayerPrefs.GetString("GameType") == "AI")
+                    PickRandomColor(2);
+                else
+                    player2Color = PlayerPrefs.GetString("Player2Color");
             }
             else
             {
