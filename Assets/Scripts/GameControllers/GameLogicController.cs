@@ -556,7 +556,7 @@ public class GameLogicController : MonoBehaviour
     private void PrepareForMovementPhase()
     {
         //only do this if it is your move
-        if(!isNetworkGame || (isNetworkGame && ((isPlayer1 && isPlayer1Turn) || (!isPlayer1 && !isPlayer1Turn))))
+        if (!isNetworkGame || (isNetworkGame && ((isPlayer1 && isPlayer1Turn) || (!isPlayer1 && !isPlayer1Turn))))
         {
             if (ThereIsAnAvailableMove(MakeListOfRunesForCurrentPlayer()))
             {
@@ -640,7 +640,8 @@ public class GameLogicController : MonoBehaviour
 
     public void RemovalPhase(short runeToRemove)
     {
-        if ((isAIGame) ||
+        if ((isAIGame && ((isPlayer1Turn && !isPlayer1) ||
+                           (!isPlayer1Turn && isPlayer1))) ||
             (RuneCanBeRemoved(runeToRemove) ||
              (isNetworkGame && ((isPlayer1Turn && !isPlayer1) ||
                                 (!isPlayer1Turn && isPlayer1)))))
@@ -1268,7 +1269,7 @@ public class GameLogicController : MonoBehaviour
             RemoveAllOrbHighlights(-1);
             DestroyMagicRings();
 
-            if (previousGamePhase != "placement" && (player1OrbCount == 2 || player2OrbCount == 2)) //check for win
+            if (placementPhase_RoundCount > startingNumberOfOrbs && (player1OrbCount == 2 || player2OrbCount == 2)) //check for win
                 GameOver();
             else //continue game
                 ChangeSide();
