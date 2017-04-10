@@ -234,7 +234,7 @@ public class GameLogicController : MonoBehaviour
     //REMOVE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     void Update()
     {
-        if (Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.Keypad2) && Input.GetKeyDown(KeyCode.Q))
+        if (Input.GetKey(KeyCode.F2))
         {
             print("you cheeky little punk");
             GameOver();
@@ -689,33 +689,6 @@ public class GameLogicController : MonoBehaviour
         else
             uiController.displayWinMessage(player2Color);
         //print("Game Over. " + player2Color + " wins!");
-
-        if (PlayerPrefs.GetString("GameType") == "Story")
-        {
-            //some kind of delay here
-            LoadingScreen.GetComponent<Animator>().SetBool("isDisplayed", true);
-            switch (PlayerPrefs.GetInt("StoryStage"))
-            {
-                case 1:
-                    StartCoroutine(LoadAsync(11));
-                    break;
-                case 2:
-                    StartCoroutine(LoadAsync(12));
-                    break;
-                case 3:
-                    StartCoroutine(LoadAsync(13));
-                    break;
-                case 4:
-                    StartCoroutine(LoadAsync(14));
-                    break;
-                case 5:
-                    StartCoroutine(LoadAsync(15));
-                    break;
-                //case 6:
-                //    StartCoroutine(LoadAsync(16));
-                //    break;
-            }
-        }
     }
 
     private IEnumerator LoadAsync(int levelNum)

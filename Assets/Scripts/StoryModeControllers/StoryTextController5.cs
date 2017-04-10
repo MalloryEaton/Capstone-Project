@@ -48,6 +48,7 @@ public class StoryTextController5 : MonoBehaviour
         whiteMage = GameObject.Find("WhiteMage");
         greenMage = GameObject.Find("GreenMage");
         redMage = GameObject.Find("RedMage");
+        purpleMage = GameObject.Find("PurpleMage");
         orangeMage = GameObject.Find("OrangeMage");
         yellowMage = GameObject.Find("YellowMage");
         if (PlayerPrefs.GetInt("StoryStage") == 5)
@@ -85,10 +86,10 @@ public class StoryTextController5 : MonoBehaviour
         else
         {
             blueMage.SetActive(true);
-            textbox = "right";
-            SetUpTextBoxes("right");
-            autoTypeRight.autoType = true;
-            autoTypeRight.StartText(TextList[0]);
+            textbox = "left";
+            SetUpTextBoxes("left");
+            autoTypeLeft.autoType = true;
+            autoTypeLeft.StartText(TextList[0]);
         }
     }
 
@@ -256,29 +257,30 @@ public class StoryTextController5 : MonoBehaviour
         #region SecondTime
         else
         {
-            if (textIndex == 2)
-            {
-                textbox = "left";
-                SetUpTextBoxes("left");
-                autoTypeLeft.autoType = true;
-                autoTypeLeft.StartText(TextList[textIndex]);
-            }
-            else if (textIndex == 3)
+            if (textIndex == 1)
             {
                 textbox = "right";
                 SetUpTextBoxes("right");
                 autoTypeRight.autoType = true;
                 autoTypeRight.StartText(TextList[textIndex]);
             }
-            else if (textIndex == 4)
+            else if (textIndex == 3)
             {
                 textbox = "left";
                 SetUpTextBoxes("left");
                 autoTypeLeft.autoType = true;
                 autoTypeLeft.StartText(TextList[textIndex]);
             }
+            else if (textIndex == 4)
+            {
+                textbox = "right";
+                SetUpTextBoxes("right");
+                autoTypeRight.autoType = true;
+                autoTypeRight.StartText(TextList[textIndex]);
+            }
             else if (textIndex == 5)
             {
+                //green
                 textbox = "right";
                 SetUpTextBoxes("right");
                 autoTypeRight.autoType = true;
@@ -286,13 +288,15 @@ public class StoryTextController5 : MonoBehaviour
             }
             else if (textIndex == 6)
             {
-                textbox = "left";
-                SetUpTextBoxes("left");
-                autoTypeLeft.autoType = true;
-                autoTypeLeft.StartText(TextList[textIndex]);
+                //purple
+                textbox = "right";
+                SetUpTextBoxes("right");
+                autoTypeRight.autoType = true;
+                autoTypeRight.StartText(TextList[textIndex]);
             }
             else if (textIndex == 7)
             {
+                //yellow
                 textbox = "right";
                 SetUpTextBoxes("right");
                 autoTypeRight.autoType = true;
@@ -300,19 +304,29 @@ public class StoryTextController5 : MonoBehaviour
             }
             else if (textIndex == 8)
             {
-                textbox = "left";
-                SetUpTextBoxes("left");
-                autoTypeLeft.autoType = true;
-                autoTypeLeft.StartText(TextList[textIndex]);
-            }
-            else if (textIndex == 10)
-            {
+                //red
                 textbox = "right";
                 SetUpTextBoxes("right");
                 autoTypeRight.autoType = true;
                 autoTypeRight.StartText(TextList[textIndex]);
             }
-            else if (textIndex == 11)
+            else if (textIndex == 9)
+            {
+                //orange
+                textbox = "right";
+                SetUpTextBoxes("right");
+                autoTypeRight.autoType = true;
+                autoTypeRight.StartText(TextList[textIndex]);
+            }
+            else if (textIndex == 10)
+            {
+                //all
+                textbox = "right";
+                SetUpTextBoxes("right");
+                autoTypeRight.autoType = true;
+                autoTypeRight.StartText(TextList[textIndex]);
+            }
+            else if (textIndex == 16)
             {
                 LoadingPanel.GetComponent<Animator>().SetBool("isDisplayed", true);
                 StartCoroutine(LoadAsync(15));

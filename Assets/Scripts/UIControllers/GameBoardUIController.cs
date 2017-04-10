@@ -137,6 +137,38 @@ public class GameBoardUIController : MonoBehaviour {
     {
         winMessage.GetComponent<Animator>().SetBool("isDisplayed", false);
         winMessage.SetActive(false);
+
+        //show loading panel and load scene
+        if(PlayerPrefs.GetString("GameType") == "Story")
+        {
+            LoadingPanel.GetComponent<Animator>().SetBool("isDisplayed", true);
+            switch (PlayerPrefs.GetInt("StoryStage"))
+            {
+                case 1:
+                    StartCoroutine(LoadAsync(11));
+                    break;
+                case 2:
+                    StartCoroutine(LoadAsync(12));
+                    break;
+                case 3:
+                    StartCoroutine(LoadAsync(13));
+                    break;
+                case 4:
+                    StartCoroutine(LoadAsync(14));
+                    break;
+                case 5:
+                    StartCoroutine(LoadAsync(15));
+                    break;
+                    //case 6:
+                    //    StartCoroutine(LoadAsync(16));
+                    //    break;
+            }
+        }
+        else if (PlayerPrefs.GetString("GameType") != "Story")
+        {
+            LoadingPanel.GetComponent<Animator>().SetBool("isDisplayed", true);
+            StartCoroutine(LoadAsync(1));
+        }
     }
 
     public IEnumerator displayPhase(string phase)
