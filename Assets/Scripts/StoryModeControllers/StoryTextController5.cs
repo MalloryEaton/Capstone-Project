@@ -10,6 +10,7 @@ public class StoryTextController5 : MonoBehaviour
     private AutoTypeMainBox autoTypeMain;
     private AutoTypeLeftBox autoTypeLeft;
     private AutoTypeRightBox autoTypeRight;
+    private AutoTypeRightBox autoTypeAll;
 
     private int textIndex;
 
@@ -17,13 +18,17 @@ public class StoryTextController5 : MonoBehaviour
     public List<Light> mainLights;
     public List<Light> waterLights;
 
+    public List<Sprite> mageSprites;
+
     public GameObject mainTextBox;
     public GameObject rightTextBox;
     public GameObject leftTextBox;
+    public GameObject allTextBox;
 
     private Vector3 mainTextOriginalPosition;
     private Vector3 rightTextOriginalPosition;
     private Vector3 leftTextOriginalPosition;
+    private Vector3 allTextOriginalPosition;
 
     private string textbox;
 
@@ -60,6 +65,7 @@ public class StoryTextController5 : MonoBehaviour
         mainTextOriginalPosition = mainTextBox.GetComponent<RectTransform>().position;
         rightTextOriginalPosition = mainTextBox.GetComponent<RectTransform>().position;
         leftTextOriginalPosition = mainTextBox.GetComponent<RectTransform>().position;
+        allTextOriginalPosition = mainTextBox.GetComponent<RectTransform>().position;
         TextList = new List<string>();
         InitializeTextList();
         if (isFirstTime)
@@ -79,6 +85,7 @@ public class StoryTextController5 : MonoBehaviour
         autoTypeMain = FindObjectOfType(typeof(AutoTypeMainBox)) as AutoTypeMainBox;
         autoTypeLeft = FindObjectOfType(typeof(AutoTypeLeftBox)) as AutoTypeLeftBox;
         autoTypeRight = FindObjectOfType(typeof(AutoTypeRightBox)) as AutoTypeRightBox;
+        autoTypeAll = FindObjectOfType(typeof(AutoTypeRightBox)) as AutoTypeRightBox;
         DisableMages();
         blueMage.SetActive(false);
         if (isFirstTime)
@@ -281,6 +288,7 @@ public class StoryTextController5 : MonoBehaviour
             else if (textIndex == 5)
             {
                 //green
+                rightTextBox.GetComponentInChildren<Image>().sprite = mageSprites[1];
                 textbox = "right";
                 SetUpTextBoxes("right");
                 autoTypeRight.autoType = true;
@@ -289,6 +297,7 @@ public class StoryTextController5 : MonoBehaviour
             else if (textIndex == 6)
             {
                 //purple
+                rightTextBox.GetComponentInChildren<Image>().sprite = mageSprites[2];
                 textbox = "right";
                 SetUpTextBoxes("right");
                 autoTypeRight.autoType = true;
@@ -297,6 +306,7 @@ public class StoryTextController5 : MonoBehaviour
             else if (textIndex == 7)
             {
                 //yellow
+                rightTextBox.GetComponentInChildren<Image>().sprite = mageSprites[3];
                 textbox = "right";
                 SetUpTextBoxes("right");
                 autoTypeRight.autoType = true;
@@ -305,6 +315,7 @@ public class StoryTextController5 : MonoBehaviour
             else if (textIndex == 8)
             {
                 //red
+                rightTextBox.GetComponentInChildren<Image>().sprite = mageSprites[4];
                 textbox = "right";
                 SetUpTextBoxes("right");
                 autoTypeRight.autoType = true;
@@ -313,6 +324,7 @@ public class StoryTextController5 : MonoBehaviour
             else if (textIndex == 9)
             {
                 //orange
+                rightTextBox.GetComponentInChildren<Image>().sprite = mageSprites[5];
                 textbox = "right";
                 SetUpTextBoxes("right");
                 autoTypeRight.autoType = true;
@@ -321,10 +333,10 @@ public class StoryTextController5 : MonoBehaviour
             else if (textIndex == 10)
             {
                 //all
-                textbox = "right";
-                SetUpTextBoxes("right");
-                autoTypeRight.autoType = true;
-                autoTypeRight.StartText(TextList[textIndex]);
+                textbox = "all";
+                SetUpTextBoxes("all");
+                autoTypeAll.autoType = true;
+                autoTypeAll.StartText(TextList[textIndex]);
             }
             else if (textIndex == 16)
             {
@@ -360,24 +372,35 @@ public class StoryTextController5 : MonoBehaviour
             mainTextBox.transform.position = mainTextOriginalPosition;
             leftTextBox.transform.position = new Vector3(leftTextOriginalPosition.x, 1000, 0);
             rightTextBox.transform.position = new Vector3(rightTextOriginalPosition.x, 1000, 0);
+            allTextBox.transform.position = new Vector3(allTextOriginalPosition.x, 1000, 0);
         }
         else if (box == "left")
         {
             mainTextBox.transform.position = new Vector3(mainTextOriginalPosition.x, 1000, 0);
             leftTextBox.transform.position = leftTextOriginalPosition;
             rightTextBox.transform.position = new Vector3(rightTextOriginalPosition.x, 1000, 0);
+            allTextBox.transform.position = new Vector3(allTextOriginalPosition.x, 1000, 0);
         }
         else if (box == "right")
         {
             mainTextBox.transform.position = new Vector3(mainTextOriginalPosition.x, 1000, 0);
             leftTextBox.transform.position = new Vector3(leftTextOriginalPosition.x, 1000, 0);
             rightTextBox.transform.position = rightTextOriginalPosition;
+            allTextBox.transform.position = new Vector3(allTextOriginalPosition.x, 1000, 0);
+        }
+        else if (box == "all")
+        {
+            mainTextBox.transform.position = new Vector3(mainTextOriginalPosition.x, 1000, 0);
+            leftTextBox.transform.position = new Vector3(leftTextOriginalPosition.x, 1000, 0);
+            rightTextBox.transform.position = new Vector3(rightTextOriginalPosition.x, 1000, 0);
+            allTextBox.transform.position = allTextOriginalPosition;
         }
         else if (box == "none")
         {
             mainTextBox.transform.position = new Vector3(mainTextOriginalPosition.x, 1000, 0);
             leftTextBox.transform.position = new Vector3(leftTextOriginalPosition.x, 1000, 0);
             rightTextBox.transform.position = new Vector3(rightTextOriginalPosition.x, 1000, 0);
+            allTextBox.transform.position = new Vector3(allTextOriginalPosition.x, 1000, 0);
         }
     }
 
