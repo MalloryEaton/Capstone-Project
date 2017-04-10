@@ -168,6 +168,10 @@ public class NetworkingController : Photon.PunBehaviour
         Debug.Log(opponentName);
         //chatInputField.text = opponentName + ": " + receivedMessage;
         gameBoardUI.addMessage(name, receivedMessage);
+        if(gameBoardUI.chatInput.GetComponent<Animator>().GetBool("isDisplayed") == false)
+        {
+            gameBoardUI.displayNotification();
+        }
     }
     
     [PunRPC]

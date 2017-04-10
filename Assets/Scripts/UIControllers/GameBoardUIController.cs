@@ -30,6 +30,7 @@ public class GameBoardUIController : MonoBehaviour {
     public Text phaseText;
     public GameObject forfeitConfirmationPanel;
     public GameObject drawPanel;
+    
 
 
 
@@ -199,6 +200,7 @@ public class GameBoardUIController : MonoBehaviour {
             chatInput.GetComponent<Animator>().SetBool("isDisplayed", true);
             chatScrollButton.enabled = true;
             displayChatScroll();
+            hideNotification();
         }
         else
         {
@@ -259,5 +261,15 @@ public class GameBoardUIController : MonoBehaviour {
         chatInput.enabled = true;
         csl.enabled = true;
         chatButton.enabled = true;
+    }
+
+    public void displayNotification()
+    {
+        chatButton.GetComponent<Animator>().SetBool("isNotification", true);
+    }
+
+    public void hideNotification()
+    {
+        chatButton.GetComponent<Animator>().SetBool("isNotification", false);
     }
 }
