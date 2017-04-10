@@ -34,13 +34,22 @@ public class StoryTextController5 : MonoBehaviour
     private bool isFirstTime = true;
 
     private GameObject blueMage;
+    private GameObject greenMage;
+    private GameObject redMage;
+    private GameObject orangeMage;
+    private GameObject purpleMage;
     private GameObject whiteMage;
+    private GameObject yellowMage;
 
     void Start()
     {
         PlayerPrefs.SetInt("StoryStage", 5);
         blueMage = GameObject.Find("BlueMage");
         whiteMage = GameObject.Find("WhiteMage");
+        greenMage = GameObject.Find("GreenMage");
+        redMage = GameObject.Find("RedMage");
+        orangeMage = GameObject.Find("OrangeMage");
+        yellowMage = GameObject.Find("YellowMage");
         if (PlayerPrefs.GetInt("StoryStage") == 5)
         {
             isFirstTime = false;
@@ -69,6 +78,7 @@ public class StoryTextController5 : MonoBehaviour
         autoTypeMain = FindObjectOfType(typeof(AutoTypeMainBox)) as AutoTypeMainBox;
         autoTypeLeft = FindObjectOfType(typeof(AutoTypeLeftBox)) as AutoTypeLeftBox;
         autoTypeRight = FindObjectOfType(typeof(AutoTypeRightBox)) as AutoTypeRightBox;
+        DisableMages();
         blueMage.SetActive(false);
         if (isFirstTime)
             autoTypeMain.StartText(TextList[0]);
@@ -80,6 +90,15 @@ public class StoryTextController5 : MonoBehaviour
             autoTypeRight.autoType = true;
             autoTypeRight.StartText(TextList[0]);
         }
+    }
+
+    private void DisableMages()
+    {
+        redMage.SetActive(false);
+        yellowMage.SetActive(false);
+        orangeMage.SetActive(false);
+        greenMage.SetActive(false);
+        purpleMage.SetActive(false);
     }
 
     private void InstantiateShine(string color)
