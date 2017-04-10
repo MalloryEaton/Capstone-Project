@@ -28,6 +28,7 @@ public class GameBoardUIController : MonoBehaviour {
     public Text winMessageText;
     public GameObject phasePanel;
     public Text phaseText;
+    public GameObject forfeitConfirmationPanel;
 
 
     void Start()
@@ -47,6 +48,7 @@ public class GameBoardUIController : MonoBehaviour {
         chatScrollButton.enabled = false;
         phasePanel.GetComponent<Animator>().SetBool("isDisplayed", false);
         phasePanel.SetActive(false);
+        forfeitConfirmationPanel.SetActive(false);
     }
 
    
@@ -180,5 +182,23 @@ public class GameBoardUIController : MonoBehaviour {
             scrollView.GetComponent<Animator>().SetBool("isDisplayed", false);
             chatScrollButton.image.sprite = up;
         }
+    }
+
+    public void displayForfeitConfirmation()
+    {
+        forfeitConfirmationPanel.SetActive(true);
+        hideMenu();
+        forfeitConfirmationPanel.GetComponent<Animator>().SetBool("isDisplayed", true);
+        glc.waitingOnAnimation = true;
+        chatInput.enabled = false;
+        csl.enabled = false;
+        chatButton.enabled = false;
+    }
+
+    public void hideForfeitConfirmation()
+    {
+        forfeitConfirmationPanel.GetComponent<Animator>().SetBool("isDisplayed", false);
+        forfeitConfirmationPanel.SetActive(false);
+        displayMenu();
     }
 }
