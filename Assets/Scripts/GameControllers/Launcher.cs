@@ -289,11 +289,11 @@ namespace Com.EnsorcelledStudios.Runic
 
         public void CreateGame()
         {
-            int uID;
-
             //Display SEARCHING FOR PLAYERS popup
 
             GetRandomStage();
+
+            playerProperties.Clear();
 
             // We need to access the player's chosen color and stage here.
             playerProperties.Add("color", PlayerPrefs.GetString("PlayerColor"));
