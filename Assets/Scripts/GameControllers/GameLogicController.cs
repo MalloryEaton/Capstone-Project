@@ -741,8 +741,9 @@ public class GameLogicController : MonoBehaviour
             waitingOnOtherPlayer = false;
         }
 
-        if (isAIGame && drawCount == 10)
+        if (isAIGame && drawCount >= 10)
         {
+            drawCount = 5;
             //offer draw
             print("offering draw");
             canOfferDraw = true; //show something in the ui
