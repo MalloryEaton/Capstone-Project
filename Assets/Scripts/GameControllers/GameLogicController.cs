@@ -66,6 +66,11 @@ public class GameLogicController : MonoBehaviour
 
     private AudioSource moveSound;
     private AudioSource removeSound;
+    public GameObject music;
+
+    public Slider sfxSlider;
+    public Slider musicSlider;
+
 
     private float speed = 0.3f;
 
@@ -83,6 +88,10 @@ public class GameLogicController : MonoBehaviour
         AudioSource[] audio = GetComponents<AudioSource>();
         moveSound = audio[0];
         removeSound = audio[1];
+
+        moveSound.volume = sfxSlider.value;
+        removeSound.volume = sfxSlider.value;
+        music.GetComponent<AudioSource>().volume = musicSlider.value;
 
         dictionaries = FindObjectOfType(typeof(Dictionaries)) as Dictionaries;
         networking = FindObjectOfType(typeof(NetworkingController)) as NetworkingController;
@@ -209,6 +218,17 @@ public class GameLogicController : MonoBehaviour
 
             PlayMageIntroAnimations();
         }
+    }
+
+    public void sfxVolumeUpdate()
+    {
+        moveSound.volume = sfxSlider.value;
+        removeSound.volume = sfxSlider.value;
+    }
+
+    public void musicVolumeUpdate()
+    {
+        music.GetComponent<AudioSource>().volume = musicSlider.value;
     }
 
     //REMOVE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!

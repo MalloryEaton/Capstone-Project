@@ -31,6 +31,8 @@ public class GameBoardUIController : MonoBehaviour {
     public GameObject forfeitConfirmationPanel;
 
 
+
+
     void Start()
     {
         LoadingPanel = GameObject.Find("LoadingPanel");
