@@ -757,6 +757,7 @@ public class GameLogicController : MonoBehaviour
             //offer draw
             print("offering draw");
             canOfferDraw = true; //show something in the ui
+            uiController.displayDraw();
         }
 
         if(isAIGame)
