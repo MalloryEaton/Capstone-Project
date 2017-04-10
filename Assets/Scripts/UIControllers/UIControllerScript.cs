@@ -7,6 +7,8 @@ using UnityEngine.UI;
 public class UIControllerScript : MonoBehaviour
 {
     public Camera mainCamera;
+    private Vector3 mainCameraPosition;
+    private Quaternion mainCameraRotation;
 
     public GameObject DifficultyPanel;
     public GameObject MultiplayerPanel;
@@ -37,6 +39,9 @@ public class UIControllerScript : MonoBehaviour
         //    GameObject.Find("FlagsNotWon").SetActive(true);
         //else
         //    GameObject.Find("FlagsWon").SetActive(true);
+
+        mainCameraPosition = mainCamera.transform.position;
+        mainCameraRotation = mainCamera.transform.rotation;
 
         LoadingPanel = GameObject.Find("LoadingPanel");
         //MainButtonPanel.GetComponent<Animator>().SetBool("isDisplayed", true);
@@ -109,6 +114,10 @@ public class UIControllerScript : MonoBehaviour
         else if (panel == "character")
         {
             display("canvas");
+            //reset camera
+            mainCamera.transform.position = mainCameraPosition;
+            mainCamera.transform.rotation = mainCameraRotation;
+
             hide("level");
             //hide("title");
             hide("main");
@@ -254,46 +263,14 @@ public class UIControllerScript : MonoBehaviour
             }
             else
             {
+                string player1Color = PlayerPrefs.GetString("Player1Color");
+                Button player1Button = GameObject.Find(player1Color + "MageButton").GetComponent<Button>();
+                player1Button.interactable = true;
                 CharacterSelectScript.currentPlayerColor = "Player1Color";
                 CharacterSelectScript.characterSelectScript.PageHeader.text = "Player 1 Character Select";
                 hide("bio");
             }
         }
-    }
-
-    public void backSlide()
-    {
-        if(slideIndex > 0)
-        {
-            TutorialSlides[slideIndex].SetActive(false);
-            TutorialSlides[slideIndex - 1].SetActive(true);
-            slideIndex--;
-        }
-        else
-        {
-            display("main");
-            display("title");
-        }
-        print("previous slide " + slideIndex);
-    }
-
-    public void nextSlide()
-    {
-        print("next slide " + slideIndex);
-        if (slideIndex < TutorialSlides.Count-1)
-        {
-            TutorialSlides[slideIndex].SetActive(false);
-            TutorialSlides[slideIndex + 1].SetActive(true);
-            slideIndex++;
-        }
-        else
-        {
-            TutorialSlides[slideIndex].SetActive(false);
-            display("main");
-            display("title");
-        }
-
-        print("next slide " + slideIndex);
     }
 
     public void setDifficulty(string difficulty)
@@ -365,11 +342,18 @@ public class UIControllerScript : MonoBehaviour
         }
         else if(localGame == true)
         {
+            //blah
             if(CharacterSelectScript.currentPlayerColor == "Player1Color")
             {
+                print("Player 1 Color: " + PlayerPrefs.GetString("Player1Color"));
+                string player1Color = PlayerPrefs.GetString("Player1Color");
+                Button player1Button = GameObject.Find(player1Color + "MageButton").GetComponent<Button>();
+                player1Button.interactable = false;
+
                 CharacterSelectScript.currentPlayerColor = "Player2Color";
                 CharacterSelectScript.characterSelectScript.PageHeader.text = "Player 2 Character Select";
                 hide("bio");
+                //hid
             }
             else if(CharacterSelectScript.currentPlayerColor == "Player2Color")
             {
