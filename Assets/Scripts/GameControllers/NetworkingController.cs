@@ -114,6 +114,12 @@ public class NetworkingController : Photon.PunBehaviour
         }
     }
 
+    public void SendForfeit()
+    {
+        // TODO: Call this function from wherever Forfeit is called
+        photonView.RPC("ReceiveForfeit", PhotonTargets.Others);
+    }
+
     public void ResetNetworkValues()
     {
         moveTo = moveFrom = removeFrom = -1;
@@ -162,5 +168,12 @@ public class NetworkingController : Photon.PunBehaviour
         Debug.Log(opponentName);
         //chatInputField.text = opponentName + ": " + receivedMessage;
         gameBoardUI.addMessage(name, receivedMessage);
-    }   
+    }
+    
+    [PunRPC]
+    public void ReceiveForfeit()
+    {
+        gameLogicController.playerForfeit = "other";
+        gameLogicController.GameOver();
+    } 
 }

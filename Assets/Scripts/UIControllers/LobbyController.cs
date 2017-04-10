@@ -20,7 +20,17 @@ public class LobbyController : MonoBehaviour {
 
     public void returnToMainMenu()
     {
-        SceneManager.LoadScene("MainMenu");
+        LoadingScreen.GetComponent<Animator>().SetBool("isDisplayed", true);
+        StartCoroutine(LoadAsync(1));
+    }
+
+    private IEnumerator LoadAsync(int levelNum)
+    {
+        AsyncOperation async = SceneManager.LoadSceneAsync(levelNum);
+        while (!async.isDone)
+        {
+            yield return null;
+        }
     }
 
     public void displayWaitingForOpponent()

@@ -30,6 +30,7 @@ public class GameLogicController : MonoBehaviour
 
     public string player1Color;
     public string player2Color;
+    public string playerForfeit;
 
     public string gamePhase; //placement, movementPickup, movementPlace, removal
     private string previousGamePhase;
@@ -66,6 +67,11 @@ public class GameLogicController : MonoBehaviour
 
     private AudioSource moveSound;
     private AudioSource removeSound;
+    public GameObject music;
+
+    public Slider sfxSlider;
+    public Slider musicSlider;
+
 
     private float speed = 0.3f;
 
@@ -83,6 +89,10 @@ public class GameLogicController : MonoBehaviour
         AudioSource[] audio = GetComponents<AudioSource>();
         moveSound = audio[0];
         removeSound = audio[1];
+
+        moveSound.volume = sfxSlider.value;
+        removeSound.volume = sfxSlider.value;
+        music.GetComponent<AudioSource>().volume = musicSlider.value;
 
         dictionaries = FindObjectOfType(typeof(Dictionaries)) as Dictionaries;
         networking = FindObjectOfType(typeof(NetworkingController)) as NetworkingController;
@@ -211,10 +221,21 @@ public class GameLogicController : MonoBehaviour
         }
     }
 
+    public void sfxVolumeUpdate()
+    {
+        moveSound.volume = sfxSlider.value;
+        removeSound.volume = sfxSlider.value;
+    }
+
+    public void musicVolumeUpdate()
+    {
+        music.GetComponent<AudioSource>().volume = musicSlider.value;
+    }
+
     //REMOVE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     void Update()
     {
-        if (Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.Keypad2) && Input.GetKeyDown(KeyCode.Q))
+        if (Input.GetKey(KeyCode.F2))
         {
             print("you cheeky little punk");
             GameOver();
@@ -650,9 +671,14 @@ public class GameLogicController : MonoBehaviour
     }
 
     // Game Over //
-    private void GameOver()
+    public void GameOver()
     {
-        if (isNetworkGame && ((isPlayer1Turn && isPlayer1) || (!isPlayer1Turn && !isPlayer1)))
+        if (isNetworkGame && playerForfeit == "other")
+        {
+            // TODO: Popup that says "the other player has forfeit"
+            // This could be similar to the movement phase message
+        }
+        else if (isNetworkGame && ((isPlayer1Turn && isPlayer1) || (!isPlayer1Turn && !isPlayer1)))
         {
             networking.SendMove();
         }
@@ -662,39 +688,22 @@ public class GameLogicController : MonoBehaviour
         RemoveAllOrbHighlights(-1);
         RemoveAllRuneHighlights();
 
-        //show win and lose messages
-        if (isPlayer1Turn)
-            uiController.displayWinMessage(player1Color);
-        //print("Game Over. " + player1Color + " wins!");
-        else
-            uiController.displayWinMessage(player2Color);
-        //print("Game Over. " + player2Color + " wins!");
-
-        if (PlayerPrefs.GetString("GameType") == "Story")
+        if (isNetworkGame && playerForfeit == "other")
         {
-            //some kind of delay here
-            LoadingScreen.GetComponent<Animator>().SetBool("isDisplayed", true);
-            switch (PlayerPrefs.GetInt("StoryStage"))
-            {
-                case 1:
-                    StartCoroutine(LoadAsync(11));
-                    break;
-                case 2:
-                    StartCoroutine(LoadAsync(12));
-                    break;
-                case 3:
-                    StartCoroutine(LoadAsync(13));
-                    break;
-                case 4:
-                    StartCoroutine(LoadAsync(14));
-                    break;
-                case 5:
-                    StartCoroutine(LoadAsync(15));
-                    break;
-                //case 6:
-                //    StartCoroutine(LoadAsync(16));
-                //    break;
-            }
+            if (isPlayer1)
+                uiController.displayWinMessage(player1Color);
+            else
+                uiController.displayWinMessage(player2Color);
+        }
+        else
+        {
+            //show win and lose messages
+            if (isPlayer1Turn)
+                uiController.displayWinMessage(player1Color);
+            //print("Game Over. " + player1Color + " wins!");
+            else
+                uiController.displayWinMessage(player2Color);
+            //print("Game Over. " + player2Color + " wins!");
         }
     }
 
@@ -732,11 +741,13 @@ public class GameLogicController : MonoBehaviour
             waitingOnOtherPlayer = false;
         }
 
-        if (isAIGame && drawCount == 10)
+        if (isAIGame && drawCount >= 10)
         {
+            drawCount = 5;
             //offer draw
             print("offering draw");
             canOfferDraw = true; //show something in the ui
+            uiController.displayDraw();
         }
 
         if(isAIGame)

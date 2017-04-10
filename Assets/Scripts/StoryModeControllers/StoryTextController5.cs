@@ -10,6 +10,7 @@ public class StoryTextController5 : MonoBehaviour
     private AutoTypeMainBox autoTypeMain;
     private AutoTypeLeftBox autoTypeLeft;
     private AutoTypeRightBox autoTypeRight;
+    private AutoTypeRightBox autoTypeAll;
 
     private int textIndex;
 
@@ -17,13 +18,17 @@ public class StoryTextController5 : MonoBehaviour
     public List<Light> mainLights;
     public List<Light> waterLights;
 
+    public List<Sprite> mageSprites;
+
     public GameObject mainTextBox;
     public GameObject rightTextBox;
     public GameObject leftTextBox;
+    public GameObject allTextBox;
 
     private Vector3 mainTextOriginalPosition;
     private Vector3 rightTextOriginalPosition;
     private Vector3 leftTextOriginalPosition;
+    private Vector3 allTextOriginalPosition;
 
     private string textbox;
 
@@ -41,13 +46,16 @@ public class StoryTextController5 : MonoBehaviour
     private GameObject whiteMage;
     private GameObject yellowMage;
 
+    public Image mageImage;
+    public Text mageName;
+
     void Start()
     {
-        PlayerPrefs.SetInt("StoryStage", 5);
         blueMage = GameObject.Find("BlueMage");
         whiteMage = GameObject.Find("WhiteMage");
         greenMage = GameObject.Find("GreenMage");
         redMage = GameObject.Find("RedMage");
+        purpleMage = GameObject.Find("PurpleMage");
         orangeMage = GameObject.Find("OrangeMage");
         yellowMage = GameObject.Find("YellowMage");
         if (PlayerPrefs.GetInt("StoryStage") == 5)
@@ -59,6 +67,7 @@ public class StoryTextController5 : MonoBehaviour
         mainTextOriginalPosition = mainTextBox.GetComponent<RectTransform>().position;
         rightTextOriginalPosition = mainTextBox.GetComponent<RectTransform>().position;
         leftTextOriginalPosition = mainTextBox.GetComponent<RectTransform>().position;
+        allTextOriginalPosition = mainTextBox.GetComponent<RectTransform>().position;
         TextList = new List<string>();
         InitializeTextList();
         if (isFirstTime)
@@ -78,6 +87,7 @@ public class StoryTextController5 : MonoBehaviour
         autoTypeMain = FindObjectOfType(typeof(AutoTypeMainBox)) as AutoTypeMainBox;
         autoTypeLeft = FindObjectOfType(typeof(AutoTypeLeftBox)) as AutoTypeLeftBox;
         autoTypeRight = FindObjectOfType(typeof(AutoTypeRightBox)) as AutoTypeRightBox;
+        autoTypeAll = FindObjectOfType(typeof(AutoTypeRightBox)) as AutoTypeRightBox;
         DisableMages();
         blueMage.SetActive(false);
         if (isFirstTime)
@@ -85,10 +95,10 @@ public class StoryTextController5 : MonoBehaviour
         else
         {
             blueMage.SetActive(true);
-            textbox = "right";
-            SetUpTextBoxes("right");
-            autoTypeRight.autoType = true;
-            autoTypeRight.StartText(TextList[0]);
+            textbox = "left";
+            SetUpTextBoxes("left");
+            autoTypeLeft.autoType = true;
+            autoTypeLeft.StartText(TextList[0]);
         }
     }
 
@@ -181,7 +191,6 @@ public class StoryTextController5 : MonoBehaviour
             TextList.Add("2...");
             TextList.Add("3!!!");
             TextList.Add("");
-
         }
     }
 
@@ -256,29 +265,33 @@ public class StoryTextController5 : MonoBehaviour
         #region SecondTime
         else
         {
-            if (textIndex == 2)
-            {
-                textbox = "left";
-                SetUpTextBoxes("left");
-                autoTypeLeft.autoType = true;
-                autoTypeLeft.StartText(TextList[textIndex]);
-            }
-            else if (textIndex == 3)
+            if (textIndex == 1)
             {
                 textbox = "right";
                 SetUpTextBoxes("right");
                 autoTypeRight.autoType = true;
                 autoTypeRight.StartText(TextList[textIndex]);
             }
-            else if (textIndex == 4)
+            else if (textIndex == 3)
             {
                 textbox = "left";
                 SetUpTextBoxes("left");
                 autoTypeLeft.autoType = true;
                 autoTypeLeft.StartText(TextList[textIndex]);
             }
+            else if (textIndex == 4)
+            {
+                textbox = "right";
+                SetUpTextBoxes("right");
+                autoTypeRight.autoType = true;
+                autoTypeRight.StartText(TextList[textIndex]);
+            }
             else if (textIndex == 5)
             {
+                //green
+                greenMage.SetActive(true);
+                mageImage.sprite = mageSprites[1];
+                mageName.text = "Sebastian";
                 textbox = "right";
                 SetUpTextBoxes("right");
                 autoTypeRight.autoType = true;
@@ -286,13 +299,21 @@ public class StoryTextController5 : MonoBehaviour
             }
             else if (textIndex == 6)
             {
-                textbox = "left";
-                SetUpTextBoxes("left");
-                autoTypeLeft.autoType = true;
-                autoTypeLeft.StartText(TextList[textIndex]);
+                //purple
+                purpleMage.SetActive(true);
+                mageImage.sprite = mageSprites[2];
+                mageName.text = "Sir Gilbaard";
+                textbox = "right";
+                SetUpTextBoxes("right");
+                autoTypeRight.autoType = true;
+                autoTypeRight.StartText(TextList[textIndex]);
             }
             else if (textIndex == 7)
             {
+                //yellow
+                yellowMage.SetActive(true);
+                mageImage.sprite = mageSprites[3];
+                mageName.text = "Merwin";
                 textbox = "right";
                 SetUpTextBoxes("right");
                 autoTypeRight.autoType = true;
@@ -300,22 +321,51 @@ public class StoryTextController5 : MonoBehaviour
             }
             else if (textIndex == 8)
             {
-                textbox = "left";
-                SetUpTextBoxes("left");
-                autoTypeLeft.autoType = true;
-                autoTypeLeft.StartText(TextList[textIndex]);
-            }
-            else if (textIndex == 10)
-            {
+                //red
+                redMage.SetActive(true);
+                mageImage.sprite = mageSprites[4];
+                mageName.text = "Quin";
                 textbox = "right";
                 SetUpTextBoxes("right");
                 autoTypeRight.autoType = true;
                 autoTypeRight.StartText(TextList[textIndex]);
             }
+            else if (textIndex == 9)
+            {
+                //orange
+                orangeMage.SetActive(true);
+                mageImage.sprite = mageSprites[5];
+                mageName.text = "Theodore";
+                textbox = "right";
+                SetUpTextBoxes("right");
+                autoTypeRight.autoType = true;
+                autoTypeRight.StartText(TextList[textIndex]);
+            }
+            else if (textIndex == 10)
+            {
+                //all
+                textbox = "all";
+                SetUpTextBoxes("all");
+            }
             else if (textIndex == 11)
             {
+                //orange
+                textbox = "right";
+                SetUpTextBoxes("right");
+                autoTypeRight.autoType = true;
+                autoTypeRight.StartText(TextList[textIndex]);
+            }
+            else if (textIndex == 12)
+            {
+                textbox = "left";
+                SetUpTextBoxes("left");
+                autoTypeLeft.autoType = true;
+                autoTypeLeft.StartText(TextList[textIndex]);
+            }
+            else if (textIndex == 17)
+            {
                 LoadingPanel.GetComponent<Animator>().SetBool("isDisplayed", true);
-                StartCoroutine(LoadAsync(15));
+                StartCoroutine(LoadAsync(16));
             }
             else
             {
@@ -346,24 +396,35 @@ public class StoryTextController5 : MonoBehaviour
             mainTextBox.transform.position = mainTextOriginalPosition;
             leftTextBox.transform.position = new Vector3(leftTextOriginalPosition.x, 1000, 0);
             rightTextBox.transform.position = new Vector3(rightTextOriginalPosition.x, 1000, 0);
+            allTextBox.transform.position = new Vector3(allTextOriginalPosition.x, 1000, 0);
         }
         else if (box == "left")
         {
             mainTextBox.transform.position = new Vector3(mainTextOriginalPosition.x, 1000, 0);
             leftTextBox.transform.position = leftTextOriginalPosition;
             rightTextBox.transform.position = new Vector3(rightTextOriginalPosition.x, 1000, 0);
+            allTextBox.transform.position = new Vector3(allTextOriginalPosition.x, 1000, 0);
         }
         else if (box == "right")
         {
             mainTextBox.transform.position = new Vector3(mainTextOriginalPosition.x, 1000, 0);
             leftTextBox.transform.position = new Vector3(leftTextOriginalPosition.x, 1000, 0);
             rightTextBox.transform.position = rightTextOriginalPosition;
+            allTextBox.transform.position = new Vector3(allTextOriginalPosition.x, 1000, 0);
+        }
+        else if (box == "all")
+        {
+            mainTextBox.transform.position = new Vector3(mainTextOriginalPosition.x, 1000, 0);
+            leftTextBox.transform.position = new Vector3(leftTextOriginalPosition.x, 1000, 0);
+            rightTextBox.transform.position = new Vector3(rightTextOriginalPosition.x, 1000, 0);
+            allTextBox.transform.position = allTextOriginalPosition;
         }
         else if (box == "none")
         {
             mainTextBox.transform.position = new Vector3(mainTextOriginalPosition.x, 1000, 0);
             leftTextBox.transform.position = new Vector3(leftTextOriginalPosition.x, 1000, 0);
             rightTextBox.transform.position = new Vector3(rightTextOriginalPosition.x, 1000, 0);
+            allTextBox.transform.position = new Vector3(allTextOriginalPosition.x, 1000, 0);
         }
     }
 
@@ -398,6 +459,11 @@ public class StoryTextController5 : MonoBehaviour
                 textIndex++;
                 SceneLogic();
             }
+        }
+        else //all
+        {
+            textIndex++;
+            SceneLogic();
         }
     }
 

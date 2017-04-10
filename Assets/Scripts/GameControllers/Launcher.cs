@@ -124,6 +124,7 @@ namespace Com.EnsorcelledStudios.Runic
                     //TODO: Populate ScrollRect
                     GameListItem game = new GameListItem ();
                     //GameEntryScript game = Instantiate(gameEntry);
+                    // Hide the unique ID from the screen
                     game.playerName = room.Name;
                     // This code works for accessing custom properties
 					game.characterIconString = room.CustomProperties["color"].ToString();
@@ -281,8 +282,6 @@ namespace Com.EnsorcelledStudios.Runic
         {
             if (PhotonNetwork.insideLobby)
             {
-                // This uses the prototype's dropdown list, will need changed.
-                // We will still use JoinRoom, the parameter will just be different.
                 print("Join " + selectedRoomName);
                 PhotonNetwork.JoinRoom(selectedRoomName);
             }
@@ -294,11 +293,14 @@ namespace Com.EnsorcelledStudios.Runic
 
             GetRandomStage();
 
+            playerProperties.Clear();
+
             // We need to access the player's chosen color and stage here.
             playerProperties.Add("color", PlayerPrefs.GetString("PlayerColor"));
             playerProperties.Add("stage", PlayerPrefs.GetString("Stage"));
             roomProperties[0] = "color";
             roomProperties[1] = "stage";
+
             // Change room name to be a unique ID
             PhotonNetwork.CreateRoom(PhotonNetwork.playerName, new RoomOptions() { MaxPlayers = MaxPlayersPerRoom, CustomRoomProperties = playerProperties, CustomRoomPropertiesForLobby = roomProperties }, null);            
         }
@@ -337,10 +339,9 @@ namespace Com.EnsorcelledStudios.Runic
             //}
         }
 
-        public void DisconnectFromLobby()
+        public void DisconnectFromRoom()
         {
-            //PhotonNetwork.Disconnect();
-            PhotonNetwork.LeaveLobby();
+            PhotonNetwork.LeaveRoom();
             lobbyUI.hideWaitingForOpponent();
             //TODO: Remove room key from dictionary
         }

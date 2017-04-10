@@ -40,8 +40,8 @@ public class GameEntryScript : MonoBehaviour {
 
 	public void Setup(GameListItem game, GameScrollList gameScrollList)
 	{
-		//gameListItem = game;
-		playerName.text = game.playerName;
+        //gameListItem = game;
+        playerName.text = game.playerName;
        // entry.onClick.AddListener(JoinGame);
 
         switch (game.characterIconString)
