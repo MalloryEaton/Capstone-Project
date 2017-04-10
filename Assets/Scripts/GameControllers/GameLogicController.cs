@@ -30,6 +30,7 @@ public class GameLogicController : MonoBehaviour
 
     public string player1Color;
     public string player2Color;
+    public string playerForfeit;
 
     public string gamePhase; //placement, movementPickup, movementPlace, removal
     private string previousGamePhase;
@@ -670,9 +671,14 @@ public class GameLogicController : MonoBehaviour
     }
 
     // Game Over //
-    private void GameOver()
+    public void GameOver()
     {
-        if (isNetworkGame && ((isPlayer1Turn && isPlayer1) || (!isPlayer1Turn && !isPlayer1)))
+        if (isNetworkGame && playerForfeit == "other")
+        {
+            // TODO: Popup that says "the other player has forfeit"
+            // This could be similar to the movement phase message
+        }
+        else if (isNetworkGame && ((isPlayer1Turn && isPlayer1) || (!isPlayer1Turn && !isPlayer1)))
         {
             networking.SendMove();
         }
@@ -682,13 +688,23 @@ public class GameLogicController : MonoBehaviour
         RemoveAllOrbHighlights(-1);
         RemoveAllRuneHighlights();
 
-        //show win and lose messages
-        if (isPlayer1Turn)
-            uiController.displayWinMessage(player1Color);
-        //print("Game Over. " + player1Color + " wins!");
+        if (isNetworkGame && playerForfeit == "other")
+        {
+            if (isPlayer1)
+                uiController.displayWinMessage(player1Color);
+            else
+                uiController.displayWinMessage(player2Color);
+        }
         else
-            uiController.displayWinMessage(player2Color);
-        //print("Game Over. " + player2Color + " wins!");
+        {
+            //show win and lose messages
+            if (isPlayer1Turn)
+                uiController.displayWinMessage(player1Color);
+            //print("Game Over. " + player1Color + " wins!");
+            else
+                uiController.displayWinMessage(player2Color);
+            //print("Game Over. " + player2Color + " wins!");
+        }
     }
 
     private IEnumerator LoadAsync(int levelNum)

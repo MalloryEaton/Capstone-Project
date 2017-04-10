@@ -63,6 +63,7 @@ public class GameBoardUIController : MonoBehaviour {
         hideForfeitConfirmation();
         if (PlayerPrefs.GetString("GameType") == "Network")
         {
+            networking.SendForfeit();
             networking.LeaveRoom();
         }
         else
