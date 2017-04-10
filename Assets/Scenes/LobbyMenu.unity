@@ -3096,7 +3096,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 584914708}
-        m_MethodName: DisconnectFromLobby
+        m_MethodName: DisconnectFromRoom
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
