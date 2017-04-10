@@ -302,9 +302,7 @@ namespace Com.EnsorcelledStudios.Runic
             roomProperties[1] = "stage";
 
             // Change room name to be a unique ID
-            uID = Random.Range(100000, 999999);
-
-            PhotonNetwork.CreateRoom(PhotonNetwork.playerName + uID.ToString(), new RoomOptions() { MaxPlayers = MaxPlayersPerRoom, CustomRoomProperties = playerProperties, CustomRoomPropertiesForLobby = roomProperties }, null);            
+            PhotonNetwork.CreateRoom(PhotonNetwork.playerName, new RoomOptions() { MaxPlayers = MaxPlayersPerRoom, CustomRoomProperties = playerProperties, CustomRoomPropertiesForLobby = roomProperties }, null);            
         }
 
         private void LoadArena()
