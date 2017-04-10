@@ -297,7 +297,7 @@ namespace AI
         gameBoard.movePiece(m.moveFrom, m.moveTo);
 
       // If a piece was removed
-      if (m.removeFrom == -1)
+      if (m.removeFrom != -1)
         gameBoard.removePiece(m.removeFrom);
     }
     // Undo the given move
