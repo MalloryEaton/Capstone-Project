@@ -2,20 +2,24 @@
 
 namespace AI
 {
-  public static class Constants
+  public static class Tags
   {
     public const string EMPTY = "Empty";
     public const string AI_TAG = "Opponent";
     public const string PLAYER_TAG = "Player";
-
+  }
+  public static class Phases
+  {
     public const string PLACEMENT = "placement";
     public const string MOVEMENT = "movement";
     public const string FLYING = "flying";
-
+  }
+  public static class Difficulties { 
     public const string EASY = "easy";
     public const string MEDIUM = "medium";
     public const string HARD = "hard";
-
+  }
+  public static class Configurations {
     public static short[][] MILLS = new short[16][]{
       new short[3]{ 0, 1, 2 }, new short[3]{ 0, 9, 21 },
       new short[3]{ 1, 4, 7 }, new short[3]{ 2, 14, 23 },

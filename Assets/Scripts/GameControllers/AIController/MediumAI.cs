@@ -26,7 +26,7 @@ namespace AI
       if (depth == 0)
         return (evaluateBoardstate(gameBoard, phase));
       // Game over
-      else if (gameOver(gameBoard))
+      else if (isGameOver(gameBoard))
         return (0);
       else if ((childMoves = generateMoves(gameBoard, playerTag, phase)).Count == 0)
         // If playerTag is the same as the player we're evaluating for
@@ -77,15 +77,15 @@ namespace AI
       int numberOfHumanTwoPieces = 0;
 
       for (short i = 0; i < 16; i++) {
-        short[] mill = Constants.MILLS[i];
+        short[] mill = Configurations.MILLS[i];
         short playerPieces = 0;
         short emptySlots = 0;
         short opponentPieces = 0;
 
         foreach (short slot in mill) {
-          if (gameBoard.board[mill[slot]] == Constants.AI_TAG)
+          if (gameBoard.board[mill[slot]] == Tags.AI_TAG)
             playerPieces += 1;
-          else if (gameBoard.board[mill[slot]] == Constants.EMPTY)
+          else if (gameBoard.board[mill[slot]] == Tags.EMPTY)
             emptySlots += 1;
           else
             opponentPieces += 1;
@@ -106,25 +106,25 @@ namespace AI
 
         string thisTag = gameBoard.board[i];
         if (i == 4 || i == 10 || i == 13 || i == 19) {
-          if (thisTag == Constants.AI_TAG)
+          if (thisTag == Tags.AI_TAG)
             score += 2;
-          else if (thisTag != Constants.EMPTY)
+          else if (thisTag != Tags.EMPTY)
             score -= 2;
         }
         else if (i == 1 || i == 9 || i == 14 || i == 22 || i == 7 || i == 11 ||
                  i == 12 || i == 16)
-          if (thisTag == Constants.AI_TAG)
+          if (thisTag == Tags.AI_TAG)
             score += 1;
-          else if (thisTag != Constants.EMPTY)
+          else if (thisTag != Tags.EMPTY)
             score -= 1;
       }
 
       int coefficient;
 
       // Account for number of mills
-      if (phase == Constants.PLACEMENT)
+      if (phase == Phases.PLACEMENT)
         coefficient = 80;
-      else if (phase == Constants.MOVEMENT)
+      else if (phase == Phases.MOVEMENT)
         coefficient = 120;
       else
         coefficient = 180;
@@ -132,24 +132,24 @@ namespace AI
       score -= coefficient * numberOfHumanMills;
 
       // Account for number of total pieces
-      if (phase == Constants.PLACEMENT)
+      if (phase == Phases.PLACEMENT)
         coefficient = 10;
-      else if (phase == Constants.MOVEMENT)
+      else if (phase == Phases.MOVEMENT)
         coefficient = 8;
       else
         coefficient = 6;
-      score += coefficient * gameBoard.getNumPieces(Constants.AI_TAG);
-      score -= coefficient * gameBoard.getNumPieces(Constants.PLAYER_TAG);
+      score += coefficient * gameBoard.getNumPieces(Tags.AI_TAG);
+      score -= coefficient * gameBoard.getNumPieces(Tags.PLAYER_TAG);
 
       // Account for total number of 2- and 1-spot free configurations
-      if (phase == Constants.PLACEMENT)
+      if (phase == Phases.PLACEMENT)
         coefficient = 12;
       else
         coefficient = 10;
       score += coefficient * numberOfAITwoPieces;
       score -= coefficient * numberOfHumanMills;
 
-      if (phase == Constants.PLACEMENT)
+      if (phase == Phases.PLACEMENT)
         coefficient = 10;
       else
         coefficient = 25;
@@ -157,7 +157,7 @@ namespace AI
       return (score);
     }
     // Check if the game is over
-    private bool gameOver(Board gameBoard) {
+    private bool isGameOver(Board gameBoard) {
       bool isOver = false;
 
       return (isOver);
@@ -169,19 +169,31 @@ namespace AI
       short slot;
       short adjacentSlot;
 
-      if (phase == Constants.PLACEMENT) {
+      if (phase == Phases.PLACEMENT)
         for (short i = 0; i < gameBoard.BOARD_SIZE; i++) {
-
+          Move m = new Move();
+          slot = i;
+          if (gameBoard.board[i] == Tags.EMPTY) {
+            gameBoard.board[i] = playerTag;
+            m.moveTo = i;
+            checkMove(gameBoard, playerTag, ref moves, m);
+            gameBoard.board[i] = Tags.EMPTY;
+          }
         }
+      else if (phase == Phases.MOVEMENT) {
+
       }
       return (moves);
     }
+    private void checkMove(Board gameBoard, string playerTag,
+                           ref List<Move> moves, Move m) {
 
+    }
     // Apply the move to the gameBoard
     private void applyMove(Move m, string playerTag,
                            ref Board gameBoard, string phase) {
       // If we're in the placement phase
-      if (phase == Constants.PLACEMENT)
+      if (phase == Phases.PLACEMENT)
         gameBoard.placePiece(m.moveTo, playerTag);
       // In the movement phase, we also have to clear the moveFrom slot
       else
@@ -195,7 +207,7 @@ namespace AI
     private void undoMove(Move m, string playerTag,
                           Board gameBoard, string phase) {
       // If a piece was placed by the move, remove it
-      if (phase == Constants.PLACEMENT)
+      if (phase == Phases.PLACEMENT)
         gameBoard.removePiece(m.moveTo);
       // If a piece was moved, move it back
       else
@@ -212,7 +224,7 @@ namespace AI
       /* For each mill that the slot could potentially be a part of,
        * check if all the slots contain the same color pieces
        */
-      foreach (short[] mill in Constants.MILLS)
+      foreach (short[] mill in Configurations.MILLS)
         if (mill.Contains(slot))
           if (new[] { gameBoard.board[mill[0]],
                     gameBoard.board[mill[1]],

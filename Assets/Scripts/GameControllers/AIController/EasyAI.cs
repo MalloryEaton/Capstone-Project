@@ -22,12 +22,12 @@ namespace AI
 
     public List<short> GetEasyAIMove(string phase) {
       List<short> move = new List<short> { -1, -1, -1 };
-      if (phase == Constants.PLACEMENT)
+      if (phase == Phases.PLACEMENT)
         placementPhase(ref move);
-      else if (phase == Constants.MOVEMENT)
+      else if (phase == Phases.MOVEMENT)
         movementPhase(ref move);
 
-      if (isInMill(move[1], Constants.AI_TAG))
+      if (isInMill(move[1], Tags.AI_TAG))
         removePiece(ref move);
 
       return (move);
@@ -36,14 +36,14 @@ namespace AI
     // Choose a slot to place an orb //
     private void placementPhase(ref List<short> move) {
       // check if we can make a mill
-      moveTo = findMill(Constants.AI_TAG);
+      moveTo = findMill(Tags.AI_TAG);
       // If there is no mill to make, check if we can block a mill
       if (moveTo == -1)
-        moveTo = findMill(Constants.PLAYER_TAG);
+        moveTo = findMill(Tags.PLAYER_TAG);
       // Otherwise, remove a piece at random
       if (moveTo == -1) {
         moveTo = (short)rand.Next(0, 24);
-        while (gameLogicController.runeList[moveTo].tag != Constants.EMPTY)
+        while (gameLogicController.runeList[moveTo].tag != Tags.EMPTY)
           moveTo = (short)rand.Next(0, 24);
       }
 
@@ -59,19 +59,19 @@ namespace AI
       /* Check if there are any places on the board with two pieces owned
        * by the AI and one empty slot
        */
-      potentialMills = findPotentialMills(Constants.AI_TAG);
+      potentialMills = findPotentialMills(Tags.AI_TAG);
       // If there are any, check if the AI can make any mills
       foreach (short[] mill in potentialMills)
-        if ((newMove[0] = findAdjacentOrb(mill, Constants.AI_TAG)) != -1 &&
+        if ((newMove[0] = findAdjacentOrb(mill, Tags.AI_TAG)) != -1 &&
             !mill.Contains(newMove[0])) {
           newMove[1] = findEmptySlotInMill(mill);
           break;
         }
       // If no mill can be made, see if we can block one
       if (newMove[0] == -1 || newMove[1] == -1) {
-        potentialMills = findPotentialMills(Constants.PLAYER_TAG);
+        potentialMills = findPotentialMills(Tags.PLAYER_TAG);
         foreach (short[] mill in potentialMills)
-          if ((newMove[0] = findAdjacentOrb(mill, Constants.AI_TAG)) != -1 &&
+          if ((newMove[0] = findAdjacentOrb(mill, Tags.AI_TAG)) != -1 &&
               !mill.Contains(newMove[0])) {
             newMove[1] = findEmptySlotInMill(mill);
             break;
@@ -80,7 +80,7 @@ namespace AI
       // No mills to make or block. Pick randomly
       if (newMove[0] == -1 || newMove[1] == -1) {
         // Piece to move
-        List<short> movableAIOrbs = getMovableOrbs(Constants.AI_TAG);
+        List<short> movableAIOrbs = getMovableOrbs(Tags.AI_TAG);
         newMove[0] = movableAIOrbs[(short)rand.Next(0, movableAIOrbs.Count)];
         // Where to move it to
         List<short> potentialMoves = placesToMove(newMove[0]);
@@ -94,7 +94,7 @@ namespace AI
     private short findEmptySlotInMill(short[] mill) {
       short emptySlot = -1;
       foreach (short slot in mill)
-        if (gameLogicController.runeList[slot].tag == Constants.EMPTY) {
+        if (gameLogicController.runeList[slot].tag == Tags.EMPTY) {
           emptySlot = slot;
           break;
         }
@@ -107,7 +107,7 @@ namespace AI
       List<short> opponentRunes = new List<short> { };
 
       for (short i = 0; i <= 23; i++)
-        if (gameLogicController.runeList[i].tag == Constants.PLAYER_TAG)
+        if (gameLogicController.runeList[i].tag == Tags.PLAYER_TAG)
           opponentRunes.Add(i);
 
       removeFrom = (short)rand.Next(0, opponentRunes.Count);
@@ -130,7 +130,7 @@ namespace AI
         // Otherwise, an orb is only available to move if it is adjacent to an empty slot
         else {
           foreach (short adjacentRune in gameLogicController.dictionaries.adjacencyDictionary[myOrbs[i]])
-            if (gameLogicController.runeList[adjacentRune].tag == Constants.EMPTY) {
+            if (gameLogicController.runeList[adjacentRune].tag == Tags.EMPTY) {
               movableOrbs.Add(myOrbs[i]);
               break;
             }
@@ -142,12 +142,12 @@ namespace AI
     // Find a potential mill in the placement phase
     private short findMill(string tag) {
       //List<short> emptySlots;
-      //emptySlots = getSlots(Constants.EMPTY);
+      //emptySlots = getSlots(Tags.EMPTY);
 
       /* For each possible mill, if two pieces are the AI and the
       * third is empty, return the empty slot
       */
-      foreach (short[] mill in Constants.MILLS) {
+      foreach (short[] mill in Configurations.MILLS) {
         short AIPieces;
         short emptySlot;
 
@@ -158,7 +158,7 @@ namespace AI
         foreach (short slot in mill)
           if (gameLogicController.runeList[slot].tag == tag)
             AIPieces += 1;
-          else if (gameLogicController.runeList[slot].tag == Constants.EMPTY)
+          else if (gameLogicController.runeList[slot].tag == Tags.EMPTY)
             emptySlot = slot;
 
         /* If exactly two of the pieces are the AI and there is 1 empty
@@ -176,14 +176,14 @@ namespace AI
      */
     private List<short[]> findPotentialMills(string tag) {
       List<short[]> potentialMills = new List<short[]> { };
-      foreach (short[] mill in Constants.MILLS) {
+      foreach (short[] mill in Configurations.MILLS) {
         short pieces = 0;
         short emptySlots = 0;
 
         foreach (short slot in mill)
           if (gameLogicController.runeList[slot].tag == tag)
             pieces += 1;
-          else if (gameLogicController.runeList[slot].tag == Constants.EMPTY)
+          else if (gameLogicController.runeList[slot].tag == Tags.EMPTY)
             emptySlots += 1;
         if (pieces == 2 && emptySlots == 1)
           potentialMills.Add(mill);
@@ -195,7 +195,7 @@ namespace AI
     // Find an orb owned by 'tag' that's adjacent to slot 'slot'
     private short findAdjacentOrb(short[] mill, string tag) {
       short emptySlot = findEmptySlotInMill(mill);
-      foreach (short adjacentSlot in Constants.ADJACENT_SLOTS[emptySlot])
+      foreach (short adjacentSlot in Configurations.ADJACENT_SLOTS[emptySlot])
         if (!mill.Contains(adjacentSlot) &&
           gameLogicController.runeList[adjacentSlot].tag == tag)
           return (adjacentSlot);
@@ -207,7 +207,7 @@ namespace AI
     private bool isInMill(short orb, string tag) {
       short numberOfSameColorOrbs;
 
-      foreach (short[] mill in Constants.MILLS)
+      foreach (short[] mill in Configurations.MILLS)
         if (mill.Contains(orb)) {
           numberOfSameColorOrbs = 0;
           foreach (short slot in mill)
@@ -233,8 +233,8 @@ namespace AI
     // Find all the available moves (empty adjacent slots) for an orb
     private List<short> placesToMove(short slot) {
       List<short> emptyMoves = new List<short> { };
-      foreach (short potentialMove in Constants.ADJACENT_SLOTS[slot])
-        if (gameLogicController.runeList[potentialMove].tag == Constants.EMPTY)
+      foreach (short potentialMove in Configurations.ADJACENT_SLOTS[slot])
+        if (gameLogicController.runeList[potentialMove].tag == Tags.EMPTY)
           emptyMoves.Add(potentialMove);
       return (emptyMoves);
     }

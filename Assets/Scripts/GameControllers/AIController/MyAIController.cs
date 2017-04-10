@@ -26,11 +26,11 @@ public class MyAIController : MonoBehaviour
   public List<short> GetAIMove(string phase, string difficulty) {
     List<short> move;
 
-    if (difficulty == Constants.EASY) {
+    if (difficulty == Difficulties.EASY) {
       //EasyAI ai = new EasyAI();
       move = easyAI.GetEasyAIMove(phase);
     }
-    else if (difficulty == Constants.MEDIUM) {
+    else if (difficulty == Difficulties.MEDIUM) {
       move = easyAI.GetEasyAIMove(phase);
     }
     // Hard
