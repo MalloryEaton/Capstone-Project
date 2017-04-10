@@ -46,9 +46,11 @@ public class StoryTextController5 : MonoBehaviour
     private GameObject whiteMage;
     private GameObject yellowMage;
 
+    public Image mageImage;
+    public Text mageName;
+
     void Start()
     {
-        PlayerPrefs.SetInt("StoryStage", 5);
         blueMage = GameObject.Find("BlueMage");
         whiteMage = GameObject.Find("WhiteMage");
         greenMage = GameObject.Find("GreenMage");
@@ -189,7 +191,6 @@ public class StoryTextController5 : MonoBehaviour
             TextList.Add("2...");
             TextList.Add("3!!!");
             TextList.Add("");
-
         }
     }
 
@@ -288,7 +289,9 @@ public class StoryTextController5 : MonoBehaviour
             else if (textIndex == 5)
             {
                 //green
-                rightTextBox.GetComponentInChildren<Image>().sprite = mageSprites[1];
+                greenMage.SetActive(true);
+                mageImage.sprite = mageSprites[1];
+                mageName.text = "Sebastian";
                 textbox = "right";
                 SetUpTextBoxes("right");
                 autoTypeRight.autoType = true;
@@ -297,7 +300,9 @@ public class StoryTextController5 : MonoBehaviour
             else if (textIndex == 6)
             {
                 //purple
-                rightTextBox.GetComponentInChildren<Image>().sprite = mageSprites[2];
+                purpleMage.SetActive(true);
+                mageImage.sprite = mageSprites[2];
+                mageName.text = "Sir Gilbaard";
                 textbox = "right";
                 SetUpTextBoxes("right");
                 autoTypeRight.autoType = true;
@@ -306,7 +311,9 @@ public class StoryTextController5 : MonoBehaviour
             else if (textIndex == 7)
             {
                 //yellow
-                rightTextBox.GetComponentInChildren<Image>().sprite = mageSprites[3];
+                yellowMage.SetActive(true);
+                mageImage.sprite = mageSprites[3];
+                mageName.text = "Merwin";
                 textbox = "right";
                 SetUpTextBoxes("right");
                 autoTypeRight.autoType = true;
@@ -315,7 +322,9 @@ public class StoryTextController5 : MonoBehaviour
             else if (textIndex == 8)
             {
                 //red
-                rightTextBox.GetComponentInChildren<Image>().sprite = mageSprites[4];
+                redMage.SetActive(true);
+                mageImage.sprite = mageSprites[4];
+                mageName.text = "Quin";
                 textbox = "right";
                 SetUpTextBoxes("right");
                 autoTypeRight.autoType = true;
@@ -324,7 +333,9 @@ public class StoryTextController5 : MonoBehaviour
             else if (textIndex == 9)
             {
                 //orange
-                rightTextBox.GetComponentInChildren<Image>().sprite = mageSprites[5];
+                orangeMage.SetActive(true);
+                mageImage.sprite = mageSprites[5];
+                mageName.text = "Theodore";
                 textbox = "right";
                 SetUpTextBoxes("right");
                 autoTypeRight.autoType = true;
@@ -335,13 +346,26 @@ public class StoryTextController5 : MonoBehaviour
                 //all
                 textbox = "all";
                 SetUpTextBoxes("all");
-                autoTypeAll.autoType = true;
-                autoTypeAll.StartText(TextList[textIndex]);
             }
-            else if (textIndex == 16)
+            else if (textIndex == 11)
+            {
+                //orange
+                textbox = "right";
+                SetUpTextBoxes("right");
+                autoTypeRight.autoType = true;
+                autoTypeRight.StartText(TextList[textIndex]);
+            }
+            else if (textIndex == 12)
+            {
+                textbox = "left";
+                SetUpTextBoxes("left");
+                autoTypeLeft.autoType = true;
+                autoTypeLeft.StartText(TextList[textIndex]);
+            }
+            else if (textIndex == 17)
             {
                 LoadingPanel.GetComponent<Animator>().SetBool("isDisplayed", true);
-                StartCoroutine(LoadAsync(15));
+                StartCoroutine(LoadAsync(16));
             }
             else
             {
@@ -435,6 +459,11 @@ public class StoryTextController5 : MonoBehaviour
                 textIndex++;
                 SceneLogic();
             }
+        }
+        else //all
+        {
+            textIndex++;
+            SceneLogic();
         }
     }
 
