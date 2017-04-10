@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 using AI;
 
@@ -8,6 +9,11 @@ public class Move
   public short moveFrom = -1;
   public short moveTo = -1;
   public short removeFrom = -1;
+  public int score = 0;
+
+  public List<short> list() {
+    return (new List<short> { moveFrom, moveTo, removeFrom });
+  }
 }
 
 // Represent the game board

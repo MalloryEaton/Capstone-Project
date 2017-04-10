@@ -814,12 +814,12 @@ public class GameLogicController : MonoBehaviour
         {
             if (gamePhase == "placement")
             {
-                AIMove = aicontroller.GetAIMove("placement", "easy");
+                AIMove = aicontroller.GetAIMove("placement", AIDifficulty);
                 PlacementPhase(AIMove[1]);
             }
             else
             {
-                AIMove = aicontroller.GetAIMove("movement", "easy");
+                AIMove = aicontroller.GetAIMove("movement", AIDifficulty);
                 //Debug.Log("AI Move From: " + AIMove[0]);
                 //Debug.Log("AI Move To: " + AIMove[1]);
                 runeFromLocation = AIMove[0];

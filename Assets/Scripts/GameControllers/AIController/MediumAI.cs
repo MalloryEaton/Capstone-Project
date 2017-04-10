@@ -14,9 +14,44 @@ namespace AI
      * +----------------------------------------------------------------+
      */
     private const int MAX_SCORE = 1000000;
+    private const short DEPTH = 4;
 
     private string currentPlayer;
     private string opponentPlayer;
+    private int numberOfMoves = 0;
+    private int movesThatRemove = 0;
+
+    public List<short> GetMediumAIMove(Board gameBoard, string phase) {
+      Move move;
+
+      if (phase == Phases.PLACEMENT)
+        move = makePlacement(gameBoard);
+      else
+        move = makeMovement(gameBoard);
+
+      return (move.list());
+    }
+    // Decide where to place an orb
+    private Move makePlacement(Board gameBoard) {
+      List<Move> moves = generateMoves(gameBoard, Tags.AI_TAG, Phases.PLACEMENT);
+      foreach (Move m in moves) {
+        applyMove(m, Tags.AI_TAG, ref gameBoard, Phases.PLACEMENT);
+        m.score += alphaBeta(Tags.PLAYER_TAG, gameBoard, Phases.PLACEMENT,
+                             DEPTH, int.MaxValue, int.MaxValue);
+        undoMove(m, Tags.AI_TAG, ref gameBoard, Phases.PLACEMENT);
+      }
+
+      // Sort the moves by their score
+      moves = moves.OrderBy(o => o.score).ToList();
+
+      return (moves[0]);
+    }
+
+    private Move makeMovement(Board gameBoard) {
+      Move m = new Move();
+
+      return (m);
+    }
 
     private int alphaBeta(string playerTag, Board gameBoard,
                           string phase, int depth, int alpha, int beta) {
@@ -46,7 +81,7 @@ namespace AI
                                      depth - 1, alpha, beta));
             // Check for cutoff
             if (beta <= alpha) {
-              undoMove(m, playerTag, gameBoard, phase);
+              undoMove(m, playerTag, ref gameBoard, phase);
               break;
             }
           }
@@ -57,11 +92,11 @@ namespace AI
                                     depth - 1, alpha, beta));
             //Check for cutoff
             if (beta <= alpha) {
-              undoMove(m, playerTag, gameBoard, phase);
+              undoMove(m, playerTag, ref gameBoard, phase);
               break;
             }
           }
-          undoMove(m, playerTag, gameBoard, phase);
+          undoMove(m, playerTag, ref gameBoard, phase);
         }
         if (playerTag == currentPlayer)
           return (alpha);
@@ -166,28 +201,90 @@ namespace AI
     private List<Move> generateMoves(Board gameBoard,
                                      string playerTag, string phase) {
       List<Move> moves = new List<Move> { };
-      short slot;
-      short adjacentSlot;
 
+      // Each empty slot is an available move
       if (phase == Phases.PLACEMENT)
         for (short i = 0; i < gameBoard.BOARD_SIZE; i++) {
           Move m = new Move();
-          slot = i;
           if (gameBoard.board[i] == Tags.EMPTY) {
-            gameBoard.board[i] = playerTag;
             m.moveTo = i;
-            checkMove(gameBoard, playerTag, ref moves, m);
+            // Place piece
+            gameBoard.board[i] = playerTag;
+            checkIfMoveMakesMill(gameBoard, playerTag, ref moves, m);
+            // Undo that placement
             gameBoard.board[i] = Tags.EMPTY;
           }
         }
+      /* Each empty slot adjacent to an orb is an available move for
+       * said orb
+       */
       else if (phase == Phases.MOVEMENT) {
-
+        for (short i = 0; i < gameBoard.BOARD_SIZE; i++)
+          if (gameBoard.board[i] == playerTag) {
+            short[] adj = Configurations.ADJACENT_SLOTS[i];
+            for (short j = 0; j < adj.Count(); j++) {
+              Move m = new Move();
+              m.moveFrom = i;
+              if (gameBoard.board[j] == Tags.EMPTY) {
+                m.moveTo = j;
+                // Make move
+                gameBoard.board[i] = Tags.EMPTY;
+                gameBoard.board[j] = playerTag;
+                checkIfMoveMakesMill(gameBoard, playerTag, ref moves, m);
+                // Undo that move
+                gameBoard.board[i] = playerTag;
+                gameBoard.board[j] = Tags.EMPTY;
+              }
+            }
+          }
       }
+      // Each empty slot is an available move for each piece
+      else if (phase == Phases.FLYING) {
+        List<short> emptySlots = new List<short>();
+        List<short> playerOrbs = new List<short>();
+
+        for (short i = 0; i < gameBoard.BOARD_SIZE; i++)
+          if (gameBoard.board[i] == playerTag)
+            playerOrbs.Add(i);
+          else if (gameBoard.board[i] == Tags.EMPTY)
+            emptySlots.Add(i);
+
+        foreach (short orb in playerOrbs) {
+          Move m = new Move();
+          // Since we're moving from here, we can set this as empty
+          gameBoard.board[orb] = Tags.EMPTY;
+          m.moveFrom = orb;
+          foreach (short slot in emptySlots) {
+            gameBoard.board[slot] = playerTag;
+            m.moveTo = slot;
+            checkIfMoveMakesMill(gameBoard, playerTag, ref moves, m);
+            gameBoard.board[slot] = Tags.EMPTY;
+          }
+          gameBoard.board[orb] = playerTag;
+        }
+      }
+
+      numberOfMoves += moves.Count;
+
       return (moves);
     }
-    private void checkMove(Board gameBoard, string playerTag,
+    private void checkIfMoveMakesMill(Board gameBoard, string playerTag,
                            ref List<Move> moves, Move m) {
-
+      /* If we made a mill, add a move for each possible piece that can
+       * be removed
+       */
+      if (isInMill(gameBoard, m.moveTo)) {
+        for (short i = 0; i < gameBoard.BOARD_SIZE; i++)
+          if (gameBoard.board[i] != playerTag &&
+              gameBoard.board[i] != Tags.EMPTY &&
+              canBeRemoved(gameBoard, i)) {
+            m.removeFrom = i;
+            moves.Add(m);
+            movesThatRemove += 1;
+          }
+      }
+      else
+        moves.Add(m);
     }
     // Apply the move to the gameBoard
     private void applyMove(Move m, string playerTag,
@@ -205,7 +302,7 @@ namespace AI
     }
     // Undo the given move
     private void undoMove(Move m, string playerTag,
-                          Board gameBoard, string phase) {
+                          ref Board gameBoard, string phase) {
       // If a piece was placed by the move, remove it
       if (phase == Phases.PLACEMENT)
         gameBoard.removePiece(m.moveTo);
@@ -218,7 +315,7 @@ namespace AI
         gameBoard.placePiece(m.removeFrom, playerTag);
     }
     // Check if a new mill has been made with the
-    private bool madeNewMill(Board gameBoard, short slot) {
+    private bool isInMill(Board gameBoard, short slot) {
       string player = gameBoard.board[slot];
 
       /* For each mill that the slot could potentially be a part of,
@@ -234,7 +331,22 @@ namespace AI
       // No mills were found
       return (false);
     }
-
+    // Checks if a given orb is eligible for removal
+    private bool canBeRemoved(Board gameBoard, short orb) {
+      if (!isInMill(gameBoard, orb) ||
+        allInMill(gameBoard, gameBoard.board[orb]))
+        return (true);
+      else
+        return (false);
+    }
+    // Checks if all orbs of a given player are in a mill
+    private bool allInMill(Board gameBoard, string playerTag) {
+      for (short i = 0; i < gameBoard.BOARD_SIZE; i++)
+        if (gameBoard.board[i] == playerTag)
+          if (!isInMill(gameBoard, i))
+            return (false);
+      return (false);
+    }
     // return the greater of two numbers
     private static int getMax(int first, int second) {
       int result;

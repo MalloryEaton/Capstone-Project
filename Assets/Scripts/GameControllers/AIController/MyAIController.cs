@@ -16,10 +16,12 @@ public class MyAIController : MonoBehaviour
 {
   private EasyAI easyAI;
   private MediumAI mediumAI;
+  private GameLogicController gameLogicController;
 
   void Start() {
     easyAI = FindObjectOfType(typeof(EasyAI)) as EasyAI;
     mediumAI = FindObjectOfType(typeof(MediumAI)) as MediumAI;
+    gameLogicController = FindObjectOfType(typeof(GameLogicController)) as GameLogicController;
   }
 
   // Gets a move from the AI
@@ -31,7 +33,7 @@ public class MyAIController : MonoBehaviour
       move = easyAI.GetEasyAIMove(phase);
     }
     else if (difficulty == Difficulties.MEDIUM) {
-      move = easyAI.GetEasyAIMove(phase);
+      move = mediumAI.GetMediumAIMove(boardFromRuneList(), Phases.PLACEMENT);
     }
     // Hard
     else {
@@ -39,5 +41,14 @@ public class MyAIController : MonoBehaviour
     }
 
     return (move);
+  }
+
+  private Board boardFromRuneList() {
+    Board gameBoard = new Board();
+
+    for (int i = 0; i < gameBoard.BOARD_SIZE; i++)
+      gameBoard.board[i] = gameLogicController.runeList[i].tag;
+
+    return (gameBoard);
   }
 }

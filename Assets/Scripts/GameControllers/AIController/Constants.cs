@@ -15,9 +15,9 @@ namespace AI
     public const string FLYING = "flying";
   }
   public static class Difficulties { 
-    public const string EASY = "easy";
-    public const string MEDIUM = "medium";
-    public const string HARD = "hard";
+    public const string EASY = "Easy";
+    public const string MEDIUM = "Medium";
+    public const string HARD = "Hard";
   }
   public static class Configurations {
     public static short[][] MILLS = new short[16][]{
