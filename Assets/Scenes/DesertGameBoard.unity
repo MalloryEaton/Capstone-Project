@@ -16788,6 +16788,41 @@ Prefab:
       propertyPath: m_SizeDelta.x
       value: -17
       objectReference: {fileID: 0}
+    - target: {fileID: 224594007264756514, guid: ebdec55599f98b1478baaf76372e0f50,
+        type: 2}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114473024455583688, guid: ebdec55599f98b1478baaf76372e0f50,
+        type: 2}
+      propertyPath: m_Color.a
+      value: 0.6666667
+      objectReference: {fileID: 0}
+    - target: {fileID: 114141550841157594, guid: ebdec55599f98b1478baaf76372e0f50,
+        type: 2}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114141550841157594, guid: ebdec55599f98b1478baaf76372e0f50,
+        type: 2}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114141550841157594, guid: ebdec55599f98b1478baaf76372e0f50,
+        type: 2}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114141550841157594, guid: ebdec55599f98b1478baaf76372e0f50,
+        type: 2}
+      propertyPath: m_Color.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114868625175688808, guid: ebdec55599f98b1478baaf76372e0f50,
+        type: 2}
+      propertyPath: scrollView
+      value: 
+      objectReference: {fileID: 964432642}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ebdec55599f98b1478baaf76372e0f50, type: 2}
   m_IsPrefabParent: 0

@@ -846,6 +846,7 @@ GameObject:
   - component: {fileID: 276430202}
   - component: {fileID: 276430201}
   - component: {fileID: 276430200}
+  - component: {fileID: 276430203}
   m_Layer: 5
   m_Name: SettingsButton
   m_TagString: Untagged
@@ -890,7 +891,7 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 0.666}
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 0.78431374}
     m_HighlightedColor: {r: 1, g: 1, b: 1, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
@@ -956,6 +957,20 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 276430198}
+--- !u!114 &276430203
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 276430198}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1573420865, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.6666667}
+  m_EffectDistance: {x: 2, y: -1}
+  m_UseGraphicAlpha: 1
 --- !u!1 &281563305
 GameObject:
   m_ObjectHideFlags: 0
@@ -3023,6 +3038,26 @@ Prefab:
       propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: submit
       objectReference: {fileID: 0}
+    - target: {fileID: 114758583394316486, guid: ebdec55599f98b1478baaf76372e0f50,
+        type: 2}
+      propertyPath: m_Colors.m_NormalColor.a
+      value: 0.78431374
+      objectReference: {fileID: 0}
+    - target: {fileID: 114141550841157594, guid: ebdec55599f98b1478baaf76372e0f50,
+        type: 2}
+      propertyPath: m_Color.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114473024455583688, guid: ebdec55599f98b1478baaf76372e0f50,
+        type: 2}
+      propertyPath: m_Color.a
+      value: 0.6666667
+      objectReference: {fileID: 0}
+    - target: {fileID: 114868625175688808, guid: ebdec55599f98b1478baaf76372e0f50,
+        type: 2}
+      propertyPath: scrollView
+      value: 
+      objectReference: {fileID: 841905122}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ebdec55599f98b1478baaf76372e0f50, type: 2}
   m_IsPrefabParent: 0
@@ -3065,6 +3100,42 @@ RectTransform:
   m_PrefabParentObject: {fileID: 224258400020533642, guid: ebdec55599f98b1478baaf76372e0f50,
     type: 2}
   m_PrefabInternal: {fileID: 841905119}
+--- !u!1 &841905127 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1064247930741286, guid: ebdec55599f98b1478baaf76372e0f50,
+    type: 2}
+  m_PrefabInternal: {fileID: 841905119}
+--- !u!95 &841905128
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 841905127}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: a8c765596910d9246b2595d884126160, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+--- !u!114 &841905129
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 841905127}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1573420865, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.6666667}
+  m_EffectDistance: {x: 2, y: -1}
+  m_UseGraphicAlpha: 1
 --- !u!114 &858219102 stripped
 MonoBehaviour:
   m_PrefabParentObject: {fileID: 114637255296853950, guid: e440454c9e50d284086f2aff1a8aa917,

@@ -176,6 +176,7 @@ public class NetworkingController : Photon.PunBehaviour
         {
             gameBoardUI.displayNotification();
         }
+
     }
     
     [PunRPC]

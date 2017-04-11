@@ -16,6 +16,7 @@ public class ChatScrollList : MonoBehaviour {
 
     public Transform contentPanel;
     public GameObject chatEntry;
+    public GameObject scrollView;
 
     // Use this for initialization
     void Start () {
@@ -31,5 +32,6 @@ public class ChatScrollList : MonoBehaviour {
         //ces.playerName.text = name;
         // ces.message.text = msg;
         newChatEntry.transform.SetParent(contentPanel);
+        scrollView.GetComponent<ScrollRect>().normalizedPosition = new Vector2(0, 0);
     }
 }
