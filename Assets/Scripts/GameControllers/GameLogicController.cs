@@ -1323,6 +1323,8 @@ public class GameLogicController : MonoBehaviour
 
     public void RemoveOrb(short runeNumber)
     {
+        waitingOnAnimation = true;
+
         if (isPlayer1Turn)
             player1Mage.GetComponent<MageController>().PlayAttack1Animation(GameObject.Find("Rune" + runeNumber));
         else
@@ -1370,6 +1372,8 @@ public class GameLogicController : MonoBehaviour
                 GameOver();
             else //continue game
                 ChangeSide();
+
+            waitingOnAnimation = false;
         });
 
     }
