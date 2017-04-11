@@ -812,6 +812,7 @@ public class GameLogicController : MonoBehaviour
                 {
                     LeanTween.cancel(GameObject.Find("CenterOfBoard"));
                     DisplayMovementPhaseText();
+                    previousGamePhase = "movementPhase";
                 }
             }
             else
