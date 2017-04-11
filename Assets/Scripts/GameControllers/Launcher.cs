@@ -19,20 +19,19 @@ namespace Com.EnsorcelledStudios.Runic
         public GameObject progressLabel;
         public GameObject LoadingScreen;
         public InputField inputField;
-		public GameObject gamesPanel;
-		public GameScrollList scrollList;
+        public GameObject gamesPanel;
+        public GameScrollList scrollList;
         private Hashtable playerProperties = new Hashtable();
         private string[] roomProperties = new string[2];
         public GameEntryScript gameEntry;
 
-		//List that will contain available netwrok games
-		//GameListItem defined in GameScrollList.cs
-		public List<GameListItem> gameList;
-
-        public GameObject backButton;
+        //List that will contain available netwrok games
+        //GameListItem defined in GameScrollList.cs
+        public List<GameListItem> gameList;
         public string selectedRoomName;
         public Button joinGameButton;
         public LobbyController lobbyUI;
+
         #endregion
 
         #region Private Variables
@@ -73,7 +72,6 @@ namespace Com.EnsorcelledStudios.Runic
         void Awake()
         {
             PlayerPrefs.SetString("GameType", "Network");
-
             // #NotImportant
             // Force LogLevel
             PhotonNetwork.logLevel = Loglevel;
@@ -102,7 +100,7 @@ namespace Com.EnsorcelledStudios.Runic
         /// </summary>
         void Start()
         {
-            backButton.SetActive(false);
+            Debug.Log("START START START START");
             controlPanel.SetActive(true);
             LoadingScreen.GetComponent<Animator>().SetBool("isDisplayed", false);
             LauncherStatic.launcher = this;
@@ -117,25 +115,25 @@ namespace Com.EnsorcelledStudios.Runic
             // If we're in a lobby, update the list of available games.
             if (PhotonNetwork.insideLobby == true)
             {
-				gameList.Clear();
+                gameList.Clear();
 
                 roomInfo = PhotonNetwork.GetRoomList();
 
                 foreach (RoomInfo room in roomInfo)
                 {
                     //TODO: Populate ScrollRect
-                    GameListItem game = new GameListItem ();
+                    GameListItem game = new GameListItem();
                     //GameEntryScript game = Instantiate(gameEntry);
                     // Hide the unique ID from the screen
                     game.playerName = room.Name;
                     // This code works for accessing custom properties
-					game.characterIconString = room.CustomProperties["color"].ToString();
+                    game.characterIconString = room.CustomProperties["color"].ToString();
                     //game.stageIconString = room.CustomProperties["stage"].ToString();
-					gameList.Add(game);
+                    gameList.Add(game);
                 }
 
                 scrollList.clearList();
-				scrollList.addGames(gameList);
+                scrollList.addGames(gameList);
             }
         }
 
@@ -143,7 +141,7 @@ namespace Com.EnsorcelledStudios.Runic
         {
             LoadingScreen.GetComponent<Animator>().SetBool("isDisplayed", false);
             controlPanel.SetActive(false);
-
+            gamesPanel.SetActive(true);
             OnReceivedRoomListUpdate();
         }
 
@@ -249,27 +247,32 @@ namespace Com.EnsorcelledStudios.Runic
                 // Get the player name and save it
                 if (inputField.text.Trim() == "")
                 {
-                    PhotonNetwork.playerName = "Worthy Wizard";
+                    // TODO: Alert the player that they need to put in a username.
                 }
                 else
                 {
                     PhotonNetwork.playerName = inputField.text;
-                }
 
-                // Keep track of the will to join a room, because when we come back from the game 
-                // we will get a callback that we are connected, so we need to know what to do then
-                isConnecting = true;
+                    LoadingScreen.GetComponent<Animator>().SetBool("isDisplayed", true);
+                    controlPanel.SetActive(false);
 
-                LoadingScreen.GetComponent<Animator>().SetBool("isDisplayed", true);
-                controlPanel.SetActive(false);
-                backButton.SetActive(true);
+                    gamesPanel.SetActive(true);
 
-                // We check if we are connected or not, we join if we are, else we initiate the 
-                // connection to the server.
-                if (!PhotonNetwork.connected)
-                {
-                    // #Critical We must first and foremost connect to Photon Online Server.
-                    PhotonNetwork.ConnectUsingSettings(_gameVersion);
+
+
+                    // Keep track of the will to join a room, because when we come back from the game 
+                    // we will get a callback that we are connected, so we need to know what to do then
+                    isConnecting = true;
+
+
+                    // We check if we are connected or not, we join if we are, else we initiate the 
+                    // connection to the server.
+                    if (!PhotonNetwork.connected)
+                    {
+                        // #Critical We must first and foremost connect to Photon Online Server.
+                        PhotonNetwork.ConnectUsingSettings(_gameVersion);
+                    }
+
                 }
             }
             else
@@ -305,7 +308,7 @@ namespace Com.EnsorcelledStudios.Runic
             roomProperties[1] = "stage";
 
             // Change room name to be a unique ID
-            PhotonNetwork.CreateRoom(PhotonNetwork.playerName, new RoomOptions() { MaxPlayers = MaxPlayersPerRoom, CustomRoomProperties = playerProperties, CustomRoomPropertiesForLobby = roomProperties }, null);            
+            PhotonNetwork.CreateRoom(PhotonNetwork.playerName, new RoomOptions() { MaxPlayers = MaxPlayersPerRoom, CustomRoomProperties = playerProperties, CustomRoomPropertiesForLobby = roomProperties }, null);
         }
 
         private void LoadArena()
@@ -352,7 +355,10 @@ namespace Com.EnsorcelledStudios.Runic
         public void DisconnectFromPhoton()
         {
             PhotonNetwork.Disconnect();
-            backButton.SetActive(false);
+
+            gamesPanel.SetActive(false);
+            // backButton.SetActive(false);
+
             // TODO: This should bring back up the login stuff.
         }
 

@@ -5,6 +5,7 @@ using UnityEngine;
 public class CameraMovementController : MonoBehaviour {
 
     public Camera MainCam;
+
     public List<Vector3> positionList;
     public List<Quaternion> rotationList;
     private int index;
@@ -46,8 +47,6 @@ public class CameraMovementController : MonoBehaviour {
 
     private void InitializeCameraPositions()
     {
-        //192.5, 105.7, 5
-        //44.774, 135, 0
         positionList.Add(new Vector3(-102.29f, 80f, -242.3f)); //forest
         positionList.Add(new Vector3(-1.3f, 94.2f, -155.2f)); //graveyard
         positionList.Add(new Vector3(156.11f, 83.77f, 9.25f)); //desert

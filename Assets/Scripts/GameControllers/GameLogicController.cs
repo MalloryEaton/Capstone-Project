@@ -47,7 +47,8 @@ public class GameLogicController : MonoBehaviour
     public bool isPlayer1Turn;
     public bool waitingOnOtherPlayer;
     public bool waitingOnAnimation;
-    
+    public bool menuIsOpen;
+
     private short startingNumberOfOrbs;
     private short player1OrbCount;
     private short player2OrbCount;
@@ -67,11 +68,12 @@ public class GameLogicController : MonoBehaviour
 
     private AudioSource moveSound;
     private AudioSource removeSound;
+    private AudioSource millSound;
+    public AudioSource waterSound;
     public GameObject music;
 
     public Slider sfxSlider;
     public Slider musicSlider;
-
 
     private float speed = 0.3f;
 
@@ -86,9 +88,11 @@ public class GameLogicController : MonoBehaviour
 
     void Start()
     {
+        menuIsOpen = false;
         AudioSource[] audio = GetComponents<AudioSource>();
         moveSound = audio[0];
         removeSound = audio[1];
+        millSound = audio[2];
 
         moveSound.volume = sfxSlider.value;
         removeSound.volume = sfxSlider.value;
@@ -225,6 +229,9 @@ public class GameLogicController : MonoBehaviour
     {
         moveSound.volume = sfxSlider.value;
         removeSound.volume = sfxSlider.value;
+        millSound.volume = sfxSlider.value;
+        if (SceneManager.GetActiveScene().name == "WaterGameBoard")
+            waterSound.volume = sfxSlider.value;
     }
 
     public void musicVolumeUpdate()
@@ -645,6 +652,7 @@ public class GameLogicController : MonoBehaviour
     // Removal //
     private void PrepareForRemovalPhase()
     {
+        millSound.Play();
         print("YOU GOT A MILL!");
         previousGamePhase = gamePhase;
         gamePhase = "removal";
@@ -804,6 +812,7 @@ public class GameLogicController : MonoBehaviour
                 {
                     LeanTween.cancel(GameObject.Find("CenterOfBoard"));
                     DisplayMovementPhaseText();
+                    previousGamePhase = "movementPhase";
                 }
             }
             else

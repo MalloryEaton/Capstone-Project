@@ -185,35 +185,36 @@ public class CharacterSelectScript : MonoBehaviour {
     {
         if (!isCharacterSelected)
         {
-            if (selection == "Black")
+            string player1Color = PlayerPrefs.GetString("Player1Color");
+            if (selection == "Black" && selection != player1Color)
             {
                 BlackMage.SetActive(true);
             }
-            else if (selection == "Blue")
+            else if (selection == "Blue" && selection != player1Color)
             {
                 BlueMage.SetActive(true);
             }
-            else if (selection == "Orange")
+            else if (selection == "Orange" && selection != player1Color)
             {
                 OrangeMage.SetActive(true);
             }
-            else if (selection == "Green")
+            else if (selection == "Green" && selection != player1Color)
             {
                 GreenMage.SetActive(true);
             }
-            else if (selection == "Yellow")
+            else if (selection == "Yellow" && selection != player1Color)
             {
                 YellowMage.SetActive(true);
             }
-            else if (selection == "Red")
+            else if (selection == "Red" && selection != player1Color)
             {
                 RedMage.SetActive(true);
             }
-            else if (selection == "White")
+            else if (selection == "White" && selection != player1Color)
             {
                 WhiteMage.SetActive(true);
             }
-            else if (selection == "Purple")
+            else if (selection == "Purple" && selection != player1Color)
             {
                 PurpleMage.SetActive(true);
             }

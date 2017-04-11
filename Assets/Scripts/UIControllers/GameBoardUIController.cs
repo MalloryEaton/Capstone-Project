@@ -31,9 +31,6 @@ public class GameBoardUIController : MonoBehaviour {
     public GameObject forfeitConfirmationPanel;
     public GameObject drawPanel;
 
-
-
-
     void Start()
     {
         LoadingPanel = GameObject.Find("LoadingPanel");
@@ -54,13 +51,12 @@ public class GameBoardUIController : MonoBehaviour {
         forfeitConfirmationPanel.SetActive(false);
         drawPanel.SetActive(false);
     }
-
-   
-
+    
     public void exitToMenu()
     {
         hideMenu();
         hideForfeitConfirmation();
+        hideMenu();
         if (PlayerPrefs.GetString("GameType") == "Network")
         {
             networking.SendForfeit();
@@ -88,7 +84,7 @@ public class GameBoardUIController : MonoBehaviour {
         if(MenuPanel.GetComponent<Animator>().GetBool("isDisplayed") == false)
         {
             MenuPanel.GetComponent<Animator>().SetBool("isDisplayed", true);
-            glc.waitingOnAnimation = true;
+            glc.menuIsOpen = true;
             chatInput.enabled = false;
             csl.enabled = false;
             chatButton.enabled = false;
@@ -102,7 +98,7 @@ public class GameBoardUIController : MonoBehaviour {
     public void hideMenu()
     {
         MenuPanel.GetComponent<Animator>().SetBool("isDisplayed", false);
-        glc.waitingOnAnimation = false;
+        glc.menuIsOpen = false;
         chatInput.enabled = true;
         csl.enabled = true;
         chatButton.enabled = true;
@@ -140,7 +136,7 @@ public class GameBoardUIController : MonoBehaviour {
         winMessage.SetActive(false);
 
         //show loading panel and load scene
-        if(PlayerPrefs.GetString("GameType") == "Story")
+        if (PlayerPrefs.GetString("GameType") == "Story")
         {
             LoadingPanel.GetComponent<Animator>().SetBool("isDisplayed", true);
             switch (PlayerPrefs.GetInt("StoryStage"))
@@ -164,6 +160,11 @@ public class GameBoardUIController : MonoBehaviour {
                     //    StartCoroutine(LoadAsync(16));
                     //    break;
             }
+        }
+        else if (PlayerPrefs.GetString("GameType") == "Network")
+        {
+            LoadingPanel.GetComponent<Animator>().SetBool("isDisplayed", true);
+            networkController.LeaveRoom();
         }
         else if (PlayerPrefs.GetString("GameType") != "Story")
         {
@@ -199,6 +200,7 @@ public class GameBoardUIController : MonoBehaviour {
             chatInput.GetComponent<Animator>().SetBool("isDisplayed", true);
             chatScrollButton.enabled = true;
             displayChatScroll();
+            hideNotification();
         }
         else
         {
@@ -227,7 +229,7 @@ public class GameBoardUIController : MonoBehaviour {
         forfeitConfirmationPanel.SetActive(true);
         hideMenu();
         forfeitConfirmationPanel.GetComponent<Animator>().SetBool("isDisplayed", true);
-        glc.waitingOnAnimation = true;
+        glc.menuIsOpen = true;
         chatInput.enabled = false;
         csl.enabled = false;
         chatButton.enabled = false;
@@ -244,7 +246,7 @@ public class GameBoardUIController : MonoBehaviour {
     {
         drawPanel.SetActive(true);
         drawPanel.GetComponent<Animator>().SetBool("isDisplayed", true);
-        glc.waitingOnAnimation = true;
+        glc.menuIsOpen = true;
         chatInput.enabled = false;
         csl.enabled = false;
         chatButton.enabled = false;
@@ -255,9 +257,19 @@ public class GameBoardUIController : MonoBehaviour {
     {
         drawPanel.SetActive(false);
         drawPanel.GetComponent<Animator>().SetBool("isDisplayed", false);
-        glc.waitingOnAnimation = false;
+        glc.menuIsOpen = false;
         chatInput.enabled = true;
         csl.enabled = true;
         chatButton.enabled = true;
+    }
+
+    public void displayNotification()
+    {
+        chatButton.GetComponent<Animator>().SetBool("isNotification", true);
+    }
+
+    public void hideNotification()
+    {
+        chatButton.GetComponent<Animator>().SetBool("isNotification", false);
     }
 }

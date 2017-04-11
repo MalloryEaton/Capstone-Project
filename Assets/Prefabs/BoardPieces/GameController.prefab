@@ -25,6 +25,7 @@ GameObject:
   - component: {fileID: 114797083737760412}
   - component: {fileID: 82926883686594426}
   - component: {fileID: 82180262377120206}
+  - component: {fileID: 82994781391608700}
   m_Layer: 0
   m_Name: GameController
   m_TagString: Untagged
@@ -54,7 +55,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 83c68a76a8c478b498db3ff87bc5341b, type: 3}
+  m_audioClip: {fileID: 8300000, guid: f98725d0b1357be459245b0e86a536f2, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -134,10 +135,90 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 46dc408714a7d2e4c8db81bc8db975d1, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 56fff8824e7659840a37118443a3fa07, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 0.739
   m_Pitch: 1.13
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - serializedVersion: 2
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+--- !u!82 &82994781391608700
+AudioSource:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1676204182355800}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: ac83f3fe217d96a468df1bac3bfc6685, type: 3}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
   Loop: 0
   Mute: 0
   Spatialize: 0
@@ -241,19 +322,30 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  dictionaries: {fileID: 0}
+  uiController: {fileID: 0}
   player1Color: 
   player2Color: 
+  playerForfeit: 
   gamePhase: 
+  isAIGame: 0
+  isAITurn: 0
   isNetworkGame: 0
   isPlayer1: 0
+  AIDifficulty: 
   isPlayer1Turn: 0
-  preventClick: 0
   waitingOnOtherPlayer: 0
   waitingOnAnimation: 0
+  menuIsOpen: 0
   runeFromLocation: 0
   LoadingScreen: {fileID: 1325177839209350, guid: 5b7264832cc6ef247871ac1e0944aea9,
     type: 2}
-  TextBox: {fileID: 1619137863000704, guid: c6b0249122d56fb4facba8fac2cbc6ee, type: 2}
+  TextBox: {fileID: 0}
+  waterSound: {fileID: 0}
+  music: {fileID: 0}
+  sfxSlider: {fileID: 0}
+  musicSlider: {fileID: 0}
+  showHints: 0
 --- !u!114 &114460097178304822
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -303,8 +395,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chatInputField: {fileID: 0}
+  gameBoardUI: {fileID: 0}
   isMasterClient: 0
+  playerDisconnected: 0
   opponentName: 
+  stageToLoad: 
   moveTo: 0
   moveFrom: 0
   removeFrom: 0
