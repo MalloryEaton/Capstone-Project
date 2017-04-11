@@ -23,19 +23,29 @@ public class Board
 
   public string[] board;
   private short numAIPieces;
-  private short numPlayerPieces;
+  private short numHumanPieces;
+  private short placedAIPieces;
+  private short placedHumanPieces;
 
-  public Board() {
+  public Board(short placedAI, short placedHuman) {
     board = new string[24];
     for (short i = 0; i < BOARD_SIZE; i++)
       board[i] = Tags.EMPTY;
 
     numAIPieces = 0;
-    numPlayerPieces = 0;
+    numHumanPieces = 0;
+    placedAIPieces = placedAI;
+    placedHumanPieces = placedHuman;
   }
   // Place a piece on the board
   public short placePiece(int slot, string player) {
     board[slot] = player;
+
+    if (player == Tags.AI_TAG)
+      incPlacedPieces(player);
+    else
+      incPlacedPieces(player);
+
     return (incPieces(player));
   }
   // Move a piece from one slot to another
@@ -57,13 +67,64 @@ public class Board
     if (player == Tags.AI_TAG)
       num = numAIPieces;
     else if (player == Tags.PLAYER_TAG)
-      num = numPlayerPieces;
+      num = numHumanPieces;
 
     return (num);
   }
+  // Return the current phase
+  public string getPhase(string player) {
+    string result;
+
+    if (player == Tags.AI_TAG)
+      if (placedAIPieces < 9)
+        result = Phases.PLACEMENT;
+      else if (numAIPieces == 2)
+        result = Phases.FLYING;
+      else
+        result = Phases.MOVEMENT;
+    else {
+      if (placedHumanPieces < 9)
+        result = Phases.PLACEMENT;
+      else if (numHumanPieces == 2)
+        result = Phases.FLYING;
+      else
+        result = Phases.MOVEMENT;
+    }
+
+    return (result);
+  }
+  /* Increment the number of placed for the given player
+   * Returns the total number of placed pieces for said player
+   */
+  public short incPlacedPieces(string player) {
+    short result = -1;
+    if (player == Tags.AI_TAG) {
+      placedAIPieces += 1;
+      result = placedAIPieces;
+    }
+    else if (player == Tags.PLAYER_TAG) {
+      placedHumanPieces += 1;
+      result = placedHumanPieces;
+    }
+    return (result);
+  }
+  // Same as above, except it decrements the values
+  public short decPlacedPieces(string player) {
+    short result = -1;
+    if (player == Tags.AI_TAG) {
+      numAIPieces -= 1;
+      result = numAIPieces;
+    }
+    else if (player == Tags.PLAYER_TAG) {
+      numHumanPieces -= 1;
+      result = numHumanPieces;
+    }
+    return (result);
+  }
+
   /* Increment the number of pieces for the given player
-    * Returns the total number of pieces for said player
-    */
+   * Returns the total number of pieces for said player
+   */
   private short incPieces(string player) {
     short result = -1;
     if (player == Tags.AI_TAG) {
@@ -71,12 +132,12 @@ public class Board
       result = numAIPieces;
     }
     else if (player == Tags.PLAYER_TAG) {
-      numPlayerPieces += 1;
-      result = numPlayerPieces;
+      numHumanPieces += 1;
+      result = numHumanPieces;
     }
     return (result);
   }
-  // Same as above, except it decrementns the values
+  // Same as above, except it decrements the values
   private short decPieces(string player) {
     short result = -1;
     if (player == Tags.AI_TAG) {
@@ -84,8 +145,8 @@ public class Board
       result = numAIPieces;
     }
     else if (player == Tags.PLAYER_TAG) {
-      numPlayerPieces -= 1;
-      result = numPlayerPieces;
+      numHumanPieces -= 1;
+      result = numHumanPieces;
     }
     return (result);
   }

@@ -491,16 +491,19 @@ public class GameLogicController : MonoBehaviour
         } while (player1Color == player2Color);
     }
 
-    public void ShowAvailableMoves() //make it so that if click off a selected rune, shows the available moves again
+    /* make it so that if click off a selected rune, shows the available
+     * moves again
+     */
+    public void ShowAvailableMoves()
     {
         RemoveAllRuneHighlights();
         RemoveAllOrbHighlights(-1);
         HighlightMoveableOrbs(runesThatCanBeMoved);
     }
 
-    /*---------------------------------------------------------------------
+    /*-----------------------------------------------------------------
     || INITIALIZATION
-    -----------------------------------------------------------------------*/
+    -----------------------------------------------------------------*/
     private void InitializeGameBoard()
     {
         InstantiateMages();
@@ -511,30 +514,35 @@ public class GameLogicController : MonoBehaviour
     {
         if(!isNetworkGame || (isNetworkGame && isPlayer1))
         {
-            player1Mage = Instantiate(dictionaries.magesDictionary[player1Color], new Vector3(20, 1, 28), new Quaternion(0, 180, 0, 0));
+            player1Mage = Instantiate(dictionaries.magesDictionary[player1Color],
+                                      new Vector3(20, 1, 28), new Quaternion(0, 180, 0, 0));
             player1Mage.tag = "Mage";
 
-            player2Mage = Instantiate(dictionaries.magesDictionary[player2Color], new Vector3(4, 1, -4), new Quaternion(0, 0, 0, 0));
+            player2Mage = Instantiate(dictionaries.magesDictionary[player2Color],
+                                      new Vector3(4, 1, -4), new Quaternion(0, 0, 0, 0));
             player2Mage.tag = "Mage";
         }
         else if(isNetworkGame && !isPlayer1)
         {
-            player1Mage = Instantiate(dictionaries.magesDictionary[player1Color], new Vector3(4, 1, -4), new Quaternion(0, 0, 0, 0));
+            player1Mage = Instantiate(dictionaries.magesDictionary[player1Color],
+                                      new Vector3(4, 1, -4), new Quaternion(0, 0, 0, 0));
             player1Mage.tag = "Mage";
 
-            player2Mage = Instantiate(dictionaries.magesDictionary[player2Color], new Vector3(20, 1, 28), new Quaternion(0, 180, 0, 0));
+            player2Mage = Instantiate(dictionaries.magesDictionary[player2Color],
+                                      new Vector3(20, 1, 28), new Quaternion(0, 180, 0, 0));
             player2Mage.tag = "Mage";
         }
     }
 
     private void InstantiateShrine()
     {
-        Instantiate(dictionaries.shrinesDictionary[player1Color], new Vector3(12, 0, 12), Quaternion.identity);
+        Instantiate(dictionaries.shrinesDictionary[player1Color],
+                    new Vector3(12, 0, 12), Quaternion.identity);
     }
 
-    /*---------------------------------------------------------------------
+    /*-----------------------------------------------------------------
     || GAME PHASE FUNCTIONS
-    -----------------------------------------------------------------------*/
+    -----------------------------------------------------------------*/
     // Placement //
     public void PlacementPhase(short rune)
     {
@@ -560,7 +568,8 @@ public class GameLogicController : MonoBehaviour
                 runeList[rune].tag = "Opponent";
                 player2OrbCount++;
                 // Round count will always increment after second player's turn
-                if (PlayerPrefs.GetString("AIGoesFirst") == "false" || isNetworkGame || (!isNetworkGame && !isAIGame))
+                if (PlayerPrefs.GetString("AIGoesFirst") == "false" ||
+                    isNetworkGame || (!isNetworkGame && !isAIGame))
                 {
                     placementPhase_RoundCount++;
                 }
@@ -576,7 +585,8 @@ public class GameLogicController : MonoBehaviour
     private void PrepareForMovementPhase()
     {
         //only do this if it is your move
-        if (!isNetworkGame || (isNetworkGame && ((isPlayer1 && isPlayer1Turn) || (!isPlayer1 && !isPlayer1Turn))))
+        if (!isNetworkGame || (isNetworkGame &&
+            ((isPlayer1 && isPlayer1Turn) || (!isPlayer1 && !isPlayer1Turn))))
         {
             if (ThereIsAnAvailableMove(MakeListOfRunesForCurrentPlayer()))
             {
@@ -634,12 +644,14 @@ public class GameLogicController : MonoBehaviour
                 }
             }
         }
-        else if (ClickedOnDifferentPiece(toLocation)) //switch to highlighted piece
+        //switch to highlighted piece
+        else if (ClickedOnDifferentPiece(toLocation))
         {
             previousGamePhase = "movementPlace";
             MovementPhase_Pickup(toLocation);
         }
-        else if((isPlayer1Turn && runeList[toLocation].tag != "Player") || (!isPlayer1Turn && runeList[toLocation].tag != "Opponent"))
+        else if ((isPlayer1Turn && runeList[toLocation].tag != "Player") ||
+                 (!isPlayer1Turn && runeList[toLocation].tag != "Opponent"))
         {
             //nothing
         }
@@ -686,7 +698,8 @@ public class GameLogicController : MonoBehaviour
             // TODO: Popup that says "the other player has forfeit"
             // This could be similar to the movement phase message
         }
-        else if (isNetworkGame && ((isPlayer1Turn && isPlayer1) || (!isPlayer1Turn && !isPlayer1)))
+        else if (isNetworkGame && ((isPlayer1Turn && isPlayer1) ||
+                 (!isPlayer1Turn && !isPlayer1)))
         {
             networking.SendMove();
         }
@@ -725,12 +738,13 @@ public class GameLogicController : MonoBehaviour
     }
 
 
-    /*---------------------------------------------------------------------
+    /*-----------------------------------------------------------------
     || GAME PHASE LOGIC
-    -----------------------------------------------------------------------*/
+    -----------------------------------------------------------------*/
     public bool CanFly()
     {
-        if ((isPlayer1Turn && player1OrbCount == 3) || (!isPlayer1Turn && player2OrbCount == 3))
+        if ((isPlayer1Turn && player1OrbCount == 3) ||
+            (!isPlayer1Turn && player2OrbCount == 3))
             return true;
 
         return false;
@@ -739,12 +753,14 @@ public class GameLogicController : MonoBehaviour
     private void ChangeSide()
     {
         // Send move to opponent if in a network game
-        if (isNetworkGame && ((isPlayer1Turn && isPlayer1) || (!isPlayer1Turn && !isPlayer1)))
+        if (isNetworkGame && ((isPlayer1Turn && isPlayer1) ||
+            (!isPlayer1Turn && !isPlayer1)))
         {
             networking.SendMove();
             waitingOnOtherPlayer = true;
         }
-        else if (isNetworkGame && ((isPlayer1Turn && !isPlayer1) || (!isPlayer1Turn && isPlayer1)))
+        else if (isNetworkGame && ((isPlayer1Turn && !isPlayer1) ||
+                 (!isPlayer1Turn && isPlayer1)))
         {
             waitingOnOtherPlayer = false;
         }
@@ -832,25 +848,42 @@ public class GameLogicController : MonoBehaviour
         // TODO: IF GAME IS NOT OVER
         if (isAIGame && isAITurn)
         {
-            if (gamePhase == "placement")
-            {
-                AIMove = aicontroller.GetAIMove("placement", AIDifficulty);
-                PlacementPhase(AIMove[1]);
-            }
-            else
-            {
-                AIMove = aicontroller.GetAIMove("movement", AIDifficulty);
-                //Debug.Log("AI Move From: " + AIMove[0]);
-                //Debug.Log("AI Move To: " + AIMove[1]);
-                runeFromLocation = AIMove[0];
-                MovementPhase_Place(AIMove[1]);
-            }
+            makeAIMove();
         }
     }
+    // Makes a move from the game's AI
+    private void makeAIMove() {
+      short placedAIPieces;
+      short placedHumanPieces;
 
+      // Determine how many pieces have been placed so far
+      if (PlayerPrefs.GetString("AIGoesFirst") == "true") {
+        placedAIPieces = placementPhase_RoundCount;
+        placedHumanPieces = (short)(placementPhase_RoundCount - 1);
+      }
+      else {
+        placedAIPieces = (short)(placementPhase_RoundCount - 1);
+        placedHumanPieces = placementPhase_RoundCount;
+      }
+
+      // Get the move
+      AIMove = aicontroller.GetAIMove(AIDifficulty, placedAIPieces,
+                                      placedHumanPieces);
+      // Apply the move based on the current phase
+      if (gamePhase == "placement")
+        PlacementPhase(AIMove[1]);
+      else {
+        //Debug.Log("AI Move From: " + AIMove[0]);
+        //Debug.Log("AI Move To: " + AIMove[1]);
+        runeFromLocation = AIMove[0];
+        MovementPhase_Place(AIMove[1]);
+      }
+    }
+    
     public bool ClickedOnDifferentPiece(short selectedRune)
     {
-        if ((isPlayer1Turn && runeList[selectedRune].tag == "Player") || (!isPlayer1Turn && runeList[selectedRune].tag == "Opponent"))
+        if ((isPlayer1Turn && runeList[selectedRune].tag == "Player") ||
+            (!isPlayer1Turn && runeList[selectedRune].tag == "Opponent"))
             return true;
         return false;
     }

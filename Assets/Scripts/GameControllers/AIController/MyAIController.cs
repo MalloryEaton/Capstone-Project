@@ -1,5 +1,8 @@
 /* This file is part of Runic by Ensorcelled Studios
  * AI by Bryan Cuneo
+ * 
+ * Heurstics evaluations based on Petcu & Holban, 2008
+ * http://www.dasconference.ro/papers/2008/B7.pdf
  */
 
 using System;
@@ -21,33 +24,33 @@ public class MyAIController : MonoBehaviour
   void Start() {
     easyAI = FindObjectOfType(typeof(EasyAI)) as EasyAI;
     mediumAI = FindObjectOfType(typeof(MediumAI)) as MediumAI;
-    gameLogicController = FindObjectOfType(typeof(GameLogicController)) as GameLogicController;
+    gameLogicController = FindObjectOfType(typeof(GameLogicController))
+                            as GameLogicController;
   }
 
   // Gets a move from the AI
-  public List<short> GetAIMove(string phase, string difficulty) {
+  public List<short> GetAIMove(string difficulty, short placedAIPieces,
+                               short placedHumanPieces) {
     List<short> move;
+    Board gameBoard = boardFromRuneList(placedAIPieces, placedHumanPieces);
+    string phase = gameBoard.getPhase(Tags.AI_TAG);
 
-    if (difficulty == Difficulties.EASY) {
-      //EasyAI ai = new EasyAI();
-      move = easyAI.GetEasyAIMove(phase);
-    }
-    else if (difficulty == Difficulties.MEDIUM) {
-      move = mediumAI.GetMediumAIMove(boardFromRuneList(), Phases.PLACEMENT);
-    }
-    // Hard
-    else {
-      move = easyAI.GetEasyAIMove(phase);
-    }
+    if (difficulty == Difficulties.EASY)
+      move = easyAI.getEasyAIMove(phase);
+    else if (difficulty == Difficulties.MEDIUM)
+      move = mediumAI.getMediumAIMove(gameBoard);
+    else // Hard
+      move = mediumAI.getMediumAIMove(gameBoard);
 
     return (move);
   }
 
-  private Board boardFromRuneList() {
-    Board gameBoard = new Board();
+  private Board boardFromRuneList(short placedAIPieces, short placedHumanPieces) {
+    Board gameBoard = new Board(placedAIPieces, placedHumanPieces);
 
-    for (int i = 0; i < gameBoard.BOARD_SIZE; i++)
+    for (int i = 0; i < 24; i++) {
       gameBoard.board[i] = gameLogicController.runeList[i].tag;
+    }
 
     return (gameBoard);
   }

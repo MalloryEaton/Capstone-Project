@@ -20,7 +20,7 @@ namespace AI
       gameLogicController = FindObjectOfType(typeof(GameLogicController)) as GameLogicController;
     }
 
-    public List<short> GetEasyAIMove(string phase) {
+    public List<short> getEasyAIMove(string phase) {
       List<short> move = new List<short> { -1, -1, -1 };
       if (phase == Phases.PLACEMENT)
         placementPhase(ref move);
