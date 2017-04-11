@@ -14,7 +14,7 @@ namespace AI
      * +----------------------------------------------------------------+
      */
     private const int MAX_SCORE = 1000000;
-    private const short DEPTH = 4;
+    private const short DEPTH = 10;
 
     private string currentPlayer;
     private string opponentPlayer;
@@ -42,9 +42,21 @@ namespace AI
       }
 
       // Sort the moves by their score
-      moves = moves.OrderBy(o => o.score).ToList();
+      moves = moves.OrderByDescending(o => o.score).ToList();
 
-      return (moves[0]);
+      // Randomly pick from the best moves
+      List<Move> bestMoves = new List<Move> { };
+      int bestScore = moves[0].score;
+      foreach (Move m in moves) {
+        int nextScore = m.score;
+        if (nextScore == bestScore)
+          bestMoves.Add(m);
+        else
+          break;
+      }
+
+      System.Random rand = new System.Random();
+      return (moves[rand.Next(0, bestMoves.Count)]);
     }
 
     private Move makeMovement(Board gameBoard) {
@@ -117,10 +129,11 @@ namespace AI
         short emptySlots = 0;
         short opponentPieces = 0;
 
+        
         foreach (short slot in mill) {
-          if (gameBoard.board[mill[slot]] == Tags.AI_TAG)
+          if (gameBoard.board[slot] == Tags.AI_TAG)
             playerPieces += 1;
-          else if (gameBoard.board[mill[slot]] == Tags.EMPTY)
+          else if (gameBoard.board[slot] == Tags.EMPTY)
             emptySlots += 1;
           else
             opponentPieces += 1;
@@ -264,8 +277,31 @@ namespace AI
         }
       }
 
-      numberOfMoves += moves.Count;
+      if (DEPTH > 3) {
+        foreach (Move m in moves) {
+          if (phase == Phases.PLACEMENT)
+            gameBoard.placePiece(m.moveTo, playerTag);
+          else
+            gameBoard.movePiece(m.moveFrom, m.moveTo);
+          if (m.removeFrom != -1)
+            gameBoard.removePiece(m.removeFrom);
 
+          m.score = evaluateBoardstate(gameBoard, phase);
+
+          if (phase == Phases.PLACEMENT)
+            gameBoard.removePiece(m.moveTo);
+          else
+            gameBoard.movePiece(m.moveTo, m.moveFrom);
+          if (m.removeFrom != -1)
+            gameBoard.placePiece(m.removeFrom, playerTag);
+        }
+        if (playerTag == Tags.AI_TAG)
+          moves = moves.OrderByDescending(o => o.score).ToList();
+        else
+          moves = moves.OrderBy(o => o.score).ToList();
+      }
+
+      numberOfMoves += moves.Count;
       return (moves);
     }
     private void checkIfMoveMakesMill(Board gameBoard, string playerTag,
