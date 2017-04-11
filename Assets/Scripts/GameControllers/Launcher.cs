@@ -100,10 +100,10 @@ namespace Com.EnsorcelledStudios.Runic
         /// </summary>
         void Start()
         {
+            Debug.Log("START START START START");
             controlPanel.SetActive(true);
             LoadingScreen.GetComponent<Animator>().SetBool("isDisplayed", false);
             LauncherStatic.launcher = this;
-            gamesPanel.SetActive(false);
         }
 
         #endregion
@@ -141,7 +141,7 @@ namespace Com.EnsorcelledStudios.Runic
         {
             LoadingScreen.GetComponent<Animator>().SetBool("isDisplayed", false);
             controlPanel.SetActive(false);
-
+            gamesPanel.SetActive(true);
             OnReceivedRoomListUpdate();
         }
 
