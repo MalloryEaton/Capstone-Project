@@ -2535,7 +2535,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!82 &339630561
 AudioSource:
   m_ObjectHideFlags: 0
@@ -4214,7 +4214,6 @@ MonoBehaviour:
   gameEntry: {fileID: 114153367715874068, guid: ec11618a6b7475c4aba0300afaaba692,
     type: 2}
   gameList: []
-  backButton: {fileID: 197425470}
   selectedRoomName: 
   joinGameButton: {fileID: 2031033958}
   lobbyUI: {fileID: 152638165}
@@ -6521,7 +6520,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &925681785
 RectTransform:
   m_ObjectHideFlags: 0
@@ -9339,7 +9338,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1327779111
 RectTransform:
   m_ObjectHideFlags: 0

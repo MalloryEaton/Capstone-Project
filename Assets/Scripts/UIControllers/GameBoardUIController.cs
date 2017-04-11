@@ -30,10 +30,6 @@ public class GameBoardUIController : MonoBehaviour {
     public Text phaseText;
     public GameObject forfeitConfirmationPanel;
     public GameObject drawPanel;
-    
-
-
-
 
     void Start()
     {
@@ -55,13 +51,12 @@ public class GameBoardUIController : MonoBehaviour {
         forfeitConfirmationPanel.SetActive(false);
         drawPanel.SetActive(false);
     }
-
-   
-
+    
     public void exitToMenu()
     {
         hideMenu();
         hideForfeitConfirmation();
+        hideMenu();
         if (PlayerPrefs.GetString("GameType") == "Network")
         {
             networking.SendForfeit();
@@ -89,7 +84,7 @@ public class GameBoardUIController : MonoBehaviour {
         if(MenuPanel.GetComponent<Animator>().GetBool("isDisplayed") == false)
         {
             MenuPanel.GetComponent<Animator>().SetBool("isDisplayed", true);
-            glc.waitingOnAnimation = true;
+            glc.menuIsOpen = true;
             chatInput.enabled = false;
             csl.enabled = false;
             chatButton.enabled = false;
@@ -103,7 +98,7 @@ public class GameBoardUIController : MonoBehaviour {
     public void hideMenu()
     {
         MenuPanel.GetComponent<Animator>().SetBool("isDisplayed", false);
-        glc.waitingOnAnimation = false;
+        glc.menuIsOpen = false;
         chatInput.enabled = true;
         csl.enabled = true;
         chatButton.enabled = true;
@@ -234,7 +229,7 @@ public class GameBoardUIController : MonoBehaviour {
         forfeitConfirmationPanel.SetActive(true);
         hideMenu();
         forfeitConfirmationPanel.GetComponent<Animator>().SetBool("isDisplayed", true);
-        glc.waitingOnAnimation = true;
+        glc.menuIsOpen = true;
         chatInput.enabled = false;
         csl.enabled = false;
         chatButton.enabled = false;
@@ -251,7 +246,7 @@ public class GameBoardUIController : MonoBehaviour {
     {
         drawPanel.SetActive(true);
         drawPanel.GetComponent<Animator>().SetBool("isDisplayed", true);
-        glc.waitingOnAnimation = true;
+        glc.menuIsOpen = true;
         chatInput.enabled = false;
         csl.enabled = false;
         chatButton.enabled = false;
@@ -262,7 +257,7 @@ public class GameBoardUIController : MonoBehaviour {
     {
         drawPanel.SetActive(false);
         drawPanel.GetComponent<Animator>().SetBool("isDisplayed", false);
-        glc.waitingOnAnimation = false;
+        glc.menuIsOpen = false;
         chatInput.enabled = true;
         csl.enabled = true;
         chatButton.enabled = true;
