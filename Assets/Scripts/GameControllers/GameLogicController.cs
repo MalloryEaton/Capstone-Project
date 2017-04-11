@@ -136,20 +136,18 @@ public class GameLogicController : MonoBehaviour
         }
         else if (PlayerPrefs.GetString("GameType") == "AI" || PlayerPrefs.GetString("GameType") == "Story")
         {
-            // TODO: Reinstate this when we actually have these player prefs.
-            //// In the story, the player will go first in stages 1, 3, and 5.
-            //if (PlayerPrefs.GetString("GameType") == "Story")
-            //{
-            //    if (PlayerPrefs.GetInt("StoryStage") == 1 || PlayerPrefs.GetInt("StoryStage") == 3 ||
-            //        PlayerPrefs.GetInt("StoryStage") == 5)
-            //    {
-            //        PlayerPrefs.SetString("AIGoesFirst", "false");
-            //    }
-            //    else
-            //    {
-            //        PlayerPrefs.SetString("AIGoesFirst", "true");
-            //    }
-            //}
+            if (PlayerPrefs.GetString("GameType") == "Story")
+            {
+                if (PlayerPrefs.GetInt("StoryStage") == 1 || PlayerPrefs.GetInt("StoryStage") == 3 ||
+                    PlayerPrefs.GetInt("StoryStage") == 5)
+                {
+                    PlayerPrefs.SetString("AIGoesFirst", "false");
+                }
+                else
+                {
+                    PlayerPrefs.SetString("AIGoesFirst", "true");
+                }
+            }
 
             isAIGame = true;
             isAITurn = false;
@@ -219,6 +217,7 @@ public class GameLogicController : MonoBehaviour
             InitializeGameBoard();
 
             // TODO: Set this as an actual player pref somewhere else.
+            // WE STILL NEED A MENU OPTION FOR THIS!!!!!!!!!!!!!!!!!!!
             PlayerPrefs.SetString("AIGoesFirst", "false");
 
             PlayMageIntroAnimations();
