@@ -69,6 +69,7 @@ public class GameLogicController : MonoBehaviour
     private AudioSource moveSound;
     private AudioSource removeSound;
     private AudioSource millSound;
+    private AudioSource summonSound;
     public AudioSource waterSound;
     public GameObject music;
 
@@ -93,6 +94,7 @@ public class GameLogicController : MonoBehaviour
         moveSound = audio[0];
         removeSound = audio[1];
         millSound = audio[2];
+        summonSound = audio[3];
 
         moveSound.volume = sfxSlider.value;
         removeSound.volume = sfxSlider.value;
@@ -399,11 +401,11 @@ public class GameLogicController : MonoBehaviour
         waitingOnAnimation = true;
         player1Mage.GetComponent<MageController>().PlayLevitateAnimation();
         player2Mage.GetComponent<MageController>().PlayLevitateAnimation();
-
         if (isNetworkGame && !isPlayer1)
         {
             LeanTween.delayedCall(0.7f, () =>
             {
+                summonSound.Play();
                 InstantiateSide1Orbs(player2Color);
                 InstantiateSide2Orbs(player1Color);
             });
@@ -412,6 +414,7 @@ public class GameLogicController : MonoBehaviour
         {
             LeanTween.delayedCall(0.7f, () =>
             {
+                summonSound.Play();
                 InstantiateSide1Orbs(player1Color);
                 InstantiateSide2Orbs(player2Color);
             });
@@ -511,7 +514,7 @@ public class GameLogicController : MonoBehaviour
     {
         if(!isNetworkGame || (isNetworkGame && isPlayer1))
         {
-            player1Mage = Instantiate(dictionaries.magesDictionary[player1Color], new Vector3(20, 1, 28), new Quaternion(0, 180, 0, 0));
+            player1Mage = Instantiate(dictionaries.magesDictionary[player1Color], new Vector3(20, 1, 29), new Quaternion(0, 180, 0, 0));
             player1Mage.tag = "Mage";
 
             player2Mage = Instantiate(dictionaries.magesDictionary[player2Color], new Vector3(4, 1, -4), new Quaternion(0, 0, 0, 0));
