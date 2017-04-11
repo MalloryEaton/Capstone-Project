@@ -68,6 +68,7 @@ public class GameLogicController : MonoBehaviour
 
     private AudioSource moveSound;
     private AudioSource removeSound;
+    private AudioSource millSound;
     public AudioSource waterSound;
     public GameObject music;
 
@@ -91,6 +92,7 @@ public class GameLogicController : MonoBehaviour
         AudioSource[] audio = GetComponents<AudioSource>();
         moveSound = audio[0];
         removeSound = audio[1];
+        millSound = audio[2];
 
         moveSound.volume = sfxSlider.value;
         removeSound.volume = sfxSlider.value;
@@ -227,6 +229,7 @@ public class GameLogicController : MonoBehaviour
     {
         moveSound.volume = sfxSlider.value;
         removeSound.volume = sfxSlider.value;
+        millSound.volume = sfxSlider.value;
         if (SceneManager.GetActiveScene().name == "WaterGameBoard")
             waterSound.volume = sfxSlider.value;
     }
@@ -649,6 +652,7 @@ public class GameLogicController : MonoBehaviour
     // Removal //
     private void PrepareForRemovalPhase()
     {
+        millSound.Play();
         print("YOU GOT A MILL!");
         previousGamePhase = gamePhase;
         gamePhase = "removal";
