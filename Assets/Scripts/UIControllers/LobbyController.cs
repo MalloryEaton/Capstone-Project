@@ -21,6 +21,7 @@ public class LobbyController : MonoBehaviour {
     public void returnToMainMenu()
     {
         LoadingScreen.GetComponent<Animator>().SetBool("isDisplayed", true);
+
         StartCoroutine(LoadAsync(1));
     }
 

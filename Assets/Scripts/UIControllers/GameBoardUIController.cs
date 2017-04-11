@@ -141,7 +141,7 @@ public class GameBoardUIController : MonoBehaviour {
         winMessage.SetActive(false);
 
         //show loading panel and load scene
-        if(PlayerPrefs.GetString("GameType") == "Story")
+        if (PlayerPrefs.GetString("GameType") == "Story")
         {
             LoadingPanel.GetComponent<Animator>().SetBool("isDisplayed", true);
             switch (PlayerPrefs.GetInt("StoryStage"))
@@ -165,6 +165,11 @@ public class GameBoardUIController : MonoBehaviour {
                     //    StartCoroutine(LoadAsync(16));
                     //    break;
             }
+        }
+        else if (PlayerPrefs.GetString("GameType") == "Network")
+        {
+            LoadingPanel.GetComponent<Animator>().SetBool("isDisplayed", true);
+            networkController.LeaveRoom();
         }
         else if (PlayerPrefs.GetString("GameType") != "Story")
         {

@@ -51,7 +51,11 @@ public class NetworkingController : Photon.PunBehaviour
         // If one player disconnects, we disconnect the other player and alert them
         Debug.Log("OnPhotonPlayerDisconnected(): " + other.NickName); // Seen when other disconnects
 
-        LeaveRoom();
+        if(gameLogicController.playerForfeit != "other")
+        {
+            LeaveRoom();
+        }
+        
     }
 
     public override void OnDisconnectedFromPhoton()
@@ -178,6 +182,7 @@ public class NetworkingController : Photon.PunBehaviour
     public void ReceiveForfeit()
     {
         gameLogicController.playerForfeit = "other";
+        //Display other player forfeit message
         gameLogicController.GameOver();
     } 
 }
