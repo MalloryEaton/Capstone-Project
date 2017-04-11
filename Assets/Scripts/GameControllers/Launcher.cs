@@ -249,27 +249,27 @@ namespace Com.EnsorcelledStudios.Runic
                 // Get the player name and save it
                 if (inputField.text.Trim() == "")
                 {
-                    PhotonNetwork.playerName = "Worthy Wizard";
+                    // TODO: Alert the player that they need to put in a username.
                 }
                 else
                 {
                     PhotonNetwork.playerName = inputField.text;
-                }
 
-                // Keep track of the will to join a room, because when we come back from the game 
-                // we will get a callback that we are connected, so we need to know what to do then
-                isConnecting = true;
+                    // Keep track of the will to join a room, because when we come back from the game 
+                    // we will get a callback that we are connected, so we need to know what to do then
+                    isConnecting = true;
 
-                LoadingScreen.GetComponent<Animator>().SetBool("isDisplayed", true);
-                controlPanel.SetActive(false);
-                backButton.SetActive(true);
+                    LoadingScreen.GetComponent<Animator>().SetBool("isDisplayed", true);
+                    controlPanel.SetActive(false);
+                    backButton.SetActive(true);
 
-                // We check if we are connected or not, we join if we are, else we initiate the 
-                // connection to the server.
-                if (!PhotonNetwork.connected)
-                {
-                    // #Critical We must first and foremost connect to Photon Online Server.
-                    PhotonNetwork.ConnectUsingSettings(_gameVersion);
+                    // We check if we are connected or not, we join if we are, else we initiate the 
+                    // connection to the server.
+                    if (!PhotonNetwork.connected)
+                    {
+                        // #Critical We must first and foremost connect to Photon Online Server.
+                        PhotonNetwork.ConnectUsingSettings(_gameVersion);
+                    }
                 }
             }
             else
