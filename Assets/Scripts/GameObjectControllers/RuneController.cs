@@ -41,7 +41,7 @@ public class RuneController : MonoBehaviour
     
     private void OnMouseEnter()
     {
-        if(gameController.gamePhase == "placement" && tag == "Empty" && !gameController.waitingOnOtherPlayer && !gameController.waitingOnAnimation)
+        if(gameController.gamePhase == "placement" && tag == "Empty" && !gameController.waitingOnOtherPlayer && !gameController.waitingOnAnimation && !gameController.menuIsOpen)
         {
             AddRuneHighlight();
         }
@@ -49,7 +49,7 @@ public class RuneController : MonoBehaviour
 
     private void OnMouseExit()
     {
-        if (gameController.gamePhase == "placement" && tag == "Empty" && !gameController.waitingOnOtherPlayer && !gameController.waitingOnAnimation)
+        if (gameController.gamePhase == "placement" && tag == "Empty" && !gameController.waitingOnOtherPlayer && !gameController.waitingOnAnimation && !gameController.menuIsOpen)
         {
             RemoveRuneHighlight();
         }
@@ -57,7 +57,7 @@ public class RuneController : MonoBehaviour
     
     private void OnMouseDown()
     {
-        if (!gameController.waitingOnAnimation && !gameController.waitingOnOtherPlayer)
+        if (!gameController.waitingOnAnimation && !gameController.waitingOnOtherPlayer && !gameController.menuIsOpen)
         {
             switch (gameController.gamePhase)
             {

@@ -28,11 +28,11 @@ namespace Com.EnsorcelledStudios.Runic
 		//List that will contain available netwrok games
 		//GameListItem defined in GameScrollList.cs
 		public List<GameListItem> gameList;
-
-        public GameObject backButton;
+        
         public string selectedRoomName;
         public Button joinGameButton;
         public LobbyController lobbyUI;
+
         #endregion
 
         #region Private Variables
@@ -73,7 +73,6 @@ namespace Com.EnsorcelledStudios.Runic
         void Awake()
         {
             PlayerPrefs.SetString("GameType", "Network");
-
             // #NotImportant
             // Force LogLevel
             PhotonNetwork.logLevel = Loglevel;
@@ -102,7 +101,6 @@ namespace Com.EnsorcelledStudios.Runic
         /// </summary>
         void Start()
         {
-            backButton.SetActive(false);
             controlPanel.SetActive(true);
             LoadingScreen.GetComponent<Animator>().SetBool("isDisplayed", false);
             LauncherStatic.launcher = this;
@@ -262,7 +260,6 @@ namespace Com.EnsorcelledStudios.Runic
 
                 LoadingScreen.GetComponent<Animator>().SetBool("isDisplayed", true);
                 controlPanel.SetActive(false);
-                backButton.SetActive(true);
 
                 // We check if we are connected or not, we join if we are, else we initiate the 
                 // connection to the server.
@@ -352,7 +349,6 @@ namespace Com.EnsorcelledStudios.Runic
         public void DisconnectFromPhoton()
         {
             PhotonNetwork.Disconnect();
-            backButton.SetActive(false);
             // TODO: This should bring back up the login stuff.
         }
 
