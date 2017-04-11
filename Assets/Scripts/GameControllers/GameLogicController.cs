@@ -1242,6 +1242,7 @@ public class GameLogicController : MonoBehaviour
                         if (((isPlayer1Turn && !isPlayer1) || (!isPlayer1Turn && isPlayer1)) && (networking.removeFrom != -1))
                         {
                             RemovalPhase(networking.removeFrom);
+                            RecheckForMills(networking.moveTo);
                         }
                         else
                         {
