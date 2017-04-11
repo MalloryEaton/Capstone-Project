@@ -31,6 +31,7 @@ namespace Com.EnsorcelledStudios.Runic
         public string selectedRoomName;
         public Button joinGameButton;
         public LobbyController lobbyUI;
+        public Text noNameAlert;
 
         #endregion
 
@@ -234,6 +235,7 @@ namespace Com.EnsorcelledStudios.Runic
                 if (inputField.text.Trim() == "")
                 {
                     // TODO: Alert the player that they need to put in a username.
+                    noNameAlert.GetComponent<Animator>().SetBool("isDisplayed", true);
                 }
                 else
                 {
@@ -363,6 +365,14 @@ namespace Com.EnsorcelledStudios.Runic
                 case 5:
                     PlayerPrefs.SetString("Stage", "Tower");
                     break;
+            }
+        }
+
+        public void hideNoNameAlert()
+        {
+            if(noNameAlert.GetComponent<Animator>().GetBool("isDisplayed") == true)
+            {
+                noNameAlert.GetComponent<Animator>().SetBool("isDisplayed", false);
             }
         }
 
