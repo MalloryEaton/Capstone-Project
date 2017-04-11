@@ -1322,6 +1322,48 @@ MonoBehaviour:
     type: 2}
   m_PrefabInternal: {fileID: 898849252}
   m_Script: {fileID: 11500000, guid: 3074ae48166472a4aa279ef0b80eb05e, type: 3}
+--- !u!1001 &188337682
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4148567905915198, guid: 47045fa03d245fe40afac446a6e05ac9, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 4148567905915198, guid: 47045fa03d245fe40afac446a6e05ac9, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4148567905915198, guid: 47045fa03d245fe40afac446a6e05ac9, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 4148567905915198, guid: 47045fa03d245fe40afac446a6e05ac9, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4148567905915198, guid: 47045fa03d245fe40afac446a6e05ac9, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4148567905915198, guid: 47045fa03d245fe40afac446a6e05ac9, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4148567905915198, guid: 47045fa03d245fe40afac446a6e05ac9, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4148567905915198, guid: 47045fa03d245fe40afac446a6e05ac9, type: 2}
+      propertyPath: m_RootOrder
+      value: 11
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: 47045fa03d245fe40afac446a6e05ac9, type: 2}
+  m_IsPrefabParent: 0
 --- !u!1 &192132651
 GameObject:
   m_ObjectHideFlags: 0
@@ -3955,8 +3997,8 @@ RectTransform:
   - {fileID: 1995077672}
   - {fileID: 1877488146}
   - {fileID: 418792750}
-  - {fileID: 180005852}
   - {fileID: 2035571489}
+  - {fileID: 180005852}
   - {fileID: 1320765220}
   - {fileID: 1824407887}
   - {fileID: 328521705}
@@ -11569,7 +11611,7 @@ RectTransform:
   - {fileID: 1226424601}
   - {fileID: 218786449}
   m_Father: {fileID: 592885044}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}

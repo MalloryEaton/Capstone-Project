@@ -7,14 +7,12 @@ public class AutoTypeMainBox : MonoBehaviour {
 
     private float normalSpeed;
     private float fastSpeed;
-    public AudioClip sound;
 
     private bool speedUp = false;
 
     public bool autoType = true;
 
     public Text textbox;
-
     void Start()
     {
         normalSpeed = 0.03f;
@@ -48,10 +46,7 @@ public class AutoTypeMainBox : MonoBehaviour {
             if (autoType)
             {
                 textbox.text += letter;
-                //if (sound)
-                //    audio.PlayOneShot(sound);
-                //yield return 0;
-                if(speedUp)
+                if (speedUp)
                     yield return new WaitForSeconds(fastSpeed);
                 else
                     yield return new WaitForSeconds(normalSpeed);

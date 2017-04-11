@@ -100,7 +100,6 @@ namespace Com.EnsorcelledStudios.Runic
         /// </summary>
         void Start()
         {
-            Debug.Log("START START START START");
             controlPanel.SetActive(true);
             LoadingScreen.GetComponent<Animator>().SetBool("isDisplayed", false);
             LauncherStatic.launcher = this;
@@ -179,16 +178,6 @@ namespace Com.EnsorcelledStudios.Runic
             }
         }
 
-        // We are also not using this, as we aren't doing random connects.
-        //public override void OnPhotonRandomJoinFailed(object[] codeAndMsg)
-        //{
-        //    Debug.Log("OnPhotonRandomJoinFailed() was called by PUN. No random room available, so we create one.\nCalling: PhotonNetwork.CreateRoom(null, new RoomOptions() {maxPlayers = 4}, null);");
-
-        //    // #Critical: We failed to join a random room, maybe none exists or they are all full. 
-        //    // No worries, we create a new room.
-        //    PhotonNetwork.CreateRoom(null, new RoomOptions() { MaxPlayers = MaxPlayersPerRoom }, null);
-        //}
-
         public override void OnPhotonJoinRoomFailed(object[] codeAndMsg)
         {
             // TODO: We will need a UI message here that says you tried to join a room and the
@@ -204,9 +193,6 @@ namespace Com.EnsorcelledStudios.Runic
             // PhotonNetwork.automaticallySyncScene to sync our instance scene.
             if (PhotonNetwork.room.PlayerCount == 1)
             {
-                Debug.Log("Loading a stage...");
-
-
                 lobbyUI.displayWaitingForOpponent();
             }
         }
@@ -258,12 +244,9 @@ namespace Com.EnsorcelledStudios.Runic
 
                     gamesPanel.SetActive(true);
 
-
-
                     // Keep track of the will to join a room, because when we come back from the game 
                     // we will get a callback that we are connected, so we need to know what to do then
                     isConnecting = true;
-
 
                     // We check if we are connected or not, we join if we are, else we initiate the 
                     // connection to the server.
@@ -313,43 +296,33 @@ namespace Com.EnsorcelledStudios.Runic
 
         private void LoadArena()
         {
-            if (!PhotonNetwork.isMasterClient)
+            switch (randomStage)
             {
-                Debug.LogError("PhotonNetwork: Trying to load a level but we are not the master Client");
+                case 0:
+                    PhotonNetwork.LoadLevel("ForestGameBoard");
+                    break;
+                case 1:
+                    PhotonNetwork.LoadLevel("GraveyardGameBoard");
+                    break;
+                case 2:
+                    PhotonNetwork.LoadLevel("DesertGameBoard");
+                    break;
+                case 3:
+                    PhotonNetwork.LoadLevel("VolcanoGameBoard");
+                    break;
+                case 4:
+                    PhotonNetwork.LoadLevel("WaterGameBoard");
+                    break;
+                case 5:
+                    PhotonNetwork.LoadLevel("TowerGameBoard");
+                    break;
             }
-
-            Debug.Log("PhotonNetwork: Loading game...");
-
-            PhotonNetwork.LoadLevel("DesertGameBoard");
-
-            //switch (randomStage)
-            //{
-            //    case 0:
-            //        PhotonNetwork.LoadLevel("ForestGameBoard");
-            //        break;
-            //    case 1:
-            //        PhotonNetwork.LoadLevel("GraveyardGameBoard");
-            //        break;
-            //    case 2:
-            //        PhotonNetwork.LoadLevel("DesertGameBoard");
-            //        break;
-            //    case 3:
-            //        PhotonNetwork.LoadLevel("VolcanoGameBoard");
-            //        break;
-            //    case 4:
-            //        PhotonNetwork.LoadLevel("WaterGameBoard");
-            //        break;
-            //    case 5:
-            //        PhotonNetwork.LoadLevel("TowerGameBoard");
-            //        break;
-            //}
         }
 
         public void DisconnectFromRoom()
         {
             PhotonNetwork.LeaveRoom();
             lobbyUI.hideWaitingForOpponent();
-            //TODO: Remove room key from dictionary
         }
 
         public void DisconnectFromPhoton()
@@ -369,37 +342,28 @@ namespace Com.EnsorcelledStudios.Runic
         private void GetRandomStage()
         {
             randomStage = (short)Random.Range(0, 5);
-            //PhotonNetwork.LoadLevel("DesertGameBoard");
-            PlayerPrefs.SetString("Stage", "Desert");
 
-            //switch (randomStage)
-            //{
-            //    // TODO: Instead of LoadLevel, set stage PlayerPref.
-            //    case 0:
-            //        //PhotonNetwork.LoadLevel("ForestGameBoard");
-            //        PlayerPrefs.SetString("Stage", "Forest");
-            //        break;
-            //    case 1:
-            //        //PhotonNetwork.LoadLevel("GraveyardGameBoard");
-            //        PlayerPrefs.SetString("Stage", "Graveyard");
-            //        break;
-            //    case 2:
-            //        //PhotonNetwork.LoadLevel("DesertGameBoard");
-            //        PlayerPrefs.SetString("Stage", "Desert");
-            //        break;
-            //    case 3:
-            //        //PhotonNetwork.LoadLevel("VolcanoGameBoard");
-            //        PlayerPrefs.SetString("Stage", "Volcano");
-            //        break;
-            //    case 4:
-            //        //PhotonNetwork.LoadLevel("WaterGameBoard");
-            //        PlayerPrefs.SetString("Stage", "Water");
-            //        break;
-            //    case 5:
-            //        //PhotonNetwork.LoadLevel("TowerGameBoard");
-            //        PlayerPrefs.SetString("Stage", "Tower");
-            //        break;
-            //}
+            switch (randomStage)
+            {
+                case 0:
+                    PlayerPrefs.SetString("Stage", "Forest");
+                    break;
+                case 1:
+                    PlayerPrefs.SetString("Stage", "Graveyard");
+                    break;
+                case 2:
+                    PlayerPrefs.SetString("Stage", "Desert");
+                    break;
+                case 3:
+                    PlayerPrefs.SetString("Stage", "Volcano");
+                    break;
+                case 4:
+                    PlayerPrefs.SetString("Stage", "Water");
+                    break;
+                case 5:
+                    PlayerPrefs.SetString("Stage", "Tower");
+                    break;
+            }
         }
 
         #endregion
