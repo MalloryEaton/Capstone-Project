@@ -209,7 +209,8 @@ public class GameBoardUIController : MonoBehaviour {
 
     public void reloadStage()
     {
-        StartCoroutine(LoadAsync(PlayerPrefs.GetInt("StoryStage")));
+        Debug.Log("RELOAD " + PlayerPrefs.GetInt("StoryStage"));
+        StartCoroutine(LoadAsync((PlayerPrefs.GetInt("StoryStage")+11)));
     }
 
     public IEnumerator displayPhase(string phase)
