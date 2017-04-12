@@ -240,17 +240,6 @@ public class GameLogicController : MonoBehaviour
         music.GetComponent<AudioSource>().volume = musicSlider.value;
     }
 
-    //REMOVE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    void Update()
-    {
-        if (Input.GetKey(KeyCode.F2))
-        {
-            print("you cheeky little punk");
-            GameOver();
-        }
-    }
-    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
     private void InstantiateSide1Orbs(string color)
     {
         GameObject orb;
