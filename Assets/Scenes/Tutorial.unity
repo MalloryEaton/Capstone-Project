@@ -14573,6 +14573,7 @@ GameObject:
   - component: {fileID: 1976612839}
   - component: {fileID: 1976612838}
   - component: {fileID: 1976612837}
+  - component: {fileID: 1976612840}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -14688,6 +14689,20 @@ CanvasRenderer:
     type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1976612835}
+--- !u!114 &1976612840
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1976612835}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1573420865, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.6666667}
+  m_EffectDistance: {x: 10, y: -1}
+  m_UseGraphicAlpha: 1
 --- !u!1 &1988853982
 GameObject:
   m_ObjectHideFlags: 0
