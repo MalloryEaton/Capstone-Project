@@ -7,15 +7,17 @@ public class CameraMovement : MonoBehaviour {
 
     private GameObject target;
     public GameBoardUIController gbui;
-    
+    public GameLogicController glc;
+
     void Start ()
     {
+        glc = FindObjectOfType(typeof(GameLogicController)) as GameLogicController;
         target = GameObject.FindGameObjectWithTag("Center");
     }
     
     void LateUpdate()
     {
-        if(gbui != null && !gbui.chatInput.isFocused)
+        if(gbui != null && !gbui.chatInput.isFocused && !glc.menuIsOpen)
         {
             if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
             {

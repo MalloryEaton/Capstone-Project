@@ -2730,6 +2730,11 @@ MonoBehaviour:
     type: 2}
   m_PrefabInternal: {fileID: 789986686}
   m_Script: {fileID: 11500000, guid: 3074ae48166472a4aa279ef0b80eb05e, type: 3}
+--- !u!1 &862846684 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1570510257024554, guid: 579e75fd1aa2ee1469e8956a9c420d6f,
+    type: 2}
+  m_PrefabInternal: {fileID: 366930037}
 --- !u!1 &890153464
 GameObject:
   m_ObjectHideFlags: 0
@@ -8917,7 +8922,7 @@ Prefab:
         type: 2}
       propertyPath: MenuPanel
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 862846684}
     - target: {fileID: 114871755207064086, guid: 4d4feccf8c8d4bd48a87e9686cefb156,
         type: 2}
       propertyPath: chatInput
