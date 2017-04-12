@@ -9,7 +9,8 @@ namespace AI
 {
   public class MediumAI : MonoBehaviour {
     private const int MAX_SCORE = 1000000;
-    private const short DEPTH = 1;
+    private short startingDepth;
+    private string difficultyLevel;
 
     //private int numberOfMoves = 0;
     //private int movesThatRemove = 0;
@@ -18,9 +19,17 @@ namespace AI
      * | Interfacing Functions |
      * +-----------------------+
      */
-     // Returns a List of an AI move
-    public List<short> getMediumAIMove(ref Board gameBoard) {
-      Move move;
+    // Returns a List of an AI move
+    public List<short> getAIMove(ref Board gameBoard, string difficulty) {
+      if (difficulty == Difficulties.MEDIUM) {
+        startingDepth = 1;
+        difficultyLevel = Difficulties.MEDIUM;
+      }
+      else if (difficulty == Difficulties.HARD) {
+        startingDepth = 8;
+        difficultyLevel = Difficulties.HARD;
+      }
+        Move move;
       string phase = gameBoard.getPhase(Tags.AI_TAG);
 
       if (phase == Phases.PLACEMENT)
@@ -32,13 +41,15 @@ namespace AI
     }
     // Decide where to place an orb
     private Move makePlacement(ref Board gameBoard) {
-      List<Move> moves = generateMoves(ref gameBoard, Tags.AI_TAG, DEPTH - 1);
+      List<Move> moves = generateMoves(ref gameBoard, Tags.AI_TAG,
+                                       (short)(startingDepth - 1));
       int alpha = int.MinValue;
       int beta = int.MaxValue;
 
       foreach (Move m in moves) {
         applyMove(m, Tags.AI_TAG, ref gameBoard, Phases.PLACEMENT);
-        m.score += alphaBeta(Tags.AI_TAG, ref gameBoard, DEPTH - 1,
+        m.score += alphaBeta(Tags.AI_TAG, ref gameBoard,
+                             (short)(startingDepth - 1),
                              ref alpha, ref beta, m);
         undoMove(m, Tags.AI_TAG, ref gameBoard, Phases.PLACEMENT);
       }
@@ -62,14 +73,16 @@ namespace AI
     }
     // Decide where to move an orb from/to
     private Move makeMovement(ref Board gameBoard) {
-      List<Move> moves = generateMoves(ref gameBoard, Tags.AI_TAG, DEPTH - 1);
+      List<Move> moves = generateMoves(ref gameBoard, Tags.AI_TAG,
+                                       (short)(startingDepth - 1));
       int alpha = int.MinValue;
       int beta = int.MaxValue;
 
       foreach (Move m in moves) {
         applyMove(m, Tags.AI_TAG, ref gameBoard, Phases.MOVEMENT);
-        m.score += alphaBeta(Tags.AI_TAG, ref gameBoard, DEPTH - 1,
-                             ref alpha, ref beta, m);
+        m.score += alphaBeta(Tags.AI_TAG, ref gameBoard,
+                             (short)(startingDepth - 1), ref alpha, ref beta,
+                             m);
         undoMove(m, Tags.AI_TAG, ref gameBoard, Phases.MOVEMENT);
       }
 

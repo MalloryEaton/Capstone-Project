@@ -18,12 +18,12 @@ using AI;
 public class MyAIController : MonoBehaviour
 {
   private EasyAI easyAI;
-  private MediumAI mediumAI;
+  private MediumAI MinimaxAI;
   private GameLogicController gameLogicController;
 
   void Start() {
     easyAI = FindObjectOfType(typeof(EasyAI)) as EasyAI;
-    mediumAI = FindObjectOfType(typeof(MediumAI)) as MediumAI;
+    MinimaxAI = FindObjectOfType(typeof(MediumAI)) as MediumAI;
     gameLogicController = FindObjectOfType(typeof(GameLogicController))
                             as GameLogicController;
   }
@@ -36,11 +36,11 @@ public class MyAIController : MonoBehaviour
     string phase = gameBoard.getPhase(Tags.AI_TAG);
 
     if (difficulty == Difficulties.EASY)
-      move = easyAI.getEasyAIMove(phase);
+      move = easyAI.getAIMove(phase);
     else if (difficulty == Difficulties.MEDIUM)
-      move = mediumAI.getMediumAIMove(ref gameBoard);
+      move = MinimaxAI.getAIMove(ref gameBoard, Difficulties.MEDIUM);
     else // Hard
-      move = mediumAI.getMediumAIMove(ref gameBoard);
+      move = MinimaxAI.getAIMove(ref gameBoard, Difficulties.HARD);
 
     return (move);
   }
