@@ -7,7 +7,7 @@ using AI;
 
 namespace AI
 {
-  public class MediumAI : MonoBehaviour {
+  public class MinimaxAI : MonoBehaviour {
     private const int MAX_SCORE = 1000000;
     private short startingDepth;
     private string difficultyLevel;
@@ -26,7 +26,7 @@ namespace AI
         difficultyLevel = Difficulties.MEDIUM;
       }
       else if (difficulty == Difficulties.HARD) {
-        startingDepth = 8;
+        startingDepth = 4;
         difficultyLevel = Difficulties.HARD;
       }
         Move move;
