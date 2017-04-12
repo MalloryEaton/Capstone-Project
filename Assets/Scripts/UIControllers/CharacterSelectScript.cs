@@ -166,7 +166,6 @@ public class CharacterSelectScript : MonoBehaviour {
             PurpleMage.SetActive(true);
             CharacterName.text = "Sir Gilbaard";
             CharacterBio.text = "Sir Gilbaard was born into royalty. He was set to become the ruler of Remmelford, that is until his facination with necromancy drove him from a life of luxury to a life as an undertaker, tending to the dead.";
-                //until it was overthrown by the roaming barbarian clans. He now wanders the colonies, determined to avenge his fallen kingdom.";
         }
     }
 

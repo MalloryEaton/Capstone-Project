@@ -184,9 +184,6 @@ public class GameBoardUIController : MonoBehaviour {
                     PlayerPrefs.SetInt("StoryStage", 6);
                     StartCoroutine(LoadAsync(16));
                     break;
-                    //case 6:
-                    //    StartCoroutine(LoadAsync(16));
-                    //    break;
             }
         }
         else if (PlayerPrefs.GetString("GameType") == "Network")
