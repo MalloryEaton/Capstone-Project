@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace AI
 {
@@ -107,6 +108,10 @@ namespace AI
       new short[3] { 9, 10, 11 }, new short[3] { 12, 13, 14 },
       new short[3] { 15, 16, 17 }, new short[3] { 16, 19, 22 },
       new short[3] { 18, 19, 20 }, new short[3] { 21, 22, 23 } };
+
+    public static List<short> PLUS2 = new List<short> { 4, 10, 13, 19 };
+    public static  List<short> PLUS1 = new List<short> { 1, 7, 9, 11, 12, 14,
+                                                         16, 22 };
 
     public static short[][] THREE_PIECES = new short[][] {
       new short[3] { 0, 1, 9 }, new short[3] { 1, 2, 14 },

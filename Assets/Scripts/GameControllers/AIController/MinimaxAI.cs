@@ -27,7 +27,7 @@ namespace AI
         difficultyLevel = Difficulties.MEDIUM;
       }
       else if (difficulty == Difficulties.HARD) {
-        startingDepth = 4;
+        startingDepth = 1;
         difficultyLevel = Difficulties.HARD;
       }
       Move move;
@@ -342,6 +342,7 @@ namespace AI
       short differenceInDoubleMills = 0;
       short winner = 0;
       short differenceInOpenMills = 0;
+      short prioritySlotBonus = 0;
 
       // Get the values we need for our heuristic
       checkIfMadeMill(ref gameBoard, ref m, ref lastMoveMadeMill);
@@ -357,6 +358,7 @@ namespace AI
                                  gameBoard.getNumPieces(Tags.HUMAN_TAG));
       calculateDoubleMills(ref gameBoard, ref differenceInDoubleMills);
       calculateWinner(ref gameBoard, ref winner, ref depth);
+      calculatePrioritySlotBonus(ref gameBoard, ref m, ref prioritySlotBonus);
 
       // Evaluate the heuristic
       if (difficultyLevel == Difficulties.MEDIUM)
@@ -373,7 +375,7 @@ namespace AI
                              differenceInBlockedPieces,
                              differenceInTotalPieces, differenceIn2Pieces,
                              differenceIn3Pieces, differenceInDoubleMills,
-                             winner, differenceInOpenMills);
+                             winner, differenceInOpenMills, prioritySlotBonus);
 
       return (score);
     }
@@ -421,62 +423,38 @@ namespace AI
         short differenceInBlockedPieces, short differenceInTotalPieces,
         short differenceIn2Pieces, short differenceIn3Pieces,
         short differenceInDoubleMills, short winner,
-        short differenceInOpenMills) {
+        short differenceInOpenMills, short prioritySlotBonus) {
       int score = 0;
 
-      //if (phase == Phases.PLACEMENT) {
-      //  score += 18 * lastMoveMadeMill;
-      //  score += 35 * lastMoveBlockedMill;
-      //  score += 26 * differenceInMills;
-      //  score += 1 * differenceInBlockedPieces;
-      //  score += 9 * differenceInTotalPieces;
-      //  score += 10 * differenceIn2Pieces;
-      //  score += 7 * differenceIn3Pieces;
-      //}
-      //else if (phase == Phases.MOVEMENT) {
-      //  score += 14 * lastMoveMadeMill;
-      //  score += 35 * lastMoveBlockedMill;
-      //  score += 35 * differenceInOpenMills;
-      //  score += 35 * differenceInMills;
-      //  score += 10 * differenceInBlockedPieces;
-      //  score += 11 * differenceInTotalPieces;
-      //  score += 8 * differenceInDoubleMills;
-      //  //score += 1086 * winner;
-      //}
-      //else {
-      //  score += 16 * lastMoveMadeMill;
-      //  score += 20 * lastMoveBlockedMill;
-      //  score += 10 * differenceIn2Pieces;
-      //  score += 1 * differenceIn3Pieces;
-      //  score += 1190 * winner;
-      //}
       if (phase == Phases.PLACEMENT) {
-        score += 0 * lastMoveMadeMill;
-        score += 35 * lastMoveBlockedMill;
-        score += 0 * differenceInMills;
-        score += 0 * differenceInBlockedPieces;
-        score += 0 * differenceInTotalPieces;
-        score += 0 * differenceIn2Pieces;
-        score += 0 * differenceIn3Pieces;
+        score += 18 * lastMoveMadeMill;
+        score += 20 * lastMoveBlockedMill;
+        score += 26 * differenceInMills;
+        score += 1 * differenceInBlockedPieces;
+        score += 9 * differenceInTotalPieces;
+        score += 10 * differenceIn2Pieces;
+        score += 7 * differenceIn3Pieces;
       }
       else if (phase == Phases.MOVEMENT) {
-        score += 0 * lastMoveMadeMill;
-        score += 0 * lastMoveBlockedMill;
-        score += 0 * differenceInOpenMills;
-        score += 0 * differenceInMills;
-        score += 0 * differenceInBlockedPieces;
-        score += 0 * differenceInTotalPieces;
-        score += 0 * differenceInDoubleMills;
+        score += 14 * lastMoveMadeMill;
+        score += 20 * lastMoveBlockedMill;
+        score += 35 * differenceInOpenMills;
+        score += 35 * differenceInMills;
+        score += 10 * differenceInBlockedPieces;
+        score += 11 * differenceInTotalPieces;
+        score += 8 * differenceInDoubleMills;
         //score += 1086 * winner;
       }
       else {
-        score += 0 * lastMoveMadeMill;
-        score += 0 * lastMoveBlockedMill;
-        score += 0 * differenceIn2Pieces;
-        score += 0 * differenceIn3Pieces;
-        score += 0 * winner;
+        score += 16 * lastMoveMadeMill;
+        score += 35 * lastMoveBlockedMill;
+        score += 10 * differenceIn2Pieces;
+        score += 1 * differenceIn3Pieces;
+        score += 1190 * winner;
       }
 
+      // Bonus points for highly mobile spots
+      score += prioritySlotBonus;
 
       return (score);
     }
@@ -692,6 +670,26 @@ namespace AI
           blockedMill = -1;
       else
         blockedMill = 0;
+    }
+
+    private void calculatePrioritySlotBonus(ref Board gameBoard, ref Move m,
+                                            ref short prioritySlotBonus) {
+      if (Configurations.PLUS2.Contains(m.moveTo))
+        if (gameBoard.board[m.moveTo] == Tags.AI_TAG)
+          prioritySlotBonus = 2;
+        else if (gameBoard.board[m.moveTo] == Tags.HUMAN_TAG)
+          prioritySlotBonus = -2;
+        else
+          prioritySlotBonus = 0;
+      else if (Configurations.PLUS1.Contains(m.moveTo))
+        if (gameBoard.board[m.moveTo] == Tags.AI_TAG)
+          prioritySlotBonus = 1;
+        else if (gameBoard.board[m.moveTo] == Tags.HUMAN_TAG)
+          prioritySlotBonus = -1;
+        else
+          prioritySlotBonus = 0;
+      else
+        prioritySlotBonus = 0;
     }
 
     /* +------------------+
