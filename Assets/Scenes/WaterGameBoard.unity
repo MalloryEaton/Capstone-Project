@@ -8738,6 +8738,11 @@ Prefab:
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 114008641804646218, guid: 7236bfa22beac0c4c8ad2f96e4d441f1,
+        type: 2}
+      propertyPath: gbui
+      value: 
+      objectReference: {fileID: 2003220478}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 7236bfa22beac0c4c8ad2f96e4d441f1, type: 2}
   m_IsPrefabParent: 0

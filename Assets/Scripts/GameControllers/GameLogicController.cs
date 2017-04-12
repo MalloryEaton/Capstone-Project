@@ -25,6 +25,8 @@ public class GameLogicController : MonoBehaviour
     private MyAIController aicontroller;
     public GameBoardUIController uiController;
 
+    private GameObject centerOfBoard;
+
     private GameObject player1Mage;
     private GameObject player2Mage;
 
@@ -89,6 +91,7 @@ public class GameLogicController : MonoBehaviour
 
     void Start()
     {
+        centerOfBoard = GameObject.Find("CenterOfBoard");
         menuIsOpen = false;
         AudioSource[] audio = GetComponents<AudioSource>();
         moveSound = audio[0];
@@ -515,7 +518,7 @@ public class GameLogicController : MonoBehaviour
         if (!isNetworkGame || (isNetworkGame && isPlayer1))
         {
             player1Mage = Instantiate(dictionaries.magesDictionary[player1Color],
-                                      new Vector3(20, 1, 28), new Quaternion(0, 180, 0, 0));
+                                      new Vector3(20, 1, 29), new Quaternion(0, 180, 0, 0));
             player1Mage.tag = "Mage";
 
             player2Mage = Instantiate(dictionaries.magesDictionary[player2Color],
@@ -529,7 +532,7 @@ public class GameLogicController : MonoBehaviour
             player1Mage.tag = "Mage";
 
             player2Mage = Instantiate(dictionaries.magesDictionary[player2Color],
-                                      new Vector3(20, 1, 28), new Quaternion(0, 180, 0, 0));
+                                      new Vector3(20, 1, 29), new Quaternion(0, 180, 0, 0));
             player2Mage.tag = "Mage";
         }
     }
@@ -782,7 +785,7 @@ public class GameLogicController : MonoBehaviour
 
         if (showHints)
         {
-            LeanTween.cancel(GameObject.Find("CenterOfBoard"));
+            LeanTween.cancel(centerOfBoard);
 
             if (!isNetworkGame && !isAIGame) //local game
             {
@@ -826,7 +829,7 @@ public class GameLogicController : MonoBehaviour
                 PrepareForMovementPhase();
                 if (showHints)
                 {
-                    LeanTween.cancel(GameObject.Find("CenterOfBoard"));
+                    LeanTween.cancel(centerOfBoard);
                     DisplayMovementPhaseText();
                     previousGamePhase = "movementPhase";
                 }
@@ -858,8 +861,10 @@ public class GameLogicController : MonoBehaviour
         short placedHumanPieces;
 
         // Determine how many pieces have been placed so far
+
         if (PlayerPrefs.GetString("AIGoesFirst") == "true")
         {
+
             placedAIPieces = placementPhase_RoundCount;
             placedHumanPieces = (short)(placementPhase_RoundCount - 1);
         }
@@ -872,16 +877,20 @@ public class GameLogicController : MonoBehaviour
         // Get the move
         AIMove = aicontroller.GetAIMove(AIDifficulty, placedAIPieces,
                                         placedHumanPieces);
-        // Apply the move based on the current phase
-        if (gamePhase == "placement")
-            PlacementPhase(AIMove[1]);
-        else
-        {
-            //Debug.Log("AI Move From: " + AIMove[0]);
-            //Debug.Log("AI Move To: " + AIMove[1]);
-            runeFromLocation = AIMove[0];
-            MovementPhase_Place(AIMove[1]);
-        }
+
+        LeanTween.delayedCall(0.7f, () => {
+            // Apply the move based on the current phase
+            if (gamePhase == "placement")
+                PlacementPhase(AIMove[1]);
+            else
+            {
+                //Debug.Log("AI Move From: " + AIMove[0]);
+                //Debug.Log("AI Move To: " + AIMove[1]);
+                runeFromLocation = AIMove[0];
+                MovementPhase_Place(AIMove[1]);
+            }
+        });
+
     }
 
     public bool ClickedOnDifferentPiece(short selectedRune)
@@ -1010,7 +1019,8 @@ public class GameLogicController : MonoBehaviour
         {
             if (showHints)
             {
-                LeanTween.cancel(GameObject.Find("CenterOfBoard"));
+                TextBox.gameObject.SetActive(false);
+                LeanTween.cancel(centerOfBoard);
                 if (!isNetworkGame && !isAIGame) //local game		
                 {
                     if (isPlayer1Turn)
@@ -1283,6 +1293,8 @@ public class GameLogicController : MonoBehaviour
                         }
                         else
                         {
+                            TextBox.gameObject.SetActive(false);
+                            LeanTween.cancel(centerOfBoard);
                             ChangeSide();
                         }
                     }
@@ -1299,10 +1311,14 @@ public class GameLogicController : MonoBehaviour
                         // we don't want to call ChangeSide() quite yet.
                         if (((isPlayer1Turn && !isPlayer1) || (!isPlayer1Turn && isPlayer1)) && (AIMove[2] != -1) && RuneIsInMill(AIMove[1]))
                         {
-                            RemovalPhase(AIMove[2]);
+                            LeanTween.delayedCall(0.7f, () => { 
+                                RemovalPhase(AIMove[2]);
+                            });
                         }
                         else
                         {
+                            TextBox.gameObject.SetActive(false);
+                            LeanTween.cancel(centerOfBoard);
                             ChangeSide();
                         }
                     }
@@ -1315,6 +1331,8 @@ public class GameLogicController : MonoBehaviour
                     }
                     else
                     {
+                        TextBox.gameObject.SetActive(false);
+                        LeanTween.cancel(centerOfBoard);
                         ChangeSide();
                     }
                 }
@@ -1375,8 +1393,11 @@ public class GameLogicController : MonoBehaviour
             if (placementPhase_RoundCount > startingNumberOfOrbs && (player1OrbCount == 2 || player2OrbCount == 2)) //check for win
                 GameOver();
             else //continue game
+            {
+                TextBox.gameObject.SetActive(false);
+                LeanTween.cancel(centerOfBoard);
                 ChangeSide();
-
+            }
             waitingOnAnimation = false;
         });
 
@@ -1461,7 +1482,7 @@ public class GameLogicController : MonoBehaviour
     {
         TextBox.GetComponentInChildren<Text>().text = text;
         TextBox.gameObject.SetActive(true);
-        LeanTween.delayedCall(GameObject.Find("CenterOfBoard"), time, () =>
+        LeanTween.delayedCall(centerOfBoard, time, () =>
         {
             TextBox.gameObject.SetActive(false);
             //TextBox.GetComponent<Renderer>().material.color.a = 0.5;
@@ -1472,7 +1493,7 @@ public class GameLogicController : MonoBehaviour
     {
         Debug.Log("Movement Phase Has Begun!");
         StartCoroutine(uiController.displayPhase("Movement Phase!"));
-        LeanTween.delayedCall(GameObject.Find("CenterOfBoard"), 3f, () =>
+        LeanTween.delayedCall(centerOfBoard, 3f, () =>
         {
             if (!isNetworkGame && !isAIGame) //local game		
             {

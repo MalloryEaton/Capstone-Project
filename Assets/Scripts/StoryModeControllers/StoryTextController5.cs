@@ -239,7 +239,6 @@ public class StoryTextController5 : MonoBehaviour
                 PlayerPrefs.SetString("Player2Color", "Blue");
                 PlayerPrefs.SetString("Difficulty", "Hard");
                 PlayerPrefs.SetString("GameType", "Story");
-                PlayerPrefs.SetInt("StoryStage", 5);
                 StartCoroutine(LoadAsync(8));
             }
             else
