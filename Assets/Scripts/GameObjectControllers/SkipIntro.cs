@@ -34,6 +34,6 @@ public class SkipIntro : MonoBehaviour
 
     private void OnMouseDown()
     {
-        SceneManager.LoadScene(16);
+        SceneManager.LoadScene(17);
     }
 }

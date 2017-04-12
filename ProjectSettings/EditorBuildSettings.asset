@@ -12,7 +12,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/LobbyMenu.unity
   - enabled: 1
-    path: Assets/Scenes/GameBoard.unity
+    path: Assets/Scenes/Empty.unity
   - enabled: 1
     path: Assets/Scenes/ForestGameBoard.unity
   - enabled: 1
