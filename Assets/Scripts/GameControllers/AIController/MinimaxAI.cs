@@ -383,34 +383,37 @@ namespace AI
         short differenceInOpenMills) {
       int score = 0;
 
-      if (phase == Phases.PLACEMENT) {
-        score += 18 * lastMoveMadeMill;
-        score += 20 * lastMoveBlockedMill;
-        score += 26 * differenceInMills;
-        score += 1 * differenceInBlockedPieces;
-        score += 9 * differenceInTotalPieces;
-        score += 10 * differenceIn2Pieces;
-        score += 7 * differenceIn3Pieces;
-      }
-      else if (phase == Phases.MOVEMENT) {
-        score += 14 * lastMoveMadeMill;
-        score += 20 * lastMoveBlockedMill;
-        score += 35 * differenceInOpenMills;
-        score += 35 * differenceInMills;
-        score += 10 * differenceInBlockedPieces;
-        score += 11 * differenceInTotalPieces;
-        score += 8 * differenceInDoubleMills;
-        //score += 1086 * winner;
-      }
-      else {
-        score += 16 * lastMoveMadeMill;
-        score += 35 * lastMoveBlockedMill;
-        score += 10 * differenceIn2Pieces;
-        score += 1 * differenceIn3Pieces;
-        score += 1190 * winner;
-      }
+            if (phase == Phases.PLACEMENT)
+            {
+                score += 18 * lastMoveMadeMill;
+                score += 20 * lastMoveBlockedMill;
+                score += 26 * differenceInMills;
+                score += 1 * differenceInBlockedPieces;
+                score += 9 * differenceInTotalPieces;
+                score += 10 * differenceIn2Pieces;
+                score += 7 * differenceIn3Pieces;
+            }
+            else if (phase == Phases.MOVEMENT)
+            {
+                score += 14 * lastMoveMadeMill;
+                score += 20 * lastMoveBlockedMill;
+                score += 35 * differenceInOpenMills;
+                score += 35 * differenceInMills;
+                score += 10 * differenceInBlockedPieces;
+                score += 11 * differenceInTotalPieces;
+                score += 8 * differenceInDoubleMills;
+            }
+            else
+            {
+                score += 30 * lastMoveMadeMill;
+                score += 30 * lastMoveBlockedMill;
+                score += 10 * differenceInMills;
+                score += 10 * differenceIn2Pieces;
+                score += 1 * differenceIn3Pieces;
+                score += 1190 * winner;
+            }
 
-      return (score);
+            return (score);
     }
     private int evaluateHard(string phase,
         short lastMoveMadeMill, short lastMoveBlockedMill,
@@ -438,17 +441,18 @@ namespace AI
         score += 10 * differenceInBlockedPieces;
         score += 11 * differenceInTotalPieces;
         score += 8 * differenceInDoubleMills;
-        //score += 1086 * winner;
       }
       else {
-        score += 16 * lastMoveMadeMill;
-        score += 35 * lastMoveBlockedMill;
+        score += 30 * lastMoveMadeMill;
+        score += 30 * lastMoveBlockedMill;
+        score += 10 * differenceInMills;
         score += 10 * differenceIn2Pieces;
         score += 1 * differenceIn3Pieces;
         score += 1190 * winner;
       }
 
       // Bonus points for highly mobile spots
+      if (phase != Phases.FLYING)
       score += prioritySlotBonus;
 
       return (score);
