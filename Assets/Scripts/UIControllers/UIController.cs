@@ -91,11 +91,11 @@ public class UIController : MonoBehaviour
                 mainCamera.transform.rotation = mainCameraRotation;
                 if (localGame)
                 {
-                    CharacterSelectScript.characterSelectScript.PageHeader.text = "Player 1 Character Select";
+                    CharacterSelectScript.characterSelectScript.PageHeader.text = "Select Player 1 Character";
                 }
                 else
                 {
-                    CharacterSelectScript.characterSelectScript.PageHeader.text = "Character Select";
+                    CharacterSelectScript.characterSelectScript.PageHeader.text = "Select Character";
                 }
                 if (networkGame == true)
                 {
@@ -138,8 +138,7 @@ public class UIController : MonoBehaviour
     public void startTutorial()
     {
         LoadingPanel.GetComponent<Animator>().SetBool("isDisplayed", true);
-        int sceneToLoad = 10;
-        StartCoroutine(LoadAsync(sceneToLoad));
+        StartCoroutine(LoadAsync(10));
     }
 
     public void displayStory()
@@ -223,7 +222,7 @@ public class UIController : MonoBehaviour
                 Button player1Button = GameObject.Find(player1Color + "MageButton").GetComponent<Button>();
                 player1Button.interactable = true;
                 CharacterSelectScript.currentPlayerColor = "Player1Color";
-                CharacterSelectScript.characterSelectScript.PageHeader.text = "Player 1 Character Select";
+                CharacterSelectScript.characterSelectScript.PageHeader.text = "Select Player 1 Character";
             }
         }
         else if(currentPanel == "Level")
@@ -235,7 +234,7 @@ public class UIController : MonoBehaviour
                 Button player1Button = GameObject.Find(player1Color + "MageButton").GetComponent<Button>();
                 player1Button.interactable = false;
                 CharacterSelectScript.currentPlayerColor = "Player2Color";
-                CharacterSelectScript.characterSelectScript.PageHeader.text = "Player 2 Character Select";
+                CharacterSelectScript.characterSelectScript.PageHeader.text = "Select Player 2 Character";
             }
             else
             {
@@ -338,7 +337,7 @@ public class UIController : MonoBehaviour
                 player1Button.interactable = false;
 
                 CharacterSelectScript.currentPlayerColor = "Player2Color";
-                CharacterSelectScript.characterSelectScript.PageHeader.text = "Player 2 Character Select";
+                CharacterSelectScript.characterSelectScript.PageHeader.text = "Select Player 2 Character";
                 HidePanels("bio");
                 //hid
             }
