@@ -7,7 +7,8 @@ using AI;
 
 namespace AI
 {
-  public class MinimaxAI : MonoBehaviour {
+  public class MinimaxAI : MonoBehaviour
+  {
     private const int MAX_SCORE = 1000000;
     private short startingDepth;
     private string difficultyLevel;
@@ -29,7 +30,7 @@ namespace AI
         startingDepth = 4;
         difficultyLevel = Difficulties.HARD;
       }
-        Move move;
+      Move move;
       string phase = gameBoard.getPhase(Tags.AI_TAG);
 
       if (phase == Phases.PLACEMENT)
@@ -220,11 +221,14 @@ namespace AI
         List<short> emptySlots = new List<short>();
         List<short> playerOrbs = new List<short>();
 
-        for (short i = 0; i < gameBoard.BOARD_SIZE; i++)
-          if (gameBoard.board[i] == playerTag)
-            playerOrbs.Add(i);
-          else if (gameBoard.board[i] == Tags.EMPTY)
-            emptySlots.Add(i);
+        //for (short i = 0; i < gameBoard.BOARD_SIZE; i++)
+        //  if (gameBoard.board[i] == playerTag)
+        //    playerOrbs.Add(i);
+        //  else if (gameBoard.board[i] == Tags.EMPTY)
+        //    emptySlots.Add(i);
+
+        playerOrbs = getSlots(ref gameBoard, playerTag);
+        emptySlots = getSlots(ref gameBoard, Tags.EMPTY);
 
         foreach (short orb in playerOrbs) {
           Move m = new Move();
@@ -343,7 +347,7 @@ namespace AI
       checkIfMadeMill(ref gameBoard, ref m, ref lastMoveMadeMill);
       checkIfBlockedMill(ref gameBoard, ref m, ref lastMoveMadeMill);
       calculateMillsAnd2Pieces(ref gameBoard, ref differenceInMills,
-                              ref differenceIn2Pieces, 
+                              ref differenceIn2Pieces,
                               ref differenceInBlockedMills, ref depth);
       calculateBlockedPieces(ref gameBoard, ref differenceInBlockedPieces,
                              ref depth);
@@ -354,8 +358,34 @@ namespace AI
       calculateDoubleMills(ref gameBoard, ref differenceInDoubleMills);
       calculateWinner(ref gameBoard, ref winner, ref depth);
 
-
       // Evaluate the heuristic
+      if (difficultyLevel == Difficulties.MEDIUM)
+        score = evaluateMedium(phase, lastMoveMadeMill, lastMoveBlockedMill,
+                               differenceInBlockedMills, differenceInMills,
+                               differenceInBlockedPieces,
+                               differenceInTotalPieces, differenceIn2Pieces,
+                               differenceIn3Pieces, differenceInDoubleMills,
+                               winner, differenceInOpenMills);
+
+      else if (difficultyLevel == Difficulties.HARD)
+        score = evaluateHard(phase, lastMoveMadeMill, lastMoveBlockedMill,
+                             differenceInBlockedMills, differenceInMills,
+                             differenceInBlockedPieces,
+                             differenceInTotalPieces, differenceIn2Pieces,
+                             differenceIn3Pieces, differenceInDoubleMills,
+                             winner, differenceInOpenMills);
+
+      return (score);
+    }
+    private int evaluateMedium(string phase,
+        short lastMoveMadeMill, short lastMoveBlockedMill,
+        short differenceInBlockedMills, short differenceInMills,
+        short differenceInBlockedPieces, short differenceInTotalPieces,
+        short differenceIn2Pieces, short differenceIn3Pieces,
+        short differenceInDoubleMills, short winner,
+        short differenceInOpenMills) {
+      int score = 0;
+
       if (phase == Phases.PLACEMENT) {
         score += 18 * lastMoveMadeMill;
         score += 20 * lastMoveBlockedMill;
@@ -373,15 +403,80 @@ namespace AI
         score += 10 * differenceInBlockedPieces;
         score += 11 * differenceInTotalPieces;
         score += 8 * differenceInDoubleMills;
-        score += 1086 * winner;
+        //score += 1086 * winner;
       }
       else {
         score += 16 * lastMoveMadeMill;
-        score += 20 * lastMoveBlockedMill;
+        score += 35 * lastMoveBlockedMill;
         score += 10 * differenceIn2Pieces;
         score += 1 * differenceIn3Pieces;
         score += 1190 * winner;
       }
+
+      return (score);
+    }
+    private int evaluateHard(string phase,
+        short lastMoveMadeMill, short lastMoveBlockedMill,
+        short differenceInBlockedMills, short differenceInMills,
+        short differenceInBlockedPieces, short differenceInTotalPieces,
+        short differenceIn2Pieces, short differenceIn3Pieces,
+        short differenceInDoubleMills, short winner,
+        short differenceInOpenMills) {
+      int score = 0;
+
+      //if (phase == Phases.PLACEMENT) {
+      //  score += 18 * lastMoveMadeMill;
+      //  score += 35 * lastMoveBlockedMill;
+      //  score += 26 * differenceInMills;
+      //  score += 1 * differenceInBlockedPieces;
+      //  score += 9 * differenceInTotalPieces;
+      //  score += 10 * differenceIn2Pieces;
+      //  score += 7 * differenceIn3Pieces;
+      //}
+      //else if (phase == Phases.MOVEMENT) {
+      //  score += 14 * lastMoveMadeMill;
+      //  score += 35 * lastMoveBlockedMill;
+      //  score += 35 * differenceInOpenMills;
+      //  score += 35 * differenceInMills;
+      //  score += 10 * differenceInBlockedPieces;
+      //  score += 11 * differenceInTotalPieces;
+      //  score += 8 * differenceInDoubleMills;
+      //  //score += 1086 * winner;
+      //}
+      //else {
+      //  score += 16 * lastMoveMadeMill;
+      //  score += 20 * lastMoveBlockedMill;
+      //  score += 10 * differenceIn2Pieces;
+      //  score += 1 * differenceIn3Pieces;
+      //  score += 1190 * winner;
+      //}
+      if (phase == Phases.PLACEMENT) {
+        score += 0 * lastMoveMadeMill;
+        score += 35 * lastMoveBlockedMill;
+        score += 0 * differenceInMills;
+        score += 0 * differenceInBlockedPieces;
+        score += 0 * differenceInTotalPieces;
+        score += 0 * differenceIn2Pieces;
+        score += 0 * differenceIn3Pieces;
+      }
+      else if (phase == Phases.MOVEMENT) {
+        score += 0 * lastMoveMadeMill;
+        score += 0 * lastMoveBlockedMill;
+        score += 0 * differenceInOpenMills;
+        score += 0 * differenceInMills;
+        score += 0 * differenceInBlockedPieces;
+        score += 0 * differenceInTotalPieces;
+        score += 0 * differenceInDoubleMills;
+        //score += 1086 * winner;
+      }
+      else {
+        score += 0 * lastMoveMadeMill;
+        score += 0 * lastMoveBlockedMill;
+        score += 0 * differenceIn2Pieces;
+        score += 0 * differenceIn3Pieces;
+        score += 0 * winner;
+      }
+
 
       return (score);
     }
@@ -589,7 +684,7 @@ namespace AI
             didBlockMill = true;
             break;
           }
-      }
+        }
       if (didBlockMill)
         if (currentPlayer == Tags.AI_TAG)
           blockedMill = 1;
@@ -655,6 +750,17 @@ namespace AI
         result = second;
 
       return (result);
+    }
+
+    // Return a list of all the slots containing a given tag
+    private List<short> getSlots(ref Board gameBoard, string tag) {
+      List<short> slots = new List<short> { };
+
+      for (short slot = 0; slot < gameBoard.BOARD_SIZE; slot++)
+        if (gameBoard.board[slot] == tag)
+          slots.Add(slot);
+
+      return (slots);
     }
   }
 }
