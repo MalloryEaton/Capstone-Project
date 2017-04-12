@@ -86,16 +86,16 @@ public class Board
     string result;
 
     if (player == Tags.AI_TAG)
-      if (placedAIPieces < 9)
+      if (placedAIPieces < GameSettings.NUMBER_OF_ORBS)
         result = Phases.PLACEMENT;
-      else if (numAIPieces == 2)
+      else if (numAIPieces == GameSettings.FLYING_AT)
         result = Phases.FLYING;
       else
         result = Phases.MOVEMENT;
     else {
-      if (placedHumanPieces < 9)
+      if (placedHumanPieces < GameSettings.NUMBER_OF_ORBS)
         result = Phases.PLACEMENT;
-      else if (numHumanPieces == 2)
+      else if (numHumanPieces == GameSettings.FLYING_AT)
         result = Phases.FLYING;
       else
         result = Phases.MOVEMENT;

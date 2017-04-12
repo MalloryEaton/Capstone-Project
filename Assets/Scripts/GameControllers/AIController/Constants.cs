@@ -2,6 +2,13 @@
 
 namespace AI
 {
+  public static class GameSettings
+  {
+    public const short NUMBER_OF_ORBS = 9;
+    public const short FLYING_AT = 3;
+    public const short LOSE_AT = 2;
+  }
+
   public static class Tags
   {
     public const string EMPTY = "Empty";

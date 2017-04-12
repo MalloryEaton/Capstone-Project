@@ -477,9 +477,9 @@ namespace AI
                                  ref short depth) {
       if (gameBoard.getPhase(Tags.AI_TAG) != Phases.PLACEMENT &&
           gameBoard.getPhase(Tags.HUMAN_TAG) != Phases.PLACEMENT)
-        if (gameBoard.getNumPieces(Tags.HUMAN_TAG) < 3)
+        if (gameBoard.getNumPieces(Tags.HUMAN_TAG) < GameSettings.LOSE_AT)
           winner = 1;
-        else if (gameBoard.getNumPieces(Tags.AI_TAG) < 3)
+        else if (gameBoard.getNumPieces(Tags.AI_TAG) == GameSettings.LOSE_AT)
           winner = -1;
         else if (generateMoves(ref gameBoard, Tags.HUMAN_TAG, depth).Count == 0)
           winner = 1;

@@ -25,7 +25,9 @@ namespace AI
       if (phase == Phases.PLACEMENT)
         placementPhase(ref move);
       else if (phase == Phases.MOVEMENT)
-        movementPhase(ref move);
+        movementPhase(ref move, Phases.MOVEMENT);
+      else
+        movementPhase(ref move, Phases.FLYING);
 
       if (isInMill(move[1], Tags.AI_TAG))
         removePiece(ref move);
@@ -51,7 +53,7 @@ namespace AI
     }
 
     // Move a piece to an empty slot
-    private void movementPhase(ref List<short> move) {
+    private void movementPhase(ref List<short> move, string phase) {
       List<short[]> potentialMills;
       //short moveTo;
       short[] newMove = new short[2] { -1, -1 };
@@ -61,21 +63,33 @@ namespace AI
        */
       potentialMills = findPotentialMills(Tags.AI_TAG);
       // If there are any, check if the AI can make any mills
-      foreach (short[] mill in potentialMills)
-        if ((newMove[0] = findAdjacentOrb(mill, Tags.AI_TAG)) != -1 &&
-            !mill.Contains(newMove[0])) {
+      foreach (short[] mill in potentialMills) {
+        if (phase == Phases.MOVEMENT)
+          newMove[0] = findAdjacentOrb(mill, Tags.AI_TAG);
+        else { // flying
+          List<short> movableOrbs = getMovableOrbs(Tags.AI_TAG);
+          newMove[0] = movableOrbs[(short)rand.Next(0, movableOrbs.Count)];
+        }
+        if (newMove[0] != -1 && !mill.Contains(newMove[0])) {
           newMove[1] = findEmptySlotInMill(mill);
           break;
         }
+      }
       // If no mill can be made, see if we can block one
       if (newMove[0] == -1 || newMove[1] == -1) {
         potentialMills = findPotentialMills(Tags.HUMAN_TAG);
-        foreach (short[] mill in potentialMills)
-          if ((newMove[0] = findAdjacentOrb(mill, Tags.AI_TAG)) != -1 &&
-              !mill.Contains(newMove[0])) {
+        foreach (short[] mill in potentialMills) {
+          if (phase == Phases.MOVEMENT)
+            newMove[0] = findAdjacentOrb(mill, Tags.AI_TAG);
+          else { // flying
+            List<short> movableOrbs = getMovableOrbs(Tags.AI_TAG);
+            newMove[0] = movableOrbs[(short)rand.Next(0, movableOrbs.Count)];
+          }
+          if (newMove[0] != -1 && !mill.Contains(newMove[0])) {
             newMove[1] = findEmptySlotInMill(mill);
             break;
           }
+        }
       }
       // No mills to make or block. Pick randomly
       if (newMove[0] == -1 || newMove[1] == -1) {
@@ -125,7 +139,7 @@ namespace AI
       myOrbs = getSlots(tag);
       for (short i = 0; i < myOrbs.Count; i++)
         // if you can fly, any of your orbs can move
-        if (myOrbs.Count == 3)
+        if (myOrbs.Count == GameSettings.FLYING_AT)
           movableOrbs = myOrbs;
         // Otherwise, an orb is only available to move if it is adjacent to an empty slot
         else {
