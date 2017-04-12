@@ -69,6 +69,11 @@ public class UIControllerScript : MonoBehaviour
     {
         if (panel == "story")
         {
+            if(PlayerPrefs.HasKey("StoryStage"))
+            {
+                //show thing here
+            }
+
             LoadingPanel.GetComponent<Animator>().SetBool("isDisplayed", true);
             PlayerPrefs.SetString("GameType", "Story");
             PlayerPrefs.SetInt("StoryStage", 0);
