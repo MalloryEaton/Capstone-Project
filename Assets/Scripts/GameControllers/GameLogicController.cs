@@ -539,8 +539,10 @@ public class GameLogicController : MonoBehaviour
 
     private void InstantiateShrine()
     {
-        Instantiate(dictionaries.shrinesDictionary[player1Color],
-                    new Vector3(12, 0, 12), Quaternion.identity);
+        if(isAIGame && PlayerPrefs.GetString("AIGoesFirst") == "true")
+            Instantiate(dictionaries.shrinesDictionary[player2Color], new Vector3(12, 0, 12), Quaternion.identity);
+        else
+            Instantiate(dictionaries.shrinesDictionary[player1Color], new Vector3(12, 0, 12), Quaternion.identity);
     }
 
     /*-----------------------------------------------------------------

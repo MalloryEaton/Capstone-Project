@@ -186,6 +186,8 @@ namespace Com.EnsorcelledStudios.Runic
             // TODO: We will need a UI message here that says you tried to join a room and the
             // action failed.
             Debug.Log("OnPhotonRandomJoinFailed() was called by PUN. Room not available.");
+
+            LoadingScreen.GetComponent<Animator>().SetBool("isDisplayed", false);
         }
 
         public override void OnJoinedRoom()

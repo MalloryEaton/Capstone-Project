@@ -9,7 +9,7 @@ namespace AI
 {
   public class MediumAI : MonoBehaviour {
     private const int MAX_SCORE = 1000000;
-    private const short DEPTH = 4;
+    private const short DEPTH = 1;
 
     //private int numberOfMoves = 0;
     //private int movesThatRemove = 0;
@@ -107,14 +107,7 @@ namespace AI
       // Depth reached
       if (depth == 0) {
         int score = 0;
-        if (previousMove.removeFrom != -1) {
-          if (gameBoard.board[previousMove.moveTo] == Tags.AI_TAG)
-            score = evaluateBoardstate(ref gameBoard, phase, 1, depth);
-          else if (gameBoard.board[previousMove.moveTo] == Tags.HUMAN_TAG)
-            score = evaluateBoardstate(ref gameBoard, phase, -1, depth);
-        }
-        else
-          score = evaluateBoardstate(ref gameBoard, phase, 0, depth);
+        score = evaluateBoardstate(ref gameBoard, phase, previousMove, depth);
 
         return (score);
       }
@@ -126,7 +119,14 @@ namespace AI
           return (-MAX_SCORE);
       // Determine the current turn, then return -maxScore or maxScore
       else {
-        childMoves = generateMoves(ref gameBoard, playerTag, depth);
+        string opponent;
+        if (playerTag == Tags.AI_TAG)
+          opponent = Tags.HUMAN_TAG;
+        else
+          opponent = Tags.AI_TAG;
+
+        childMoves = generateMoves(ref gameBoard, opponent, depth);
+
         foreach (Move m in childMoves) {
           applyMove(m, playerTag, ref gameBoard, phase);
 
@@ -143,7 +143,7 @@ namespace AI
           }
           // Minimizing player
           else {
-            beta = Math.Min(alpha, alphaBeta(Tags.AI_TAG, ref gameBoard,
+            beta = Math.Min(beta, alphaBeta(Tags.AI_TAG, ref gameBoard,
                                            (short)(depth - 1), ref alpha,
                                            ref beta, m));
             //Check for cutoff
@@ -174,7 +174,7 @@ namespace AI
             m.moveTo = i;
             // Place piece
             gameBoard.board[i] = playerTag;
-            checkIfMoveMakesMill(ref gameBoard, playerTag, ref moves, m);
+            checkPotentialRemovals(ref gameBoard, playerTag, ref moves, m);
             // Undo that placement
             gameBoard.board[i] = Tags.EMPTY;
           }
@@ -194,7 +194,7 @@ namespace AI
                 // Make move
                 gameBoard.board[i] = Tags.EMPTY;
                 gameBoard.board[adj[j]] = playerTag;
-                checkIfMoveMakesMill(ref gameBoard, playerTag, ref moves, m);
+                checkPotentialRemovals(ref gameBoard, playerTag, ref moves, m);
                 // Undo that move
                 gameBoard.board[i] = playerTag;
                 gameBoard.board[adj[j]] = Tags.EMPTY;
@@ -221,7 +221,7 @@ namespace AI
           foreach (short slot in emptySlots) {
             gameBoard.board[slot] = playerTag;
             m.moveTo = slot;
-            checkIfMoveMakesMill(ref gameBoard, playerTag, ref moves, m);
+            checkPotentialRemovals(ref gameBoard, playerTag, ref moves, m);
             gameBoard.board[slot] = Tags.EMPTY;
           }
           gameBoard.board[orb] = playerTag;
@@ -237,17 +237,8 @@ namespace AI
           if (m.removeFrom != -1)
             gameBoard.removePiece(m.removeFrom);
 
-          if (m.removeFrom != -1) {
-            if (gameBoard.board[m.moveTo] == Tags.AI_TAG)
-              m.score = evaluateBoardstate(ref gameBoard, phase, 1,
-                                           (short)(currentDepth - 1));
-            else if (gameBoard.board[m.moveTo] == Tags.HUMAN_TAG)
-              m.score = evaluateBoardstate(ref gameBoard, phase, -1,
-                                           (short)(currentDepth - 1));
-          }
-          else
-            m.score = evaluateBoardstate(ref gameBoard, phase, 0,
-                                         (short)(currentDepth - 1));
+          m.score = evaluateBoardstate(ref gameBoard, phase, m,
+                                       (short)(currentDepth - 1));
 
           if (phase == Phases.PLACEMENT)
             gameBoard.removePiece(m.moveTo);
@@ -265,7 +256,7 @@ namespace AI
       //numberOfMoves += moves.Count;
       return (moves);
     }
-    private void checkIfMoveMakesMill(ref Board gameBoard, string playerTag,
+    private void checkPotentialRemovals(ref Board gameBoard, string playerTag,
                            ref List<Move> moves, Move m) {
       /* If we made a mill, add a move for each possible piece that can
        * be removed
@@ -320,9 +311,12 @@ namespace AI
     * | Heuristic Evaluation Functions |
     * +--------------------------------+
     */
-    private int evaluateBoardstate(ref Board gameBoard, string phase,
-                                    short lastMoveMadeMill, short depth) {
+    private int evaluateBoardstate(ref Board gameBoard, string phase, Move m,
+                                   short depth) {
       int score = 0;
+      short lastMoveMadeMill = 0;
+      short lastMoveBlockedMill = 0;
+      short differenceInBlockedMills = 0;
       short differenceInMills = 0;
       short differenceInBlockedPieces = 0;
       short differenceInTotalPieces = 0;
@@ -330,10 +324,14 @@ namespace AI
       short differenceIn3Pieces = 0;
       short differenceInDoubleMills = 0;
       short winner = 0;
+      short differenceInOpenMills = 0;
 
       // Get the values we need for our heuristic
+      checkIfMadeMill(ref gameBoard, ref m, ref lastMoveMadeMill);
+      checkIfBlockedMill(ref gameBoard, ref m, ref lastMoveMadeMill);
       calculateMillsAnd2Pieces(ref gameBoard, ref differenceInMills,
-                              ref differenceIn2Pieces, ref depth);
+                              ref differenceIn2Pieces, 
+                              ref differenceInBlockedMills, ref depth);
       calculateBlockedPieces(ref gameBoard, ref differenceInBlockedPieces,
                              ref depth);
       calculate3Pieces(ref gameBoard, ref differenceIn3Pieces, ref depth);
@@ -347,6 +345,7 @@ namespace AI
       // Evaluate the heuristic
       if (phase == Phases.PLACEMENT) {
         score += 18 * lastMoveMadeMill;
+        score += 20 * lastMoveBlockedMill;
         score += 26 * differenceInMills;
         score += 1 * differenceInBlockedPieces;
         score += 9 * differenceInTotalPieces;
@@ -355,7 +354,9 @@ namespace AI
       }
       else if (phase == Phases.MOVEMENT) {
         score += 14 * lastMoveMadeMill;
-        score += 43 * differenceInMills;
+        score += 20 * lastMoveBlockedMill;
+        score += 35 * differenceInOpenMills;
+        score += 35 * differenceInMills;
         score += 10 * differenceInBlockedPieces;
         score += 11 * differenceInTotalPieces;
         score += 8 * differenceInDoubleMills;
@@ -363,6 +364,7 @@ namespace AI
       }
       else {
         score += 16 * lastMoveMadeMill;
+        score += 20 * lastMoveBlockedMill;
         score += 10 * differenceIn2Pieces;
         score += 1 * differenceIn3Pieces;
         score += 1190 * winner;
@@ -377,6 +379,7 @@ namespace AI
     private void calculateMillsAnd2Pieces(ref Board gameBoard,
                                           ref short differenceInMills,
                                           ref short differenceIn2Pieces,
+                                          ref short differenceInBlockedMills,
                                           ref short depth) {
       foreach (short[] mill in Configurations.MILLS) {
         short AIPieces = 0;
@@ -397,10 +400,17 @@ namespace AI
         else if (humanPieces == 3)
           differenceInMills -= 1;
         // Count the 2-piece configurations
-        if (AIPieces == 2 && emptySlots == 1)
-          differenceIn2Pieces += 1;
-        else if (humanPieces == 2 && emptySlots == 1)
-          differenceIn2Pieces -= 1;
+        if (AIPieces == 2) {
+          if (emptySlots == 1)
+            differenceIn2Pieces += 1;
+          else if (humanPieces == 1)
+            differenceInBlockedMills += 1;
+        }
+        else if (humanPieces == 2)
+          if (emptySlots == 1)
+            differenceIn2Pieces -= 1;
+          else if (AIPieces == 1)
+            differenceInBlockedMills += 1;
       }
     }
     /* Calculates the difference in AI 3-piece configurations vs human
@@ -485,6 +495,95 @@ namespace AI
         if (humanPieces == 5 && gameBoard.board[dm[5]] == Tags.EMPTY)
           differenceInDoubleMills -= 1;
       }
+    }
+    /* Checks if the last move made a mill.  1 if the AI made a mill. 
+     * -1 if the human made a mill. 0 if no mills were made.
+     */
+    private void checkIfMadeMill(ref Board gameBoard, ref Move m,
+                                 ref short madeMill) {
+      if (m.removeFrom != -1)
+        if (gameBoard.board[m.moveTo] == Tags.AI_TAG)
+          madeMill = 1;
+        else
+          madeMill = -1;
+      else
+        madeMill = 0;
+    }
+    /* Calculate the difference in "open" mills (2/3 slots filled, an
+     * adjacent piece, and no adjacent opponent piece).  Positive
+     * numbers favor the AI, negatives favor the human.
+     */
+    private void calculateDifferenceInOpenMills(ref Board gameBoard,
+                                                ref short differenceInOpenMills) {
+      foreach (short[] mill in Configurations.MILLS) {
+        int AIPieces = 0;
+        int humanPieces = 0;
+        int emptySlots = 0; // Total number
+        int emptySlot = 0;  // The specific slot
+
+        foreach (short slot in mill)
+          if (gameBoard.board[slot] == Tags.AI_TAG)
+            AIPieces += 1;
+          else if (gameBoard.board[slot] == Tags.HUMAN_TAG)
+            humanPieces += 1;
+          else {
+            emptySlots += 1;
+            emptySlot = slot;
+          }
+
+        if (emptySlots == 1 && (AIPieces == 2 || humanPieces == 2)) {
+          int adjAIPieces = 0;
+          int adjHumanPieces = 0;
+          foreach (short adj in Configurations.ADJACENT_SLOTS[emptySlots])
+            if (gameBoard.board[adj] == Tags.AI_TAG)
+              adjAIPieces += 1;
+            else if (gameBoard.board[adj] == Tags.HUMAN_TAG)
+              adjHumanPieces += 1;
+
+          if (AIPieces == 2 && adjHumanPieces == 0 && adjAIPieces >= 1)
+            differenceInOpenMills += 1;
+          else if (humanPieces == 2 && adjAIPieces == 0 && adjHumanPieces >= 1)
+            differenceInOpenMills -= 1;
+        }
+      }
+    }
+
+    /* Checks if the last move blocked a mill.  1 if the AI blocked a
+     * mill.  -1 if the human blocked a mill. 0 if no mills were blocked.
+     */
+    private void checkIfBlockedMill(ref Board gameBoard, ref Move m, ref short blockedMill) {
+      bool didBlockMill = false;
+      string currentPlayer = gameBoard.board[m.moveTo];
+      string opponent;
+
+      if (currentPlayer == Tags.AI_TAG)
+        opponent = Tags.HUMAN_TAG;
+      else
+        opponent = Tags.AI_TAG;
+
+      foreach (short[] mill in Configurations.MILLS)
+        if (mill.Contains(m.moveTo)) {
+          short currentPlayerPieces = 0;
+          short opponentPieces = 0;
+
+          foreach (short slot in mill)
+            if (gameBoard.board[slot] == currentPlayer)
+              currentPlayerPieces += 1;
+            else if (gameBoard.board[slot] == opponent)
+              opponentPieces += 1;
+
+          if (currentPlayerPieces == 1 && opponentPieces == 2) {
+            didBlockMill = true;
+            break;
+          }
+      }
+      if (didBlockMill)
+        if (currentPlayer == Tags.AI_TAG)
+          blockedMill = 1;
+        else
+          blockedMill = -1;
+      else
+        blockedMill = 0;
     }
 
     /* +------------------+
