@@ -14,7 +14,7 @@ public class PlaneScript : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (!gameController.waitingOnAnimation && !gameController.waitingOnOtherPlayer && gameController.gamePhase == "movementPlace")
+        if (gameController != null && (!gameController.waitingOnAnimation && !gameController.waitingOnOtherPlayer && gameController.gamePhase == "movementPlace"))
         {
             gameController.gamePhase = "movementPickup";
             gameController.ShowAvailableMoves();

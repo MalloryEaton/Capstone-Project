@@ -56,9 +56,12 @@ public class GameBoardUIController : MonoBehaviour {
     
     public void exitToMenu()
     {
-        hideMenu();
-        hideForfeitConfirmation();
-        hideMenu();
+        if(MenuPanel != null)
+            hideMenu();
+        if(forfeitConfirmationPanel != null)
+            hideForfeitConfirmation();
+        if (MenuPanel != null)
+            hideMenu();
         if (PlayerPrefs.GetString("GameType") == "Network")
         {
             networking.SendForfeit();
