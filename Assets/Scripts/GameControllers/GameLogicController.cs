@@ -726,8 +726,20 @@ public class GameLogicController : MonoBehaviour
                 uiController.displayWinMessage(player1Color);
             //print("Game Over. " + player1Color + " wins!");
             else
-                uiController.displayWinMessage(player2Color);
-            //print("Game Over. " + player2Color + " wins!");
+            {
+                if(PlayerPrefs.GetString("GameType") == "Story")
+                {
+                    //Display prompt
+                    uiController.displayLose();
+                }
+                else
+                {
+                    uiController.displayWinMessage(player2Color);
+                    //print("Game Over. " + player2Color + " wins!");
+                }
+
+            }
+
         }
     }
 

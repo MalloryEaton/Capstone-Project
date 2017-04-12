@@ -19,6 +19,7 @@ public class UIControllerScript : MonoBehaviour
     public GameObject LevelSelectPanel;
     public GameObject BioPanel;
     public GameObject LogoPanel;
+    public GameObject turnSelectPanel;
     public List<GameObject> TutorialSlides;
 
     private CameraMovementController cmc;
@@ -47,6 +48,7 @@ public class UIControllerScript : MonoBehaviour
         print("awake");
         slideIndex = 0;
         storyContinuePanel.SetActive(false);
+        turnSelectPanel.SetActive(false);
     }
 
     private void Update()
@@ -309,7 +311,11 @@ public class UIControllerScript : MonoBehaviour
                     display("difficulty");
                 }
             }
-            else
+            else if(PlayerPrefs.GetString("GameType") == "AI")
+            {
+                hide("character");
+                displayTurnSelect();
+            }
             {
                 string player1Color = PlayerPrefs.GetString("Player1Color");
                 Button player1Button = GameObject.Find(player1Color + "MageButton").GetComponent<Button>();
@@ -324,7 +330,27 @@ public class UIControllerScript : MonoBehaviour
     public void setDifficulty(string difficulty)
     {
         PlayerPrefs.SetString("Difficulty", difficulty);
-        display("character");
+        hide("difficulty");
+        displayTurnSelect();
+        //display("character");
+    }
+
+    public void displayTurnSelect()
+    {
+        turnSelectPanel.SetActive(true);
+        turnSelectPanel.GetComponent<Animator>().SetBool("isDisplayed", true);
+    }
+
+    public void hideTurnSelect()
+    {
+        turnSelectPanel.GetComponent<Animator>().SetBool("isDisplayed", false);
+        turnSelectPanel.SetActive(false);
+    }
+
+    public void hideStoryContinuePrompt()
+    {
+        storyContinuePanel.GetComponent<Animator>().SetBool("isDisplayed", false);
+        storyContinuePanel.SetActive(false);
     }
 
     public void goToNetworkLobby()
@@ -469,6 +495,8 @@ public class UIControllerScript : MonoBehaviour
         {
             PlayerPrefs.SetString("AIGoesFirst", "true");
         }
+        hideTurnSelect();
+        display("character");
         Debug.Log(PlayerPrefs.GetString("AIGoesFirst"));
     }
 

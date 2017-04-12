@@ -31,6 +31,7 @@ public class GameBoardUIController : MonoBehaviour {
     public GameObject forfeitConfirmationPanel;
     public GameObject drawPanel;
     public GameObject forfeitPanel;
+    public GameObject losePanel;
 
     void Start()
     {
@@ -52,6 +53,7 @@ public class GameBoardUIController : MonoBehaviour {
         forfeitConfirmationPanel.SetActive(false);
         drawPanel.SetActive(false);
         forfeitPanel.SetActive(false);
+        losePanel.SetActive(false);
     }
     
     public void exitToMenu()
@@ -107,6 +109,18 @@ public class GameBoardUIController : MonoBehaviour {
         chatInput.enabled = true;
         csl.enabled = true;
         chatButton.enabled = true;
+    }
+
+    public void displayLose()
+    {
+        losePanel.SetActive(true);
+        losePanel.GetComponent<Animator>().SetBool("isDisplayed", true);
+    }
+
+    public void hideLose()
+    {
+        losePanel.GetComponent<Animator>().SetBool("isDisplayed", false);
+        losePanel.SetActive(false);
     }
 
     public void sendChat()
@@ -185,6 +199,11 @@ public class GameBoardUIController : MonoBehaviour {
             LoadingPanel.GetComponent<Animator>().SetBool("isDisplayed", true);
             StartCoroutine(LoadAsync(1));
         }
+    }
+
+    public void reloadStage()
+    {
+        StartCoroutine(LoadAsync(PlayerPrefs.GetInt("StoryStage")));
     }
 
     public IEnumerator displayPhase(string phase)
