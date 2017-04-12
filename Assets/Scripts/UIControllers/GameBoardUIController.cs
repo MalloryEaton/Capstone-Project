@@ -30,6 +30,7 @@ public class GameBoardUIController : MonoBehaviour {
     public Text phaseText;
     public GameObject forfeitConfirmationPanel;
     public GameObject drawPanel;
+    public GameObject forfeitPanel;
 
     void Start()
     {
@@ -50,6 +51,7 @@ public class GameBoardUIController : MonoBehaviour {
         phasePanel.SetActive(false);
         forfeitConfirmationPanel.SetActive(false);
         drawPanel.SetActive(false);
+        forfeitPanel.SetActive(false);
     }
     
     public void exitToMenu()
@@ -271,5 +273,17 @@ public class GameBoardUIController : MonoBehaviour {
     public void hideNotification()
     {
         chatButton.GetComponent<Animator>().SetBool("isNotification", false);
+    }
+
+    public void displayForfeit()
+    {
+        forfeitPanel.SetActive(true);
+        forfeitPanel.GetComponent<Animator>().SetBool("isDisplayed", true);
+    }
+
+    public void hideForfeit()
+    {
+        forfeitPanel.GetComponent<Animator>().SetBool("isDisplayed", false);
+        forfeitPanel.SetActive(false);
     }
 }
