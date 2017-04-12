@@ -247,6 +247,14 @@ public class UIController : MonoBehaviour
     public void setDifficulty(string difficulty)
     {
         PlayerPrefs.SetString("Difficulty", difficulty);
+        HidePanels();
+        displayTurnSelect();
+    }
+
+    public void displayTurnSelect()
+    {
+        turnSelectPanel.SetActive(true);
+        turnSelectPanel.GetComponent<Animator>().SetBool("isDisplayed", true);
     }
 
     public void goToNetworkLobby()
