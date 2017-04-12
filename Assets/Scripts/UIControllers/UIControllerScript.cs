@@ -116,7 +116,7 @@ public class UIControllerScript : MonoBehaviour
             LoadingPanel.GetComponent<Animator>().SetBool("isDisplayed", true);
             PlayerPrefs.SetString("GameType", "Story");
             PlayerPrefs.SetInt("StoryStage", 0);
-            StartCoroutine(LoadAsync(11));
+            StartCoroutine(LoadAsync(14));
         }
         else if (panel == "difficulty") //quickplay
         {
