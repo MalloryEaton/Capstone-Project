@@ -6,7 +6,7 @@ namespace AI
   {
     public const string EMPTY = "Empty";
     public const string AI_TAG = "Opponent";
-    public const string PLAYER_TAG = "Player";
+    public const string HUMAN_TAG = "Player";
   }
   public static class Phases
   {

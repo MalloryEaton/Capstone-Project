@@ -39,7 +39,7 @@ namespace AI
       moveTo = findMill(Tags.AI_TAG);
       // If there is no mill to make, check if we can block a mill
       if (moveTo == -1)
-        moveTo = findMill(Tags.PLAYER_TAG);
+        moveTo = findMill(Tags.HUMAN_TAG);
       // Otherwise, remove a piece at random
       if (moveTo == -1) {
         moveTo = (short)rand.Next(0, 24);
@@ -69,7 +69,7 @@ namespace AI
         }
       // If no mill can be made, see if we can block one
       if (newMove[0] == -1 || newMove[1] == -1) {
-        potentialMills = findPotentialMills(Tags.PLAYER_TAG);
+        potentialMills = findPotentialMills(Tags.HUMAN_TAG);
         foreach (short[] mill in potentialMills)
           if ((newMove[0] = findAdjacentOrb(mill, Tags.AI_TAG)) != -1 &&
               !mill.Contains(newMove[0])) {
@@ -107,7 +107,7 @@ namespace AI
       List<short> opponentRunes = new List<short> { };
 
       for (short i = 0; i <= 23; i++)
-        if (gameLogicController.runeList[i].tag == Tags.PLAYER_TAG)
+        if (gameLogicController.runeList[i].tag == Tags.HUMAN_TAG)
           opponentRunes.Add(i);
 
       removeFrom = (short)rand.Next(0, opponentRunes.Count);

@@ -38,9 +38,9 @@ public class MyAIController : MonoBehaviour
     if (difficulty == Difficulties.EASY)
       move = easyAI.getEasyAIMove(phase);
     else if (difficulty == Difficulties.MEDIUM)
-      move = mediumAI.getMediumAIMove(gameBoard);
+      move = mediumAI.getMediumAIMove(ref gameBoard);
     else // Hard
-      move = mediumAI.getMediumAIMove(gameBoard);
+      move = mediumAI.getMediumAIMove(ref gameBoard);
 
     return (move);
   }
@@ -50,6 +50,10 @@ public class MyAIController : MonoBehaviour
 
     for (int i = 0; i < 24; i++) {
       gameBoard.board[i] = gameLogicController.runeList[i].tag;
+      if (gameBoard.board[i] == Tags.AI_TAG)
+        gameBoard.incPieces(Tags.AI_TAG);
+      else if (gameBoard.board[i] == Tags.HUMAN_TAG)
+        gameBoard.incPieces(Tags.HUMAN_TAG);
     }
 
     return (gameBoard);

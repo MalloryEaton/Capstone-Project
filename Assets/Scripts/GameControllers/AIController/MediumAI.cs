@@ -9,17 +9,17 @@ namespace AI
 {
   public class MediumAI : MonoBehaviour {
     private const int MAX_SCORE = 1000000;
-    private const int DEPTH = 10;
+    private const short DEPTH = 4;
 
-    private int numberOfMoves = 0;
-    private int movesThatRemove = 0;
+    //private int numberOfMoves = 0;
+    //private int movesThatRemove = 0;
 
     /* +-----------------------+
      * | Interfacing Functions |
      * +-----------------------+
      */
      // Returns a List of an AI move
-    public List<short> getMediumAIMove(Board gameBoard) {
+    public List<short> getMediumAIMove(ref Board gameBoard) {
       Move move;
       string phase = gameBoard.getPhase(Tags.AI_TAG);
 
@@ -32,11 +32,14 @@ namespace AI
     }
     // Decide where to place an orb
     private Move makePlacement(ref Board gameBoard) {
-      List<Move> moves = generateMoves(gameBoard, Tags.AI_TAG);
+      List<Move> moves = generateMoves(ref gameBoard, Tags.AI_TAG, DEPTH - 1);
+      int alpha = int.MinValue;
+      int beta = int.MaxValue;
+
       foreach (Move m in moves) {
         applyMove(m, Tags.AI_TAG, ref gameBoard, Phases.PLACEMENT);
-        m.score += alphaBeta(Tags.PLAYER_TAG, ref gameBoard, DEPTH - 1,
-                             int.MinValue, int.MaxValue, m);
+        m.score += alphaBeta(Tags.AI_TAG, ref gameBoard, DEPTH - 1,
+                             ref alpha, ref beta, m);
         undoMove(m, Tags.AI_TAG, ref gameBoard, Phases.PLACEMENT);
       }
 
@@ -59,12 +62,14 @@ namespace AI
     }
     // Decide where to move an orb from/to
     private Move makeMovement(ref Board gameBoard) {
+      List<Move> moves = generateMoves(ref gameBoard, Tags.AI_TAG, DEPTH - 1);
+      int alpha = int.MinValue;
+      int beta = int.MaxValue;
 
-      List<Move> moves = generateMoves(gameBoard, Tags.AI_TAG);
       foreach (Move m in moves) {
         applyMove(m, Tags.AI_TAG, ref gameBoard, Phases.MOVEMENT);
-        m.score += alphaBeta(Tags.PLAYER_TAG, ref gameBoard, DEPTH - 1,
-                             int.MinValue, int.MaxValue, m);
+        m.score += alphaBeta(Tags.AI_TAG, ref gameBoard, DEPTH - 1,
+                             ref alpha, ref beta, m);
         undoMove(m, Tags.AI_TAG, ref gameBoard, Phases.MOVEMENT);
       }
 
@@ -90,27 +95,26 @@ namespace AI
      * | Minimax Search w/ Alpha-beta Pruning Functions |
      * +------------------------------------------------+
      */
-    private int alphaBeta(string playerTag, ref Board gameBoard, int depth,
-                          int alpha, int beta, Move previousMove) {
-      Debug.Log("Depth: " + depth);
+    private int alphaBeta(string playerTag, ref Board gameBoard, short depth,
+                          ref int alpha, ref int beta, Move previousMove) {
       List<Move> childMoves;
       string phase = gameBoard.getPhase(playerTag);
       short winner = 0;
 
       // Check for a winner
-      calculateWinner(gameBoard, ref winner);
+      calculateWinner(ref gameBoard, ref winner, ref depth);
 
       // Depth reached
       if (depth == 0) {
         int score = 0;
         if (previousMove.removeFrom != -1) {
           if (gameBoard.board[previousMove.moveTo] == Tags.AI_TAG)
-            score = evaluateBoardstate(ref gameBoard, phase, 1);
-          else if (gameBoard.board[previousMove.moveTo] == Tags.PLAYER_TAG)
-            score = evaluateBoardstate(ref gameBoard, phase, -1);
+            score = evaluateBoardstate(ref gameBoard, phase, 1, depth);
+          else if (gameBoard.board[previousMove.moveTo] == Tags.HUMAN_TAG)
+            score = evaluateBoardstate(ref gameBoard, phase, -1, depth);
         }
         else
-          score = evaluateBoardstate(ref gameBoard, phase, 0);
+          score = evaluateBoardstate(ref gameBoard, phase, 0, depth);
 
         return (score);
       }
@@ -122,15 +126,15 @@ namespace AI
           return (-MAX_SCORE);
       // Determine the current turn, then return -maxScore or maxScore
       else {
-        childMoves = generateMoves(gameBoard, playerTag);
+        childMoves = generateMoves(ref gameBoard, playerTag, depth);
         foreach (Move m in childMoves) {
           applyMove(m, playerTag, ref gameBoard, phase);
 
           // Maximizing player
           if (playerTag == Tags.AI_TAG) {
-            beta =
-            alpha = getMax(alpha, alphaBeta(Tags.PLAYER_TAG, ref gameBoard,
-                                            depth - 1, alpha, beta, m));
+            alpha = Math.Max(alpha, alphaBeta(Tags.HUMAN_TAG, ref gameBoard,
+                                            (short)(depth - 1), ref alpha,
+                                            ref beta, m));
             // Check for cutoff
             if (beta <= alpha) {
               undoMove(m, playerTag, ref gameBoard, phase);
@@ -139,8 +143,9 @@ namespace AI
           }
           // Minimizing player
           else {
-            beta = getMin(alpha, alphaBeta(Tags.AI_TAG, ref gameBoard,
-                                           depth - 1, alpha, beta, m));
+            beta = Math.Min(alpha, alphaBeta(Tags.AI_TAG, ref gameBoard,
+                                           (short)(depth - 1), ref alpha,
+                                           ref beta, m));
             //Check for cutoff
             if (beta <= alpha) {
               undoMove(m, playerTag, ref gameBoard, phase);
@@ -157,7 +162,7 @@ namespace AI
     }
 
     // Get all available moves for the given player
-    private List<Move> generateMoves(Board gameBoard, string playerTag) {
+    private List<Move> generateMoves(ref Board gameBoard, string playerTag, short currentDepth) {
       List<Move> moves = new List<Move> { };
       string phase = gameBoard.getPhase(playerTag);
 
@@ -223,7 +228,7 @@ namespace AI
         }
       }
 
-      if (DEPTH > 3) {
+      if (currentDepth > 3) {
         foreach (Move m in moves) {
           if (phase == Phases.PLACEMENT)
             gameBoard.placePiece(m.moveTo, playerTag);
@@ -234,12 +239,15 @@ namespace AI
 
           if (m.removeFrom != -1) {
             if (gameBoard.board[m.moveTo] == Tags.AI_TAG)
-              m.score = evaluateBoardstate(ref gameBoard, phase, 1);
-            else if (gameBoard.board[m.moveTo] == Tags.PLAYER_TAG)
-              m.score = evaluateBoardstate(ref gameBoard, phase, -1);
+              m.score = evaluateBoardstate(ref gameBoard, phase, 1,
+                                           (short)(currentDepth - 1));
+            else if (gameBoard.board[m.moveTo] == Tags.HUMAN_TAG)
+              m.score = evaluateBoardstate(ref gameBoard, phase, -1,
+                                           (short)(currentDepth - 1));
           }
           else
-            m.score = evaluateBoardstate(ref gameBoard, phase, 0);
+            m.score = evaluateBoardstate(ref gameBoard, phase, 0,
+                                         (short)(currentDepth - 1));
 
           if (phase == Phases.PLACEMENT)
             gameBoard.removePiece(m.moveTo);
@@ -254,7 +262,7 @@ namespace AI
           moves = moves.OrderBy(o => o.score).ToList();
       }
 
-      numberOfMoves += moves.Count;
+      //numberOfMoves += moves.Count;
       return (moves);
     }
     private void checkIfMoveMakesMill(ref Board gameBoard, string playerTag,
@@ -269,7 +277,7 @@ namespace AI
               canBeRemoved(ref gameBoard, i)) {
             m.removeFrom = i;
             moves.Add(m);
-            movesThatRemove += 1;
+            //movesThatRemove += 1;
           }
       }
       else
@@ -313,7 +321,7 @@ namespace AI
     * +--------------------------------+
     */
     private int evaluateBoardstate(ref Board gameBoard, string phase,
-                                    short lastMoveMadeMill) {
+                                    short lastMoveMadeMill, short depth) {
       int score = 0;
       short differenceInMills = 0;
       short differenceInBlockedPieces = 0;
@@ -324,15 +332,16 @@ namespace AI
       short winner = 0;
 
       // Get the values we need for our heuristic
-      calculateMillsAnd2Pieces(gameBoard, ref differenceInMills,
-                              ref differenceIn2Pieces);
-      calculateBlockedPieces(gameBoard, ref differenceInBlockedPieces);
-      calculate3Pieces(gameBoard, ref differenceIn3Pieces);
+      calculateMillsAnd2Pieces(ref gameBoard, ref differenceInMills,
+                              ref differenceIn2Pieces, ref depth);
+      calculateBlockedPieces(ref gameBoard, ref differenceInBlockedPieces,
+                             ref depth);
+      calculate3Pieces(ref gameBoard, ref differenceIn3Pieces, ref depth);
 
       differenceInTotalPieces = (short)(gameBoard.getNumPieces(Tags.AI_TAG) -
-                                 gameBoard.getNumPieces(Tags.PLAYER_TAG));
-      calculateDoubleMills(gameBoard, ref differenceInDoubleMills);
-      calculateWinner(gameBoard, ref winner);
+                                 gameBoard.getNumPieces(Tags.HUMAN_TAG));
+      calculateDoubleMills(ref gameBoard, ref differenceInDoubleMills);
+      calculateWinner(ref gameBoard, ref winner, ref depth);
 
 
       // Evaluate the heuristic
@@ -365,9 +374,10 @@ namespace AI
       * difference between the number of 2-piece configurations.
       * Positive numbers favor the AI, negatives favor the human
       */
-    private void calculateMillsAnd2Pieces(Board gameBoard,
+    private void calculateMillsAnd2Pieces(ref Board gameBoard,
                                           ref short differenceInMills,
-                                          ref short differenceIn2Pieces) {
+                                          ref short differenceIn2Pieces,
+                                          ref short depth) {
       foreach (short[] mill in Configurations.MILLS) {
         short AIPieces = 0;
         short humanPieces = 0;
@@ -376,7 +386,7 @@ namespace AI
         foreach (short slot in mill)
           if (gameBoard.board[slot] == Tags.AI_TAG)
             AIPieces += 1;
-          else if (gameBoard.board[slot] == Tags.PLAYER_TAG)
+          else if (gameBoard.board[slot] == Tags.HUMAN_TAG)
             humanPieces += 1;
           else
             emptySlots += 1;
@@ -397,8 +407,9 @@ namespace AI
      * 3-piece configurations. Positive numbers the favor AI, negatives
      * favor the human
      */
-    private void calculate3Pieces(Board gameBoard,
-                                  ref short differenceIn3Pieces) {
+    private void calculate3Pieces(ref Board gameBoard,
+                                  ref short differenceIn3Pieces,
+                                  ref short depth) {
       foreach (short[] threePiece in Configurations.THREE_PIECES) {
         short AIPieces = 0;
         short humanPieces = 0;
@@ -406,7 +417,7 @@ namespace AI
         foreach (short slot in threePiece)
           if (gameBoard.board[slot] == Tags.AI_TAG)
             AIPieces += 1;
-          else if (gameBoard.board[slot] == Tags.PLAYER_TAG)
+          else if (gameBoard.board[slot] == Tags.HUMAN_TAG)
             humanPieces += 1;
 
         if (AIPieces == 3)
@@ -418,8 +429,9 @@ namespace AI
     /* Calculates the difference in blocked human pieces vs blockd AI
      * pieces. Positive numbers favor the human, negatives the AI
      */
-    private void calculateBlockedPieces(Board gameBoard,
-                                        ref short differenceInBlockedPieces) {
+    private void calculateBlockedPieces(ref Board gameBoard,
+                                        ref short differenceInBlockedPieces,
+                                        ref short depth) {
       for (int i = 0; i < gameBoard.BOARD_SIZE; i++)
         if (gameBoard.board[i] != Tags.EMPTY) {
           short availableMoves = 0;
@@ -438,29 +450,35 @@ namespace AI
     /* Determine if the game is over and who the winner is. 1 if the AI
      * won, -1 if the human won, 0 if the game isn't over.
      */
-    private void calculateWinner(Board gameBoard, ref short winner) {
-      if (gameBoard.getNumPieces(Tags.PLAYER_TAG) < 3)
-        winner = 1;
-      else if (gameBoard.getNumPieces(Tags.AI_TAG) < 3)
-        winner = -1;
-      else if (generateMoves(gameBoard, Tags.PLAYER_TAG).Count == 0)
-        winner = 1;
-      else if (generateMoves(gameBoard, Tags.AI_TAG).Count == 0)
-        winner = -1;
+    private void calculateWinner(ref Board gameBoard, ref short winner,
+                                 ref short depth) {
+      if (gameBoard.getPhase(Tags.AI_TAG) != Phases.PLACEMENT &&
+          gameBoard.getPhase(Tags.HUMAN_TAG) != Phases.PLACEMENT)
+        if (gameBoard.getNumPieces(Tags.HUMAN_TAG) < 3)
+          winner = 1;
+        else if (gameBoard.getNumPieces(Tags.AI_TAG) < 3)
+          winner = -1;
+        else if (generateMoves(ref gameBoard, Tags.HUMAN_TAG, depth).Count == 0)
+          winner = 1;
+        else if (generateMoves(ref gameBoard, Tags.AI_TAG, depth).Count == 0)
+          winner = -1;
+        else
+          winner = 0;
       else
         winner = 0;
     }
     /* Calculate the difference in AI double mills vs human double
      * mills. Positive numbers favor the AI, negatives the human.
      */
-    private void calculateDoubleMills(Board gameBoard, ref short differenceInDoubleMills) {
+    private void calculateDoubleMills(ref Board gameBoard,
+                                      ref short differenceInDoubleMills) {
       foreach (short[] dm in Configurations.DOUBLE_MILLS) {
         short AIPieces = 0;
         short humanPieces = 0;
         for (int i = 0; i < 5; i++)
           if (gameBoard.board[dm[i]] == Tags.AI_TAG)
             AIPieces += 1;
-          else if (gameBoard.board[dm[i]] == Tags.PLAYER_TAG)
+          else if (gameBoard.board[dm[i]] == Tags.HUMAN_TAG)
             humanPieces += 1;
         if (AIPieces == 5 && gameBoard.board[dm[5]] == Tags.EMPTY)
           differenceInDoubleMills += 1;

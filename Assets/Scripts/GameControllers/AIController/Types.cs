@@ -66,8 +66,18 @@ public class Board
     short num = -1;
     if (player == Tags.AI_TAG)
       num = numAIPieces;
-    else if (player == Tags.PLAYER_TAG)
+    else if (player == Tags.HUMAN_TAG)
       num = numHumanPieces;
+
+    return (num);
+  }
+  // Return the number of placed pieces for the given players
+  public short getPlacedPieces(string player) {
+    short num = -1;
+    if (player == Tags.AI_TAG)
+      num = placedAIPieces;
+    else if (player == Tags.HUMAN_TAG)
+      num = placedHumanPieces;
 
     return (num);
   }
@@ -102,7 +112,7 @@ public class Board
       placedAIPieces += 1;
       result = placedAIPieces;
     }
-    else if (player == Tags.PLAYER_TAG) {
+    else if (player == Tags.HUMAN_TAG) {
       placedHumanPieces += 1;
       result = placedHumanPieces;
     }
@@ -112,39 +122,38 @@ public class Board
   public short decPlacedPieces(string player) {
     short result = -1;
     if (player == Tags.AI_TAG) {
-      numAIPieces -= 1;
-      result = numAIPieces;
+      placedAIPieces -= 1;
+      result = placedAIPieces;
     }
-    else if (player == Tags.PLAYER_TAG) {
-      numHumanPieces -= 1;
-      result = numHumanPieces;
+    else if (player == Tags.HUMAN_TAG) {
+      placedHumanPieces -= 1;
+      result = placedHumanPieces;
     }
     return (result);
   }
-
   /* Increment the number of pieces for the given player
    * Returns the total number of pieces for said player
    */
-  private short incPieces(string player) {
+  public short incPieces(string player) {
     short result = -1;
     if (player == Tags.AI_TAG) {
       numAIPieces += 1;
       result = numAIPieces;
     }
-    else if (player == Tags.PLAYER_TAG) {
+    else if (player == Tags.HUMAN_TAG) {
       numHumanPieces += 1;
       result = numHumanPieces;
     }
     return (result);
   }
   // Same as above, except it decrements the values
-  private short decPieces(string player) {
+  public short decPieces(string player) {
     short result = -1;
     if (player == Tags.AI_TAG) {
       numAIPieces -= 1;
       result = numAIPieces;
     }
-    else if (player == Tags.PLAYER_TAG) {
+    else if (player == Tags.HUMAN_TAG) {
       numHumanPieces -= 1;
       result = numHumanPieces;
     }
