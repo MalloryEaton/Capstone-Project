@@ -206,7 +206,7 @@ public class UIControllerScript : MonoBehaviour
     {
         storyContinuePanel.GetComponent<Animator>().SetBool("isDisplayed", false);
         storyContinuePanel.SetActive(false);
-       // LoadingPanel.GetComponent<Animator>().SetBool("isDisplayed", true);
+        LoadingPanel.GetComponent<Animator>().SetBool("isDisplayed", true);
         switch (PlayerPrefs.GetInt("StoryStage"))
         {
             case 0:
@@ -243,7 +243,7 @@ public class UIControllerScript : MonoBehaviour
     {
         storyContinuePanel.GetComponent<Animator>().SetBool("isDisplayed", false);
         storyContinuePanel.SetActive(false);
-        //LoadingPanel.GetComponent<Animator>().SetBool("isDisplayed", true);
+        LoadingPanel.GetComponent<Animator>().SetBool("isDisplayed", true);
         PlayerPrefs.SetString("GameType", "Story");
         PlayerPrefs.SetInt("StoryStage", 0);
         StartCoroutine(LoadAsync(11));
