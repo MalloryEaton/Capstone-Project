@@ -36,18 +36,10 @@ public class UIControllerScript : MonoBehaviour
 
     void Awake()
     {
-        //load correct tower
-        //if (PlayerPrefs.GetString("HasWon") == null)
-        //    GameObject.Find("FlagsNotWon").SetActive(true);
-        //else
-        //    GameObject.Find("FlagsWon").SetActive(true);
-
         mainCameraPosition = mainCamera.transform.position;
         mainCameraRotation = mainCamera.transform.rotation;
 
         LoadingPanel = GameObject.Find("LoadingPanel");
-        //MainButtonPanel.GetComponent<Animator>().SetBool("isDisplayed", true);
-        //MainTitlePanel.GetComponent<Animator>().SetBool("isDisplayed", true);
         CharacterSelectScript.currentPlayerColor = "Player1Color";
         cmc = FindObjectOfType(typeof(CameraMovementController)) as CameraMovementController;
         display("canvas");
