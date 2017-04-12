@@ -6,7 +6,7 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/LoadingScene.unity
+    path: Assets/Scenes/TeamLogoIntro.unity
   - enabled: 1
     path: Assets/Scenes/MainMenu.unity
   - enabled: 1
@@ -37,3 +37,5 @@ EditorBuildSettings:
     path: Assets/Scenes/Story4.unity
   - enabled: 1
     path: Assets/Scenes/Story5.unity
+  - enabled: 1
+    path: Assets/Scenes/LoadingScene.unity

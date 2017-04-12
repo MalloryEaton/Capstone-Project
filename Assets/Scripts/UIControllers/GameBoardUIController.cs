@@ -153,19 +153,19 @@ public class GameBoardUIController : MonoBehaviour {
                     break;
                 case 2:
                     PlayerPrefs.SetInt("StoryStage", 3);
-                    StartCoroutine(LoadAsync(11));
+                    StartCoroutine(LoadAsync(13));
                     break;
                 case 3:
                     PlayerPrefs.SetInt("StoryStage", 4);
-                    StartCoroutine(LoadAsync(12));
+                    StartCoroutine(LoadAsync(14));
                     break;
                 case 4:
                     PlayerPrefs.SetInt("StoryStage", 5);
-                    StartCoroutine(LoadAsync(13));
+                    StartCoroutine(LoadAsync(15));
                     break;
                 case 5:
                     PlayerPrefs.SetInt("StoryStage", 6);
-                    StartCoroutine(LoadAsync(14));
+                    StartCoroutine(LoadAsync(16));
                     break;
                     //case 6:
                     //    StartCoroutine(LoadAsync(16));
