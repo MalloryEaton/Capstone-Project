@@ -19,6 +19,7 @@ public class UIController : MonoBehaviour
     public GameObject BioPanel;
     public GameObject LogoPanel;
     public GameObject BackgroundPanel;
+    public GameObject turnSelectPanel;
 
     private CameraMovementController cmc;
 
@@ -53,6 +54,7 @@ public class UIController : MonoBehaviour
         offScreenX = -2000;
         onScreenX = -440;
         HidePanels();
+        PlayerPrefs.DeleteKey("Player1Color");
     }
 
     private void Update()
@@ -122,6 +124,7 @@ public class UIController : MonoBehaviour
             MultiplayerPanel.GetComponent<RectTransform>().localPosition = new Vector3(offScreenX, 0, 0);
             CharacterSelectPanel.SetActive(false);
             LevelSelectPanel.SetActive(false);
+            turnSelectPanel.SetActive(false);
         }
         else if (panel == "bio")
         {
@@ -226,11 +229,18 @@ public class UIController : MonoBehaviour
         else if(currentPanel == "Level")
         {
             ShowPanel("Character");
-            string player1Color = PlayerPrefs.GetString("Player1Color");
-            Button player1Button = GameObject.Find(player1Color + "MageButton").GetComponent<Button>();
-            player1Button.interactable = false;
-            CharacterSelectScript.currentPlayerColor = "Player2Color";
-            CharacterSelectScript.characterSelectScript.PageHeader.text = "Player 2 Character Select";
+            if (localGame == true)
+            {
+                string player1Color = PlayerPrefs.GetString("Player1Color");
+                Button player1Button = GameObject.Find(player1Color + "MageButton").GetComponent<Button>();
+                player1Button.interactable = false;
+                CharacterSelectScript.currentPlayerColor = "Player2Color";
+                CharacterSelectScript.characterSelectScript.PageHeader.text = "Player 2 Character Select";
+            }
+            else
+            {
+                ShowPanel("Character");
+            }
         }
     }
 
@@ -390,7 +400,12 @@ public class UIController : MonoBehaviour
         {
             PlayerPrefs.SetString("AIGoesFirst", "true");
         }
-        Debug.Log(PlayerPrefs.GetString("AIGoesFirst"));
+        hideTurnSelect();
+        ShowPanel("Character");
     }
-
+    public void hideTurnSelect()
+    {
+        turnSelectPanel.GetComponent<Animator>().SetBool("isDisplayed", false);
+        turnSelectPanel.SetActive(false);
+    }
 }

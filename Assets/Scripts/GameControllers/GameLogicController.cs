@@ -739,9 +739,7 @@ public class GameLogicController : MonoBehaviour
                     uiController.displayWinMessage(player2Color);
                     //print("Game Over. " + player2Color + " wins!");
                 }
-
             }
-
         }
     }
 

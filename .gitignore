@@ -31,3 +31,9 @@ sysinfo.txt
 Assets/Prefabs/Mages/Animations/Mages.fbm.meta
 Assets/Plugins/UtilityScripts.meta
 Assets/Plugins/UtilityScripts.meta~blah.meta
+Assets/Mages.meta
+Assets/Plugins/PhotonNetwork.meta
+Assets/Plugins/UtilityScripts/PhotonPlayer.meta
+Assets/Plugins/UtilityScripts/UI.meta
+Assets/Plugins/PhotonNetwork/Views.meta
+Assets/Plugins/UtilityScripts/PhotonPlayer/Editor.meta

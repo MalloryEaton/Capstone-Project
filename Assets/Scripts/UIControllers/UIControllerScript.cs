@@ -49,6 +49,7 @@ public class UIControllerScript : MonoBehaviour
         slideIndex = 0;
         storyContinuePanel.SetActive(false);
         turnSelectPanel.SetActive(false);
+        PlayerPrefs.DeleteKey("Player1Color");
     }
 
     private void Update()
