@@ -33,10 +33,13 @@ public class StoryTextController1 : MonoBehaviour
 
     private bool isFirstTime = true;
 
+    private GameObject greenMage;
+
     // Use this for initialization
     void Start ()
     {
-        if(PlayerPrefs.GetInt("StoryStage") == 1)
+        greenMage = GameObject.Find("GreenMage");
+        if (PlayerPrefs.GetInt("StoryStage") == 1)
         {
             isFirstTime = false;
             transform.position = new Vector3(14, 16, 5);
@@ -64,8 +67,8 @@ public class StoryTextController1 : MonoBehaviour
         autoTypeMain = FindObjectOfType(typeof(AutoTypeMainBox)) as AutoTypeMainBox;
         autoTypeLeft = FindObjectOfType(typeof(AutoTypeLeftBox)) as AutoTypeLeftBox;
         autoTypeRight = FindObjectOfType(typeof(AutoTypeRightBox)) as AutoTypeRightBox;
-        
-        if(isFirstTime)
+        greenMage.SetActive(false);
+        if (isFirstTime)
             autoTypeMain.StartText(TextList[0]);
         else
         {
@@ -165,8 +168,7 @@ public class StoryTextController1 : MonoBehaviour
             }
             else if (textIndex == 5)
             {
-                GameObject mage = Instantiate(Resources.Load(@"MagesForBoard\GreenMage", typeof(GameObject)) as GameObject);
-                mage.transform.position = new Vector3(4, 0, -4);
+                greenMage.SetActive(true);
                 textbox = "right";
                 SetUpTextBoxes("right");
                 autoTypeRight.autoType = true;

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class TutorialLogic : MonoBehaviour {
@@ -20,11 +21,18 @@ public class TutorialLogic : MonoBehaviour {
     public string player1Color;
     public string player2Color;
 
+    public bool menuIsOpen;
+
     public bool preventClick;
     public bool waitingOnAnimation;
 
     private AudioSource moveSound;
     private AudioSource removeSound;
+    private AudioSource millSound;
+    public GameObject music;
+
+    public Slider sfxSlider;
+    public Slider musicSlider;
 
     public short runeFromLocation;
 
@@ -47,18 +55,36 @@ public class TutorialLogic : MonoBehaviour {
 
     void Start ()
     {
+        menuIsOpen = false;
         textIndex = 0;
         preventClick = true;
 
         AudioSource[] audio = GetComponents<AudioSource>();
         moveSound = audio[0];
         removeSound = audio[1];
-        
+        millSound = audio[2];
+
+        moveSound.volume = sfxSlider.value;
+        removeSound.volume = sfxSlider.value;
+        music.GetComponent<AudioSource>().volume = musicSlider.value;
+
         player1Color = "Green";
         player2Color = "Purple";
 
         InitializeGameBoard();
         SetupText();
+    }
+
+    public void sfxVolumeUpdate()
+    {
+        moveSound.volume = sfxSlider.value;
+        removeSound.volume = sfxSlider.value;
+        millSound.volume = sfxSlider.value;
+    }
+
+    public void musicVolumeUpdate()
+    {
+        music.GetComponent<AudioSource>().volume = musicSlider.value;
     }
 
     private void InitializeGameBoard()
@@ -126,6 +152,26 @@ public class TutorialLogic : MonoBehaviour {
         TextBoxes[30].SetActive(false);
         TextBoxes[31].SetActive(false);
         TextBoxes[32].SetActive(false);
+        TextBoxes[33].SetActive(false);
+        TextBoxes[34].SetActive(false);
+        TextBoxes[35].SetActive(false);
+        TextBoxes[36].SetActive(false);
+    }
+
+    public void returnToMenu()
+    {
+        LoadingScreen.GetComponent<Animator>().SetBool("isDisplayed", true);
+        LeanTween.cancelAll();
+        StartCoroutine(LoadAsync(1));
+    }
+
+    private IEnumerator LoadAsync(int levelNum)
+    {
+        AsyncOperation async = SceneManager.LoadSceneAsync(levelNum);
+        while (!async.isDone)
+        {
+            yield return null;
+        }
     }
 
     public void TransitionText()
@@ -137,28 +183,34 @@ public class TutorialLogic : MonoBehaviour {
 
         if (textIndex == 11)
         {
+            TextBoxes[textIndex].GetComponent<Button>().interactable = false;
             runeList[20].GetComponent<RuneControllerTutorial>().AddRuneHighlight();
         }
         if (textIndex == 12)
         {
+            TextBoxes[textIndex].GetComponent<Button>().interactable = false;
             MoveOrb(3, "Purple_Orb_1", 1f); //3
         }
 
         if (textIndex == 13)
         {
+            TextBoxes[textIndex].GetComponent<Button>().interactable = false;
             runeList[5].GetComponent<RuneControllerTutorial>().AddRuneHighlight();
         }
         if (textIndex == 14)
         {
+            TextBoxes[textIndex].GetComponent<Button>().interactable = false;
             MoveOrb(2, "Purple_Orb_2", 1f); //3
         }
 
         if (textIndex == 15)
         {
+            TextBoxes[textIndex].GetComponent<Button>().interactable = false;
             runeList[13].GetComponent<RuneControllerTutorial>().AddRuneHighlight();
         }
         if (textIndex == 16)
         {
+            TextBoxes[textIndex].GetComponent<Button>().interactable = false;
             isPlayer1Turn = true;
             InstantiateMagicRings("Green");
             MakeOrbHover(GameObject.Find("OrbAtLocation_2"));
@@ -170,6 +222,7 @@ public class TutorialLogic : MonoBehaviour {
         }
         if (textIndex == 23)
         {
+            TextBoxes[textIndex].GetComponent<Button>().interactable = false;
             preventClick = false;
         }
         if (textIndex == 26)
@@ -210,8 +263,13 @@ public class TutorialLogic : MonoBehaviour {
             // highlight moveable orbs
             HighlightMoveableOrbs(ThereIsAnAvailableMove(MakeListOfRunesForCurrentPlayer()));
         }
+        if (textIndex == 27)
+        {
+            TextBoxes[textIndex].GetComponent<Button>().interactable = false;
+        }
         if (textIndex == 31)
         {
+            TextBoxes[textIndex].GetComponent<Button>().interactable = false;
             isPlayer1Turn = true;
             //fly phase
             Destroy(GameObject.Find("GreenOrbsMovementPhase(Clone)"));
@@ -502,6 +560,8 @@ public class TutorialLogic : MonoBehaviour {
         Transform t1 = runeList[20].transform;
         Transform t2 = runeList[13].transform;
         Transform t3 = runeList[5].transform;
+
+        millSound.Play();
 
         Instantiate(dictionaries.magicRingDictionary[color], new Vector3(t1.position.x, 0.2f, t1.position.z), ringTransform.rotation);
         Instantiate(dictionaries.magicRingDictionary[color], new Vector3(t2.position.x, 0.2f, t2.position.z), ringTransform.rotation);

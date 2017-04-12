@@ -44,9 +44,7 @@ public class UIController : MonoBehaviour
         LoadingPanel = GameObject.Find("LoadingPanel");
         CharacterSelectScript.currentPlayerColor = "Player1Color";
         cmc = FindObjectOfType(typeof(CameraMovementController)) as CameraMovementController;
-        //display("canvas");
         LogoPanel.SetActive(true);
-        print("awake");
         storyContinuePanel.SetActive(false);
     }
 
@@ -105,7 +103,7 @@ public class UIController : MonoBehaviour
                 {
                     CharacterSelectScript.currentPlayerColor = "Player1Color";
                 }
-                CharacterSelectPanel.GetComponent<RectTransform>().localPosition = new Vector3(0, 0, 0);
+                CharacterSelectPanel.SetActive(true);
                 break;
             case "Level":
                 BackgroundPanel.SetActive(false);
@@ -120,9 +118,9 @@ public class UIController : MonoBehaviour
         if (panel == "none")
         {
             MainPanel.GetComponent<RectTransform>().localPosition = new Vector3(offScreenX, 0, 0);
-            CharacterSelectPanel.GetComponent<RectTransform>().localPosition = new Vector3(offScreenX, 0, 0);
             DifficultyPanel.GetComponent<RectTransform>().localPosition = new Vector3(offScreenX, 0, 0);
             MultiplayerPanel.GetComponent<RectTransform>().localPosition = new Vector3(offScreenX, 0, 0);
+            CharacterSelectPanel.SetActive(false);
             LevelSelectPanel.SetActive(false);
         }
         else if (panel == "bio")
@@ -289,7 +287,7 @@ public class UIController : MonoBehaviour
         localGame = false;
         quickGame = false;
         PlayerPrefs.SetString("GameType", "Story");
-        if (PlayerPrefs.HasKey("StoryStage"))
+        if (PlayerPrefs.HasKey("StoryStage") && PlayerPrefs.GetInt("StoryStage") != 0)
         {
             storyContinuePanel.SetActive(true);
             storyContinuePanel.GetComponent<Animator>().SetBool("isDisplayed", true);
