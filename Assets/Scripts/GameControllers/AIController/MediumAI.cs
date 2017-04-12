@@ -345,29 +345,18 @@ namespace AI
       // Evaluate the heuristic
       if (phase == Phases.PLACEMENT) {
         score += 18 * lastMoveMadeMill;
-        score += 10 * lastMoveBlockedMill;
-        //score += 10 * differenceInBlockedMills;
+        score += 20 * lastMoveBlockedMill;
         score += 26 * differenceInMills;
         score += 1 * differenceInBlockedPieces;
         score += 9 * differenceInTotalPieces;
         score += 10 * differenceIn2Pieces;
         score += 7 * differenceIn3Pieces;
-
-        //score += 0 * lastMoveMadeMill;
-        //score += 10 * lastMoveBlockedMill;
-        //score += 10 * differenceInBlockedMills;
-        //score += 0 * differenceInMills;
-        //score += 0 * differenceInBlockedPieces;
-        //score += 0 * differenceInTotalPieces;
-        //score += 0 * differenceIn2Pieces;
-        //score += 0 * differenceIn3Pieces;
       }
       else if (phase == Phases.MOVEMENT) {
         score += 14 * lastMoveMadeMill;
-        score += 10 * lastMoveBlockedMill;
-        //score += 10 * differenceInBlockedMills;
-        score += 25 * differenceInOpenMills;
-        score += 43 * differenceInMills;
+        score += 20 * lastMoveBlockedMill;
+        score += 35 * differenceInOpenMills;
+        score += 35 * differenceInMills;
         score += 10 * differenceInBlockedPieces;
         score += 11 * differenceInTotalPieces;
         score += 8 * differenceInDoubleMills;
@@ -375,7 +364,7 @@ namespace AI
       }
       else {
         score += 16 * lastMoveMadeMill;
-        score += 10 * lastMoveBlockedMill;
+        score += 20 * lastMoveBlockedMill;
         score += 10 * differenceIn2Pieces;
         score += 1 * differenceIn3Pieces;
         score += 1190 * winner;
