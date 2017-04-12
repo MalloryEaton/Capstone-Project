@@ -121,15 +121,17 @@ namespace Com.EnsorcelledStudios.Runic
 
                 foreach (RoomInfo room in roomInfo)
                 {
-                    //TODO: Populate ScrollRect
-                    GameListItem game = new GameListItem();
-                    //GameEntryScript game = Instantiate(gameEntry);
-                    // Hide the unique ID from the screen
-                    game.playerName = room.Name;
-                    // This code works for accessing custom properties
-                    game.characterIconString = room.CustomProperties["color"].ToString();
-                    //game.stageIconString = room.CustomProperties["stage"].ToString();
-                    gameList.Add(game);
+                    if (room.PlayerCount != room.MaxPlayers)
+                    {
+                        GameListItem game = new GameListItem();
+                        //GameEntryScript game = Instantiate(gameEntry);
+                        // Hide the unique ID from the screen
+                        game.playerName = room.Name;
+                        // This code works for accessing custom properties
+                        game.characterIconString = room.CustomProperties["color"].ToString();
+                        //game.stageIconString = room.CustomProperties["stage"].ToString();
+                        gameList.Add(game);
+                    }
                 }
 
                 scrollList.clearList();
@@ -206,6 +208,9 @@ namespace Com.EnsorcelledStudios.Runic
             {
                 Debug.Log("OnPhotonPlayerConnected isMasterClient " + PhotonNetwork.isMasterClient); // Called before OnPhotonPlayerDisconnected
 
+                PhotonNetwork.room.IsOpen = false;
+                PhotonNetwork.room.IsVisible = false;
+
                 LoadArena();
             }
 
@@ -281,8 +286,6 @@ namespace Com.EnsorcelledStudios.Runic
 
         public void CreateGame()
         {
-            //Display SEARCHING FOR PLAYERS popup
-
             GetRandomStage();
 
             playerProperties.Clear();
