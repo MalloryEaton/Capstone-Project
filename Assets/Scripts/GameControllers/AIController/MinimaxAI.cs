@@ -188,7 +188,7 @@ namespace AI
             m.moveTo = i;
             // Place piece
             gameBoard.board[i] = playerTag;
-            checkPotentialRemovals(ref gameBoard, playerTag, ref moves, m);
+            moves = checkPotentialRemovals(ref gameBoard, playerTag, moves, m);
             // Undo that placement
             gameBoard.board[i] = Tags.EMPTY;
           }
@@ -208,7 +208,7 @@ namespace AI
                 // Make move
                 gameBoard.board[i] = Tags.EMPTY;
                 gameBoard.board[adj[j]] = playerTag;
-                checkPotentialRemovals(ref gameBoard, playerTag, ref moves, m);
+                moves = checkPotentialRemovals(ref gameBoard, playerTag, moves, m);
                 // Undo that move
                 gameBoard.board[i] = playerTag;
                 gameBoard.board[adj[j]] = Tags.EMPTY;
@@ -221,24 +221,19 @@ namespace AI
         List<short> emptySlots = new List<short>();
         List<short> playerOrbs = new List<short>();
 
-        //for (short i = 0; i < gameBoard.BOARD_SIZE; i++)
-        //  if (gameBoard.board[i] == playerTag)
-        //    playerOrbs.Add(i);
-        //  else if (gameBoard.board[i] == Tags.EMPTY)
-        //    emptySlots.Add(i);
-
         playerOrbs = getSlots(ref gameBoard, playerTag);
         emptySlots = getSlots(ref gameBoard, Tags.EMPTY);
 
         foreach (short orb in playerOrbs) {
-          Move m = new Move();
-          // Since we're moving from here, we can set this as empty
-          gameBoard.board[orb] = Tags.EMPTY;
-          m.moveFrom = orb;
           foreach (short slot in emptySlots) {
+            Move m = new Move();
+            // Since we're moving from here, we can set this as empty
+            gameBoard.board[orb] = Tags.EMPTY;
+            m.moveFrom = orb;
+
             gameBoard.board[slot] = playerTag;
             m.moveTo = slot;
-            checkPotentialRemovals(ref gameBoard, playerTag, ref moves, m);
+            moves = checkPotentialRemovals(ref gameBoard, playerTag, moves, m);
             gameBoard.board[slot] = Tags.EMPTY;
           }
           gameBoard.board[orb] = playerTag;
@@ -270,11 +265,10 @@ namespace AI
           moves = moves.OrderBy(o => o.score).ToList();
       }
 
-      //numberOfMoves += moves.Count;
       return (moves);
     }
-    private void checkPotentialRemovals(ref Board gameBoard, string playerTag,
-                           ref List<Move> moves, Move m) {
+    private List<Move> checkPotentialRemovals(ref Board gameBoard, string playerTag,
+                                              List<Move> moves, Move m) {
       /* If we made a mill, add a move for each possible piece that can
        * be removed
        */
@@ -285,11 +279,12 @@ namespace AI
               canBeRemoved(ref gameBoard, i)) {
             m.removeFrom = i;
             moves.Add(m);
-            //movesThatRemove += 1;
           }
       }
       else
         moves.Add(m);
+
+      return (moves);
     }
     // Apply the move to the gameBoard
     private void applyMove(Move m, string playerTag,
@@ -358,7 +353,7 @@ namespace AI
                                  gameBoard.getNumPieces(Tags.HUMAN_TAG));
       calculateDoubleMills(ref gameBoard, ref differenceInDoubleMills);
       calculateWinner(ref gameBoard, ref winner, ref depth);
-      calculatePrioritySlotBonus(ref gameBoard, ref m, ref prioritySlotBonus);
+      calculatePrioritySlotBonus(ref gameBoard, ref prioritySlotBonus);
 
       // Evaluate the heuristic
       if (difficultyLevel == Difficulties.MEDIUM)
@@ -672,24 +667,22 @@ namespace AI
         blockedMill = 0;
     }
 
-    private void calculatePrioritySlotBonus(ref Board gameBoard, ref Move m,
+    private void calculatePrioritySlotBonus(ref Board gameBoard,
                                             ref short prioritySlotBonus) {
-      if (Configurations.PLUS2.Contains(m.moveTo))
-        if (gameBoard.board[m.moveTo] == Tags.AI_TAG)
-          prioritySlotBonus = 2;
-        else if (gameBoard.board[m.moveTo] == Tags.HUMAN_TAG)
-          prioritySlotBonus = -2;
-        else
-          prioritySlotBonus = 0;
-      else if (Configurations.PLUS1.Contains(m.moveTo))
-        if (gameBoard.board[m.moveTo] == Tags.AI_TAG)
-          prioritySlotBonus = 1;
-        else if (gameBoard.board[m.moveTo] == Tags.HUMAN_TAG)
-          prioritySlotBonus = -1;
-        else
-          prioritySlotBonus = 0;
-      else
-        prioritySlotBonus = 0;
+
+      for (short i = 0; i < gameBoard.BOARD_SIZE; i++) {
+        if (Configurations.PLUS2.Contains(i)) {
+          if (gameBoard.board[i] == Tags.AI_TAG)
+            prioritySlotBonus += 2;
+          else if (gameBoard.board[i] == Tags.HUMAN_TAG)
+            prioritySlotBonus -= 2;
+        }
+        else if (Configurations.PLUS1.Contains(i))
+          if (gameBoard.board[i] == Tags.AI_TAG)
+            prioritySlotBonus += 1;
+          else if (gameBoard.board[i] == Tags.HUMAN_TAG)
+            prioritySlotBonus -= 1;
+      }
     }
 
     /* +------------------+
