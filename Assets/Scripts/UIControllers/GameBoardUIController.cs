@@ -77,6 +77,15 @@ public class GameBoardUIController : MonoBehaviour {
         }
     }
 
+    public void exitToMenuTutorial()
+    {
+        
+            LoadingPanel.GetComponent<Animator>().SetBool("isDisplayed", true);
+            LeanTween.cancelAll();
+            StartCoroutine(LoadAsync(1));
+        
+    }
+
     private IEnumerator LoadAsync(int levelNum)
     {
         AsyncOperation async = SceneManager.LoadSceneAsync(levelNum);
