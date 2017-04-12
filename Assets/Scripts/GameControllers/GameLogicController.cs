@@ -143,8 +143,8 @@ public class GameLogicController : MonoBehaviour
         {
             if (PlayerPrefs.GetString("GameType") == "Story")
             {
-                if (PlayerPrefs.GetInt("StoryStage") == 1 || PlayerPrefs.GetInt("StoryStage") == 3 ||
-                    PlayerPrefs.GetInt("StoryStage") == 5)
+                if (PlayerPrefs.GetInt("StoryStage") == 0 || PlayerPrefs.GetInt("StoryStage") == 2 ||
+                    PlayerPrefs.GetInt("StoryStage") == 4)
                 {
                     PlayerPrefs.SetString("AIGoesFirst", "false");
                 }

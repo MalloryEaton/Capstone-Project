@@ -32,6 +32,8 @@ public class UIControllerScript : MonoBehaviour
 
     private GameObject LoadingPanel;
 
+    public GameObject storyContinuePanel;
+
     void Awake()
     {
         //load correct tower
@@ -52,6 +54,7 @@ public class UIControllerScript : MonoBehaviour
         LogoPanel.SetActive(true);
         print("awake");
         slideIndex = 0;
+        storyContinuePanel.SetActive(false);
     }
 
     private void Update()
@@ -71,7 +74,8 @@ public class UIControllerScript : MonoBehaviour
         {
             if(PlayerPrefs.HasKey("StoryStage"))
             {
-                //show thing here
+                storyContinuePanel.SetActive(true);
+                storyContinuePanel.GetComponent<Animator>().SetBool("isDisplayed", true);
 
                 //if continue
                 //LoadingPanel.GetComponent<Animator>().SetBool("isDisplayed", true);
@@ -113,10 +117,10 @@ public class UIControllerScript : MonoBehaviour
                 //StartCoroutine(LoadAsync(11));
             }
 
-            LoadingPanel.GetComponent<Animator>().SetBool("isDisplayed", true);
-            PlayerPrefs.SetString("GameType", "Story");
-            PlayerPrefs.SetInt("StoryStage", 0);
-            StartCoroutine(LoadAsync(11));
+            //LoadingPanel.GetComponent<Animator>().SetBool("isDisplayed", true);
+            //PlayerPrefs.SetString("GameType", "Story");
+            //PlayerPrefs.SetInt("StoryStage", 0);
+            //StartCoroutine(LoadAsync(11));
         }
         else if (panel == "difficulty") //quickplay
         {
@@ -236,6 +240,52 @@ public class UIControllerScript : MonoBehaviour
         }
     }
 
+    public void continueStory()
+    {
+        storyContinuePanel.GetComponent<Animator>().SetBool("isDisplayed", false);
+        storyContinuePanel.SetActive(false);
+       // LoadingPanel.GetComponent<Animator>().SetBool("isDisplayed", true);
+        switch (PlayerPrefs.GetInt("StoryStage"))
+        {
+            case 0:
+               // PlayerPrefs.SetInt("StoryStage", 1);
+                StartCoroutine(LoadAsync(11));
+                break;
+            case 1:
+               // PlayerPrefs.SetInt("StoryStage", 2);
+                StartCoroutine(LoadAsync(12));
+                break;
+            case 2:
+                //PlayerPrefs.SetInt("StoryStage", 3);
+                StartCoroutine(LoadAsync(11));
+                break;
+            case 3:
+               // PlayerPrefs.SetInt("StoryStage", 4);
+                StartCoroutine(LoadAsync(12));
+                break;
+            case 4:
+                //PlayerPrefs.SetInt("StoryStage", 5);
+                StartCoroutine(LoadAsync(13));
+                break;
+            case 5:
+               // PlayerPrefs.SetInt("StoryStage", 6);
+                StartCoroutine(LoadAsync(14));
+                break;
+                //case 6:
+                //    StartCoroutine(LoadAsync(16));
+                //    break;
+        }
+    }
+
+    public void startNewStory()
+    {
+        storyContinuePanel.GetComponent<Animator>().SetBool("isDisplayed", false);
+        storyContinuePanel.SetActive(false);
+        //LoadingPanel.GetComponent<Animator>().SetBool("isDisplayed", true);
+        PlayerPrefs.SetString("GameType", "Story");
+        PlayerPrefs.SetInt("StoryStage", 0);
+        StartCoroutine(LoadAsync(11));
+    }
 
     public void hide(string panel)
     {
