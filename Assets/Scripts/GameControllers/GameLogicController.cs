@@ -162,7 +162,8 @@ public class GameLogicController : MonoBehaviour
             networking.SendColor();
             networking.SendName();
 
-            LeanTween.delayedCall(gameObject, 5f, () => {
+            LeanTween.delayedCall(gameObject, 5f, () =>
+            {
                 isPlayer1 = networking.DetermineIfMasterClient();
                 waitingOnOtherPlayer = !isPlayer1; //prevent player 2 from clicking
 
@@ -190,7 +191,7 @@ public class GameLogicController : MonoBehaviour
 
                 LoadingScreen.GetComponent<Animator>().SetBool("isDisplayed", false);
                 Destroy(GameObject.FindGameObjectWithTag("BlackPanel"));
-                
+
                 PlayMageIntroAnimations();
             });
         }
@@ -212,15 +213,11 @@ public class GameLogicController : MonoBehaviour
             {
                 player2Color = PlayerPrefs.GetString("Player2Color");
             }
-            
+
             LoadingScreen.GetComponent<Animator>().SetBool("isDisplayed", false);
             Destroy(GameObject.FindGameObjectWithTag("BlackPanel"));
 
             InitializeGameBoard();
-
-            // TODO: Set this as an actual player pref somewhere else.
-            // WE STILL NEED A MENU OPTION FOR THIS!!!!!!!!!!!!!!!!!!!
-            PlayerPrefs.SetString("AIGoesFirst", "false");
 
             PlayMageIntroAnimations();
         }
@@ -419,7 +416,8 @@ public class GameLogicController : MonoBehaviour
             });
         }
 
-        LeanTween.delayedCall(4f, () => {
+        LeanTween.delayedCall(4f, () =>
+        {
             player1Mage.GetComponent<MageController>().PlayLandingAnimation();
             player2Mage.GetComponent<MageController>().PlayLandingAnimation();
 
@@ -514,7 +512,7 @@ public class GameLogicController : MonoBehaviour
 
     private void InstantiateMages()
     {
-        if(!isNetworkGame || (isNetworkGame && isPlayer1))
+        if (!isNetworkGame || (isNetworkGame && isPlayer1))
         {
             player1Mage = Instantiate(dictionaries.magesDictionary[player1Color],
                                       new Vector3(20, 1, 28), new Quaternion(0, 180, 0, 0));
@@ -524,7 +522,7 @@ public class GameLogicController : MonoBehaviour
                                       new Vector3(4, 1, -4), new Quaternion(0, 0, 0, 0));
             player2Mage.tag = "Mage";
         }
-        else if(isNetworkGame && !isPlayer1)
+        else if (isNetworkGame && !isPlayer1)
         {
             player1Mage = Instantiate(dictionaries.magesDictionary[player1Color],
                                       new Vector3(4, 1, -4), new Quaternion(0, 0, 0, 0));
@@ -769,14 +767,14 @@ public class GameLogicController : MonoBehaviour
 
         if (isAIGame && drawCount >= 10)
         {
-            drawCount = 5;
+            drawCount = 0;
             //offer draw
             print("offering draw");
             canOfferDraw = true; //show something in the ui
             uiController.displayDraw();
         }
 
-        if(isAIGame)
+        if (isAIGame)
             waitingOnOtherPlayer = !isAITurn;
         isPlayer1Turn = !isPlayer1Turn;
         isAITurn = !isAITurn;
@@ -854,34 +852,38 @@ public class GameLogicController : MonoBehaviour
         }
     }
     // Makes a move from the game's AI
-    private void makeAIMove() {
-      short placedAIPieces;
-      short placedHumanPieces;
+    private void makeAIMove()
+    {
+        short placedAIPieces;
+        short placedHumanPieces;
 
-      // Determine how many pieces have been placed so far
-      if (PlayerPrefs.GetString("AIGoesFirst") == "true") {
-        placedAIPieces = placementPhase_RoundCount;
-        placedHumanPieces = (short)(placementPhase_RoundCount - 1);
-      }
-      else {
-        placedAIPieces = (short)(placementPhase_RoundCount - 1);
-        placedHumanPieces = placementPhase_RoundCount;
-      }
+        // Determine how many pieces have been placed so far
+        if (PlayerPrefs.GetString("AIGoesFirst") == "true")
+        {
+            placedAIPieces = placementPhase_RoundCount;
+            placedHumanPieces = (short)(placementPhase_RoundCount - 1);
+        }
+        else
+        {
+            placedAIPieces = (short)(placementPhase_RoundCount - 1);
+            placedHumanPieces = placementPhase_RoundCount;
+        }
 
-      // Get the move
-      AIMove = aicontroller.GetAIMove(AIDifficulty, placedAIPieces,
-                                      placedHumanPieces);
-      // Apply the move based on the current phase
-      if (gamePhase == "placement")
-        PlacementPhase(AIMove[1]);
-      else {
-        //Debug.Log("AI Move From: " + AIMove[0]);
-        //Debug.Log("AI Move To: " + AIMove[1]);
-        runeFromLocation = AIMove[0];
-        MovementPhase_Place(AIMove[1]);
-      }
+        // Get the move
+        AIMove = aicontroller.GetAIMove(AIDifficulty, placedAIPieces,
+                                        placedHumanPieces);
+        // Apply the move based on the current phase
+        if (gamePhase == "placement")
+            PlacementPhase(AIMove[1]);
+        else
+        {
+            //Debug.Log("AI Move From: " + AIMove[0]);
+            //Debug.Log("AI Move To: " + AIMove[1]);
+            runeFromLocation = AIMove[0];
+            MovementPhase_Place(AIMove[1]);
+        }
     }
-    
+
     public bool ClickedOnDifferentPiece(short selectedRune)
     {
         if ((isPlayer1Turn && runeList[selectedRune].tag == "Player") ||
@@ -1346,11 +1348,13 @@ public class GameLogicController : MonoBehaviour
                     new Vector3(orbToDestroy.transform.position.x, 0.2f, orbToDestroy.transform.position.z), Quaternion.identity);
             }
 
-            LeanTween.delayedCall(gameObject, 0.1f, () => {
+            LeanTween.delayedCall(gameObject, 0.1f, () =>
+            {
                 Destroy(orbToDestroy);
             });
 
-            LeanTween.delayedCall(gameObject, 1f, () => {
+            LeanTween.delayedCall(gameObject, 1f, () =>
+            {
                 Destroy(hit);
             });
 
@@ -1503,4 +1507,4 @@ public class GameLogicController : MonoBehaviour
             }
         });
     }
-    }
+}

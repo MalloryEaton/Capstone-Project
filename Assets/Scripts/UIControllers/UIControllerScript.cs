@@ -416,4 +416,17 @@ public class UIControllerScript : MonoBehaviour
         Application.Quit();
     }
 
+    public void setPlayerTurn(int turn)
+    {
+        if (turn == 1)
+        {
+            PlayerPrefs.SetString("AIGoesFirst", "false");
+        }
+        else if (turn == 2)
+        {
+            PlayerPrefs.SetString("AIGoesFirst", "true");
+        }
+        Debug.Log(PlayerPrefs.GetString("AIGoesFirst"));
+    }
+
 }

@@ -184,15 +184,21 @@ public class NetworkingController : Photon.PunBehaviour
     {
         gameLogicController.playerForfeit = "other";
         //Display other player forfeit message
-        gameBoardUI.displayForfeit();
-        timer(2);
-        gameBoardUI.hideForfeit();
-        timer(1);
-        gameLogicController.GameOver();
+        
+        StartCoroutine(forfeitCycle());
+        StartCoroutine(gameOverDelay());
     } 
 
-    IEnumerable timer(float time)
+    IEnumerator forfeitCycle()
     {
-        yield return new WaitForSeconds(time);
+        gameBoardUI.displayForfeit();
+        yield return new WaitForSeconds(2f);
+        gameBoardUI.hideForfeit();
+    }
+
+    IEnumerator gameOverDelay()
+    {
+        yield return new WaitForSeconds(2f);
+        gameLogicController.GameOver();
     }
 }

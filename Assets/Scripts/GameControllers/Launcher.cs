@@ -273,7 +273,7 @@ namespace Com.EnsorcelledStudios.Runic
         {
             if (PhotonNetwork.insideLobby)
             {
-                LoadingScreen.GetComponent<Animator>().SetBool("isDisplayed", true);
+                //LoadingScreen.GetComponent<Animator>().SetBool("isDisplayed", true);
                 print("Join " + selectedRoomName);
                 PhotonNetwork.JoinRoom(selectedRoomName);
             }
