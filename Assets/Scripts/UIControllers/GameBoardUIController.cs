@@ -143,20 +143,29 @@ public class GameBoardUIController : MonoBehaviour {
             LoadingPanel.GetComponent<Animator>().SetBool("isDisplayed", true);
             switch (PlayerPrefs.GetInt("StoryStage"))
             {
-                case 1:
+                case 0:
+                    PlayerPrefs.SetInt("StoryStage", 1);
                     StartCoroutine(LoadAsync(11));
                     break;
-                case 2:
+                case 1:
+                    PlayerPrefs.SetInt("StoryStage", 2);
                     StartCoroutine(LoadAsync(12));
                     break;
+                case 2:
+                    PlayerPrefs.SetInt("StoryStage", 3);
+                    StartCoroutine(LoadAsync(11));
+                    break;
                 case 3:
-                    StartCoroutine(LoadAsync(13));
+                    PlayerPrefs.SetInt("StoryStage", 4);
+                    StartCoroutine(LoadAsync(12));
                     break;
                 case 4:
-                    StartCoroutine(LoadAsync(14));
+                    PlayerPrefs.SetInt("StoryStage", 5);
+                    StartCoroutine(LoadAsync(13));
                     break;
                 case 5:
-                    StartCoroutine(LoadAsync(15));
+                    PlayerPrefs.SetInt("StoryStage", 6);
+                    StartCoroutine(LoadAsync(14));
                     break;
                     //case 6:
                     //    StartCoroutine(LoadAsync(16));

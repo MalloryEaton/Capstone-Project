@@ -2943,7 +2943,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1421137559}
   m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: -0.7071068}
-  m_LocalPosition: {x: 55.2, y: 9.6, z: 67.9}
+  m_LocalPosition: {x: 55.2, y: 9.6, z: 69}
   m_LocalScale: {x: 10, y: 10, z: 10}
   m_Children: []
   m_Father: {fileID: 426835791}
@@ -9139,6 +9139,11 @@ Prefab:
       propertyPath: far clip plane
       value: 200
       objectReference: {fileID: 0}
+    - target: {fileID: 114008641804646218, guid: 7236bfa22beac0c4c8ad2f96e4d441f1,
+        type: 2}
+      propertyPath: gbui
+      value: 
+      objectReference: {fileID: 2108901819}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 7236bfa22beac0c4c8ad2f96e4d441f1, type: 2}
   m_IsPrefabParent: 0
