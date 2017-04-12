@@ -37,7 +37,6 @@ public class StoryTextController6 : MonoBehaviour
 
     void Start()
     {
-        PlayerPrefs.SetInt("StoryStage", 6);
         blackMage = GameObject.Find("BlackMage");
         if (PlayerPrefs.GetInt("StoryStage") == 6)
         {
